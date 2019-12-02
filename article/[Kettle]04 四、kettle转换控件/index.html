@@ -71,7 +71,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/article_header/article_bg.jpg')
+            background-image: url('/img/article_header/article_header.png')
             /*post*/
         
     }
@@ -88,12 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                            
                         </div>
                         <h1>[Kettle]04 四、kettle转换控件</h1>
-                        <h2 class="subheading"></h2>
+                        <h2 class="subheading">kettle转换控件</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-12-02
+                            2019-11-29
                         </span>
                     </div>
                 
@@ -140,13 +142,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -155,6 +150,13 @@
                         
                         <li>
                             <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -210,7 +212,39 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
+                <p><strong>转换</strong>是<strong>转换</strong>里面的第四个分类。</p>
+<p>转换属于<strong>ETL</strong>的<strong>T</strong>，<strong>T</strong>就是<strong>Transform清洗、转换</strong>。</p>
+<p>ETL三个部分中，T花费<strong>时间最长</strong>,是“一般情况下这部分工作量是整个ETL的2/3。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h1 id="Concat-fields"><a href="#Concat-fields" class="headerlink" title="Concat fields"></a>Concat fields</h1><p>Concat fields就是<strong>多个字段连接</strong>起来形成一个<strong>新的字段</strong>。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h1 id="值映射"><a href="#值映射" class="headerlink" title="值映射"></a>值映射</h1><p>值映射就是把<strong>字段</strong>的一个值映射成其他的值。</p>
+<p>在<strong>数据质量</strong>规范上使用非常多，比如很多系统对应性别gender字段的定义不同。<br>系统1：1 男、2女<br>系统2：f 男、m 女<br>数据仓库统一为：female 男、male女<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h1 id="增加常量"><a href="#增加常量" class="headerlink" title="增加常量"></a>增加常量</h1><p>增加常量就是在<strong>本身的数据</strong>流里面<strong>添加一列数据</strong>，该列的数据都是<strong>相同的值</strong>。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+<h1 id="增加序列"><a href="#增加序列" class="headerlink" title="增加序列"></a>增加序列</h1><p>增加序列是给数据流添加一个序列字段。<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<h1 id="字段选择"><a href="#字段选择" class="headerlink" title="字段选择"></a>字段选择</h1><p>字段选择是从数据流中<strong>选择字段、改变名称、修改数据类型</strong>。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
+<h1 id="计算器"><a href="#计算器" class="headerlink" title="计算器"></a>计算器</h1><p>计算器是一个<strong>函数集合</strong>来<strong>创建</strong>新的字段，还可以设置字段<strong>是否移除（临时字段）</strong>。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<h1 id="字符串-剪切-操作-替换"><a href="#字符串-剪切-操作-替换" class="headerlink" title="字符串-剪切-操作-替换"></a>字符串-剪切-操作-替换</h1><h2 id="剪切字符串"><a href="#剪切字符串" class="headerlink" title="剪切字符串"></a>剪切字符串</h2><p>剪切字符串是<strong>指定</strong>输入流字段<strong>裁剪</strong>的<strong>位置</strong>剪切出<strong>新的</strong>字段。<br><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<h2 id="字符串替换"><a href="#字符串替换" class="headerlink" title="字符串替换"></a>字符串替换</h2><p>字符串替换是指定<strong>搜索内容和替换内容</strong>，如果输入流的字段匹配上搜索内容就进行替换生成新字段。<br><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<h2 id="字符串操作"><a href="#字符串操作" class="headerlink" title="字符串操作"></a>字符串操作</h2><p>字符串操作是<strong>去除</strong>字符串<strong>两端的空格和大小写切换</strong>，并生成新的字段。<br><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h2><p>从Excel中读取数据，获取title的首位字符，生成title_begin字段，把description中的1111替换为itheima生成desc字段，去除author两边的空格，字符变大写，生成author_update，保存到Excel</p>
+<p>输入：Excel输入<br>转换：剪切字符串、字符串替换、字符串操作<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8715.png" alt=""></p>
+<h1 id="去除重复记录-排序记录"><a href="#去除重复记录-排序记录" class="headerlink" title="去除重复记录+排序记录"></a>去除重复记录+排序记录</h1><h2 id="去除重复记录"><a href="#去除重复记录" class="headerlink" title="去除重复记录"></a>去除重复记录</h2><p>去除重复记录是<strong>去除</strong>数据流里面<strong>相同的数据行</strong>。</p>
+<p><strong>注意</strong>：必须先对数据流进行排序！<br><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
+<h2 id="排序记录"><a href="#排序记录" class="headerlink" title="排序记录"></a>排序记录</h2><p>排序记录是按照指定的字段的升序或降序对数据流排序。<br><img src="%E5%9B%BE%E7%89%8717.png" alt=""></p>
+<h2 id="任务-1"><a href="#任务-1" class="headerlink" title="任务"></a>任务</h2><p>从Excel中读取数据，去除重复的数据，并保存到Excel</p>
+<p>输入：Excel输入<br>转换：排序记录、去除重复记录<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8718.png" alt=""></p>
+<h1 id="唯一行（哈希值）"><a href="#唯一行（哈希值）" class="headerlink" title="唯一行（哈希值）"></a>唯一行（哈希值）</h1><p>唯一行（哈希值）就是<strong>删除</strong>数据流<strong>重复的行</strong>。</p>
+<p>注意：唯一行（哈希值）和（排序记录+去除重复记录）效果一样的，但是实现的原理不同！</p>
+<p>唯一行（哈希值）执行的效率会高一些！<br><img src="%E5%9B%BE%E7%89%8719.png" alt=""></p>
+<h1 id="拆分字段"><a href="#拆分字段" class="headerlink" title="拆分字段"></a>拆分字段</h1><p>拆分字段是把字段按照<strong>分隔符</strong>拆分成两个或多个字段。</p>
+<p>注意：拆分字段后，<strong>原字段</strong>就不存在于数据流中！<br><img src="%E5%9B%BE%E7%89%8720.png" alt=""></p>
+<h1 id="列拆分为多行"><a href="#列拆分为多行" class="headerlink" title="列拆分为多行"></a>列拆分为多行</h1><p>列拆分为多行就是把指定<strong>分隔符</strong>的字段进行拆分为<strong>多行</strong>。<br><img src="%E5%9B%BE%E7%89%8721.png" alt=""><br><img src="%E5%9B%BE%E7%89%8722.png" alt=""></p>
+<h1 id="列转行"><a href="#列转行" class="headerlink" title="列转行"></a>列转行</h1><p>列转行就是如果数据一列有相同的值，按照指定的字段，把多行数据转换为一行数据。<br>去除一些原来的列名，把一列数据变为字段。<br>注意：列转行之前数据流必须进行排序！<br><img src="%E5%9B%BE%E7%89%8723.png" alt=""><br><img src="%E5%9B%BE%E7%89%8724.png" alt=""></p>
+<h1 id="行转列"><a href="#行转列" class="headerlink" title="行转列"></a>行转列</h1><p>行转列就是把数据字段的字段名转换为一列，把数据行变为数据列。<br><img src="%E5%9B%BE%E7%89%8725.png" alt=""><br><img src="%E5%9B%BE%E7%89%8726.png" alt=""></p>
+<h1 id="行扁平化"><a href="#行扁平化" class="headerlink" title="行扁平化"></a>行扁平化</h1><p>行扁平化就是把<strong>同一组的多行数据合并成为一行</strong>。</p>
+<p>注意：<br>只有数据流的<strong>同类数据数据行记录一致</strong>的情况才可使用！<br>数据流必须进行<strong>排序</strong>，否则结果会不正确！<br><img src="%E5%9B%BE%E7%89%8727.png" alt=""><br><img src="%E5%9B%BE%E7%89%8728.png" alt=""></p>
+<h2 id="任务-2"><a href="#任务-2" class="headerlink" title="任务"></a>任务</h2><p>从Excel读取数据，把数据进行行扁平化处理，存储在Excel</p>
+<p>输入：Excel输入<br>转换：排序记录、行扁平化<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8729.png" alt=""></p>
+
                 
 
                 <hr>
@@ -263,6 +297,18 @@
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Concat-fields"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Concat fields</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#值映射"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">值映射</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#增加常量"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">增加常量</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#增加序列"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">增加序列</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#字段选择"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">字段选择</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#计算器"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">计算器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#字符串-剪切-操作-替换"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">字符串-剪切-操作-替换</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#剪切字符串"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">剪切字符串</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#字符串替换"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">字符串替换</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#字符串操作"><span class="toc-nav-number">7.3.</span> <span class="toc-nav-text">字符串操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务"><span class="toc-nav-number">7.4.</span> <span class="toc-nav-text">任务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#去除重复记录-排序记录"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">去除重复记录+排序记录</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#去除重复记录"><span class="toc-nav-number">8.1.</span> <span class="toc-nav-text">去除重复记录</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#排序记录"><span class="toc-nav-number">8.2.</span> <span class="toc-nav-text">排序记录</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务-1"><span class="toc-nav-number">8.3.</span> <span class="toc-nav-text">任务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#唯一行（哈希值）"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">唯一行（哈希值）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#拆分字段"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">拆分字段</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#列拆分为多行"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">列拆分为多行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#列转行"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">列转行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#行转列"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">行转列</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#行扁平化"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">行扁平化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务-2"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">任务</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
                 
             <!-- Sidebar Container -->
             <div class="
@@ -277,6 +323,8 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                        
                     </div>
                 </section>
                 
