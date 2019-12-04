@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]05 五、kettle应用控件 - 李玉坤 | Blog
+          [Kettle]08 八、kettle连接控件 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]05 五、kettle应用控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]08 八、kettle连接控件/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
                             
                         </div>
-                        <h1>[Kettle]05 五、kettle应用控件</h1>
-                        <h2 class="subheading">kettle应用控件</h2>
+                        <h1>[Kettle]08 八、kettle连接控件</h1>
+                        <h2 class="subheading">kettle连接控件</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-11-30
+                            2019-12-02
                         </span>
                     </div>
                 
@@ -212,13 +212,17 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>应用是<strong>转换</strong>里面的第五个分类。</p>
-<p>应用都是一些工具类。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="替换NULL值"><a href="#替换NULL值" class="headerlink" title="替换NULL值"></a>替换NULL值</h1><p>替换NULL值就是把null转换为其它的值。</p>
-<p>NULL值不好进行数据分析<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
-<h1 id="写日志"><a href="#写日志" class="headerlink" title="写日志"></a>写日志</h1><p>写日志主要是在<strong>调试</strong>的时候使用，把日志信息打印到日志窗口。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
-<h1 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h1><p>发送邮件就是执行成功、失败、其它某种情景给相关人员发送邮件。</p>
-<p>注意：<br>只有<strong>企业邮箱才可以</strong>！个人邮箱不行！<br>并且需要在邮件设置中<strong>开通客户端授权码</strong>！<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+                <p><strong>连接是转换里面的第八个分类。<br>连接是结果集通过关键字进行连接。</strong><br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h1 id="合并记录"><a href="#合并记录" class="headerlink" title="合并记录"></a>合并记录</h1><p>合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。</p>
+<p>需要设置的参数：<br>旧数据来源：旧数据来源的步骤<br>新数据来源：新数据来源的步骤</p>
+<p>标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。</p>
+<ol>
+<li>“identical” – 旧数据和新数据一样</li>
+<li>“changed” – 数据发生了变化;</li>
+<li>“new” – 新数据中有而旧数据中没有的记录</li>
+<li>“deleted” –旧数据中有而新数据中没有的记录<br>关键字段：用于定位两个数据源中的同一条记录。<br>比较字段：对于两个数据源中的同一条记录中，指定需要比较的字段。<br>合并后的数据将包括旧数据来源和新数据来源里的所有数据，对于变化的数据，使用新数据代替旧数据，同时在结果里用一个标示字段，来指定新旧数据的比较结果。<br>注意：<br>旧数据和新数据需要事先按照关键字段排序。<br>旧数据和新数据要有相同的字段名称。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><h1 id="记录关联（笛卡尔积）"><a href="#记录关联（笛卡尔积）" class="headerlink" title="记录关联（笛卡尔积）"></a>记录关联（笛卡尔积）</h1>记录关联就是对两个数据流进行笛卡尔积操作。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><h1 id="记录集连接"><a href="#记录集连接" class="headerlink" title="记录集连接"></a>记录集连接</h1>记录集连接就像数据库的左连接、右连接、内连接、外连接。<br>注意：在进行记录集连接之前，应该要对记录集进行排序。<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>例如：从Excel中读取employees和departments数据，进行内关键，左关联，右关联，全关联，把数据保存到Excel</li>
+</ol>
+<p>输入：Excel输入<br>转换：排序记录<br>连接：记录集连接<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
 
                 
 
@@ -226,13 +230,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/[Kettle]07 七、kettle查询控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]07 七、kettle查询控件">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/[Kettle]04 四、kettle转换控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]04 四、kettle转换控件">Next Post &rarr;</a>
+                            <a href="/article/[Kettle]06 六、kettle流程控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]06 六、kettle流程控件">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -282,7 +282,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#替换NULL值"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">替换NULL值</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#写日志"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">写日志</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#发送邮件"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">发送邮件</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#合并记录"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">合并记录</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录关联（笛卡尔积）"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">记录关联（笛卡尔积）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录集连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">记录集连接</span></a></li></ol>
         
         </div>
       </aside>
