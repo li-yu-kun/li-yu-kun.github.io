@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]08 八、kettle连接控件 - 李玉坤 | Blog
+          [Kettle]09 九、kettle统计-映射-脚本控件 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]08 八、kettle连接控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]09 九、kettle统计-映射-脚本控件/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
                             
                         </div>
-                        <h1>[Kettle]08 八、kettle连接控件</h1>
-                        <h2 class="subheading">kettle连接控件</h2>
+                        <h1>[Kettle]09 九、kettle统计-映射-脚本控件</h1>
+                        <h2 class="subheading">kettle统计-映射-脚本控件</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-12-02
+                            2019-12-03
                         </span>
                     </div>
                 
@@ -212,17 +212,37 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><strong>连接是转换里面的第八个分类。<br>连接是结果集通过关键字进行连接。</strong><br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="合并记录"><a href="#合并记录" class="headerlink" title="合并记录"></a>合并记录</h1><p>合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。</p>
-<p>需要设置的参数：<br>旧数据来源：旧数据来源的步骤<br>新数据来源：新数据来源的步骤</p>
-<p>标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。</p>
-<ol>
-<li>“identical” – 旧数据和新数据一样</li>
-<li>“changed” – 数据发生了变化;</li>
-<li>“new” – 新数据中有而旧数据中没有的记录</li>
-<li>“deleted” –旧数据中有而新数据中没有的记录<br>关键字段：用于定位两个数据源中的同一条记录。<br>比较字段：对于两个数据源中的同一条记录中，指定需要比较的字段。<br>合并后的数据将包括旧数据来源和新数据来源里的所有数据，对于变化的数据，使用新数据代替旧数据，同时在结果里用一个标示字段，来指定新旧数据的比较结果。<br>注意：<br>旧数据和新数据需要事先按照关键字段排序。<br>旧数据和新数据要有相同的字段名称。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><h1 id="记录关联（笛卡尔积）"><a href="#记录关联（笛卡尔积）" class="headerlink" title="记录关联（笛卡尔积）"></a>记录关联（笛卡尔积）</h1>记录关联就是对两个数据流进行笛卡尔积操作。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><h1 id="记录集连接"><a href="#记录集连接" class="headerlink" title="记录集连接"></a>记录集连接</h1>记录集连接就像数据库的左连接、右连接、内连接、外连接。<br>注意：在进行记录集连接之前，应该要对记录集进行排序。<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>例如：从Excel中读取employees和departments数据，进行内关键，左关联，右关联，全关联，把数据保存到Excel</li>
-</ol>
-<p>输入：Excel输入<br>转换：排序记录<br>连接：记录集连接<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+                <h1 id="统计控件"><a href="#统计控件" class="headerlink" title="统计控件"></a>统计控件</h1><p>统计是转换里面的第十三个分类。</p>
+<p>统计是提供数据的采样和统计功能。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h2 id="分组"><a href="#分组" class="headerlink" title="分组"></a>分组</h2><p>分组是按照某一个或某几个进行分组，同时可以将其余字段按照某种规则进行合并。</p>
+<p>注意：<br>分组之前数据应该进行排序！<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<p>从Excel读取数据，按照group进行分组统计，把结果保存到Excel</p>
+<p>输入：Excel输入<br>统计：分组<br>输出：Microsoft Excel输出</p>
+<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h1 id="映射控件"><a href="#映射控件" class="headerlink" title="映射控件"></a>映射控件</h1><p>映射是转换里面的第十八个分类。</p>
+<p>映射是用来定义子转换，便于封装和重用。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+<h2 id="映射（子转换）"><a href="#映射（子转换）" class="headerlink" title="映射（子转换）"></a>映射（子转换）</h2><p>映射（子转换）是用来配置子转换，<strong>对子转换进行调用</strong>的一个步骤。<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<h2 id="映射输入规范"><a href="#映射输入规范" class="headerlink" title="映射输入规范"></a>映射输入规范</h2><p>映射输入规范是输入字段，由调用的转换输入。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<h2 id="映射输出规范"><a href="#映射输出规范" class="headerlink" title="映射输出规范"></a>映射输出规范</h2><p>映射输出规范是<strong>向调用的转换输出所有列</strong>，不做任何处理。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+<p>从t_orders表中获取数据，根据u_id查询t_users表，获取用户信息，并把数据保存到Excel<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
+<h1 id="脚本控件"><a href="#脚本控件" class="headerlink" title="脚本控件"></a>脚本控件</h1><p>脚本是转换里面的第七个分类。</p>
+<p>脚本就是直接通过程序代码完成一些复杂的操作。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
+<h2 id="javascript脚本"><a href="#javascript脚本" class="headerlink" title="javascript脚本"></a>javascript脚本</h2><p>javascript脚本就是使用javascript语言通过代码编程来完成对数据流的操作。<br>JS中有很多内置函数，可以在编写JS代码时查看。</p>
+<p>存在两种不同的模式：不兼容模式和兼容模式<br>不兼容模式：是默认的，也是推荐的<br>兼容模式：兼容老版本的kettle</p>
+<h3 id="javascript脚本-获取字段"><a href="#javascript脚本-获取字段" class="headerlink" title="javascript脚本-获取字段"></a>javascript脚本-获取字段</h3><p>不兼容模式：<br>myVar = FieldName;</p>
+<p>兼容模式：根据字段类型的不同，使用不同的方法：<br>myVar = FieldName.getString();<br>myVar = FieldName.getNumber();</p>
+<h3 id="javascript脚本-给字段赋值"><a href="#javascript脚本-给字段赋值" class="headerlink" title="javascript脚本-给字段赋值"></a>javascript脚本-给字段赋值</h3><p>不兼容模式：直接使用字段名，如<br>FieldName = myVar;</p>
+<p>兼容模式：使用<br>FieldName.setValue(myVar);</p>
+<h3 id="javascript脚本-在脚本中使用java类"><a href="#javascript脚本-在脚本中使用java类" class="headerlink" title="javascript脚本-在脚本中使用java类"></a>javascript脚本-在脚本中使用java类</h3><p>不兼容模式：<br>var myVar = new java.lang.String(“pentahochina.com”);</p>
+<p>兼容模式：<br>var myVar = new Packages.java.lang.String (“pentahochina.com”);</p>
+<p><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
+<p>生成日期维度数据有日期，年，月，日，从2000年01月01日开始有1000条记录，保存到Excel</p>
+<p>输入：生成记录<br>转换：增加序列、计算器、字段选择<br>脚本：JavaScript代码<br>输出：Excel输出</p>
+<p><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<h2 id="java脚本"><a href="#java脚本" class="headerlink" title="java脚本"></a>java脚本</h2><p>java脚本就是使用java语言通过代码编程来完成对数据流的操作。</p>
+<p>内置了很多函数可以直接使用。</p>
+<h3 id="java脚本-Main"><a href="#java脚本-Main" class="headerlink" title="java脚本-Main"></a>java脚本-Main</h3><p>Main函数对应一个processRow(）函数，processRow(）函数是用来处理数据流的场所！<br><img src="%E5%9B%BE%E7%89%8712.png" alt=""><br><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<h2 id="执行SQL脚本"><a href="#执行SQL脚本" class="headerlink" title="执行SQL脚本"></a>执行SQL脚本</h2><p>执行SQL脚本可以执行一个update语句，用来更新某个表中的数据。<br><img src="%E5%9B%BE%E7%89%8714.png" alt=""><br><img src="%E5%9B%BE%E7%89%8715.png" alt=""></p>
 
                 
 
@@ -230,13 +250,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/[Kettle]09 九、kettle统计-映射-脚本控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]09 九、kettle统计-映射-脚本控件">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/[Kettle]06 六、kettle流程控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]06 六、kettle流程控件">Next Post &rarr;</a>
+                            <a href="/article/[Kettle]08 八、kettle连接控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]08 八、kettle连接控件">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +302,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#合并记录"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">合并记录</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录关联（笛卡尔积）"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">记录关联（笛卡尔积）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录集连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">记录集连接</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#统计控件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">统计控件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分组"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">分组</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#映射控件"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">映射控件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#映射（子转换）"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">映射（子转换）</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#映射输入规范"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">映射输入规范</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#映射输出规范"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">映射输出规范</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#脚本控件"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">脚本控件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#javascript脚本"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">javascript脚本</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#javascript脚本-获取字段"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">javascript脚本-获取字段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#javascript脚本-给字段赋值"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">javascript脚本-给字段赋值</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#javascript脚本-在脚本中使用java类"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">javascript脚本-在脚本中使用java类</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#java脚本"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">java脚本</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#java脚本-Main"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">java脚本-Main</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#执行SQL脚本"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">执行SQL脚本</span></a></li></ol></li></ol>
         
         </div>
       </aside>
