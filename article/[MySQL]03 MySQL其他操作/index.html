@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -226,7 +226,7 @@
 <p> 结果说明:<br>仔细观察一下,就会发现,和left join的结果刚好相反,这次是以右表(B)为基础的,A表不足的地方用NULL填充.</p>
 <h2 id="inner-join"><a href="#inner-join" class="headerlink" title="inner join"></a>inner join</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; select * from A inner join B on A.aID = B.bID;</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+------+------------+</span></span><br><span class="line"></span><br><span class="line">| aID | aNum | bID | bName |</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+------+------------+</span></span><br><span class="line"></span><br><span class="line">| 1 | a20050111 | 1 | 2006032401 |</span><br><span class="line"></span><br><span class="line">| 2 | a20050112 | 2 | 2006032402 |</span><br><span class="line"></span><br><span class="line">| 3 | a20050113 | 3 | 2006032403 |</span><br><span class="line"></span><br><span class="line">| 4 | a20050114 | 4 | 2006032404 |</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+------+------------+</span></span><br><span class="line"></span><br><span class="line"> 4 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
 <p>结果说明:<br>很明显,这里只显示出了 A.aID = B.bID的记录.这说明inner join并不以谁为基础,它只显示符合条件的记录.</p>
-
+<h1 id="扩展MySQL求top1"><a href="#扩展MySQL求top1" class="headerlink" title="扩展MySQL求top1"></a>扩展MySQL求top1</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> vie sal</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> deptno,job,<span class="keyword">sum</span>(sal+<span class="keyword">ifnull</span>(comm,<span class="number">0</span>)) <span class="keyword">as</span> sal </span><br><span class="line"><span class="keyword">from</span> emp <span class="keyword">group</span> <span class="keyword">by</span> deptno,job;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line">10	CLERK	1300.00</span><br><span class="line">10	MANAGER	2450.00</span><br><span class="line">10	PRESIDENT	5000.00</span><br><span class="line">20	ANALYST	6000.00</span><br><span class="line">20	CLERK	1900.00</span><br><span class="line">20	MANAGER	2975.00</span><br><span class="line">30	CLERK	950.00</span><br><span class="line">30	MANAGER	2850.00</span><br><span class="line">30	SALESMAN	7800.00</span><br><span class="line"></span><br><span class="line">求top1</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> </span><br><span class="line">a.*</span><br><span class="line"><span class="keyword">from</span> sal a <span class="keyword">where</span></span><br><span class="line">(<span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> sal b <span class="keyword">where</span> a.deptno=b.deptno <span class="keyword">and</span> a.sal&lt;b.sal)=<span class="number">0</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> a.deptno;</span><br></pre></td></tr></table></figure>
                 
 
                 <hr>
@@ -289,7 +289,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查询数据库中的存储过程和函数"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">查询数据库中的存储过程和函数</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看视图"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">查看视图</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看触发器"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">查看触发器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#联接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">联接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#left-join"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">left join</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#right-join"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">right join</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#inner-join"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">inner join</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查询数据库中的存储过程和函数"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">查询数据库中的存储过程和函数</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看视图"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">查看视图</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看触发器"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">查看触发器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#联接"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">联接</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#left-join"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">left join</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#right-join"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">right join</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#inner-join"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">inner join</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#扩展MySQL求top1"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">扩展MySQL求top1</span></a></li></ol>
         
         </div>
       </aside>
