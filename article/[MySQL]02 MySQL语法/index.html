@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [MySQL]02 MySQL语法 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[MySQL]02 MySQL语法/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                            
+                        </div>
+                        <h1>[MySQL]02 MySQL语法</h1>
+                        <h2 class="subheading">MySQL常用操作</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-03-31
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="用户管理："><a href="#用户管理：" class="headerlink" title="用户管理："></a>用户管理：</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、新建用户：</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE USER name IDENTIFIED BY 'ssapdrow';</span><br><span class="line"></span><br><span class="line">　　2、更改密码：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SET PASSWORD FOR name=PASSWORD('fdddfd');</span><br><span class="line"></span><br><span class="line">　　3、权限管理</span><br><span class="line"></span><br><span class="line">　　　　&gt;SHOW GRANTS FOR name;    //查看name用户权限</span><br><span class="line"></span><br><span class="line">　　　　&gt;GRANT SELECT ON db_name.* TO name;　　　　//给name用户db_name数据库的所有权限</span><br><span class="line"></span><br><span class="line">　　　　&gt;REVOKE SELECT ON db_name.* TO name;　　　　//GRANT的反操作，去除权限；</span><br></pre></td></tr></table></figure>
+
+<h1 id="数据库操作："><a href="#数据库操作：" class="headerlink" title="数据库操作：　"></a>数据库操作：　</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、查看数据库：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SHOW DATABASES;</span><br><span class="line"></span><br><span class="line">　　2、创建数据库：</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE DATABASE db_name;　　//db_name为数据库名</span><br><span class="line"></span><br><span class="line">　　3、使用数据库：</span><br><span class="line"></span><br><span class="line">　　　　&gt;USE db_name;</span><br><span class="line"></span><br><span class="line">　　4、删除数据库：</span><br><span class="line"></span><br><span class="line">　　　　&gt;DROP DATABASE db_name;</span><br></pre></td></tr></table></figure>
+
+<h1 id="创建表："><a href="#创建表：" class="headerlink" title="创建表："></a>创建表：</h1><h2 id="创建表：-1"><a href="#创建表：-1" class="headerlink" title="创建表："></a>创建表：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name(</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">id</span> <span class="built_in">TINYINT</span> <span class="keyword">UNSIGNED</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,　　　　//<span class="keyword">id</span>值，无符号、非空、递增——唯一性，可做主键。</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">name</span> <span class="built_in">VARCHAR</span>(<span class="number">60</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line"></span><br><span class="line">　　　　score <span class="built_in">TINYINT</span> <span class="keyword">UNSIGNED</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>,　　　　//设置默认列值</span><br><span class="line"></span><br><span class="line">　　　　PRIMARY <span class="keyword">KEY</span>(<span class="keyword">id</span>)</span><br><span class="line"></span><br><span class="line">　　　　)<span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>　　　　//设置表的存储引擎，一般常用<span class="keyword">InnoDB</span>和MyISAM；<span class="keyword">InnoDB</span>可靠，支持事务；MyISAM高效不支持全文检索</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">DEFAULT</span> <span class="keyword">charset</span>=utf8;　　//设置默认的编码，防止数据库中文乱码</span><br><span class="line"></span><br><span class="line">　　　　如果有条件的创建数据表还可以使用   &gt;CREATE TABLE IF NOT EXISTS tb_name(........</span><br></pre></td></tr></table></figure>
+
+<h2 id="复制表："><a href="#复制表：" class="headerlink" title="复制表："></a>复制表：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;CREATE TABLE tb_name2 SELECT * FROM tb_name;</span><br><span class="line"></span><br><span class="line">　　　　或者部分复制：</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE TABLE tb_name2 SELECT id,name FROM tb_name;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建临时表："><a href="#创建临时表：" class="headerlink" title="创建临时表："></a>创建临时表：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;CREATE TEMPORARY TABLE tb_name(这里和创建普通表一样);</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看数据库中可用的表："><a href="#查看数据库中可用的表：" class="headerlink" title="查看数据库中可用的表："></a>查看数据库中可用的表：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">　　　　&gt;SHOW TABLES;</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看表的结构："><a href="#查看表的结构：" class="headerlink" title="查看表的结构："></a>查看表的结构：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;DESCRIBE tb_name;</span><br><span class="line"></span><br><span class="line">　　　　也可以使用：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SHOW COLUMNS in tb_name; 　　　　//from也可以</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除表："><a href="#删除表：" class="headerlink" title="删除表："></a>删除表：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;DROP [ TEMPORARY ] TABLE [ IF EXISTS ] tb_name[ ,tb_name2.......];</span><br><span class="line"></span><br><span class="line">　　　　实例：</span><br><span class="line"></span><br><span class="line">　　　　&gt;DROP TABLE IF EXISTS tb_name;</span><br></pre></td></tr></table></figure>
+
+<h2 id="表重命名："><a href="#表重命名：" class="headerlink" title="表重命名："></a>表重命名：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;RENAME TABLE name_old TO name_new;</span><br><span class="line"></span><br><span class="line">　　　　还可以使用：</span><br><span class="line"></span><br><span class="line">　　　　&gt;ALTER TABLE name_old RENAME name_new;</span><br></pre></td></tr></table></figure>
+
+<h1 id="修改表："><a href="#修改表：" class="headerlink" title="修改表："></a>修改表：</h1><h2 id="更改表结构："><a href="#更改表结构：" class="headerlink" title="更改表结构："></a>更改表结构：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">　　　　&gt;ALTER TABLE tb_name ADD[CHANGE,RENAME,DROP] ...要更改的内容...</span><br><span class="line"></span><br><span class="line">　　　　实例：</span><br><span class="line"></span><br><span class="line">　　　　&gt;ALTER TABLE tb_name ADD COLUMN address varchar(80) NOT NULL;</span><br><span class="line"></span><br><span class="line">　　　　&gt;ALTER TABLE tb_name DROP address;</span><br><span class="line"></span><br><span class="line">　　　　&gt;ALTER TABLE tb_name CHANGE score score SMALLINT(4) NOT NULL;</span><br></pre></td></tr></table></figure>
+
+<h1 id="插入数据："><a href="#插入数据：" class="headerlink" title="插入数据："></a>插入数据：</h1><h2 id="插入数据：-1"><a href="#插入数据：-1" class="headerlink" title="插入数据："></a>插入数据：</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;INSERT INTO tb_name(id,name,score)VALUES(NULL,'张三',140),(NULL,'张四',178),(NULL,'张五',134);</span><br><span class="line"></span><br><span class="line">　　　　这里的插入多条数据直接在后边加上逗号，直接写入插入的数据即可；主键id是自增的列，可以不用写。</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入检索出来的数据："><a href="#插入检索出来的数据：" class="headerlink" title="插入检索出来的数据："></a>插入检索出来的数据：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;INSERT INTO tb_name(name,score) SELECT name,score FROM tb_name2;</span><br></pre></td></tr></table></figure>
+
+<h1 id="更新数据："><a href="#更新数据：" class="headerlink" title="更新数据："></a>更新数据：</h1><h2 id="指定更新数据："><a href="#指定更新数据：" class="headerlink" title="指定更新数据："></a>指定更新数据：</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;UPDATE tb_name SET score=189,score1=1899,score2=1899 WHERE id=2;</span><br><span class="line"></span><br><span class="line">　　　　&gt;UPDATE tablename SET columnName=NewValue [ WHERE condition ]</span><br></pre></td></tr></table></figure>
+
+<h1 id="删除数据："><a href="#删除数据：" class="headerlink" title="删除数据："></a>删除数据：</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　　　&gt;DELETE FROM tb_name WHERE id=3;</span><br></pre></td></tr></table></figure>
+
+<h1 id="条件控制："><a href="#条件控制：" class="headerlink" title="条件控制："></a>条件控制：</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、WHERE 语句：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT * FROM tb_name WHERE id=3;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">　　2、HAVING 语句：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT * FROM tb_name GROUP BY score HAVING count(*)&gt;2</span><br><span class="line"></span><br><span class="line">　　3、相关条件控制符： </span><br><span class="line"></span><br><span class="line">　　　　=、&gt;、&lt;、&lt;&gt;、IN(1,2,3......)、BETWEEN a AND b、NOT</span><br><span class="line"></span><br><span class="line">　　　　AND 、OR</span><br><span class="line"></span><br><span class="line">　　　　Linke()用法中      %  为匹配任意、  _  匹配一个字符（可以是汉字）</span><br><span class="line"></span><br><span class="line">　　　　IS NULL 空值检测</span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL的正则表达式："><a href="#MySQL的正则表达式：" class="headerlink" title="MySQL的正则表达式："></a>MySQL的正则表达式：</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、Mysql支持REGEXP的正则表达式：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT * FROM tb_name WHERE name REGEXP '^[A-D]'   //找出以A-D 为开头的name</span><br><span class="line"></span><br><span class="line">　　2、特殊字符需要转义。</span><br></pre></td></tr></table></figure>
+
+<h1 id="MySQL的一些函数："><a href="#MySQL的一些函数：" class="headerlink" title="MySQL的一些函数："></a>MySQL的一些函数：</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、字符串链接——CONCAT()</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT CONCAT(name,'=&gt;',score) FROM tb_name</span><br><span class="line"></span><br><span class="line">　　2、数学函数：</span><br><span class="line"></span><br><span class="line">　　　　AVG、SUM、MAX、MIN、COUNT；</span><br><span class="line"></span><br><span class="line">　　3、文本处理函数：</span><br><span class="line"></span><br><span class="line">　　　　TRIM、LOCATE、UPPER、LOWER、SUBSTRING</span><br><span class="line"></span><br><span class="line">　　4、运算符：</span><br><span class="line"></span><br><span class="line">　　　　+、-、*、\</span><br><span class="line"></span><br><span class="line">　　5、时间函数：</span><br><span class="line"></span><br><span class="line">　　　　DATE()、CURTIME()、DAY()、YEAR()、NOW().....</span><br></pre></td></tr></table></figure>
+
+<h1 id="分组查询："><a href="#分组查询：" class="headerlink" title="分组查询："></a>分组查询：</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> 　　1、分组查询可以按照指定的列进行分组：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT COUNT(*) FROM tb_name GROUP BY score HAVING COUNT(*)&gt;1;</span><br><span class="line"></span><br><span class="line">　　2、条件使用Having；</span><br><span class="line"></span><br><span class="line">　　3、ORDER BY 排序：</span><br><span class="line"></span><br><span class="line">　　　　ORDER BY DESC|ASC　　　　=&gt;按数据的降序和升序排列</span><br></pre></td></tr></table></figure>
+
+<h1 id="UNION规则——可以执行两个语句（可以去除重复行）"><a href="#UNION规则——可以执行两个语句（可以去除重复行）" class="headerlink" title="UNION规则——可以执行两个语句（可以去除重复行）"></a>UNION规则——可以执行两个语句（可以去除重复行）</h1><h1 id="全文检索——MATCH和AGAINST"><a href="#全文检索——MATCH和AGAINST" class="headerlink" title="全文检索——MATCH和AGAINST"></a>全文检索——MATCH和AGAINST</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、<span class="keyword">SELECT</span> <span class="keyword">MATCH</span>(note_text)AGAINST(<span class="string">'PICASO'</span>) <span class="keyword">FROM</span> tb_name;</span><br><span class="line"></span><br><span class="line">　　2、InnoDB引擎不支持全文检索，MyISAM可以；</span><br></pre></td></tr></table></figure>
+
+<h1 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、创建视图</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE VIEW name AS SELECT * FROM tb_name WHERE ~~ ORDER BY ~~;</span><br><span class="line"></span><br><span class="line">　　2、视图的特殊作用：</span><br><span class="line"></span><br><span class="line">　　　　　　a、简化表之间的联结（把联结写在<span class="keyword">select</span>中）；</span><br><span class="line"></span><br><span class="line">　　　　　　b、重新格式化输出检索的数据（<span class="keyword">TRIM</span>，<span class="keyword">CONCAT</span>等函数）；</span><br><span class="line"></span><br><span class="line">　　　　　　c、过滤不想要的数据（<span class="keyword">select</span>部分）</span><br><span class="line"></span><br><span class="line">　　　　　　d、使用视图计算字段值，如汇总这样的值。</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用存储过程："><a href="#使用存储过程：" class="headerlink" title="使用存储过程："></a>使用存储过程：</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　个人理解，存储过程就是一个自定义函数，有局部变量参数，可传入参数，可以返回值，不过这语法够呆滞的~~~</span><br><span class="line"></span><br><span class="line">　　1、创建存储过程：</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE PROCEDURE pro(</span><br><span class="line"></span><br><span class="line">　　　　&gt;IN num INT,OUT total INT)</span><br><span class="line"></span><br><span class="line">　　　　&gt;BEGIN</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT SUM(score) INTO total FROM tb_name WHERE id=num;</span><br><span class="line"></span><br><span class="line">　　　　&gt;END;</span><br><span class="line"></span><br><span class="line">　　　***这里的  IN (传递一个值给存储过程)，OUT（从存储过程传出一个值），INOUT（对存储过程传入、传出），INTO（保存变量）</span><br><span class="line"></span><br><span class="line">　　2、调用存储过程：</span><br><span class="line"></span><br><span class="line">　　　　&gt;CALL pro(13,@total)　　　　　　//这里的存储过程两个变量，一个是IN一个是OUT，这里的OUT也是需要写上的，不写会出错</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT @total　　　　　　　　　//这里就可以看到结果了；</span><br><span class="line"></span><br><span class="line">　　3、存储过程的其他操作：</span><br><span class="line"></span><br><span class="line">　　　　&gt;SHOW PROCEDURE STATUS;　　　　　　//显示当期的存储过程</span><br><span class="line"></span><br><span class="line">　　　　&gt;DROP PROCEDURE pro;　　　　　　　　　//删除指定存储过程</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用游标："><a href="#使用游标：" class="headerlink" title="使用游标："></a>使用游标：</h1><p>　　　</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">1、游标的操作</span><br><span class="line"></span><br><span class="line">　　　　&gt;CREATE PROCEDURE pro()</span><br><span class="line"></span><br><span class="line">　　　　&gt;BEGIN </span><br><span class="line"></span><br><span class="line">　　　　&gt;DECLARE ordername CURSOR FOR</span><br><span class="line"></span><br><span class="line">　　　　&gt;SELECT order_num FROM orders;</span><br><span class="line"></span><br><span class="line">　　　　&gt;END;</span><br><span class="line"></span><br><span class="line">　　　　</span><br><span class="line"></span><br><span class="line">　　　　&gt;OPEN ordername;　　　　//打开游标</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">　　　　&gt;CLOSE ordername;　　　　//关闭游标</span><br></pre></td></tr></table></figure>
+
+<h1 id="触发器："><a href="#触发器：" class="headerlink" title="触发器："></a>触发器：</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　触发器是指在进行某项指定操作时，触发触发器内指定的操作；</span><br><span class="line"></span><br><span class="line">　　1、支持触发器的语句有<span class="keyword">DELETE</span>、<span class="keyword">INSERT</span>、<span class="keyword">UPDATE</span>,其他均不支持</span><br><span class="line"></span><br><span class="line">　　<span class="number">2</span>、创建触发器：</span><br><span class="line"></span><br><span class="line">　　　　&gt;<span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trig <span class="keyword">AFTER</span> <span class="keyword">INSERT</span> <span class="keyword">ON</span> ORDERS <span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span> <span class="keyword">SELECT</span> NEW.orser_name;</span><br><span class="line"></span><br><span class="line">　　　　&gt;INSERT语句，触发语句，返回一个值</span><br><span class="line"></span><br><span class="line">　　3、删除触发器</span><br><span class="line"></span><br><span class="line">　　　　&gt;DROP TRIGGER trig;</span><br></pre></td></tr></table></figure>
+
+<h1 id="语法整理："><a href="#语法整理：" class="headerlink" title="语法整理："></a>语法整理：</h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">　　1、<span class="keyword">ALTER</span> <span class="keyword">TABLE</span>（修改表）</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">ALTER</span> <span class="keyword">TABLE</span> table_name</span><br><span class="line"></span><br><span class="line">　　　　(　　<span class="keyword">ADD</span>　　　　<span class="keyword">column</span>　　datatype  　　[ <span class="literal">NULL</span> | <span class="keyword">NOT</span> <span class="literal">NULL</span> ]　　[ <span class="keyword">CONSTRAINTS</span> ]</span><br><span class="line"></span><br><span class="line">　　　　　　 <span class="keyword">CHANGE</span>　　<span class="keyword">column</span> 　　datatype 　　<span class="keyword">COLUMNS</span>　　[ <span class="literal">NULL</span> | <span class="keyword">NOT</span> <span class="literal">NULL</span> ]　　 [ <span class="keyword">CONSTRAINTS</span> ]</span><br><span class="line"></span><br><span class="line">　　　　　　 <span class="keyword">DROP</span>　　　 <span class="keyword">column</span>，</span><br><span class="line"></span><br><span class="line">　　　　　　　。。。。</span><br><span class="line"></span><br><span class="line">　　　　)</span><br><span class="line"></span><br><span class="line">　　<span class="number">2</span>、<span class="keyword">COMMIT</span>(处理事务)</span><br><span class="line"></span><br><span class="line">　　　　&gt;<span class="keyword">COMMIT</span>;</span><br><span class="line"></span><br><span class="line"> 　　3、<span class="keyword">CREATE</span> <span class="keyword">INDEX</span>(在一个或多个列上创建索引)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name <span class="keyword">ON</span> tb_name (<span class="keyword">column</span> [ <span class="keyword">ASC</span> | <span class="keyword">DESC</span> ] , .......);</span><br><span class="line"></span><br><span class="line"> 　　4、<span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> (创建存储过程)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> pro([ <span class="keyword">parameters</span> ])</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">BEGIN</span></span><br><span class="line"></span><br><span class="line">　　　　........</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"> 　　<span class="number">5</span>、<span class="keyword">CREATE</span> <span class="keyword">TABLE</span>(创建表)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tb_name(</span><br><span class="line"></span><br><span class="line">　　　　column_name　　datetype　　[ <span class="literal">NULL</span> | <span class="keyword">NOT</span> <span class="literal">NULL</span> ] 　　[ condtraints]   ,</span><br><span class="line"></span><br><span class="line">　　　　column_name　　datetype　　[ <span class="literal">NULL</span> | <span class="keyword">NOT</span> <span class="literal">NULL</span> ] 　　[ condtraints]   ,</span><br><span class="line"></span><br><span class="line">　　　　.......</span><br><span class="line"></span><br><span class="line">　　　　PRIMARY <span class="keyword">KEY</span>( column_name )</span><br><span class="line"></span><br><span class="line">　　　　)<span class="keyword">ENGINE</span>=[  <span class="keyword">InnoDB</span> | MyiSAM ]<span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8 AUTO_INCREMENT=<span class="number">1</span> ;</span><br><span class="line"></span><br><span class="line"> 　　6、<span class="keyword">CREATE</span> <span class="keyword">USER</span>(创建用户)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> <span class="keyword">USER</span> user_name [ @hostname ] [ <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> [ <span class="keyword">PASSWORD</span> ] <span class="string">'pass_word'</span> ];</span><br><span class="line"></span><br><span class="line"> 　　7、<span class="keyword">CREATE</span> <span class="keyword">VIEW</span> （在一个或多个表上创建视图）</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">CREATE</span> [ <span class="keyword">OR</span> <span class="keyword">REPLACE</span> ] <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> <span class="keyword">SELECT</span>。。。。。。</span><br><span class="line"></span><br><span class="line"> 　　<span class="number">8</span>、<span class="keyword">DELETE</span> (从表中删除一行或多行)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name [<span class="keyword">WHERE</span> ......]</span><br><span class="line"></span><br><span class="line"> 　　<span class="number">9</span>、<span class="keyword">DROP</span>(永久删除数据库及对象，如视图、索引等)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">DROP</span> DATEBASE | <span class="keyword">INDEX</span> | <span class="keyword">PROCEDURE</span> | <span class="keyword">TABLE</span> | <span class="keyword">TRIGGER</span> | <span class="keyword">USER</span> | <span class="keyword">VIEW</span>  <span class="keyword">name</span></span><br><span class="line"></span><br><span class="line"> 　　<span class="number">10</span>、<span class="keyword">INSERT</span> （给表添加行）</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">INSERT</span> <span class="keyword">INTO</span> tb_name [ ( <span class="keyword">columns</span>,...... ) ]  <span class="keyword">VALUES</span>(value1,............);</span><br><span class="line"></span><br><span class="line">　　　　使用<span class="keyword">SELECT</span>值插入：</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">INSERT</span> <span class="keyword">INTO</span> tb_name [ ( <span class="keyword">columns</span>,...... ) ]</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">SELECT</span> <span class="keyword">columns</span> , .......   <span class="keyword">FROM</span> tb_name [ <span class="keyword">WHERE</span> ...... ] ;</span><br><span class="line"></span><br><span class="line">　　 11、<span class="keyword">ROLLBACK</span>（撤销一个事务处理块）</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">ROLLBACK</span> [  <span class="keyword">TO</span>  savapointname  ];</span><br><span class="line"></span><br><span class="line">　　 12、<span class="keyword">SAVEPOINT</span>(为<span class="keyword">ROLLBACK</span>设置保留点)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">SAVEPOINT</span> sp1;</span><br><span class="line"></span><br><span class="line">　　 13、<span class="keyword">SELECT</span> (检索数据，显示信息)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">SELECT</span> column_name,.....FROM tb_name  [ <span class="keyword">WHERE</span> ]   [ <span class="keyword">UNION</span> ]    [ RROUP <span class="keyword">BY</span> ]   [ <span class="keyword">HAVING</span> ]   [ <span class="keyword">ORDER</span> <span class="keyword">BY</span> ]</span><br><span class="line"></span><br><span class="line"> 　　<span class="number">14</span>、<span class="keyword">START</span> <span class="keyword">TRANSACTION</span> (一个新的事务处理块的开始)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">START</span> <span class="keyword">TRANSACTION</span></span><br><span class="line"></span><br><span class="line">　　 <span class="number">15</span>、<span class="keyword">UPDATE</span>(更新一个表中的一行或多行)</span><br><span class="line"></span><br><span class="line">　　　　<span class="keyword">UPDATE</span> tb_name <span class="keyword">SET</span> <span class="keyword">column</span>=<span class="keyword">value</span>,......[ <span class="keyword">where</span> ]</span><br></pre></td></tr></table></figure>
+
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[MySQL]03 MySQL其他操作/" data-toggle="tooltip" data-placement="top" title="[MySQL]03 MySQL其他操作">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[MySQL]04 MySQL常用操作/" data-toggle="tooltip" data-placement="top" title="[MySQL]04 MySQL常用操作">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#用户管理："><span class="toc-nav-number">1.</span> <span class="toc-nav-text">用户管理：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据库操作："><span class="toc-nav-number">2.</span> <span class="toc-nav-text">数据库操作：　</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#创建表："><span class="toc-nav-number">3.</span> <span class="toc-nav-text">创建表：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建表：-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">创建表：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#复制表："><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">复制表：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建临时表："><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">创建临时表：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查看数据库中可用的表："><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">查看数据库中可用的表：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查看表的结构："><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">查看表的结构：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除表："><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">删除表：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#表重命名："><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">表重命名：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#修改表："><span class="toc-nav-number">4.</span> <span class="toc-nav-text">修改表：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#更改表结构："><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">更改表结构：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#插入数据："><span class="toc-nav-number">5.</span> <span class="toc-nav-text">插入数据：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入数据：-1"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">插入数据：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#插入检索出来的数据："><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">插入检索出来的数据：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#更新数据："><span class="toc-nav-number">6.</span> <span class="toc-nav-text">更新数据：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#指定更新数据："><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">指定更新数据：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#删除数据："><span class="toc-nav-number">7.</span> <span class="toc-nav-text">删除数据：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#条件控制："><span class="toc-nav-number">8.</span> <span class="toc-nav-text">条件控制：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MySQL的正则表达式："><span class="toc-nav-number">9.</span> <span class="toc-nav-text">MySQL的正则表达式：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MySQL的一些函数："><span class="toc-nav-number">10.</span> <span class="toc-nav-text">MySQL的一些函数：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#分组查询："><span class="toc-nav-number">11.</span> <span class="toc-nav-text">分组查询：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#UNION规则——可以执行两个语句（可以去除重复行）"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">UNION规则——可以执行两个语句（可以去除重复行）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#全文检索——MATCH和AGAINST"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">全文检索——MATCH和AGAINST</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#视图"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">视图</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用存储过程："><span class="toc-nav-number">15.</span> <span class="toc-nav-text">使用存储过程：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用游标："><span class="toc-nav-number">16.</span> <span class="toc-nav-text">使用游标：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#触发器："><span class="toc-nav-number">17.</span> <span class="toc-nav-text">触发器：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#语法整理："><span class="toc-nav-number">18.</span> <span class="toc-nav-text">语法整理：</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="XXX" target="_blank">CSDN Blog 李玉坤</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2019 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
