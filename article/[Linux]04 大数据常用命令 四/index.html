@@ -337,8 +337,9 @@ root       5291   3912  0 21:32 pts/1    00:00:00 grep --color=auto 31488
 <h2 id="Linux机制-oom-kill机制"><a href="#Linux机制-oom-kill机制" class="headerlink" title="Linux机制 oom-kill机制"></a>Linux机制 oom-kill机制</h2><p>free -m 查看机器的内存情况</p>
 <p>某个进程 memory 使用过高，机器为了保护自己，放置夯住，去杀死内存使用最多的进程。<br>比如 5806   kill</p>
 <p>kill log info 断了  cat log找error是找不到的<br>VM 2G CDH mysql+server ok 挂了 </p>
-<p>意识到:<br>以后进程挂了–》log位置–》error:<br>有error具体分析；<br>没 想到oom机制</p>
-<p>free -m<br>cat /var/log/messages | grep oom</p>
+<p>意识到:<br>以后进程挂了–》log位置–》error:<br>cat /var/log/messages | grep oom</p>
+<p>有error具体分析；<br>没 想到oom机制；</p>
+<p>free -m</p>
 <h2 id="Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件"><a href="#Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件" class="headerlink" title="Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件"></a>Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件</h2><pre><code class="bash">[root@hadoop001 tmp]<span class="comment"># cat yarn-hadoop-nodemanager.pid</span>
 7855
 [root@hadoop001 tmp]<span class="comment"># </span>
