@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop]04 分布式文件系统HDFS 四 - 李玉坤 | Blog
+          [Hadoop]05 分布式资源调度YARN 二 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]04 分布式文件系统HDFS 四/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]06 分布式资源调度YARN 二/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                             
                         </div>
-                        <h1>[Hadoop]04 分布式文件系统HDFS 四</h1>
-                        <h2 class="subheading">读写流程、错误处理机制、优缺点</h2>
+                        <h1>[Hadoop]05 分布式资源调度YARN 二</h1>
+                        <h2 class="subheading">执行流程、调度器</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-06
+                            2017-04-11
                         </span>
                     </div>
                 
@@ -212,39 +212,208 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="HDFS文件读写流程详解"><a href="#HDFS文件读写流程详解" class="headerlink" title="HDFS文件读写流程详解"></a>HDFS文件读写流程详解</h1><p><img src="%E5%9B%BE%E7%89%8720.png" alt=""><br>首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。</p>
-<h2 id="文件写流程图解"><a href="#文件写流程图解" class="headerlink" title="文件写流程图解"></a>文件写流程图解</h2><p><img src="%E5%9B%BE%E7%89%8721.png" alt=""><br><img src="%E5%9B%BE%E7%89%8722.png" alt=""><br>往HDFS中写数据的流程如下：</p>
+                <h1 id="YARN执行流程"><a href="#YARN执行流程" class="headerlink" title="YARN执行流程"></a>YARN执行流程</h1><p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<ol>
+<li>用户向yarn提交一个作业</li>
+<li>RM为该作业分配第一个container(AM)</li>
+<li>RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM</li>
+<li>AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM</li>
+<li>AM申请到资源以后，便和相应的NM通信，要求NM启动任务，任务都是以Container方式运行的。</li>
+<li>NM启动我们作业对应的task；有几个task就启动几个Container</li>
+<li>任务开始计算进入MapReduce阶段<h2 id="分步流程图"><a href="#分步流程图" class="headerlink" title="分步流程图"></a>分步流程图</h2>1、client将程序打包提交到RM运行。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>2、RM找一台空闲的机器启动一个Container，为了启动AM（一个Container启动一个AM）。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>3、Container进而启动AM，每来一个作业都会启动一个AM<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>4、AM向RM汇报已到位，开始切分任务启动多少个map和reduce所需要的资源，封装成ResourceRequest对象来提交给RM；RM获取对象后并如果资源不够不会立刻给出所有资源，因为集群是繁忙的，当前可能只有20g的空闲内存，RM会慢慢收集其他作业释放的资源，直到100G。（如何解决这个等待策略，可以通过优先级来解决）<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>5、当RM把资源分配个AM的时候，当前的AM就可以启动当前任务；联系有空闲资源的nodemanager来完成任务；把请求封装到COntainerLaunchContext对象里传递给NodeManager。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>6、NodeManager接受到请求之后就会把Container启动起来。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>7、运行当前的Task<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br>8、因为有若干个map，所以ApplicationMaster向空闲的NodeManager会继续申请资源。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>9、task里运行的map还是reduce都是由AM来指挥的。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br>10、每个task会以心跳机制来向ApplicationMaster来汇报作业当前的运行情况。有特别情况会进行重启，或者进行全部作业重启，这些都是ApplicationMaster来管理的。<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""><h2 id="Yarn各个组件之间的心跳信号"><a href="#Yarn各个组件之间的心跳信号" class="headerlink" title="Yarn各个组件之间的心跳信号"></a>Yarn各个组件之间的心跳信号</h2></li>
+</ol>
 <ul>
-<li>第1幅图：我们跟客户端说，你帮我写一个200M的数据吧，客户端说没问题啊，但是…</li>
-<li>第2幅图：客户端不知道我们对数据有没有其他的要求啊，问我们是不是忘了什么东西呢？我们想起来我们还是有要求的，第一我们要把数据分成若干块，并且每块的大小是128M，第二，每个数据块应该复制3份。其实这就是我们说的HDFS的文件分块和多副本，如果你不说的话客户端怎么知道到底怎么分，复制多少份呢？</li>
-<li>第3幅图：由上面的对话我们发现，如果对于每个文件客户端都要这么问一下，是不是太麻烦了？所以说一个好的客户端应该是，用户就算不说你也要知道有这两个属性：块的大小，一个文件应该按照怎样的大小切分（通常是64M或128M）；复制因子，每个块应该复制多少份（通常是3份），也就是说如果用户不主动提供这些属性，那么就按照默认的来。</li>
-<li>第4幅图：现在客户端已经知道了每个块的大小了，那么把200M的文件分成128M和72M两个块，一个长一个短。</li>
-<li>第5幅图：切分后客户端就开始工作了，既然有两个块，那先上传第一个块，于是客户端请求Namenode帮它写一个128M的块，并且要复制3份。</li>
-<li>第6幅图：Namenode接受到客户端的请求后，既然需要3个副本，那么就需要找到3个DataNode，Namenode就会想怎么去找到这3个DataNode呢？我该告诉客户端哪些信息呢？于是它就去它管理的DataNode中找一些满足要求的空闲节点。</li>
-<li>第7幅图：Namenode找到了3个节点，现在把找到的节点发给客户端，表示：兄弟，你不是要我帮你写数据嘛，我给你找到了这3个合适的DataNode，并且已经按距离远近给你排过序了，第一个是最近的，你把数据给他们让他们帮你写吧。</li>
-<li>第8幅图：客户端收到3个DataNode地址后，直接把数据发送到第一个节点(DataNode1)上，然后DataNode1开始把数据写到他的硬盘中。</li>
-<li>第9、10、11幅图：DataNode1在接受数据的同时，会把刚刚收到的数据发送到第二个DataNode2上，同理DataNode2也是，接收的同时把数据立马发给DataNode3，到了DataNode3已经是最后一个DataNode了。整个过程跟流水线一样，接收一点就发一点。（个人感觉跟计算机网络中令牌环网的工作原理有些类似）<br>第12幅图：Namenode是所有DataNode的老大，所以DataNode在存完数据后要跟老大汇报，告诉他说，我第一个块的数据已经写完了。</li>
-<li>第13幅图：3个DataNode都报告完成后，好，这样第一个数据块就写完了，下面对第二个块重复这个步骤。</li>
-<li>第14幅图：所有的块都写完了之后，客户端关闭跟Namenode的连接。这时Namenode已经存储了文件的元数据，也就是文件被拆成了几块，复制了几份，每块分别存储在哪个DataNode上。</li>
-<li>最后一幅图说明了每个角色在写数据过程中的作用:<br>Client：切分文件成数据块。<br>Namenode：对于每个数据块，找到存储的DataNode地址。<br>DataNode：多副本方式存储数据。</li>
+<li>Application Master与Resource Manager心跳<ul>
+<li>AM-&gt;RM<ul>
+<li>对Container的资源需求（CPU和Memory）和优先级</li>
+<li>已用完等待回收的Container列表</li>
 </ul>
-<h2 id="文件读流程图解"><a href="#文件读流程图解" class="headerlink" title="文件读流程图解"></a>文件读流程图解</h2><p><img src="%E5%9B%BE%E7%89%8723.png" alt=""></p>
+</li>
+<li>RM-&gt;AM<ul>
+<li>新申请到的Container</li>
+<li>已完成Container的状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Application Master与Node Manager心跳<ul>
+<li>AM -&gt; NM<ul>
+<li>发起启动Container请求</li>
+</ul>
+</li>
+<li>NM -&gt; AM<ul>
+<li>汇报Container状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Node Manager与Resource Manager心跳<ul>
+<li>NM-&gt;RM<ul>
+<li>Node Manager上所有的Container状态</li>
+</ul>
+</li>
+<li>RM-&gt;NM<ul>
+<li>已删除和等待清理的Container列表<h2 id="Yarn资源隔离策略"><a href="#Yarn资源隔离策略" class="headerlink" title="Yarn资源隔离策略"></a>Yarn资源隔离策略</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存资源隔离<ul>
+<li>基于线程监控方案（优点：如果瞬间超过设定上限不会立马被kill掉）</li>
+<li>基于cgroups（linux里的资源轻量级方案，如果超过上限会立马被kill掉）</li>
+</ul>
+</li>
+<li>CPU资源隔离<ul>
+<li>默认不对CPU资源进行隔离</li>
+<li>基于cgroups</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<h2 id="Yarn容错处理"><a href="#Yarn容错处理" class="headerlink" title="Yarn容错处理"></a>Yarn容错处理</h2><ul>
+<li>失败类型<ul>
+<li>程序失败 进程奔溃 硬件问题</li>
+</ul>
+</li>
+<li>如果作业失败了<ul>
+<li>作业异常均会汇报给Application Master</li>
+<li>通过心跳信号检查挂住的任务</li>
+<li>一个作业的任务失败比例超过配置，就会认为该任务失败</li>
+</ul>
+</li>
+<li>如果Application Master失败了<ul>
+<li>Resource Manager接收不到心跳信号时会重启Application Master</li>
+</ul>
+</li>
+<li>如果Node Manager失败了<ul>
+<li>Resource Manager接收不到心跳信号时会将其移出</li>
+<li>Resource Manager通知Application Master，让Application Master决定任务如何处理</li>
+<li>如果某个Node Manager失败任务次数过多，Resource Manager调度任务时不再其上面运行任务</li>
+</ul>
+</li>
+<li>如果Resource Manager运行失败<ul>
+<li>通过checkpoint机制，定时将其状态保存到磁盘，失败的时候，重新运行</li>
+<li>通过Zookeeper同步状态和实现透明的HA<h1 id="Yarn调度器和调度算法"><a href="#Yarn调度器和调度算法" class="headerlink" title="Yarn调度器和调度算法"></a>Yarn调度器和调度算法</h1></li>
+</ul>
+</li>
+<li>集群资源调度器需要解决：<ul>
+<li>多租户(Multi-tenancy)：<ul>
+<li>多用户同时提交多种应用程序</li>
+<li>资源调度器需要解决如何合理分配资源。</li>
+</ul>
+</li>
+<li>可扩展性(Scalability)：增加集群机器的数量可以提高整体集群性能。</li>
+</ul>
+</li>
+<li>Yarn使用队列解决多租户中共享资源的问题</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
 <ul>
-<li>第1幅图：写文件已经搞定了，那么怎么读文件呢？我们先跟客户端说，嘿兄弟！帮我读个文件呗！</li>
-<li>第2幅图：客户端跟Namenode发了个请求，把文件名发送给Namenode，表示我想要这个这个文件的信息。</li>
-<li>第3幅图：Namenode找了找，然后找到了一个结果，结果包含这个文件被拆成了多少块，每个块存储在哪些DataNode上的信息，并且DataNode同样是按照距离排序的。然后把这个结果发送给客户端，说，嘿兄弟！你要的文件在这些DataNode上，你去找吧。</li>
-<li>第4幅图：现在客户端知道了文件的存储情况，所以就一个个去DataNode上访问就好了。</li>
-<li>最后提出了一个问题：如果这个过程中DataNode挂了，或者数据在传输中出了问题怎么办？事实上HDFS对于这些问题都是能够完美解决的。<h1 id="HDFS错误处理机制"><a href="#HDFS错误处理机制" class="headerlink" title="HDFS错误处理机制"></a>HDFS错误处理机制</h1><img src="%E5%9B%BE%E7%89%8724.png" alt=""><br><img src="%E5%9B%BE%E7%89%8725.png" alt=""><br><img src="%E5%9B%BE%E7%89%8726.png" alt=""><h1 id="HDFS优缺点"><a href="#HDFS优缺点" class="headerlink" title="HDFS优缺点"></a>HDFS优缺点</h1>优点：</li>
-<li>数据冗余、硬件容错</li>
-<li>处理流式的数据访问</li>
-<li>适合存储大文件</li>
-<li>可构建在廉价机器上</li>
+<li>支持三种资源调度器<ul>
+<li>FIFO</li>
+<li>Capacity Scheduler</li>
+<li>Fair Scheduler<h2 id="FIFO调度器"><a href="#FIFO调度器" class="headerlink" title="FIFO调度器"></a>FIFO调度器</h2></li>
 </ul>
-<p>缺点：</p>
+</li>
+<li>所有向集群提交的作业使用一个队列</li>
+<li>根据提交作业的顺序来运行（先来先服务）</li>
+<li>优点：<ul>
+<li>简单易懂</li>
+<li>可以按照作业优先级调度</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>资源利用率不高</li>
+<li>不允许抢占<h2 id="Capacity-Scheduler资源调度器"><a href="#Capacity-Scheduler资源调度器" class="headerlink" title="Capacity Scheduler资源调度器"></a>Capacity Scheduler资源调度器</h2></li>
+</ul>
+</li>
+<li>设计思想：<ul>
+<li>资源按照比例分配给各个队列</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
 <ul>
-<li>低延迟的数据访问</li>
-<li>不适合小文件存储</li>
+<li>特点<ul>
+<li>计算能力保证<ul>
+<li>以队列为单位划分资源，每个队列最低资源保证。</li>
 </ul>
+</li>
+<li>灵活性<ul>
+<li>当某个队列空闲时，其资源可以分配给其他的队列使用。</li>
+</ul>
+</li>
+<li>支持优先级<ul>
+<li>单个队列内部使用FIFO，支持作业优先级调度</li>
+</ul>
+</li>
+<li>多租户<ul>
+<li>综合考虑多种因素防止单个作业、用户或者队列独占资源。</li>
+<li>每个队列可以配置一定比例的最低资源配置和使用上限。</li>
+<li>每个队列有严格的访问控制，只能向自己的队列提交任务。</li>
+</ul>
+</li>
+<li>基于资源的调度<ul>
+<li>支持内存资源调度和CPU资源的调度。</li>
+</ul>
+</li>
+<li>支持抢占（从2.8.0版本开始）<h3 id="Capacity-Scheduler配置"><a href="#Capacity-Scheduler配置" class="headerlink" title="Capacity Scheduler配置"></a>Capacity Scheduler配置</h3><img src="%E5%9B%BE%E7%89%8715.png" alt=""><h3 id="Capacity-Scheduler资源分配算法"><a href="#Capacity-Scheduler资源分配算法" class="headerlink" title="Capacity Scheduler资源分配算法"></a>Capacity Scheduler资源分配算法</h3></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>选择队列<br>• 从根队列开始，使用深度优先算法找出资源占用率最低的叶子队列</li>
+<li>选择作业<br>• 默认按照作业优先级和提交时间顺序选择</li>
+<li>选择Container<br>• 取该作业中最高优先级的Container，如果优先级相同会选择满足本地性的Container：Node Local &gt;Rack Local &gt; Different Rack</li>
+</ol>
+<p><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
+<h2 id="Fair-Scheduler资源调度器"><a href="#Fair-Scheduler资源调度器" class="headerlink" title="Fair Scheduler资源调度器"></a>Fair Scheduler资源调度器</h2><ul>
+<li>设计思想<ul>
+<li>资源公平分配</li>
+</ul>
+</li>
+<li>具有与Capacity Scheduler相似的特点<ul>
+<li>树状队列</li>
+<li>每个队列有独立的最小资源保证</li>
+<li>空闲时可以分配资源给其他队列使用</li>
+<li>支持内存资源调度和CPU资源调度</li>
+<li>支持抢占</li>
+</ul>
+</li>
+<li>不同点<ul>
+<li>核心调度策略不同<ul>
+<li>Capacity Scheduler优先选择资源利用率低的队列</li>
+<li>公平调度器考虑的是公平，公平体现在作业对资源的缺额</li>
+</ul>
+</li>
+<li>单独设置队列间资源分配方式<ul>
+<li>FAIR（默认used memory/min share）</li>
+<li>DRF（主资源公平调度）</li>
+</ul>
+</li>
+<li>单独设置队列内部资源分配方式<ul>
+<li>FAIR DRF FIFO<h3 id="Fair-Scheduler-FAIR资源分配算法"><a href="#Fair-Scheduler-FAIR资源分配算法" class="headerlink" title="Fair Scheduler - FAIR资源分配算法"></a>Fair Scheduler - FAIR资源分配算法</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>总体流程与Capacity Scheduler一致<ul>
+<li>1.选择队列</li>
+<li>2.选择作业</li>
+<li>3.选择Container</li>
+</ul>
+</li>
+<li>选择选择队列和作业使用公平排序算法<ul>
+<li>实际最小份额<br>minShare = Min(资源需求量，配置minShare）</li>
+<li>是否饥饿<br>isNeedy = 资源使用量&lt; minShare</li>
+<li>资源分配比<br>minShareRatio = 资源使用量/Max(minShare, 1)</li>
+<li>资源使用权重比<br>useToWeightRatio = 资源使用量/权重<br>权重在配置文件中配置</li>
+</ul>
+</li>
+<li>参考 FairShareComparator实现类</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8717.png" alt=""></p>
+<h2 id="Capacity-Scheduler和Fair-Scheduler对比"><a href="#Capacity-Scheduler和Fair-Scheduler对比" class="headerlink" title="Capacity Scheduler和Fair Scheduler对比"></a>Capacity Scheduler和Fair Scheduler对比</h2><p><img src="%E5%9B%BE%E7%89%8718.png" alt=""></p>
 
                 
 
@@ -253,12 +422,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop]05 分布式资源调度YARN 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]05 分布式资源调度YARN 一">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop]06 分布式资源调度YARN 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]06 分布式资源调度YARN 三">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]03 分布式文件系统HDFS 三">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]05 分布式资源调度YARN 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]05 分布式资源调度YARN 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -308,7 +477,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS文件读写流程详解"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS文件读写流程详解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件写流程图解"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件写流程图解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件读流程图解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">文件读流程图解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS错误处理机制"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS错误处理机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS优缺点"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS优缺点</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN执行流程"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分步流程图"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">分步流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn各个组件之间的心跳信号"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Yarn各个组件之间的心跳信号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn资源隔离策略"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Yarn资源隔离策略</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn容错处理"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Yarn容错处理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn调度器和调度算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Yarn调度器和调度算法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#FIFO调度器"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">FIFO调度器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Capacity-Scheduler资源调度器"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Capacity Scheduler资源调度器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Capacity-Scheduler配置"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">Capacity Scheduler配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Capacity-Scheduler资源分配算法"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Capacity Scheduler资源分配算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Fair-Scheduler资源调度器"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Fair Scheduler资源调度器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Fair-Scheduler-FAIR资源分配算法"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">Fair Scheduler - FAIR资源分配算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Capacity-Scheduler和Fair-Scheduler对比"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Capacity Scheduler和Fair Scheduler对比</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -328,7 +497,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                         
                     </div>
                 </section>

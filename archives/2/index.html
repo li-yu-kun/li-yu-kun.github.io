@@ -211,6 +211,107 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Hadoop]06 分布式资源调度YARN 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]05 分布式资源调度YARN 二
+        </h2>
+        <h3 class="post-subtitle">
+            执行流程、调度器
+        </h3>
+        <div class="post-content-preview">
+            YARN执行流程
+
+用户向yarn提交一个作业
+RM为该作业分配第一个container(AM)
+RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
+AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM
+AM申请到资......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-11
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]05 分布式资源调度YARN 一/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]05 分布式资源调度YARN 一
+        </h2>
+        <h3 class="post-subtitle">
+            产生背景、架构、思想
+        </h3>
+        <div class="post-content-preview">
+            YARN产生背景
+MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
+
+
+单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
+节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]04 分布式文件系统HDFS 四
+        </h2>
+        <h3 class="post-subtitle">
+            读写流程、错误处理机制、优缺点
+        </h3>
+        <div class="post-content-preview">
+            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
+文件写流程图解往HDFS中写数据的流程如下：
+
+第1幅图：我们跟客户端说，你帮我......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/">
         <h2 class="post-title">
                                  
@@ -426,102 +527,6 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[MySQL]02 MySQL语法/">
-        <h2 class="post-title">
-                                 
-            [MySQL]02 MySQL语法
-        </h2>
-        <h3 class="post-subtitle">
-            MySQL常用操作
-        </h3>
-        <div class="post-content-preview">
-            用户管理：12345678910111213141516　　1、新建用户：　　　　&gt;CREATE USER name IDENTIFIED BY 'ssapdrow';　　2、更改密码：　　　　&gt;SET PASSWORD FOR name=PASSWORD('fdddfd');　　3、权限管理　　　　&gt;SHOW GRANTS FOR name;    //查看name用户权......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]01 MySQL5.6.23安装部署/">
-        <h2 class="post-title">
-                                 
-            [MySQL]01 MySQL5.6.23安装部署
-        </h2>
-        <h3 class="post-subtitle">
-            MySQL5.6.23安装部署
-        </h3>
-        <div class="post-content-preview">
-            参考博客https://github.com/Hackeruncle/mysql  
-https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
-首先检查事先有没有安装MySQL 如有安装清除掉旧版本
-123[root@hadoop03 ~]# ps -ef|grep mysqldroot    ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Linux]04 大数据常用命令 四/">
-        <h2 class="post-title">
-                                 
-            [Linux]04 大数据常用命令 四
-        </h2>
-        <h3 class="post-subtitle">
-            调度|执行|软连接
-        </h3>
-        <div class="post-content-preview">
-            调度工具crontab比如一个可执行文件test.sh文件内容
-123#!/bin/bash （解释器）date
-执行这个shell脚本需要x执行权限执行命令
-12./test.shsh ./test.sh
-
-后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
-12[root@hadoop ~]# crontab -l* * * * * /root/te......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -568,6 +573,10 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
         
             
             <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            
+        
+            
+            <a href="/tags/#YARN" title="YARN" rel="3">YARN</a>
             
         
             
@@ -678,7 +687,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>

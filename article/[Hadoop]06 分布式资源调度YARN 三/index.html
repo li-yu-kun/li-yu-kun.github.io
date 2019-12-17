@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop]04 分布式文件系统HDFS 四 - 李玉坤 | Blog
+          [Hadoop]06 分布式资源调度YARN 三 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]04 分布式文件系统HDFS 四/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]06 分布式资源调度YARN 三/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                             
                         </div>
-                        <h1>[Hadoop]04 分布式文件系统HDFS 四</h1>
-                        <h2 class="subheading">读写流程、错误处理机制、优缺点</h2>
+                        <h1>[Hadoop]06 分布式资源调度YARN 三</h1>
+                        <h2 class="subheading">环境搭建、作业执行</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-06
+                            2017-04-13
                         </span>
                     </div>
                 
@@ -212,39 +212,46 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="HDFS文件读写流程详解"><a href="#HDFS文件读写流程详解" class="headerlink" title="HDFS文件读写流程详解"></a>HDFS文件读写流程详解</h1><p><img src="%E5%9B%BE%E7%89%8720.png" alt=""><br>首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。</p>
-<h2 id="文件写流程图解"><a href="#文件写流程图解" class="headerlink" title="文件写流程图解"></a>文件写流程图解</h2><p><img src="%E5%9B%BE%E7%89%8721.png" alt=""><br><img src="%E5%9B%BE%E7%89%8722.png" alt=""><br>往HDFS中写数据的流程如下：</p>
-<ul>
-<li>第1幅图：我们跟客户端说，你帮我写一个200M的数据吧，客户端说没问题啊，但是…</li>
-<li>第2幅图：客户端不知道我们对数据有没有其他的要求啊，问我们是不是忘了什么东西呢？我们想起来我们还是有要求的，第一我们要把数据分成若干块，并且每块的大小是128M，第二，每个数据块应该复制3份。其实这就是我们说的HDFS的文件分块和多副本，如果你不说的话客户端怎么知道到底怎么分，复制多少份呢？</li>
-<li>第3幅图：由上面的对话我们发现，如果对于每个文件客户端都要这么问一下，是不是太麻烦了？所以说一个好的客户端应该是，用户就算不说你也要知道有这两个属性：块的大小，一个文件应该按照怎样的大小切分（通常是64M或128M）；复制因子，每个块应该复制多少份（通常是3份），也就是说如果用户不主动提供这些属性，那么就按照默认的来。</li>
-<li>第4幅图：现在客户端已经知道了每个块的大小了，那么把200M的文件分成128M和72M两个块，一个长一个短。</li>
-<li>第5幅图：切分后客户端就开始工作了，既然有两个块，那先上传第一个块，于是客户端请求Namenode帮它写一个128M的块，并且要复制3份。</li>
-<li>第6幅图：Namenode接受到客户端的请求后，既然需要3个副本，那么就需要找到3个DataNode，Namenode就会想怎么去找到这3个DataNode呢？我该告诉客户端哪些信息呢？于是它就去它管理的DataNode中找一些满足要求的空闲节点。</li>
-<li>第7幅图：Namenode找到了3个节点，现在把找到的节点发给客户端，表示：兄弟，你不是要我帮你写数据嘛，我给你找到了这3个合适的DataNode，并且已经按距离远近给你排过序了，第一个是最近的，你把数据给他们让他们帮你写吧。</li>
-<li>第8幅图：客户端收到3个DataNode地址后，直接把数据发送到第一个节点(DataNode1)上，然后DataNode1开始把数据写到他的硬盘中。</li>
-<li>第9、10、11幅图：DataNode1在接受数据的同时，会把刚刚收到的数据发送到第二个DataNode2上，同理DataNode2也是，接收的同时把数据立马发给DataNode3，到了DataNode3已经是最后一个DataNode了。整个过程跟流水线一样，接收一点就发一点。（个人感觉跟计算机网络中令牌环网的工作原理有些类似）<br>第12幅图：Namenode是所有DataNode的老大，所以DataNode在存完数据后要跟老大汇报，告诉他说，我第一个块的数据已经写完了。</li>
-<li>第13幅图：3个DataNode都报告完成后，好，这样第一个数据块就写完了，下面对第二个块重复这个步骤。</li>
-<li>第14幅图：所有的块都写完了之后，客户端关闭跟Namenode的连接。这时Namenode已经存储了文件的元数据，也就是文件被拆成了几块，复制了几份，每块分别存储在哪个DataNode上。</li>
-<li>最后一幅图说明了每个角色在写数据过程中的作用:<br>Client：切分文件成数据块。<br>Namenode：对于每个数据块，找到存储的DataNode地址。<br>DataNode：多副本方式存储数据。</li>
+                <h1 id="YARN环境搭建"><a href="#YARN环境搭建" class="headerlink" title="YARN环境搭建"></a>YARN环境搭建</h1><p>YARN环境搭建</p>
+<ol>
+<li><p>mapred-site.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>yarn-site.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>启动YARN相关的进程<br>sbin/start-yarn.sh</p>
+</li>
+<li><p>验证<br> jps<br> 　ResourceManager<br> 　NodeManager<br> 或者浏览器：<br> 　<a href="http://hadoop000:8088" target="_blank" rel="noopener">http://hadoop000:8088</a></p>
+</li>
+</ol>
+<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>5. 停止YARN相关的进程<br>    sbin/stop-yarn.sh</p>
+<h1 id="Yarn常用命令介绍"><a href="#Yarn常用命令介绍" class="headerlink" title="Yarn常用命令介绍"></a>Yarn常用命令介绍</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">• yarn application</span><br><span class="line">	• 列出所有Application</span><br><span class="line">		yarn application -list</span><br><span class="line">	• 根据Application状态过滤</span><br><span class="line">		yarn application -list -appStatus ACCEPTED</span><br><span class="line">	• Kill掉Application</span><br><span class="line">		yarn application -kill &lt;ApplicationId&gt;</span><br><span class="line">• yarn logs</span><br><span class="line">	• 查询Application日志</span><br><span class="line">		yarn logs -applicationId &lt;ApplicationId&gt;</span><br><span class="line">	• 查询Container日志</span><br><span class="line">		yarn logs -applicationId &lt;ApplicationId&gt; \</span><br><span class="line">			-containerId &lt;ContainerId&gt; \</span><br><span class="line">			-nodeAddress &lt;NodeAddress&gt;</span><br><span class="line">		端口是配置文件中yarn.nodemanager.webapp.address参数指定</span><br><span class="line">• yarn applicationattempt</span><br><span class="line">	• 列出所有Application尝试的列表</span><br><span class="line">		yarn applicationattempt -list &lt;ApplicationId&gt;</span><br><span class="line">	• 打印ApplicationAttemp状态</span><br><span class="line">		yarn applicationattempt -status &lt;ApplicationAttemptId&gt;</span><br><span class="line">• yarn container</span><br><span class="line">	• 列出所有Container</span><br><span class="line">		yarn container -list &lt;ApplicationAttemptId&gt;</span><br><span class="line">	• 打印Container状态</span><br><span class="line">		yarn container -status &lt;ContainerId&gt;</span><br><span class="line">• yarn node</span><br><span class="line">	• 列出所有节点</span><br><span class="line">		yarn node -list -all</span><br><span class="line">• yarn rmadmin</span><br><span class="line">	• 加载队列配置</span><br><span class="line">		yarn rmadmin –refreshQueues</span><br><span class="line">• yarn queue</span><br><span class="line">	• 打印队列信息</span><br><span class="line">		yarn queue -status &lt;QueueName&gt;</span><br><span class="line">• yarn classpath</span><br><span class="line">	• 打印Hadoop Jar包路径</span><br></pre></td></tr></table></figure>
+<h1 id="提交作业到YARN上执行"><a href="#提交作业到YARN上执行" class="headerlink" title="提交作业到YARN上执行"></a>提交作业到YARN上执行</h1><p>提交mr作业到YARN上运行：<br>下列目录是Hadoop源码中的example</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/hadoop/app/hadoop-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以这个命令进行提交作业</span></span><br><span class="line">hadoop jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//pi 2 3 为参数  </span></span><br><span class="line">hadoop jar hadoop-mapreduce-examples-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>.jar pi <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当我们再次执行该作业时，会报错：<br>FileAlreadyExistsException:<br>Output directory hdfs://hadoop001:8020/output/wc already exists</p>
+<h1 id="常见基于Yarn的计算框架"><a href="#常见基于Yarn的计算框架" class="headerlink" title="常见基于Yarn的计算框架"></a>常见基于Yarn的计算框架</h1><h2 id="MapReduce-On-Yarn"><a href="#MapReduce-On-Yarn" class="headerlink" title="MapReduce On Yarn"></a>MapReduce On Yarn</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><ul>
+<li>基于内存的大数据计算引擎</li>
+<li>MapReduce不适合的计算场景：<ul>
+<li>迭代式作业<ul>
+<li>机器学习，图算法需要迭代运行Mapper和Reducer多次</li>
 </ul>
-<h2 id="文件读流程图解"><a href="#文件读流程图解" class="headerlink" title="文件读流程图解"></a>文件读流程图解</h2><p><img src="%E5%9B%BE%E7%89%8723.png" alt=""></p>
-<ul>
-<li>第1幅图：写文件已经搞定了，那么怎么读文件呢？我们先跟客户端说，嘿兄弟！帮我读个文件呗！</li>
-<li>第2幅图：客户端跟Namenode发了个请求，把文件名发送给Namenode，表示我想要这个这个文件的信息。</li>
-<li>第3幅图：Namenode找了找，然后找到了一个结果，结果包含这个文件被拆成了多少块，每个块存储在哪些DataNode上的信息，并且DataNode同样是按照距离排序的。然后把这个结果发送给客户端，说，嘿兄弟！你要的文件在这些DataNode上，你去找吧。</li>
-<li>第4幅图：现在客户端知道了文件的存储情况，所以就一个个去DataNode上访问就好了。</li>
-<li>最后提出了一个问题：如果这个过程中DataNode挂了，或者数据在传输中出了问题怎么办？事实上HDFS对于这些问题都是能够完美解决的。<h1 id="HDFS错误处理机制"><a href="#HDFS错误处理机制" class="headerlink" title="HDFS错误处理机制"></a>HDFS错误处理机制</h1><img src="%E5%9B%BE%E7%89%8724.png" alt=""><br><img src="%E5%9B%BE%E7%89%8725.png" alt=""><br><img src="%E5%9B%BE%E7%89%8726.png" alt=""><h1 id="HDFS优缺点"><a href="#HDFS优缺点" class="headerlink" title="HDFS优缺点"></a>HDFS优缺点</h1>优点：</li>
-<li>数据冗余、硬件容错</li>
-<li>处理流式的数据访问</li>
-<li>适合存储大文件</li>
-<li>可构建在廉价机器上</li>
+</li>
+<li>交互式作业<ul>
+<li>交互式数据分析，尤其是涉及到机器学习算法</li>
 </ul>
-<p>缺点：</p>
-<ul>
-<li>低延迟的数据访问</li>
-<li>不适合小文件存储</li>
+</li>
+<li>流式作业<ul>
+<li>无穷无尽的流式数据，需要不断的对数据进行聚合计算</li>
 </ul>
+</li>
+</ul>
+</li>
+<li>Spark提供了一种新的数据抽象RDD弹性分布式数据集，可以将数据存储在内存中，而不是存储到HDFS上，使得快速迭代计算成为可能。</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<h2 id="Spark-On-Yarn"><a href="#Spark-On-Yarn" class="headerlink" title="Spark On Yarn"></a>Spark On Yarn</h2><p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
 
                 
 
@@ -253,12 +260,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop]05 分布式资源调度YARN 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]05 分布式资源调度YARN 一">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]03 分布式文件系统HDFS 三">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]06 分布式资源调度YARN 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]05 分布式资源调度YARN 二">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -308,7 +315,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS文件读写流程详解"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS文件读写流程详解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件写流程图解"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件写流程图解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件读流程图解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">文件读流程图解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS错误处理机制"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS错误处理机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS优缺点"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS优缺点</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN环境搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn常用命令介绍"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Yarn常用命令介绍</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#提交作业到YARN上执行"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">提交作业到YARN上执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#常见基于Yarn的计算框架"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">常见基于Yarn的计算框架</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-On-Yarn"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">MapReduce On Yarn</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">Spark</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-On-Yarn"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">Spark On Yarn</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -328,7 +335,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                         
                     </div>
                 </section>
