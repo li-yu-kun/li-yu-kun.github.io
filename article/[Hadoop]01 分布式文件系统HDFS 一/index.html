@@ -92,7 +92,7 @@
                             
                         </div>
                         <h1>[Hadoop]01 分布式文件系统HDFS 一</h1>
-                        <h2 class="subheading">基本知识点</h2>
+                        <h2 class="subheading">概述设计、各组件工作原理、副本机制、安全模式</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
                             2017-04-03
@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -244,14 +244,30 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">一个文件有多少个块：文件大小/块的大小</span><br><span class="line">   950m的文件，100m的块大小</span><br><span class="line">   总共块的个数：10</span><br><span class="line">   最后一个块的占用空间：50m，其他占用的空间为100m</span><br><span class="line"></span><br><span class="line">快的大小在创建文件的时候可以指定，不指定则使用系统默认的设置，在Hadoop2.x里一个块对应的磁盘上的空间：128m</span><br></pre></td></tr></table></figure>
 
-<h2 id="数据读写过程"><a href="#数据读写过程" class="headerlink" title="数据读写过程"></a>数据读写过程</h2><ol>
-<li>创建一个文件。</li>
-<li>检查是否可以创建文件。</li>
+<h2 id="数据读写过程"><a href="#数据读写过程" class="headerlink" title="数据读写过程"></a>数据读写过程</h2><h3 id="文件写流程"><a href="#文件写流程" class="headerlink" title="文件写流程"></a>文件写流程</h3><p>hadoop fs -put xxx.log /<br>无感知<br>FSDataOutputStream<br><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<ul>
+<li>Client调用FileSystem.create(filePath)方法，<br>与NN进行【rpc】通信，check是否存在及是否有权限创建；<br>假如不ok，就返回错误信息；<br>假如ok，就创建一个新文件，不关联任何的block块，返回<br>一个FSDataOutputStream对象；</li>
+<li>Client调用FSDataOutputStream对象的write()方法，<br>先将第一块的第一个副本写到第一个DN，第一个副本写完；<br>就传输给第二个DN，第二个副本写完；<br>就传输给第三个DN，第三个副本写完。</li>
+<li>就返回一个ack packet确认包给第二个DN，第二个DN接收到<br>第三个的ack  packet确认包加上自身ok，就返回一个ack  packet确认包<br>给第一个DN，第一个DN接收到<br>第二个DN的ack  packet确认包加上自身ok，就返回ack  packet确认包<br>给FSDataOutputStream对象，标志第一个块 3个副本写完。</li>
+<li>然后余下的块依次这样写；</li>
+<li>当向文件写入数据完成后，<br>Client调用FSDataOutputStream.close()方法，关闭输出流。</li>
+<li>再调用FileSystem.complete()方法，告诉NN该文件写入成功。</li>
+</ul>
+<p>补充：</p>
+<ul>
 <li>切分block（可以指定两个参数；不知道则使用默认）；然后给block分配写入的datanode。</li>
-<li>返回写入datanode的队列。</li>
 <li>以pipeline方式写入；以packet(里面还有chunk数据单元（chunk里又check sum）)形式写入；ack机制往上一层一层汇报写完一个chunk（以chunk为单元进行校验）。</li>
-</ol>
-<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+</ul>
+<h3 id="文件读流程"><a href="#文件读流程" class="headerlink" title="文件读流程"></a>文件读流程</h3><p><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<ul>
+<li><p>Client调用FileSystem.open(filePath)方法，<br>与NN进行【rpc】通信，<br>返回该文件的部分或者全部的block列表，<br>也就是返回FSDataInputStream对象。</p>
+</li>
+<li><p>Client调用FSDataInputStream对象read()方法；<br>a.与第一个块最近的DN进行read,读取完成后，会check；<br>假如ok，就关闭与当前DN的通信；假如失败，会记录<br>失败块+DN信息，下次不会再读取；那么会去该块的<br>第二个DN地址读取。<br>b.然后去第二个块的最近的DN上通信读取，check后，关闭通信。<br>c.假如block列表读取完成后，文件还未结束，<br>就再次FileSystem会从NN获取该文件的下一批次的block列表。<br>(感觉就是连续的数据流，对于客户端操作是透明无感知的)</p>
+</li>
+<li><p>Client调用FSDataInputStream.close()方法，关闭输入流。</p>
+</li>
+</ul>
+<p><strong>总体流程图</strong><br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
 <h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="%E5%9B%BE%E7%89%8711.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>HDFS有主从架构。HDFS集群由一个NameNode组成，它是一个主服务器，管理文件系统名称空间并管理客户机对文件的访问。此外，还有许多datanode，通常每个节点一个，管理连接到它们运行的节点的存储。HDFS公开一个文件系统名称空间，并允许用户数据存储在文件中。在内部，文件被分割成一个或多个块，这些块存储在一组数据节点（datanode）中。NameNode执行文件系统操作，如打开、关闭和重命名文件和目录。它还确定块到datanode的映射。datanode负责服务来自文件系统客户端的读写请求。根据NameNode的指令，datanode还执行块的创建、删除和复制。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>上图中</p>
 <ul>
 <li>1 个Master(NameNode/NN)  带 N个Slaves(DataNode/DN)<br>HDFS/YARN/HBase其实都是一样的</li>
@@ -267,16 +283,14 @@
 <li><p>a.每隔3s发送心跳包给 nn，我还活者<br>  dfs.heartbeat.interval 3</p>
 </li>
 <li><p>b.每隔一定的时间发生一次 blockreport<br>  dfs.blockreport.intervalMsec  21600000ms=6h<br>  dfs.datanode.directoryscan.interval 21600s=6h</p>
+</li>
+</ul>
 <h2 id="namenode深入"><a href="#namenode深入" class="headerlink" title="namenode深入"></a>namenode深入</h2><p>作用：</p>
-</li>
-<li><p>Namespace管理：负责管理文件系统中的树状目录结构以及文件与数据块的映射关系</p>
-</li>
-<li><p>块信息管理：负责管理文件系统中文件的物理块与实际存储位置的映射关系BlocksMap</p>
-</li>
-<li><p>集群信息管理：机架信息，datanode信息</p>
-</li>
-<li><p>集中式缓存管理：从Hadoop2.3 开始，支持datanode将文件缓存到内存中，这部分缓存通过NN集中管理</p>
-</li>
+<ul>
+<li>Namespace管理：负责管理文件系统中的树状目录结构以及文件与数据块的映射关系</li>
+<li>块信息管理：负责管理文件系统中文件的物理块与实际存储位置的映射关系BlocksMap</li>
+<li>集群信息管理：机架信息，datanode信息</li>
+<li>集中式缓存管理：从Hadoop2.3 开始，支持datanode将文件缓存到内存中，这部分缓存通过NN集中管理</li>
 </ul>
 <p>存储结构：</p>
 <ul>
@@ -297,7 +311,7 @@
 <li>退出安全模式</li>
 </ol>
 <ul>
-<li>安全模式：文件系统只接受读数据请求，而不接受删除、修改等变更请求</li>
+<li>安全模式（safe mode）：文件系统只接受读数据请求，而不接受删除、修改等变更请求</li>
 <li>什么情况下进入：NameNode主节点启动时，HDFS进入安全模式</li>
 <li>什么时候时候退出：系统达到安全标准时，HDFS退出安全模式</li>
 <li>dfs.namenode.safemode.min.datanodes: 最小可用datanode数量</li>
@@ -338,7 +352,7 @@
 <p>应用程序可以指定文件的副本数量。副本因子可以在文件创建时指定，以后可以更改。HDFS中的文件只写一次(除了追加和截断之外)，<strong>并且在任何时候都有一个写入者</strong>。</p>
 <p>NameNode就块的复制做出所有决定。它定期从集群中的每个datanode接收心跳和数据块报告。接收到心跳表示DataNode正常工作。块报表包含datanode上所有块的列表。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>上图代表数据中心，两个机架，黄色代表客户端所在的节点（默认三个副本）</p>
 <blockquote>
-<p>第一个副本存放在同client的节点上面；<br>第二个副本存放在不同第一个副本机架的随意一个节点；<br>第三个副本存放在与第二个副本相同机架的另一个节点上；<br> 如果只有一个机架，则在不同节点存储；如果高于三个副本则高于三的随意挑选机架和节点。</p>
+<p>第一个副本存放在同client的节点上面；client不是DN，就随机挑选一台磁盘不太慢  CPU不太繁忙的节点；<br>第二个副本存放在不同第一个副本机架的随意一个节点；<br>第三个副本存放在与第二个副本相同机架的另一个节点上；<br> 如果只有一个机架，则在不同节点存储；如果高于三个副本则高于三的随意挑选机架和节点。</p>
 </blockquote>
 
                 
@@ -353,7 +367,7 @@
                     
                     
                         <li class="next">
-                            <a href="/article/初识Hadoop/" data-toggle="tooltip" data-placement="top" title="初识Hadoop">Next Post &rarr;</a>
+                            <a href="/article/大数据概述/" data-toggle="tooltip" data-placement="top" title="大数据概述">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -403,7 +417,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS概述及设计目标"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS概述及设计目标</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HDFS"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS前提和设计目标"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HDFS前提和设计目标</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-构成及工作原理解析"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS 构成及工作原理解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本构成"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">基本构成</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据读写过程"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">数据读写过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集群架构"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">集群架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#datanode深入"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">datanode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#namenode深入"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">namenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SecondaryNamenode深入"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">SecondaryNamenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS-HA"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">HDFS HA</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-列式与行式存储"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">HDFS文件类型-列式与行式存储</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-常用文件类型"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">HDFS文件类型-常用文件类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-如何使用？"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">HDFS文件类型-如何使用？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS副本机制"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS副本机制</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS概述及设计目标"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS概述及设计目标</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HDFS"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS前提和设计目标"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HDFS前提和设计目标</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-构成及工作原理解析"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS 构成及工作原理解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本构成"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">基本构成</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据读写过程"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">数据读写过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#文件写流程"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">文件写流程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#文件读流程"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">文件读流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集群架构"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">集群架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#datanode深入"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">datanode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#namenode深入"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">namenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SecondaryNamenode深入"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">SecondaryNamenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS-HA"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">HDFS HA</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-列式与行式存储"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">HDFS文件类型-列式与行式存储</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-常用文件类型"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">HDFS文件类型-常用文件类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-如何使用？"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">HDFS文件类型-如何使用？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS副本机制"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS副本机制</span></a></li></ol>
         
         </div>
       </aside>

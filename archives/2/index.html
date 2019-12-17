@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -286,7 +286,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
             [Hadoop]04 分布式文件系统HDFS 四
         </h2>
         <h3 class="post-subtitle">
-            读写流程、错误处理机制、优缺点
+            读写流程详解、错误处理机制、优缺点
         </h3>
         <div class="post-content-preview">
             HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
@@ -322,7 +322,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
         </h3>
         <div class="post-content-preview">
             HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
-Is1234[root@hadoop data]# hdfs dfs -ls /18/11/09 21:40......
+12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
         </div>
     </a>
     
@@ -378,7 +378,7 @@ Is1234[root@hadoop data]# hdfs dfs -ls /18/11/09 21:40......
             [Hadoop]01 分布式文件系统HDFS 一
         </h2>
         <h3 class="post-subtitle">
-            基本知识点
+            概述设计、各组件工作原理、副本机制、安全模式
         </h3>
         <div class="post-content-preview">
             HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
@@ -408,17 +408,18 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/初识Hadoop/">
+    <a href="/article/大数据概述/">
         <h2 class="post-title">
                                  
-            初识Hadoop
+            大数据概述
         </h2>
         <h3 class="post-subtitle">
-            初识Hadoop
+            大数据概述
         </h3>
         <div class="post-content-preview">
-            学习建议官网地址： https://hadoop.apache.org 
-Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名看下图：Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的......
+            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
+大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
+大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
         </div>
     </a>
     
@@ -438,18 +439,17 @@ Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子�
 
 <div class="post-preview">
 
-    <a href="/article/大数据概述/">
+    <a href="/article/初识Hadoop/">
         <h2 class="post-title">
                                  
-            大数据概述
+            初识Hadoop
         </h2>
         <h3 class="post-subtitle">
-            大数据概述
+            初识Hadoop
         </h3>
         <div class="post-content-preview">
-            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
-大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
-大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
+            学习建议官网地址： https://hadoop.apache.org 
+Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名看下图：Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的......
         </div>
     </a>
     

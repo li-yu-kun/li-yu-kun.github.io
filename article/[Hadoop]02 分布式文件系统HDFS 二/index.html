@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -225,7 +225,7 @@ export PATH=\$JAVA_HOME/bin:$PATH</code></pre><p> 使得环境变量生效： so
 <li><p>下载并解压hadoop<br> 下载：直接去cdh网站下载<br> 解压：tar -zxvf hadoop-2.6.0-cdh5.7.0.tar.gz -C ~/app</p>
 </li>
 <li><p>hadoop配置文件的修改(hadoop_home/etc/hadoop)<br> <strong>hadoop-env.sh</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> mkdir /home/hadoop/tmp</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> chmod -R 777 /home/hadoop/tmp</span></span><br><span class="line">export HADOOP_PID_DIR=/home/hadoop/tmp</span><br></pre></td></tr></table></figure></li>
 </ol>
 <p><strong>core-site.xml</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hdfs://hadoop000:8020&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/home/hadoop/app/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
