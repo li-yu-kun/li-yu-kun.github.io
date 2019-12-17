@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]05 五、kettle应用控件 - 李玉坤 | Blog
+          初识Hadoop - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]05 五、kettle应用控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/初识Hadoop/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                              <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
                             
                         </div>
-                        <h1>[Kettle]05 五、kettle应用控件</h1>
-                        <h2 class="subheading">kettle应用控件</h2>
+                        <h1>初识Hadoop</h1>
+                        <h2 class="subheading">初识Hadoop</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-11-30
+                            2017-04-02
                         </span>
                     </div>
                 
@@ -212,13 +212,49 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>应用是<strong>转换</strong>里面的第五个分类。</p>
-<p>应用都是一些工具类。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="替换NULL值"><a href="#替换NULL值" class="headerlink" title="替换NULL值"></a>替换NULL值</h1><p>替换NULL值就是把null转换为其它的值。</p>
-<p>NULL值不好进行数据分析<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
-<h1 id="写日志"><a href="#写日志" class="headerlink" title="写日志"></a>写日志</h1><p>写日志主要是在<strong>调试</strong>的时候使用，把日志信息打印到日志窗口。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
-<h1 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h1><p>发送邮件就是执行成功、失败、其它某种情景给相关人员发送邮件。</p>
-<p>注意：<br>只有<strong>企业邮箱才可以</strong>！个人邮箱不行！<br>并且需要在邮件设置中<strong>开通客户端授权码</strong>！<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+                <p>学习建议官网地址： <a href="https://hadoop.apache.org" target="_blank" rel="noopener">https://hadoop.apache.org</a> </p>
+<h1 id="Hadoop概述"><a href="#Hadoop概述" class="headerlink" title="Hadoop概述"></a>Hadoop概述</h1><p>Hadoop概述之Hadoop名字的由来；<br>Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名<br>看下图：<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的设计目的不是依赖硬件来提供高可用性，而是检测和处理应用层上的故障，因此在一组计算机上提供高可用性的服务，而每组计算机都可能出现故障。主要包括Hadoop Distributed File System (HDFS™)、Hadoop YARN、Hadoop MapReduce。</p>
+<h2 id="Hadoop能做什么"><a href="#Hadoop能做什么" class="headerlink" title="Hadoop能做什么"></a>Hadoop能做什么</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>Hadoop主要做以下工作：商业智能、搜索引擎、日志分析、数据挖掘<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h1 id="Hadoop核心组件"><a href="#Hadoop核心组件" class="headerlink" title="Hadoop核心组件"></a>Hadoop核心组件</h1><h2 id="分布式文件系统HDFS"><a href="#分布式文件系统HDFS" class="headerlink" title="分布式文件系统HDFS"></a>分布式文件系统HDFS</h2><ul>
+<li>源自FGoogle的GFS论X,论发表于2003年10月</li>
+<li>HDFS 是GFS的克隆版</li>
+<li>HDFS特点:扩展性&amp;容错性&amp;海量数量存储</li>
+<li>将文件切分成指定大小的数据块并以多副本的存储在多个机器上</li>
+<li>数据切分、多副本、容错等操作对用户是透明</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+<h2 id="分布式文件系统HDDS"><a href="#分布式文件系统HDDS" class="headerlink" title="分布式文件系统HDDS"></a>分布式文件系统HDDS</h2><p>Hadoop3.1开始的一个新模块 <a href="https://hadoop.apache.org/ozone/" target="_blank" rel="noopener">https://hadoop.apache.org/ozone/</a><br>Hadoop Ozone: An object store for Hadoop.</p>
+<ul>
+<li>可扩展<br>Ozone旨在扩展到数百亿个文件和块，并在未来甚至更多。<br>小文件或大量数据节点不再是限制。</li>
+<li>一致性<br>存储层使用RAFT协议来保持一致性。</li>
+<li>云本土<br>Hadoop Ozone设计用于YARN和Kubernetes等集装箱化环境。<h2 id="资源调度系统YARN"><a href="#资源调度系统YARN" class="headerlink" title="资源调度系统YARN"></a>资源调度系统YARN</h2></li>
+<li>YARN: Yet Another Resource Negotiator</li>
+<li>负责整个集群资源的管理和调度</li>
+<li>YARN特点:扩展性&amp;容错性&amp;<strong>多框架资源统一调度</strong></li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<h2 id="分布式计算框架MapReduce"><a href="#分布式计算框架MapReduce" class="headerlink" title="分布式计算框架MapReduce"></a>分布式计算框架MapReduce</h2><ul>
+<li>源自于Google的MapReduce论X,iX 2004年12月</li>
+<li>MapReduce是Google MapReduce的克隆版</li>
+<li>MapReduce特点:扩展性&amp;容错性&amp;海量数量离线处理</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<h1 id="Hadoop优势"><a href="#Hadoop优势" class="headerlink" title="Hadoop优势"></a>Hadoop优势</h1><h2 id="高可靠性"><a href="#高可靠性" class="headerlink" title="高可靠性"></a>高可靠性</h2><ul>
+<li>数据存储:数据块多副本</li>
+<li>数据计算:重新调度作业计算<h2 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h2></li>
+<li>存储/计算资源不够时,可以横向的线性扩展机器</li>
+<li>一个集群中可以包含数以干计的节点<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2></li>
+<li>存储在廉价机器上,降低成本</li>
+<li>成熟的生态圈<h1 id="Hadoop发展史"><a href="#Hadoop发展史" class="headerlink" title="Hadoop发展史"></a>Hadoop发展史</h1>参考博文 <a href="http://www.infoq.com/cn/articles/hadoop-ten-years-interpretation-and-development-forecast" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/hadoop-ten-years-interpretation-and-development-forecast</a><br>官方Hadoop新闻档案<br><a href="https://hadoop.apache.org/news.html" target="_blank" rel="noopener">https://hadoop.apache.org/news.html</a><br>官方Hadoop发布档案<br><a href="https://hadoop.apache.org/release.html" target="_blank" rel="noopener">https://hadoop.apache.org/release.html</a><h1 id="Hadoop生态系统"><a href="#Hadoop生态系统" class="headerlink" title="Hadoop生态系统"></a>Hadoop生态系统</h1><h2 id="侠义Hadoop-VS-广义Hadoop"><a href="#侠义Hadoop-VS-广义Hadoop" class="headerlink" title="侠义Hadoop VS 广义Hadoop"></a>侠义Hadoop VS 广义Hadoop</h2></li>
+<li>狭义的Hadoop :是一个适合大数据分布式存储( HDFS ) .分布式计算(MapReduce)和资源调度(YARN )的平台</li>
+<li>广义的Hadoop :指的是Hadoop生态系统, Hadoop生态系统是一个很庞大的概念, hadoop是其中最重要最基础的一个部分;生态系统中的每一子系统只解决某一个特定的问题域(甚至可能很窄)不搞统一型的一个全能系统,而是小而精的多个小系统</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br><strong>特点</strong></p>
+<ul>
+<li>开源、社区活跃</li>
+<li>囊括了大数据处理的方方面面</li>
+<li>成熟的生态圈<h1 id="Hadoop发行版的选择"><a href="#Hadoop发行版的选择" class="headerlink" title="Hadoop发行版的选择"></a>Hadoop发行版的选择</h1>Apache Hadoop（单个侠义Hadoop学习可以使用）（开源）<br>CDH（市场份额60-70%）：Cloudera DIstributed Hadoop（不开源）（广义生态圈综合使用）<br>HDP（市场份额10-20%）：Hortonworks Data Platform（开源）</li>
+</ul>
 
                 
 
@@ -227,12 +263,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]07 七、kettle查询控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]07 七、kettle查询控件">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]01 分布式文件系统HDFS 一">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kettle]04 四、kettle转换控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]04 四、kettle转换控件">Next Post &rarr;</a>
+                            <a href="/article/大数据概述/" data-toggle="tooltip" data-placement="top" title="大数据概述">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -282,7 +318,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#替换NULL值"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">替换NULL值</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#写日志"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">写日志</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#发送邮件"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">发送邮件</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop概述"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hadoop概述</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop能做什么"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Hadoop能做什么</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop核心组件"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hadoop核心组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分布式文件系统HDFS"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">分布式文件系统HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分布式文件系统HDDS"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">分布式文件系统HDDS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#资源调度系统YARN"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">资源调度系统YARN</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分布式计算框架MapReduce"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">分布式计算框架MapReduce</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop优势"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hadoop优势</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#高可靠性"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">高可靠性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#扩展性"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">扩展性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">其他</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop发展史"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hadoop发展史</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop生态系统"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Hadoop生态系统</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#侠义Hadoop-VS-广义Hadoop"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">侠义Hadoop VS 广义Hadoop</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop发行版的选择"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Hadoop发行版的选择</span></a></li></ol>
         
         </div>
       </aside>
@@ -302,7 +338,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                          <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
                         
                     </div>
                 </section>
