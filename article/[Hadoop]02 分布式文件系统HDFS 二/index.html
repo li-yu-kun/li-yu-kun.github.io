@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Hadoop]02 分布式文件系统HDFS 二 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]02 分布式文件系统HDFS 二/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                            
+                        </div>
+                        <h1>[Hadoop]02 分布式文件系统HDFS 二</h1>
+                        <h2 class="subheading">单机搭建、常见问题</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2019-04-03
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="HDFS环境搭建"><a href="#HDFS环境搭建" class="headerlink" title="HDFS环境搭建"></a>HDFS环境搭建</h1><p>官网安装文档<br>Hadoop伪分布式安装步骤<br><a href="http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html" target="_blank" rel="noopener">http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html</a></p>
+<p>下载Hadoop<br>    <a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a><br>    2.6.0-cdh5.7.0<br>    或则 wget <a href="http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.7.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.7.0.tar.gz</a></p>
+<ol>
+<li><p>jdk安装<br> 解压：tar -zxvf jdk-7u79-linux-x64.tar.gz -C ~/app<br> 添加到系统环境变量： ~/.bash_profile</p>
+<pre><code>export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
+export PATH=\$JAVA_HOME/bin:$PATH</code></pre><p> 使得环境变量生效： source ~/.bash_profile<br> 验证java是否配置成功： java -v</p>
+</li>
+<li><p>安装ssh<br> sudo yum install ssh<br> ssh-keygen -t rsa<br> cp ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys    </p>
+</li>
+<li><p>下载并解压hadoop<br> 下载：直接去cdh网站下载<br> 解压：tar -zxvf hadoop-2.6.0-cdh5.7.0.tar.gz -C ~/app</p>
+</li>
+<li><p>hadoop配置文件的修改(hadoop_home/etc/hadoop)<br> <strong>hadoop-env.sh</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>core-site.xml</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hdfs://hadoop000:8020&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/home/hadoop/app/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>hdfs-site.xml</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>启动hdfs<br> 格式化文件系统（仅第一次执行即可，不要重复执行）：hdfs/hadoop namenode -format<br> 启动hdfs: sbin/start-dfs.sh<br> 验证是否启动成功：<pre><code>jps</code></pre> 　DataNode<pre><code>　SecondaryNameNode
+　NameNode
+浏览器访问方式 http://hadoop000:50070</code></pre><img src="%E5%9B%BE%E7%89%8710.png" alt=""></li>
+<li>停止hdfs<br> sbin/stop-dfs.sh </li>
+</ol>
+<h1 id="HDFS关键设置及常见问题"><a href="#HDFS关键设置及常见问题" class="headerlink" title="HDFS关键设置及常见问题"></a>HDFS关键设置及常见问题</h1><h2 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置文件路径：$HADOOP_HOME$/etc/hadoop</span><br><span class="line">主要配置文件：</span><br><span class="line">•hdfs-site.xml</span><br><span class="line">•core-site.xml</span><br></pre></td></tr></table></figure>
+<p><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="小文件问题"><a href="#小文件问题" class="headerlink" title="小文件问题"></a>小文件问题</h3><ul>
+<li>定义：大量大小小于块大小的文件</li>
+<li>实际场景：网页，Hive动态分区插入数据等</li>
+<li>背景：每个文件的元数据对象约占150byte，所以如果有1千万个小文件，每个文件占用一个block，则NameNode大约需要2G空间。如果存储1亿个文件，则NameNode需要20G空间；数据以块为单位进行处理。</li>
+<li>影响：占用资源，降低处理效率</li>
+<li>解决方案：<ul>
+<li>从源头减少小文件</li>
+<li>使用archive打包</li>
+<li>使用其他存储方式，如Hbase，ES等<h3 id="Namenode管理"><a href="#Namenode管理" class="headerlink" title="Namenode管理"></a>Namenode管理</h3>大数据量下的namenode问题：</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>启动时间变长</li>
+<li>性能开始下降</li>
+<li>NameNode JVM FGC风险较高</li>
+</ol>
+<p>解决方案：</p>
+<ol>
+<li>根据数据增长情况，预估namenode内存需求，提前做好预案</li>
+<li>使用HDFS Federation，扩展NameNode分散单点负载</li>
+<li>引入外部系统支持NameNode内存数据</li>
+<li>合并小文件（有相关的命令:hadoop archive）</li>
+<li>调整合适的BlockSize</li>
+</ol>
+<p><strong>内存结构</strong><br><img src="%E5%9B%BE%E7%89%8712.png" alt=""><br><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<p><strong>内存预估</strong><br>文件元数据对象约占200byte，block元数据约占180byte：<br>总内存 =198 * num(Directory + Files) + 176 * num(blocks) + 2% *  总内存</p>
+<h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>场景：</p>
+<ul>
+<li>冷热数据迁移</li>
+<li>集群升级、维护</li>
+</ul>
+<p>方案：</p>
+<ul>
+<li>hadoop distcp 命令<h3 id="数据平衡"><a href="#数据平衡" class="headerlink" title="数据平衡"></a>数据平衡</h3>原因：长期运行的集群增删节点，节点增删磁盘等</li>
+</ul>
+<p>影响：</p>
+<ul>
+<li>跨节点拷贝数据</li>
+<li>task会存在任务失败的风险</li>
+<li>磁盘利用不均</li>
+</ul>
+<p>方案：</p>
+<ul>
+<li><p>集群节点间：hdfs balancer 命令</p>
+</li>
+<li><p>单节点磁盘间：hdfs diskbalancer 命令</p>
+<h4 id="hdfs-balancer"><a href="#hdfs-balancer" class="headerlink" title="hdfs balancer"></a>hdfs balancer</h4><p>参数：</p>
+</li>
+<li><p>-threshold 30 ：判断集群是否平衡的目标参数，每一个 datanode<br>存储使用率和集群总存储使用率的差值的绝对值都应该小于这个阀<br>值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">整体空间占用：30%</span><br><span class="line">threshold： 10</span><br><span class="line">balance之后每个dn的空间占用：20-40%</span><br><span class="line"></span><br><span class="line">dn1：60% ；dn2:10%；dn3:30%</span><br><span class="line">整体：</span><br><span class="line">dn1：40% ；dn2:30%；dn3:30%</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-include ：执行balance的DN列表</p>
+</li>
+<li><p>dfs.balance.bandwidthPerSec 300MB ：balance工具在运行中所能占用的带宽，设置的过大会影响其他任务</p>
+</li>
+</ul>
+<p>建议：</p>
+<ul>
+<li>对于一些大型的HDFS集群(随时可能扩容或下架服务器)，balance脚本建议作为后台常驻进程</li>
+<li>根据官方建议，脚本需要部署在相对空闲的服务器上</li>
+<li>停止脚本通过kill进程实现</li>
+</ul>
+<p><strong>其他管理命令</strong></p>
+<ul>
+<li>hdfs dfsadmin</li>
+<li>hdfs fsck<h1 id="如何提高数据存取效率"><a href="#如何提高数据存取效率" class="headerlink" title="如何提高数据存取效率"></a>如何提高数据存取效率</h1><h2 id="数据压缩-作用"><a href="#数据压缩-作用" class="headerlink" title="数据压缩-作用"></a>数据压缩-作用</h2></li>
+<li>节省数据占用的磁盘空间</li>
+<li>加快数据在磁盘和网络中的传输速度，从而提高系统的<br>处理速度<h3 id="数据压缩-评价指标"><a href="#数据压缩-评价指标" class="headerlink" title="数据压缩-评价指标"></a>数据压缩-评价指标</h3></li>
+<li>压缩比：压缩比越高，压缩后文件越小，所以压缩比越高越好</li>
+<li>压缩时间：越快越好</li>
+<li>已经压缩的格式文件是否可以再分割：可以分割的格式允许单一<br>文件由多个Mapper程序处理，可以更好的并行化<h3 id="数据压缩-类型"><a href="#数据压缩-类型" class="headerlink" title="数据压缩-类型"></a>数据压缩-类型</h3><img src="%E5%9B%BE%E7%89%8714.png" alt=""><h3 id="数据压缩-使用场景？"><a href="#数据压缩-使用场景？" class="headerlink" title="数据压缩-使用场景？"></a>数据压缩-使用场景？</h3></li>
+<li>HDFS命令行写入：将数据压缩后写入</li>
+<li>Flume写入：写入时指定hdfs.codeC参数</li>
+<li>Sqoop写入：写入时指定参数</li>
+<li>-compression-codec org.apache.hadoop.io.compress.SnappyCodec</li>
+<li>HBase 数据存储: 创建表时指定<br>create ‘xx_table’, {NAME =&gt; ‘xx_cf’, COMPRESSION =&gt; ‘GZ’}</li>
+<li>Mapreduce中间结果和最终结果：hadoop jar xxx “-Dmapred.compress.map.output=true” <br>“-Dmapred.map.output.compression.codec=xxx” <br>“-Dmapred.output.compress=true” “-Dmapred.output.compression.codec=xxx”</li>
+<li>Hive中间结果和最终结果：<br>set hive.exec.compress.intermediate=true<br>set mapred.map.output.compression.codec=xxx<br>set mapred.map.output.compression.codec=xxx<br>set hive.exec.compress.output=true<br>set mapred.output.compression.codec=xxx</li>
+<li>Spark（RDD分区、广播变量、shuffle输出）：<br>• rdd：spark.rdd.compress，是否压缩已序列化的rdd，默认关闭<br>• broadcast：spark.broadcast.compress，是否压缩broadcast数据，默认打开<br>• 结果存储：saveAsTextFile(path,codec)<br>• 压缩算法：spark.io.compression.codec，默认为snappy<h3 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h3></li>
+<li>选择何种压缩格式：<ul>
+<li>考虑是否支持切分</li>
+<li>压缩率vs压缩速度</li>
+</ul>
+</li>
+<li>什么时候使用：<ul>
+<li>存储：磁盘空间紧张</li>
+<li>计算：性能调优（内存空间占用，IO传输）</li>
+</ul>
+</li>
+</ul>
+<h2 id="纠删码（hadoop3-0之后的功能）"><a href="#纠删码（hadoop3-0之后的功能）" class="headerlink" title="纠删码（hadoop3.0之后的功能）"></a>纠删码（hadoop3.0之后的功能）</h2><p>复制策略：1tb的数据需要3tb的磁盘空间。<br>纠删码：只需要复制策略50%的磁盘空间，而且同样可以保存数据的可靠性。</p>
+<p>原理解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">X1=1</span><br><span class="line">X2=2</span><br><span class="line">X3=3</span><br><span class="line">X1+X2+X3=6</span><br><span class="line">X1+2*X2+3*X3=14</span><br><span class="line">X1+3*X2+4*X3=14</span><br><span class="line"></span><br><span class="line">我们需要求出X1，X2，X3的值，那么我们最少需要的方程是？ 3</span><br><span class="line">如果有四个方程，允许其中丢失任意一个方程</span><br><span class="line"></span><br><span class="line">X1=1</span><br><span class="line">X2=2</span><br><span class="line">X3=3</span><br><span class="line">视为我们的数据</span><br><span class="line"></span><br><span class="line">X1+X2+X3=6</span><br><span class="line">X1+2*X2+3*X3=14</span><br><span class="line">X1+3*X2+4*X3=14</span><br><span class="line">视为一个校验/冗余数据</span><br><span class="line"></span><br><span class="line">如果是复制策略：要允许任意2份数据丢失，我们需要：3*3=9份数据。恢复的时候只需要找到相同的block直接复制就可以。</span><br><span class="line">如果是纠删码策略：要允许任意2份数据丢失，我们需要：3+2=5份数据，时间换空间的策略。恢复的时候需要的时间大；因为各个block都要参与进来。</span><br><span class="line"></span><br><span class="line">一个文件有n个块，最少需要的数据块数是多少？n+2;</span><br><span class="line">不是针对一个文件所有的block块进行纠删码的计算，而是按照一定的size切分成block group，按照block group来计算冗余块。（平衡减少时间）</span><br></pre></td></tr></table></figure>
+<h3 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">hdfs ec [COMMAND]</span><br><span class="line">	[-listPolicies]</span><br><span class="line">	[-addPolicies -policyFile &lt;file&gt;]</span><br><span class="line">	[-getPolicy -path &lt;path&gt;]</span><br><span class="line">	[-removePolicy -policy &lt;policy&gt;]</span><br><span class="line">	[-setPolicy -path &lt;path&gt; [-policy &lt;policy&gt;] [-replicate]]</span><br><span class="line">	[-unsetPolicy -path &lt;path&gt;]</span><br><span class="line">	[-listCodecs]</span><br><span class="line">	[-enablePolicy -policy &lt;policy&gt;]</span><br><span class="line">	[-disablePolicy -policy &lt;policy&gt;]</span><br><span class="line">	[-help &lt;command-name&gt;]</span><br></pre></td></tr></table></figure>
+<h3 id="使用建议-1"><a href="#使用建议-1" class="headerlink" title="使用建议"></a>使用建议</h3><p>将冷门数据以纠删码格式转存，减少空间占用：</p>
+<ol>
+<li>指定某个目录为纠删码模式：<br>hdfs ec -setPolicy -path [path] -policy [policy]</li>
+<li>通过distcp命令将原有数据转存<h2 id="异构存储"><a href="#异构存储" class="headerlink" title="异构存储"></a>异构存储</h2><img src="%E5%9B%BE%E7%89%8715.png" alt=""></li>
+<li>配置dn存储路径时指定存储格式：<br>[SSD]file:///path,[ARCHIVE]file:///path</li>
+<li>dn通过心跳汇报自身数据存储目录的StorageType给nn</li>
+<li>nn汇总并更新集群内各个节点的存储类型情况</li>
+<li>客户端写入时根据设定的存储策略向nn请求响应的dn作为候<br>选节点<h3 id="相关命令-1"><a href="#相关命令-1" class="headerlink" title="相关命令"></a>相关命令</h3></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">• hdfs storagepolicies [COMMAND]</span><br><span class="line">	[-listPolicies]</span><br><span class="line">	[-setStoragePolicy -path &lt;path&gt; -policy &lt;policy&gt;]</span><br><span class="line">	[-getStoragePolicy -path &lt;path&gt;]</span><br><span class="line">	[-unsetStoragePolicy -path &lt;path&gt;]</span><br><span class="line">	[-help &lt;command-name&gt;]</span><br><span class="line">• hdfs mover [-p &lt;files/dirs&gt; | -f &lt;local file&gt;]</span><br></pre></td></tr></table></figure>
+<h3 id="使用建议-2"><a href="#使用建议-2" class="headerlink" title="使用建议"></a>使用建议</h3><ul>
+<li>一般使用默认策略（HOT，磁盘）即可</li>
+<li>ARCHIVE：计算能力较弱，存储密度高，存储冷数据</li>
+<li>SSD：土豪专用</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]03 分布式文件系统HDFS 三">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]01 分布式文件系统HDFS 一">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS环境搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS关键设置及常见问题"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS关键设置及常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用配置"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">常用配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常见问题"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#小文件问题"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">小文件问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Namenode管理"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Namenode管理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据迁移"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">数据迁移</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据平衡"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">数据平衡</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs-balancer"><span class="toc-nav-number">2.2.4.1.</span> <span class="toc-nav-text">hdfs balancer</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何提高数据存取效率"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何提高数据存取效率</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据压缩-作用"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">数据压缩-作用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-评价指标"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">数据压缩-评价指标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-类型"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">数据压缩-类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-使用场景？"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">数据压缩-使用场景？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议"><span class="toc-nav-number">3.1.4.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#纠删码（hadoop3-0之后的功能）"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">纠删码（hadoop3.0之后的功能）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-1"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异构存储"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">异构存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令-1"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-2"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="XXX" target="_blank">CSDN Blog 李玉坤</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2019 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
