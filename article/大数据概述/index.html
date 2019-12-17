@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          大数据概述 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/大数据概述/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
+                            
+                        </div>
+                        <h1>大数据概述</h1>
+                        <h2 class="subheading">大数据概述</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-04-02
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="大数据故事"><a href="#大数据故事" class="headerlink" title="大数据故事"></a>大数据故事</h1><p>电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。</p>
+<h1 id="大数据背景"><a href="#大数据背景" class="headerlink" title="大数据背景"></a>大数据背景</h1><p>当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。</p>
+<h1 id="大数据基本概念"><a href="#大数据基本概念" class="headerlink" title="大数据基本概念"></a>大数据基本概念</h1><h2 id="大数据定义"><a href="#大数据定义" class="headerlink" title="大数据定义"></a>大数据定义</h2><p>大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现力和流程优化能力的海量、高增长率和多样化的信息资产。</p>
+<p>大数据量并不一定是大的，重要的是我们能够从数据中挖掘出大量有用的价值。</p>
+<h2 id="大数据4V特征"><a href="#大数据4V特征" class="headerlink" title="大数据4V特征"></a>大数据4V特征</h2><p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>Volume：数据量很大，GB,TB,PB,EB,ZB越来越大的数据。<br>Varirty ：类型繁多，各种各样的类型；比如数据源多，各种各样的日志；或者结构化数据和非结构化数据；关联性数据如游客和游客上传图片的位置；视频文件，文档文件。<br>Value：价值，从大量数据中挖掘大量的价值；随着数据量大；难度就越来越高。也就是说价值密度比较低。<br>Velocity：速度快；随着业务的发展；批处理已经满足不了企业需求，需要引进流处理和实时处理。</p>
+<h2 id="大数据要解决的问题"><a href="#大数据要解决的问题" class="headerlink" title="大数据要解决的问题"></a>大数据要解决的问题</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h1 id="大数据涉及到的技术"><a href="#大数据涉及到的技术" class="headerlink" title="大数据涉及到的技术"></a>大数据涉及到的技术</h1><ol>
+<li>数据采集：必须有大量数据源才可进行数据的挖掘。</li>
+<li>数据存储：随着数据的扩大；必经之路也是必须解决的，文件系统问题。</li>
+<li>数据处理/分析/挖掘：数据到来后需要特定的手段来进行分析，这时候需要用到各种各样的大数据框架，技术选型问题。</li>
+<li>可视化：需要给领导或者相关人员以图形化的形式直观地展示数据价值。<h1 id="大数据带来的技术挑战"><a href="#大数据带来的技术挑战" class="headerlink" title="大数据带来的技术挑战"></a>大数据带来的技术挑战</h1><h2 id="在技术架构上的挑战"><a href="#在技术架构上的挑战" class="headerlink" title="在技术架构上的挑战"></a>在技术架构上的挑战</h2></li>
+</ol>
+<ul>
+<li>对现有数据库管理技术的挑战。随着互联网的发展，我们的数据量已经不能用传统数据库来存储，即便传统数据库也有集群的概念，但是也不能处理分析TG以上的数据，所有现阶段已经没办法直接使用结构化的查询和存储来解决这些问题了。</li>
+<li>经典数据库技术并没有考虑数据的多类别。我们原来的数据库可能只有结构化的数据，比如一个人表，存储join，压缩内容无法得到满足。</li>
+<li>实时性的技术挑战。数据的价值随着时间的流逝而大大降低的。当数据产生后我们应该尽快的对数据进行处理。比如电商的推荐系统，早期的时候市场上使用批量处理来推荐商品，半天或者一天，如果使用实时的推荐则会获得更高的利益。</li>
+<li>网络架构、数据中心、运维的挑战。我们每天创造的数据量几乎都是以爆炸式的增长的。对于收集，存储，计算这些数据都是一个棘手的问题，机器，资源越来越多。<h2 id="其他挑战"><a href="#其他挑战" class="headerlink" title="其他挑战"></a>其他挑战</h2></li>
+<li>数据隐私。比如每个人当下访问的网站，发送的定位。这些都是问题。</li>
+<li>数据源的复杂多样。数据的多样化要进行兼容处理也是一个问题。<h2 id="如何对大数据进行存储和分析"><a href="#如何对大数据进行存储和分析" class="headerlink" title="如何对大数据进行存储和分析"></a>如何对大数据进行存储和分析</h2><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>单机机器肯定存在瓶颈的，为了解决以上系统瓶颈问题，Google提出了革命性的大数据技术论文，从而衍生处理开源工具MapReduce，HDFS，Yarn。<br>如何学好大数据，学习大数据的主要来源就是<strong>官网</strong>以及项目实战对知识点进行巩固和融合贯通，同时也可以参加社区活动：Meetup、开源社区大会、线下沙龙等。<br>切记：<strong>多动手</strong>、<strong>多练习</strong>、<strong>贵在坚持</strong>！！！</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/初识Hadoop/" data-toggle="tooltip" data-placement="top" title="初识Hadoop">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[MySQL]04 MySQL常用操作/" data-toggle="tooltip" data-placement="top" title="[MySQL]04 MySQL常用操作">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大数据故事"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">大数据故事</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大数据背景"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">大数据背景</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大数据基本概念"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">大数据基本概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#大数据定义"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">大数据定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#大数据4V特征"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">大数据4V特征</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#大数据要解决的问题"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">大数据要解决的问题</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大数据涉及到的技术"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">大数据涉及到的技术</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大数据带来的技术挑战"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">大数据带来的技术挑战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#在技术架构上的挑战"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">在技术架构上的挑战</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他挑战"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">其他挑战</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何对大数据进行存储和分析"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">如何对大数据进行存储和分析</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="XXX" target="_blank">CSDN Blog 李玉坤</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2019 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

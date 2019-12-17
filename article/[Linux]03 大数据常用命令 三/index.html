@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Linux]03 大数据常用命令 三 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Linux]03 大数据常用命令 三/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                            
+                        </div>
+                        <h1>[Linux]03 大数据常用命令 三</h1>
+                        <h2 class="subheading">用户权限以及性能相关命令</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-03-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="etc-passwd文件"><a href="#etc-passwd文件" class="headerlink" title="/etc/passwd文件"></a>/etc/passwd文件</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop k]<span class="comment"># cat /etc/passwd</span></span><br><span class="line">其中有一行：</span><br><span class="line">k:x:<span class="number">1001</span>:<span class="number">1002</span>::/home/k:/bin/bash</span><br><span class="line"></span><br><span class="line">当/bin/bash是/bin/false或者/sbin/nologin</span><br><span class="line">[root@hadoop k]<span class="comment"># su - k 命令是切换用户切不过去的</span></span><br><span class="line"></span><br><span class="line">在安装CDH的时候/etc/passwd文件很多组件默认是/bin/false或者/sbin/nologin</span><br><span class="line">CDH 很多的组件</span><br><span class="line">hdfs组件 hdfs用户 </span><br><span class="line">     su - hdfs</span><br><span class="line">     对应修改为 /bin/bash</span><br><span class="line"></span><br><span class="line">hbase组件 hbase用户</span><br><span class="line">	su - hbase</span><br><span class="line">yarn组件  yarn用户</span><br><span class="line"></span><br><span class="line">一一修改</span><br></pre></td></tr></table></figure>
+
+<h1 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">错误: Permission denied 时；意思是没有权限</span><br><span class="line"></span><br><span class="line">chmod -R <span class="number">777</span> 文件夹/文件路径   <span class="comment">#777 代表任意的用户用户组 都读写执行 权限</span></span><br><span class="line">chown -R 用户:用户组 文件夹/文件路径</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[hadoop@hadoop ~]$ ll</span><br><span class="line">总用量 <span class="number">64</span></span><br><span class="line">drwxrwxr-x. <span class="number">29</span> hadoop hadoop  <span class="number">4096</span> <span class="number">11</span>月 <span class="number">11</span> <span class="number">14</span>:<span class="number">20</span> app</span><br><span class="line">drwxrwxr-x.  <span class="number">5</span> hadoop hadoop  <span class="number">4096</span> <span class="number">6</span>月   <span class="number">7</span> <span class="number">14</span>:<span class="number">52</span> <span class="keyword">data</span></span><br><span class="line">-rw-rw-r--.  <span class="number">1</span> hadoop hadoop   <span class="number">700</span> <span class="number">6</span>月   <span class="number">8</span> <span class="number">17</span>:<span class="number">28</span> derby.log</span><br><span class="line"></span><br><span class="line">第一个字母: d文件夹 -文件 l连接</span><br><span class="line">rwx r-x r-x</span><br><span class="line"></span><br><span class="line">r: read  <span class="number">4</span></span><br><span class="line">w: write <span class="number">2</span> </span><br><span class="line">x: 执行  <span class="number">1</span></span><br><span class="line">-: 没权限 <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span>=rwx</span><br><span class="line"><span class="number">3</span>=wx</span><br><span class="line"><span class="number">5</span>=rx</span><br><span class="line"></span><br><span class="line">d rwx r-x r-x <span class="number">2</span> hadoop hadoop   <span class="number">6</span> <span class="number">6</span>月   <span class="number">8</span> <span class="number">17</span>:<span class="number">28</span> XXX</span><br><span class="line">rwx 第一组 <span class="number">7</span> 代表文件或文件夹的用户hadoop ，读写执行</span><br><span class="line">r-x 第二组 <span class="number">5</span> 代表文件或文件夹的用户组hadoop ，读执行</span><br><span class="line">r-x 第三组 <span class="number">5</span> 代表其他组的所属用户对这个文件或文件夹的权限: 读执行</span><br></pre></td></tr></table></figure>
+
+<h1 id="查看文件目录大小"><a href="#查看文件目录大小" class="headerlink" title="查看文件目录大小"></a>查看文件目录大小</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">文件:</span><br><span class="line">ll </span><br><span class="line">du -sh xxx.log</span><br><span class="line"></span><br><span class="line">文件夹:</span><br><span class="line">du -sh yyy</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="搜索-find"><a href="#搜索-find" class="headerlink" title="搜索 find"></a>搜索 find</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">history 历史记录</span><br><span class="line">ps -ef 查看进程</span><br><span class="line">top 系统情况</span><br><span class="line"></span><br><span class="line">假如要查看某个大数据组件 hbase 部署在哪里</span><br><span class="line">[hadoop@hadoop ~]$ find / -name <span class="string">'*hbase*'</span> <span class="comment"># * 代表模糊匹配</span></span><br></pre></td></tr></table></figure>
+<h1 id="vim-vi命令"><a href="#vim-vi命令" class="headerlink" title="vim / vi命令"></a>vim / vi命令</h1><p><img src="vim.png" alt=""></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、粘贴的坑：必须在i键 编辑模式</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、常用操作</span><br><span class="line">	a. 上下键 移动光标</span><br><span class="line">	b. 按 i键insert 进入 编辑模式</span><br><span class="line">	c. 开始编辑</span><br><span class="line">	d. 按 esc键退出 编辑模式，进入命令行模式</span><br><span class="line">	e. 按 shift+: 键，进入尾行模式</span><br><span class="line">	f. 输入 wq 保存退出</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、找error</span><br><span class="line"></span><br><span class="line">cat xxx.log | grep -C <span class="number">10</span> ERROR &gt; error.log</span><br><span class="line"></span><br><span class="line">对于error.log  可以cat查看 或者 more查看 或者 sz到window桌面</span><br><span class="line"></span><br><span class="line">进入尾行模式:/关键词 回车自动匹配  按N键找寻下一个</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>、设置行号，可以看到行号</span><br><span class="line">进入尾行模式:</span><br><span class="line">输入： set nu 标记行号</span><br><span class="line">或者输入：set nonu 结束标记行号</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>、清空这个内容</span><br><span class="line">cat /dev/null &gt; xxx.log 完美</span><br><span class="line">echo <span class="string">''</span> &gt; xxx.log 存在<span class="number">1</span>个字节</span><br><span class="line"></span><br><span class="line">命令行模式常见的快捷键:</span><br><span class="line">dd 删除当前行</span><br><span class="line">dG 删除光标当前及以下的所有行</span><br><span class="line">ndd 删除光标当前及以下的n行</span><br><span class="line"></span><br><span class="line">gg 跳转到第一行的第一个字母</span><br><span class="line">G  跳转到最后一行的第一个字母</span><br><span class="line">shift+$ 行尾</span><br><span class="line"></span><br><span class="line">gg + dG 清空所有</span><br><span class="line"></span><br><span class="line">场景: 从另外一个文本拷贝内容去覆盖这个文件</span><br><span class="line">大数据的组件都是xml文件</span><br><span class="line"><span class="number">1</span>.官方的默认的配置文件 xxxxxxx <span class="number">30</span>行</span><br><span class="line"><span class="number">2</span>.window记事本 editplus  编辑好对应的参数  编辑完毕后是<span class="number">300</span>行</span><br><span class="line">坑： cp备份</span><br><span class="line"></span><br><span class="line">mysql的 my.cnf</span><br></pre></td></tr></table></figure>
+
+<h1 id="vim-vi-编辑文件异常"><a href="#vim-vi-编辑文件异常" class="headerlink" title="vim / vi 编辑文件异常"></a>vim / vi 编辑文件异常</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一次编辑 保存失败的时候</span><br><span class="line">[hadoop@hadoop ~]$ vi XXX.log </span><br><span class="line"></span><br><span class="line">ctrl+x/z 会产生swp文件  </span><br><span class="line"></span><br><span class="line">ll -a 查看这个隐藏文件，删除即可 .XXX.log.swp</span><br></pre></td></tr></table></figure>
+<h1 id="系统命令"><a href="#系统命令" class="headerlink" title="系统命令"></a>系统命令</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#磁盘</span></span><br><span class="line">[hadoop@hadoop ~]$ df -h</span><br><span class="line">文件系统                 容量  已用  可用 已用% 挂载点</span><br><span class="line">/dev/mapper/centos-root   <span class="number">47</span>G   <span class="number">15</span>G   <span class="number">33</span>G   <span class="number">31</span>% /</span><br><span class="line">devtmpfs                 <span class="number">1.9</span>G     <span class="number">0</span>  <span class="number">1.9</span>G    <span class="number">0</span>% /dev</span><br><span class="line">tmpfs                    <span class="number">1.9</span>G     <span class="number">0</span>  <span class="number">1.9</span>G    <span class="number">0</span>% /dev/shm</span><br><span class="line">tmpfs                    <span class="number">1.9</span>G   <span class="number">12</span>M  <span class="number">1.9</span>G    <span class="number">1</span>% /run</span><br><span class="line">tmpfs                    <span class="number">1.9</span>G     <span class="number">0</span>  <span class="number">1.9</span>G    <span class="number">0</span>% /sys/fs/cgroup</span><br><span class="line">/dev/sda1               <span class="number">1014</span>M  <span class="number">189</span>M  <span class="number">826</span>M   <span class="number">19</span>% /boot</span><br><span class="line">tmpfs                    <span class="number">378</span>M     <span class="number">0</span>  <span class="number">378</span>M    <span class="number">0</span>% /run/user/<span class="number">1000</span></span><br><span class="line">tmpfs                    <span class="number">378</span>M     <span class="number">0</span>  <span class="number">378</span>M    <span class="number">0</span>% /run/user/<span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 内存</span></span><br><span class="line">[hadoop@hadoop ~]$ free -m <span class="comment">#或则-h</span></span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           <span class="number">3771</span>         <span class="number">435</span>        <span class="number">2966</span>          <span class="number">11</span>         <span class="number">368</span>        <span class="number">2996</span></span><br><span class="line">Swap:          <span class="number">2047</span>           <span class="number">0</span>        <span class="number">2047</span></span><br><span class="line"></span><br><span class="line">参考博客</span><br><span class="line">http://blog.itpub.net/<span class="number">30089851</span>/viewspace-<span class="number">2131678</span>/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#负载</span></span><br><span class="line">[hadoop@hadoop ~]$ top</span><br><span class="line">top - <span class="number">11</span>:<span class="number">37</span>:<span class="number">38</span> up  <span class="number">9</span>:<span class="number">22</span>,  <span class="number">1</span> user,  load average: <span class="number">0.00</span>, <span class="number">0.01</span>, <span class="number">0.05</span></span><br><span class="line">Tasks: <span class="number">118</span> total,   <span class="number">2</span> running, <span class="number">116</span> sleeping,   <span class="number">0</span> stopped,   <span class="number">0</span> zombie</span><br><span class="line">%Cpu(s):  <span class="number">0.2</span> us,  <span class="number">0.0</span> sy,  <span class="number">0.0</span> ni, <span class="number">99.8</span> id,  <span class="number">0.0</span> wa,  <span class="number">0.0</span> hi,  <span class="number">0.0</span> si,  <span class="number">0.0</span> st</span><br><span class="line">KiB Mem :  <span class="number">3861508</span> total,  <span class="number">3037300</span> free,   <span class="number">446708</span> used,   <span class="number">377500</span> buff/cache</span><br><span class="line">KiB Swap:  <span class="number">2097148</span> total,  <span class="number">2097148</span> free,        <span class="number">0</span> used.  <span class="number">3067784</span> avail Mem </span><br><span class="line"></span><br><span class="line">   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND                                                       </span><br><span class="line">     <span class="number">1</span> root      <span class="number">20</span>   <span class="number">0</span>  <span class="number">193572</span>   <span class="number">6636</span>   <span class="number">4136</span> S   <span class="number">0.0</span>  <span class="number">0.2</span>   <span class="number">0</span>:<span class="number">06.68</span> systemd                                                       </span><br><span class="line">     <span class="number">2</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.02</span> kthreadd                                                      </span><br><span class="line">     <span class="number">3</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.32</span> ksoftirqd/<span class="number">0</span>                                                   </span><br><span class="line">     <span class="number">5</span> root       <span class="number">0</span> -<span class="number">20</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.00</span> kworker/<span class="number">0</span>:<span class="number">0</span>H                                                  </span><br><span class="line">     <span class="number">7</span> root      rt   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.07</span> migration/<span class="number">0</span>                                                   </span><br><span class="line">     <span class="number">8</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.00</span> rcu_bh                                                        </span><br><span class="line">     <span class="number">9</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">02.16</span> rcu_sched                                                     </span><br><span class="line">    <span class="number">10</span> root       <span class="number">0</span> -<span class="number">20</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.00</span> lru-add-drain                                                 </span><br><span class="line">    <span class="number">11</span> root      rt   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.26</span> watchdog/<span class="number">0</span>                                                    </span><br><span class="line">    <span class="number">12</span> root      rt   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">0.0</span>  <span class="number">0.0</span>   <span class="number">0</span>:<span class="number">00.25</span> watchdog/<span class="number">1</span>        </span><br><span class="line"></span><br><span class="line">一个系统卡不卡主要看</span><br><span class="line"> load average: <span class="number">0.00</span>, <span class="number">0.01</span>, <span class="number">0.05</span></span><br><span class="line">               <span class="number">1</span>min  <span class="number">5</span>min <span class="number">15</span>min  </span><br><span class="line">               经验值 不要超过<span class="number">10</span>  否则认为此物理服务器（同等配置云服务器比物理要下降<span class="number">20</span>%的性能） IDC机房</span><br><span class="line"></span><br><span class="line">PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line"><span class="number">177</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span> S   <span class="number">50</span>%  <span class="number">70</span>%     <span class="number">0</span>:<span class="number">34.13</span> xxxx   去看看xxx这个进程是做什么 来判断为什么消耗那么多的cpu和内存</span><br><span class="line"><span class="number">1777</span> root      <span class="number">20</span>   <span class="number">0</span>       <span class="number">0</span>      <span class="number">0</span>     <span class="number">0</span> S  <span class="number">3908</span>% <span class="number">80</span>%     <span class="number">0</span>:<span class="number">34.13</span> hbase regionserver  原因有可能是进程夯住/有问题/代码级别问题/硬件级别-内存条坏了</span><br></pre></td></tr></table></figure>
+<h1 id="查看进程-查看端口号"><a href="#查看进程-查看端口号" class="headerlink" title="查看进程 查看端口号"></a>查看进程 查看端口号</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、进程</span><br><span class="line">[hadoop@hadoop ~]<span class="comment"># ps -ef|grep XXX</span></span><br><span class="line"></span><br><span class="line">[hadoop@hadoop ~]$ ps -ef | grep ssh <span class="comment"># 查看所有</span></span><br><span class="line">root       <span class="number">9117</span>      <span class="number">1</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/sshd -D</span><br><span class="line">root       <span class="number">9719</span>   <span class="number">9117</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop [priv]</span><br><span class="line">hadoop     <span class="number">9723</span>   <span class="number">9719</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop@pts/<span class="number">1</span></span><br><span class="line">hadoop     <span class="number">9801</span>   <span class="number">9724</span>  <span class="number">0</span> <span class="number">16</span>:<span class="number">08</span> pts/<span class="number">1</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --color=auto ssh</span><br><span class="line">[hadoop@hadoop ~]$ ps -ef | grep ssh | grep -v grep <span class="comment">#排除自身查看</span></span><br><span class="line">root       <span class="number">9117</span>      <span class="number">1</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/sshd -D</span><br><span class="line">root       <span class="number">9719</span>   <span class="number">9117</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop [priv]</span><br><span class="line">hadoop     <span class="number">9723</span>   <span class="number">9719</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop@pts/<span class="number">1</span></span><br><span class="line"></span><br><span class="line">进程用户  进程的pid 父id                            进程用户的内容（进程所属的目录 log -Xmx -Xms）</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>、端口号</span><br><span class="line">[hadoop@hadoop ~]$ netstat -nlp <span class="comment">#可以查看所有进程的端口号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看ssh进程9117的信息对应端口号可以看到是22</span></span><br><span class="line">[root@hadoop ~]<span class="comment"># ps -ef | grep ssh</span></span><br><span class="line">root       <span class="number">9117</span>      <span class="number">1</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/sshd -D</span><br><span class="line">root       <span class="number">9719</span>   <span class="number">9117</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop [priv]</span><br><span class="line">hadoop     <span class="number">9723</span>   <span class="number">9719</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: hadoop@pts/<span class="number">1</span></span><br><span class="line">root       <span class="number">9814</span>   <span class="number">9117</span>  <span class="number">0</span> <span class="number">16</span>:<span class="number">11</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> sshd: root@pts/<span class="number">0</span></span><br><span class="line">root       <span class="number">9868</span>   <span class="number">9818</span>  <span class="number">0</span> <span class="number">16</span>:<span class="number">14</span> pts/<span class="number">0</span>    <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> grep --color=auto ssh</span><br><span class="line">[root@hadoop ~]<span class="comment"># netstat -nlp |grep 9117</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">22</span>              <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">9117</span>/sshd           </span><br><span class="line">tcp6       <span class="number">0</span>      <span class="number">0</span> :::<span class="number">22</span>                   :::*                    LISTEN      <span class="number">9117</span>/sshd           </span><br><span class="line">[root@hadoop ~]<span class="comment"># </span></span><br><span class="line"></span><br><span class="line">建议通过pid找port </span><br><span class="line">即先查进程pid</span><br><span class="line">[root@hadoop ~]<span class="comment"># ps -ef | grep ssh</span></span><br><span class="line">root       <span class="number">9117</span>      <span class="number">1</span>  <span class="number">0</span> <span class="number">15</span>:<span class="number">50</span> ?        <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> /usr/sbin/sshd -D</span><br><span class="line">再查端口号port</span><br><span class="line">[root@hadoop ~]<span class="comment"># netstat -nlp |grep 9117</span></span><br><span class="line">tcp        <span class="number">0</span>      <span class="number">0</span> <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">22</span>              <span class="number">0.0</span>.<span class="number">0.0</span>:*               LISTEN      <span class="number">9117</span>/sshd     </span><br><span class="line"></span><br><span class="line"><span class="number">1</span>: 启动一个进程 ps 必须</span><br><span class="line"><span class="number">2</span>: 可能启动一个port  netstat 不是必须（一个服务可以有端口号也可以没有端口号）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">3</span>、安装服务，打开web</span><br><span class="line"></span><br><span class="line">[root@hadoop ~]<span class="comment"># yum install httpd</span></span><br><span class="line"></span><br><span class="line">[root@hadoop ~]<span class="comment"># service httpd start</span></span><br><span class="line">Redirecting to /bin/systemctl start httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment">#插入知识点</span></span><br><span class="line">service httpd start      centos6.x <span class="number">7</span>.x</span><br><span class="line">systemctl start httpd    centos7.x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@hadoop ~]<span class="comment"># systemctl start httpd</span></span><br><span class="line">[root@hadoop ~]<span class="comment"># systemctl status httpd</span></span><br><span class="line">● httpd.service - The Apache HTTP Server</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since 四 <span class="number">2019</span>-<span class="number">11</span>-<span class="number">21</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">35</span> CST; <span class="number">18</span>s ago</span><br><span class="line">     Docs: man:httpd(<span class="number">8</span>)</span><br><span class="line">           man:apachectl(<span class="number">8</span>)</span><br><span class="line"> Main PID: <span class="number">9968</span> (httpd)</span><br><span class="line">   Status: <span class="string">"Total requests: 0; Current requests/sec: 0; Current traffic:   0 B/sec"</span></span><br><span class="line">   CGroup: /system.slice/httpd.service</span><br><span class="line">           ├─<span class="number">9968</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line">           ├─<span class="number">9969</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line">           ├─<span class="number">9970</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line">           ├─<span class="number">9971</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line">           ├─<span class="number">9972</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line">           └─<span class="number">9973</span> /usr/sbin/httpd -DFOREGROUND</span><br><span class="line"></span><br><span class="line"><span class="number">11</span>月 <span class="number">21</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">35</span> hadoop systemd[<span class="number">1</span>]: Starting The Apache HTTP Server...</span><br><span class="line"><span class="number">11</span>月 <span class="number">21</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">35</span> hadoop httpd[<span class="number">9968</span>]: AH00558: httpd: Could not reliably determine the server<span class="string">'s fully qualified domain nam...message</span></span><br><span class="line"><span class="string">11月 21 16:23:35 hadoop systemd[1]: Started The Apache HTTP Server.</span></span><br><span class="line"><span class="string">Hint: Some lines were ellipsized, use -l to show in full.</span></span><br><span class="line"><span class="string">[root@hadoop ~]# </span></span><br><span class="line"><span class="string">[root@hadoop ~]# ps -ef|grep http</span></span><br><span class="line"><span class="string">root       9968      1  0 16:23 ?        00:00:00 /usr/sbin/httpd -DFOREGROUND</span></span><br><span class="line"><span class="string">[root@hadoop ~]# netstat -nlp | grep 9968</span></span><br><span class="line"><span class="string">tcp6       0      0 :::80                   :::*                    LISTEN      9968/httpd </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">http://自己机器的ip:80/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">http协议  80</span></span><br><span class="line"><span class="string">https协议 443 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">4、场景： 在centos部署大数据组件，发现一个错误 Connection refused  防火墙 web  iptables</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">（1）ping ip 测试ip</span></span><br><span class="line"><span class="string">（2）telnet ip port 测试ip和端口号 </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">部署telnet命令</span></span><br><span class="line"><span class="string">	window  cmd黑窗口 不带 telnet命令 ，需要去安装一下（见下图） 重启电脑</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">	Linux </span></span><br><span class="line"><span class="string">		[root@hadoop ~]# yum install -y telnet</span></span><br><span class="line"><span class="string">		[root@hadoop ~]# which telnet </span></span><br><span class="line"><span class="string">		/usr/bin/telnet</span></span><br><span class="line"><span class="string">		[root@hadoop  ~]# telnet ip 端口号</span></span><br></pre></td></tr></table></figure>
+<p><img src="2019112116280399.png" alt=""></p>
+<h1 id="高危命令"><a href="#高危命令" class="headerlink" title="高危命令"></a>高危命令</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /</span><br><span class="line"></span><br><span class="line">vi编辑生产配置文件的时候 <span class="number">100</span>行 进行备份保存==》 cp xxx.xml xxx.xml20191117</span><br><span class="line"></span><br><span class="line">ps 进程 xxx，top命令查询夯住的 / 删除xxx进程</span><br><span class="line">kill -<span class="number">9</span> 进程pid</span><br><span class="line">kill -<span class="number">9</span> 进程pid 进程pid 进程pid</span><br><span class="line">kill -<span class="number">9</span> $(pgrep -f 匹配关键词) </span><br><span class="line"></span><br><span class="line">杀进程之前，先ps 找到相关的进程，搞清楚，哪些是你要杀的，不然造成生产事故</span><br></pre></td></tr></table></figure>
+<h1 id="yum安装软件-和-wget安装软件"><a href="#yum安装软件-和-wget安装软件" class="headerlink" title="yum安装软件 和 wget安装软件"></a>yum安装软件 和 wget安装软件</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]<span class="comment"># yum search xxx</span></span><br><span class="line">[root@hadoop ~]<span class="comment"># yum install -y xxx-yyy</span></span><br><span class="line">[root@hadoop ~]<span class="comment"># yum remove xxx-yyy</span></span><br><span class="line"></span><br><span class="line">wget 网址</span><br><span class="line">比如</span><br><span class="line">[root@hadoop ~]<span class="comment"># wget http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2.tar.gz</span></span><br></pre></td></tr></table></figure>
+<h1 id="压缩解压"><a href="#压缩解压" class="headerlink" title="压缩解压"></a>压缩解压</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">zip</span><br><span class="line">zip -r xxx.zip ./*  在文件夹里面 </span><br><span class="line">zip -r xxx.zip AAA/* 在外面</span><br><span class="line"></span><br><span class="line">unzip xxx.zip</span><br><span class="line"></span><br><span class="line">大数据组件的压缩包几乎都是后缀 tar.gz</span><br><span class="line">tar -xzvf hadoop-2.6.0-cdh5.16.2.tar.gz</span><br><span class="line">tar -czvf hadoop-2.6.0-cdh5.16.2.tar.gz  hadoop-2.6.0-cdh5.16.2/*</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Examples:</span><br><span class="line">  tar -cf archive.tar foo bar  <span class="comment"># Create archive.tar from files foo and bar.</span></span><br><span class="line">  tar -tvf archive.tar         <span class="comment"># List all files in archive.tar verbosely.</span></span><br><span class="line">  tar -xf archive.tar          <span class="comment"># Extract all files from archive.tar.</span></span><br></pre></td></tr></table></figure>
+
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Linux]04 大数据常用命令 四/" data-toggle="tooltip" data-placement="top" title="[Linux]04 大数据常用命令 四">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Linux]02 大数据常用命令 二/" data-toggle="tooltip" data-placement="top" title="[Linux]02 大数据常用命令 二">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#etc-passwd文件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">/etc/passwd文件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#权限"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">权限</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看文件目录大小"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">查看文件目录大小</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#搜索-find"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">搜索 find</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#vim-vi命令"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">vim / vi命令</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#vim-vi-编辑文件异常"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">vim / vi 编辑文件异常</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#系统命令"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">系统命令</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#查看进程-查看端口号"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">查看进程 查看端口号</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#高危命令"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">高危命令</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#yum安装软件-和-wget安装软件"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">yum安装软件 和 wget安装软件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#压缩解压"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">压缩解压</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="XXX" target="_blank">CSDN Blog 李玉坤</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2019 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

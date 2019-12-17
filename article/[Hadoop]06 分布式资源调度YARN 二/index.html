@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Hadoop]06 分布式资源调度YARN 二 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]06 分布式资源调度YARN 二/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                            
+                        </div>
+                        <h1>[Hadoop]06 分布式资源调度YARN 二</h1>
+                        <h2 class="subheading">执行流程、调度器</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-04-11
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="YARN执行流程"><a href="#YARN执行流程" class="headerlink" title="YARN执行流程"></a>YARN执行流程</h1><p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<ol>
+<li>用户向yarn提交一个作业</li>
+<li>RM为该作业分配第一个container(AM)</li>
+<li>RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM</li>
+<li>AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM</li>
+<li>AM申请到资源以后，便和相应的NM通信，要求NM启动任务，任务都是以Container方式运行的。</li>
+<li>NM启动我们作业对应的task；有几个task就启动几个Container</li>
+<li>任务开始计算进入MapReduce阶段<h2 id="分步流程图"><a href="#分步流程图" class="headerlink" title="分步流程图"></a>分步流程图</h2>1、client将程序打包提交到RM运行。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>2、RM找一台空闲的机器启动一个Container，为了启动AM（一个Container启动一个AM）。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>3、Container进而启动AM，每来一个作业都会启动一个AM<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>4、AM向RM汇报已到位，开始切分任务启动多少个map和reduce所需要的资源，封装成ResourceRequest对象来提交给RM；RM获取对象后并如果资源不够不会立刻给出所有资源，因为集群是繁忙的，当前可能只有20g的空闲内存，RM会慢慢收集其他作业释放的资源，直到100G。（如何解决这个等待策略，可以通过优先级来解决）<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>5、当RM把资源分配个AM的时候，当前的AM就可以启动当前任务；联系有空闲资源的nodemanager来完成任务；把请求封装到COntainerLaunchContext对象里传递给NodeManager。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>6、NodeManager接受到请求之后就会把Container启动起来。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>7、运行当前的Task<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br>8、因为有若干个map，所以ApplicationMaster向空闲的NodeManager会继续申请资源。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>9、task里运行的map还是reduce都是由AM来指挥的。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br>10、每个task会以心跳机制来向ApplicationMaster来汇报作业当前的运行情况。有特别情况会进行重启，或者进行全部作业重启，这些都是ApplicationMaster来管理的。<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""><h2 id="Yarn各个组件之间的心跳信号"><a href="#Yarn各个组件之间的心跳信号" class="headerlink" title="Yarn各个组件之间的心跳信号"></a>Yarn各个组件之间的心跳信号</h2></li>
+</ol>
+<ul>
+<li>Application Master与Resource Manager心跳<ul>
+<li>AM-&gt;RM<ul>
+<li>对Container的资源需求（CPU和Memory）和优先级</li>
+<li>已用完等待回收的Container列表</li>
+</ul>
+</li>
+<li>RM-&gt;AM<ul>
+<li>新申请到的Container</li>
+<li>已完成Container的状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Application Master与Node Manager心跳<ul>
+<li>AM -&gt; NM<ul>
+<li>发起启动Container请求</li>
+</ul>
+</li>
+<li>NM -&gt; AM<ul>
+<li>汇报Container状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Node Manager与Resource Manager心跳<ul>
+<li>NM-&gt;RM<ul>
+<li>Node Manager上所有的Container状态</li>
+</ul>
+</li>
+<li>RM-&gt;NM<ul>
+<li>已删除和等待清理的Container列表<h2 id="Yarn资源隔离策略"><a href="#Yarn资源隔离策略" class="headerlink" title="Yarn资源隔离策略"></a>Yarn资源隔离策略</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内存资源隔离<ul>
+<li>基于线程监控方案（优点：如果瞬间超过设定上限不会立马被kill掉）</li>
+<li>基于cgroups（linux里的资源轻量级方案，如果超过上限会立马被kill掉）</li>
+</ul>
+</li>
+<li>CPU资源隔离<ul>
+<li>默认不对CPU资源进行隔离</li>
+<li>基于cgroups</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<h2 id="Yarn容错处理"><a href="#Yarn容错处理" class="headerlink" title="Yarn容错处理"></a>Yarn容错处理</h2><ul>
+<li>失败类型<ul>
+<li>程序失败 进程奔溃 硬件问题</li>
+</ul>
+</li>
+<li>如果作业失败了<ul>
+<li>作业异常均会汇报给Application Master</li>
+<li>通过心跳信号检查挂住的任务</li>
+<li>一个作业的任务失败比例超过配置，就会认为该任务失败</li>
+</ul>
+</li>
+<li>如果Application Master失败了<ul>
+<li>Resource Manager接收不到心跳信号时会重启Application Master</li>
+</ul>
+</li>
+<li>如果Node Manager失败了<ul>
+<li>Resource Manager接收不到心跳信号时会将其移出</li>
+<li>Resource Manager通知Application Master，让Application Master决定任务如何处理</li>
+<li>如果某个Node Manager失败任务次数过多，Resource Manager调度任务时不再其上面运行任务</li>
+</ul>
+</li>
+<li>如果Resource Manager运行失败<ul>
+<li>通过checkpoint机制，定时将其状态保存到磁盘，失败的时候，重新运行</li>
+<li>通过Zookeeper同步状态和实现透明的HA<h1 id="Yarn调度器和调度算法"><a href="#Yarn调度器和调度算法" class="headerlink" title="Yarn调度器和调度算法"></a>Yarn调度器和调度算法</h1></li>
+</ul>
+</li>
+<li>集群资源调度器需要解决：<ul>
+<li>多租户(Multi-tenancy)：<ul>
+<li>多用户同时提交多种应用程序</li>
+<li>资源调度器需要解决如何合理分配资源。</li>
+</ul>
+</li>
+<li>可扩展性(Scalability)：增加集群机器的数量可以提高整体集群性能。</li>
+</ul>
+</li>
+<li>Yarn使用队列解决多租户中共享资源的问题</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<ul>
+<li>支持三种资源调度器<ul>
+<li>FIFO</li>
+<li>Capacity Scheduler</li>
+<li>Fair Scheduler<h2 id="FIFO调度器"><a href="#FIFO调度器" class="headerlink" title="FIFO调度器"></a>FIFO调度器</h2></li>
+</ul>
+</li>
+<li>所有向集群提交的作业使用一个队列</li>
+<li>根据提交作业的顺序来运行（先来先服务）</li>
+<li>优点：<ul>
+<li>简单易懂</li>
+<li>可以按照作业优先级调度</li>
+</ul>
+</li>
+<li>缺点：<ul>
+<li>资源利用率不高</li>
+<li>不允许抢占<h2 id="Capacity-Scheduler资源调度器"><a href="#Capacity-Scheduler资源调度器" class="headerlink" title="Capacity Scheduler资源调度器"></a>Capacity Scheduler资源调度器</h2></li>
+</ul>
+</li>
+<li>设计思想：<ul>
+<li>资源按照比例分配给各个队列</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+<ul>
+<li>特点<ul>
+<li>计算能力保证<ul>
+<li>以队列为单位划分资源，每个队列最低资源保证。</li>
+</ul>
+</li>
+<li>灵活性<ul>
+<li>当某个队列空闲时，其资源可以分配给其他的队列使用。</li>
+</ul>
+</li>
+<li>支持优先级<ul>
+<li>单个队列内部使用FIFO，支持作业优先级调度</li>
+</ul>
+</li>
+<li>多租户<ul>
+<li>综合考虑多种因素防止单个作业、用户或者队列独占资源。</li>
+<li>每个队列可以配置一定比例的最低资源配置和使用上限。</li>
+<li>每个队列有严格的访问控制，只能向自己的队列提交任务。</li>
+</ul>
+</li>
+<li>基于资源的调度<ul>
+<li>支持内存资源调度和CPU资源的调度。</li>
+</ul>
+</li>
+<li>支持抢占（从2.8.0版本开始）<h3 id="Capacity-Scheduler配置"><a href="#Capacity-Scheduler配置" class="headerlink" title="Capacity Scheduler配置"></a>Capacity Scheduler配置</h3><img src="%E5%9B%BE%E7%89%8715.png" alt=""><h3 id="Capacity-Scheduler资源分配算法"><a href="#Capacity-Scheduler资源分配算法" class="headerlink" title="Capacity Scheduler资源分配算法"></a>Capacity Scheduler资源分配算法</h3></li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>选择队列<br>• 从根队列开始，使用深度优先算法找出资源占用率最低的叶子队列</li>
+<li>选择作业<br>• 默认按照作业优先级和提交时间顺序选择</li>
+<li>选择Container<br>• 取该作业中最高优先级的Container，如果优先级相同会选择满足本地性的Container：Node Local &gt;Rack Local &gt; Different Rack</li>
+</ol>
+<p><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
+<h2 id="Fair-Scheduler资源调度器"><a href="#Fair-Scheduler资源调度器" class="headerlink" title="Fair Scheduler资源调度器"></a>Fair Scheduler资源调度器</h2><ul>
+<li>设计思想<ul>
+<li>资源公平分配</li>
+</ul>
+</li>
+<li>具有与Capacity Scheduler相似的特点<ul>
+<li>树状队列</li>
+<li>每个队列有独立的最小资源保证</li>
+<li>空闲时可以分配资源给其他队列使用</li>
+<li>支持内存资源调度和CPU资源调度</li>
+<li>支持抢占</li>
+</ul>
+</li>
+<li>不同点<ul>
+<li>核心调度策略不同<ul>
+<li>Capacity Scheduler优先选择资源利用率低的队列</li>
+<li>公平调度器考虑的是公平，公平体现在作业对资源的缺额</li>
+</ul>
+</li>
+<li>单独设置队列间资源分配方式<ul>
+<li>FAIR（默认used memory/min share）</li>
+<li>DRF（主资源公平调度）</li>
+</ul>
+</li>
+<li>单独设置队列内部资源分配方式<ul>
+<li>FAIR DRF FIFO<h3 id="Fair-Scheduler-FAIR资源分配算法"><a href="#Fair-Scheduler-FAIR资源分配算法" class="headerlink" title="Fair Scheduler - FAIR资源分配算法"></a>Fair Scheduler - FAIR资源分配算法</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>总体流程与Capacity Scheduler一致<ul>
+<li>1.选择队列</li>
+<li>2.选择作业</li>
+<li>3.选择Container</li>
+</ul>
+</li>
+<li>选择选择队列和作业使用公平排序算法<ul>
+<li>实际最小份额<br>minShare = Min(资源需求量，配置minShare）</li>
+<li>是否饥饿<br>isNeedy = 资源使用量&lt; minShare</li>
+<li>资源分配比<br>minShareRatio = 资源使用量/Max(minShare, 1)</li>
+<li>资源使用权重比<br>useToWeightRatio = 资源使用量/权重<br>权重在配置文件中配置</li>
+</ul>
+</li>
+<li>参考 FairShareComparator实现类</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8717.png" alt=""></p>
+<h2 id="Capacity-Scheduler和Fair-Scheduler对比"><a href="#Capacity-Scheduler和Fair-Scheduler对比" class="headerlink" title="Capacity Scheduler和Fair Scheduler对比"></a>Capacity Scheduler和Fair Scheduler对比</h2><p><img src="%E5%9B%BE%E7%89%8718.png" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Hadoop]07 分布式资源调度YARN 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]07 分布式资源调度YARN 三">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Hadoop]05 分布式资源调度YARN 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]05 分布式资源调度YARN 一">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN执行流程"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分步流程图"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">分步流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn各个组件之间的心跳信号"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Yarn各个组件之间的心跳信号</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn资源隔离策略"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Yarn资源隔离策略</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn容错处理"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Yarn容错处理</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn调度器和调度算法"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Yarn调度器和调度算法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#FIFO调度器"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">FIFO调度器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Capacity-Scheduler资源调度器"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Capacity Scheduler资源调度器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Capacity-Scheduler配置"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">Capacity Scheduler配置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Capacity-Scheduler资源分配算法"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Capacity Scheduler资源分配算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Fair-Scheduler资源调度器"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Fair Scheduler资源调度器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Fair-Scheduler-FAIR资源分配算法"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">Fair Scheduler - FAIR资源分配算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Capacity-Scheduler和Fair-Scheduler对比"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Capacity Scheduler和Fair Scheduler对比</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="XXX" target="_blank">CSDN Blog 李玉坤</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2019 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
