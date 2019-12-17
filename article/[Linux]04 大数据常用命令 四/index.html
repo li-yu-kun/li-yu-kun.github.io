@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -241,6 +241,124 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data01/log/</span><br><span class="line">mv  /var/log/hbase /data01/log/</span><br><span class="line">ln -s /data01/log/hbase /var/log/hbase</span><br></pre></td></tr></table></figure>
 <p><strong>注意：</strong> 权限问题chmod chown，因为移动的时候会发生权限变更（软连接文件夹和源文件夹都要进行修改）</p>
 <p>1、如果不记得移动后的权限，可以参考另一台节点的相对目录来设置权限<br>2、实在懒得比对就全改为777</p>
+<h1 id="修改机器名称"><a href="#修改机器名称" class="headerlink" title="修改机器名称"></a>修改机器名称</h1><pre><code class="shell">centos7.x
+[root@JD ~]# hostnamectl
+   Static hostname: JD
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 983e7d6ed0624a2499003862230af382
+           Boot ID: c78cf2bffbea43d8a88110b3b8fa0c5f
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-327.el7.x86_64
+      Architecture: x86-64
+[root@JD ~]# hostnamectl --help
+hostnamectl [OPTIONS...] COMMAND ...
+
+Query or change system hostname.
+
+  -h --help              Show this help
+     --version           Show package version
+     --no-ask-password   Do not prompt for password
+  -H --host=[USER@]HOST  Operate on remote host
+  -M --machine=CONTAINER Operate on local container
+     --transient         Only set transient hostname
+     --static            Only set static hostname
+     --pretty            Only set pretty hostname
+
+Commands:
+  status                 Show current hostname settings
+  set-hostname NAME      Set system hostname
+  set-icon-name NAME     Set icon name for host
+  set-chassis NAME       Set chassis type for host
+  set-deployment NAME    Set deployment environment for host
+  set-location NAME      Set location for host
+
+[root@JD ~]# hostnamectl set-hostname hadoop001
+
+[root@hadoop001 ~]# cat /etc/hostname 
+hadoop001
+
+[root@hadoop001 ~]# vi /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+192.168.0.3 hadoop001</code></pre>
+<h1 id="jps真正使用"><a href="#jps真正使用" class="headerlink" title="jps真正使用"></a>jps真正使用</h1><h2 id="位置在哪"><a href="#位置在哪" class="headerlink" title="位置在哪"></a>位置在哪</h2><pre><code class="bash">[hadoop@hadoop001 ~]$ <span class="built_in">which</span> jps
+/usr/java/jdk1.8.0_45/bin/jps
+[hadoop@hadoop001 ~]$ 
+
+[hadoop@hadoop001 ~]$ jps
+2594 NameNode
+2724 DataNode
+3061 ResourceManager
+3173 NodeManager
+3526 Jps
+2879 SecondaryNameNode
+[hadoop@hadoop001 ~]$ jps --<span class="built_in">help</span>
+illegal argument: --<span class="built_in">help</span>
+usage: jps [-<span class="built_in">help</span>]
+       jps [-q] [-mlvV] [&lt;hostid&gt;]
+
+Definitions:
+    &lt;hostid&gt;:      &lt;hostname&gt;[:&lt;port&gt;]
+[hadoop@hadoop001 ~]$ jps -l
+2594 org.apache.hadoop.hdfs.server.namenode.NameNode
+2724 org.apache.hadoop.hdfs.server.datanode.DataNode
+3061 org.apache.hadoop.yarn.server.resourcemanager.ResourceManager
+3173 org.apache.hadoop.yarn.server.nodemanager.NodeManager
+3610 sun.tools.jps.Jps
+2879 org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode
+[hadoop@hadoop001 ~]$ </code></pre>
+<h2 id="对应的进程的标识文件在哪？"><a href="#对应的进程的标识文件在哪？" class="headerlink" title="对应的进程的标识文件在哪？"></a>对应的进程的标识文件在哪？</h2><pre><code class="bash"><span class="comment"># 可以进入这个文件夹查看jps得出的进程号对应的详情文件</span>
+[root@hadoop001 tmp]<span class="comment"># ll</span>
+drwxr-xr-x 2 hadoop  hadoop  61 Nov 30 21:23 hsperfdata_hadoop
+
+进程是 hadoop启动的 默认存储在 /tmp/hsperfdata_username</code></pre>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>查询 pid 进程名称</p>
+<h2 id="process-information-unavailable-CDH"><a href="#process-information-unavailable-CDH" class="headerlink" title="process information unavailable  CDH"></a>process information unavailable  CDH</h2><p>进程所属的用户 去执行 jps命令，只显示自己的相关的进程信息</p>
+<p>root用户 看所有的，但是显示不可用：process information unavailable</p>
+<p>真假判断 : </p>
+<pre><code class="bash"><span class="comment"># 判断显示为process information unavailable 是否真的不可用</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 31488 </span>
+root       5291   3912  0 21:32 pts/1    00:00:00 grep --color=auto 31488
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># </span>
+
+<span class="comment">#自己过滤自己 count为0</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 31488 | grep -v grep | wc -l</span>
+0
+<span class="comment">#查看一个可用的进程，自己过滤自己 count为1</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 2594 | grep -v grep | wc -l</span>
+1
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># </span></code></pre>
+<h2 id="jps查看文件-不影响-进程的启动和停止"><a href="#jps查看文件-不影响-进程的启动和停止" class="headerlink" title="jps查看文件 不影响 进程的启动和停止"></a>jps查看文件 不影响 进程的启动和停止</h2><p>jps看的就是文件的记录，如果讲文件mv移走，jps是看不出来进程是否有问题（实际mv走文件，进程本身无问题）</p>
+<p>建议使用ps来查看进程，特别是脚本中。</p>
+<h2 id="Linux机制-oom-kill机制"><a href="#Linux机制-oom-kill机制" class="headerlink" title="Linux机制 oom-kill机制"></a>Linux机制 oom-kill机制</h2><p>free -m 查看机器的内存情况</p>
+<p>某个进程 memory 使用过高，机器为了保护自己，放置夯住，去杀死内存使用最多的进程。<br>比如 5806   kill</p>
+<p>kill log info 断了  cat log找error是找不到的<br>VM 2G CDH mysql+server ok 挂了 </p>
+<p>意识到:<br>以后进程挂了–》log位置–》error:<br>有error具体分析；<br>没 想到oom机制</p>
+<p>free -m<br>cat /var/log/messages | grep oom</p>
+<h2 id="Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件"><a href="#Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件" class="headerlink" title="Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件"></a>Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件</h2><pre><code class="bash">[root@hadoop001 tmp]<span class="comment"># cat yarn-hadoop-nodemanager.pid</span>
+7855
+[root@hadoop001 tmp]<span class="comment"># </span>
+
+<span class="comment">#建议调整sh执行文件下的PID目录，不要把大数据任何目录放入tmp</span>
+[hadoop@hadoop001 hadoop]$ vi hadoop-env.sh
+<span class="built_in">export</span> HADOOP_PID_DIR=/home/hadoop/tmp
+
+[hadoop@hadoop001 hadoop]$ cat yarn-env.sh
+<span class="built_in">export</span> YARN_PID_DIR=/home/hadoop/tmp
+
+[hadoop@hadoop001 ~]$ <span class="built_in">cd</span> tmp
+[hadoop@hadoop001 tmp]$ ll
+total 20
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-datanode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-namenode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-secondarynamenode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:03 yarn-hadoop-nodemanager.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:02 yarn-hadoop-resourcemanager.pid
+[hadoop@hadoop001 tmp]$ </code></pre>
 
                 
 
@@ -304,7 +422,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度工具crontab"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">调度工具crontab</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#后台执行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">后台执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#软连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">软连接</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度工具crontab"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">调度工具crontab</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#后台执行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">后台执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#软连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">软连接</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#修改机器名称"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">修改机器名称</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#jps真正使用"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">jps真正使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#位置在哪"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">位置在哪</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对应的进程的标识文件在哪？"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">对应的进程的标识文件在哪？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#作用"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">作用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#process-information-unavailable-CDH"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">process information unavailable  CDH</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#jps查看文件-不影响-进程的启动和停止"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">jps查看文件 不影响 进程的启动和停止</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Linux机制-oom-kill机制"><span class="toc-nav-number">5.6.</span> <span class="toc-nav-text">Linux机制 oom-kill机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件"><span class="toc-nav-number">5.7.</span> <span class="toc-nav-text">Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件</span></a></li></ol></li></ol>
         
         </div>
       </aside>
