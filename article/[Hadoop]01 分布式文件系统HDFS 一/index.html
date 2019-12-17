@@ -252,7 +252,7 @@
 <li>以pipeline方式写入；以packet(里面还有chunk数据单元（chunk里又check sum）)形式写入；ack机制往上一层一层汇报写完一个chunk（以chunk为单元进行校验）。</li>
 </ol>
 <p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
-<h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>HDFS有主从架构。HDFS集群由一个NameNode组成，它是一个主服务器，管理文件系统名称空间并管理客户机对文件的访问。此外，还有许多datanode，通常每个节点一个，管理连接到它们运行的节点的存储。HDFS公开一个文件系统名称空间，并允许用户数据存储在文件中。在内部，文件被分割成一个或多个块，这些块存储在一组数据节点（datanode）中。NameNode执行文件系统操作，如打开、关闭和重命名文件和目录。它还确定块到datanode的映射。datanode负责服务来自文件系统客户端的读写请求。根据NameNode的指令，datanode还执行块的创建、删除和复制。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>上图中</p>
+<h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="%E5%9B%BE%E7%89%8711.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>HDFS有主从架构。HDFS集群由一个NameNode组成，它是一个主服务器，管理文件系统名称空间并管理客户机对文件的访问。此外，还有许多datanode，通常每个节点一个，管理连接到它们运行的节点的存储。HDFS公开一个文件系统名称空间，并允许用户数据存储在文件中。在内部，文件被分割成一个或多个块，这些块存储在一组数据节点（datanode）中。NameNode执行文件系统操作，如打开、关闭和重命名文件和目录。它还确定块到datanode的映射。datanode负责服务来自文件系统客户端的读写请求。根据NameNode的指令，datanode还执行块的创建、删除和复制。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>上图中</p>
 <ul>
 <li>1 个Master(NameNode/NN)  带 N个Slaves(DataNode/DN)<br>HDFS/YARN/HBase其实都是一样的</li>
 <li>1个文件会被拆分成多个Block理解为：<br>blocksize：128M<br>130M ==&gt; 2个Block： 128M 和 2M<blockquote>
@@ -262,7 +262,11 @@
 </li>
 </ul>
 <p>一个典型的部署是一台机器运行一个namenade，集群中的其他机器都运行一个DataNode。该体系结构不排除在同一台机器上运行多个DataNode<br>但在实际部署中却很少出现这种情况。</p>
-<h2 id="namenode深入"><a href="#namenode深入" class="headerlink" title="namenode深入"></a>namenode深入</h2><p>作用：</p>
+<h2 id="datanode深入"><a href="#datanode深入" class="headerlink" title="datanode深入"></a>datanode深入</h2><p>存储: 数据块 和 数据块校验和<br>与NN通信:<br>    a.每隔3s发送心跳包给 nn，我还活者<br>    dfs.heartbeat.interval 3</p>
+<pre><code>b.每隔一定的时间发生一次 blockreport
+dfs.blockreport.intervalMsec  21600000ms=6h
+
+dfs.datanode.directoryscan.interval 21600s=6h</code></pre><h2 id="namenode深入"><a href="#namenode深入" class="headerlink" title="namenode深入"></a>namenode深入</h2><p>作用：</p>
 <ul>
 <li>Namespace管理：负责管理文件系统中的树状目录结构以及文件与数据块的映射关系</li>
 <li>块信息管理：负责管理文件系统中文件的物理块与实际存储位置的映射关系BlocksMap</li>
@@ -300,6 +304,18 @@
 <li>hdfs dfsadmin -safemode leave：强制离开安全模式</li>
 <li>hdfs dfsadmin -safemode wait：一直等待直到安全模式结束</li>
 </ul>
+<h2 id="SecondaryNamenode深入"><a href="#SecondaryNamenode深入" class="headerlink" title="SecondaryNamenode深入"></a>SecondaryNamenode深入</h2><ul>
+<li>存储: fsimage+editlog</li>
+<li>作用: 定期合并 fsimage+editlog文件作为新的fsimage，推送给NN，</li>
+<li>简称为checkpoint 检查点<br>dfs.namenode.checkpoint.period 3600s<br>dfs.namenode.checkpoint.txns 1000000</li>
+</ul>
+<p>为了解决单点故障，只有NN，后来加了一个SNN角色 1小时的备份机制<br>虽然能够减轻单点故障，但是还会有风险，那40分元数据是恢复不了</p>
+<p>案例：<br> 1 2 3 4  全备份 fsimage1<br> 5 6      edit1<br> checkpoint1 ： fsimage1+edit1==&gt;fsimage2</p>
+<p> fsimage2推送给nn<br> fsimage2<br> 7 8  edit2<br> checkpoint2 ： fsimage2+edit2==&gt;fsimage3<br> edit3</p>
+<p>NN下的文件<br>edits_0000000000000000306-0000000000000000307<br>edits_0000000000000000308-0000000000000000324<br>edits_inprogress_0000000000000000325<br>fsimage_0000000000000000307<br>fsimage_0000000000000000307.md5<br>fsimage_0000000000000000324<br>fsimage_0000000000000000324.md5</p>
+<p>SNN下的文件<br>edits_0000000000000000302-0000000000000000303<br>edits_0000000000000000304-0000000000000000305<br>edits_0000000000000000306-0000000000000000307<br>edits_0000000000000000308-0000000000000000324<br>fsimage_0000000000000000307<br>fsimage_0000000000000000307.md5<br>fsimage_0000000000000000324<br>fsimage_0000000000000000324.md5</p>
+<p>如何合并：<br>fsimage_0000000000000000307 + edits_0000000000000000308-0000000000000000324<br>==&gt;fsimage_0000000000000000324</p>
+<p>如图：<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br>1.roll edit<br>2.传输 fsimage+edits<br>3.merge<br>4.传输 fsimage.ckpt to nn<br>5.回滚 fsimage.ckpt==》fsimage<br>       edit.new==&gt;  edit</p>
 <h2 id="HDFS-HA"><a href="#HDFS-HA" class="headerlink" title="HDFS HA"></a>HDFS HA</h2><ul>
 <li>Datanode: 通过数据冗余保证数据的可用性</li>
 <li>Namenode: 在2.0以前存在SPOF风险，从2.0之后：</li>
@@ -382,7 +398,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS概述及设计目标"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS概述及设计目标</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HDFS"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS前提和设计目标"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HDFS前提和设计目标</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-构成及工作原理解析"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS 构成及工作原理解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本构成"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">基本构成</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据读写过程"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">数据读写过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集群架构"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">集群架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#namenode深入"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">namenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS-HA"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">HDFS HA</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-列式与行式存储"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">HDFS文件类型-列式与行式存储</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-常用文件类型"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">HDFS文件类型-常用文件类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-如何使用？"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">HDFS文件类型-如何使用？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS副本机制"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS副本机制</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS概述及设计目标"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS概述及设计目标</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是HDFS"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">什么是HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS前提和设计目标"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HDFS前提和设计目标</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-构成及工作原理解析"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS 构成及工作原理解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#基本构成"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">基本构成</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据读写过程"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">数据读写过程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#集群架构"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">集群架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#datanode深入"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">datanode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#namenode深入"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">namenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SecondaryNamenode深入"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">SecondaryNamenode深入</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS-HA"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">HDFS HA</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-列式与行式存储"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">HDFS文件类型-列式与行式存储</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-常用文件类型"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">HDFS文件类型-常用文件类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS文件类型-如何使用？"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">HDFS文件类型-如何使用？</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS副本机制"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS副本机制</span></a></li></ol>
         
         </div>
       </aside>
