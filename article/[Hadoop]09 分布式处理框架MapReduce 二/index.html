@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -239,9 +239,9 @@
 <li>一旦App Master拿到资源，就对应的与NM通信，要求启动任务</li>
 <li>NM为任务设置好运行环境（jar包等），将任务启动命令写在一个脚本里。并通过该脚本启动任务 task</li>
 <li>各个task通过rpc协议向App Master汇报自己的状态和进度，以此让App Master随时掌握各个task的运行状态。从而在task运行失败重启任务。</li>
-<li>App Master向applications Manager注销且关闭自己<h2 id="MapReduce-容错性"><a href="#MapReduce-容错性" class="headerlink" title="MapReduce 容错性"></a>MapReduce 容错性</h2></li>
+<li>App Master向applications Manager注销且关闭自己</li>
 </ol>
-<ul>
+<h2 id="MapReduce-容错性"><a href="#MapReduce-容错性" class="headerlink" title="MapReduce 容错性"></a>MapReduce 容错性</h2><ul>
 <li>Case 1. 如果Task运行失败<ul>
 <li>Map Task失败<ul>
 <li>MRAppMaster重启Map Task，Map Task没有依赖性</li>

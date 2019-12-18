@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -224,7 +224,7 @@
 </ul>
 <h2 id="HDFS前提和设计目标"><a href="#HDFS前提和设计目标" class="headerlink" title="HDFS前提和设计目标"></a>HDFS前提和设计目标</h2><ul>
 <li>存储超大文件<br>HDFS适合存储大文件，单个文件大小通常在百MB以上<br>HDFS适合存储海量文件，总存储量可达PB,EB级</li>
-<li>硬件容错<br>基于普通机器搭建，硬件错误是常态而不是异常，因此错误检测和快速、自<br>动的恢复是HDFS最核心的架构目标</li>
+<li>硬件容错<br>基于普通机器搭建，硬件错误是常态而不是异常，因此错误检测和快速、自动的恢复是HDFS最核心的架构目标</li>
 <li>流式数据访问<br>为数据批处理而设计，关注数据访问的高吞吐量</li>
 <li>简单的一致性模型<br>一次写入，多次读取<br>一个文件经过创建、写入和关闭之后就不需要改变</li>
 <li>本地计算<br>将计算移动到数据附近</li>
@@ -250,7 +250,7 @@
 <li>Client调用FSDataOutputStream对象的write()方法，<br>先将第一块的第一个副本写到第一个DN，第一个副本写完；<br>就传输给第二个DN，第二个副本写完；<br>就传输给第三个DN，第三个副本写完。</li>
 <li>就返回一个ack packet确认包给第二个DN，第二个DN接收到<br>第三个的ack  packet确认包加上自身ok，就返回一个ack  packet确认包<br>给第一个DN，第一个DN接收到<br>第二个DN的ack  packet确认包加上自身ok，就返回ack  packet确认包<br>给FSDataOutputStream对象，标志第一个块 3个副本写完。</li>
 <li>然后余下的块依次这样写；</li>
-<li>当向文件写入数据完成后，<br>Client调用FSDataOutputStream.close()方法，关闭输出流。</li>
+<li>当向文件写入数据完成后，Client调用FSDataOutputStream.close()方法，关闭输出流。</li>
 <li>再调用FileSystem.complete()方法，告诉NN该文件写入成功。</li>
 </ul>
 <p>补充：</p>
@@ -271,12 +271,12 @@
 <h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="%E5%9B%BE%E7%89%8711.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>HDFS有主从架构。HDFS集群由一个NameNode组成，它是一个主服务器，管理文件系统名称空间并管理客户机对文件的访问。此外，还有许多datanode，通常每个节点一个，管理连接到它们运行的节点的存储。HDFS公开一个文件系统名称空间，并允许用户数据存储在文件中。在内部，文件被分割成一个或多个块，这些块存储在一组数据节点（datanode）中。NameNode执行文件系统操作，如打开、关闭和重命名文件和目录。它还确定块到datanode的映射。datanode负责服务来自文件系统客户端的读写请求。根据NameNode的指令，datanode还执行块的创建、删除和复制。<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>上图中</p>
 <ul>
 <li>1 个Master(NameNode/NN)  带 N个Slaves(DataNode/DN)<br>HDFS/YARN/HBase其实都是一样的</li>
-<li>1个文件会被拆分成多个Block理解为：<br>blocksize：128M<br>130M ==&gt; 2个Block： 128M 和 2M<blockquote>
+<li>1个文件会被拆分成多个Block理解为：<br>blocksize：128M<br>130M ==&gt; 2个Block： 128M 和 2M</li>
+</ul>
+<blockquote>
 <p>NN：<br>1）负责客户端请求的响应<br>2）负责元数据（文件的名称、副本系数、Block存放的DN）的管理</p>
 <p>DN：<br>1）存储用户的文件对应的数据块(Block)<br>2）要定期向NN发送心跳信息，汇报本身及其所有的block信息，健康状况</p>
 </blockquote>
-</li>
-</ul>
 <p>一个典型的部署是一台机器运行一个namenade，集群中的其他机器都运行一个DataNode。该体系结构不排除在同一台机器上运行多个DataNode<br>但在实际部署中却很少出现这种情况。</p>
 <h2 id="datanode深入"><a href="#datanode深入" class="headerlink" title="datanode深入"></a>datanode深入</h2><p>存储: 数据块 和 数据块校验和与NN通信: </p>
 <ul>
