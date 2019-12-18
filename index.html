@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -519,31 +519,32 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
+    <a href="/article/[Hadoop]10 分布式处理框架MapReduce 三/">
         <h2 class="post-title">
                                  
-            [Hadoop]07 分布式资源调度YARN 三
+            [Hadoop]10 分布式处理框架MapReduce 三
         </h2>
         <h3 class="post-subtitle">
-            环境搭建、作业执行
+            参数调优、api编程
         </h3>
         <div class="post-content-preview">
-            YARN环境搭建YARN环境搭建
-
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;proper......
+            参数调优Map Task和Reduce Task数目调整
+Map Task数目
+Map读取文件时，通过InputFormat计算分割文件
+split大小由以下三个参数决定
+dfs.blocksize HDFS Block大小
+mapreduce.input.fileinputformat.split.minsize 划分最小字节数
+mapreduce.input.fileinputforma......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-13
+            2017-04-24
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
             
         </div>
     
@@ -597,6 +598,10 @@ yarn-site.xml
         
             
             <a href="/tags/#YARN" title="YARN" rel="3">YARN</a>
+            
+        
+            
+            <a href="/tags/#MapReduce" title="MapReduce" rel="3">MapReduce</a>
             
         
             
@@ -699,7 +704,7 @@ yarn-site.xml
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>

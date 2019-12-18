@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -289,11 +289,17 @@ export PATH=\$JAVA_HOME/bin:$PATH</code></pre><p> 使得环境变量生效： so
 <h4 id="hdfs-balancer"><a href="#hdfs-balancer" class="headerlink" title="hdfs balancer"></a>hdfs balancer</h4><p>参数：</p>
 </li>
 <li><p>-threshold 30 ：判断集群是否平衡的目标参数，每一个 datanode<br>存储使用率和集群总存储使用率的差值的绝对值都应该小于这个阀<br>值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">整体空间占用：30%</span><br><span class="line">threshold： 10</span><br><span class="line">balance之后每个dn的空间占用：20-40%</span><br><span class="line"></span><br><span class="line">dn1：60% ；dn2:10%；dn3:30%</span><br><span class="line">整体：</span><br><span class="line">dn1：40% ；dn2:30%；dn3:30%</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dfs.datanode.balance.bandwidthPerSec 30m 传输的时候带宽30M</p>
+</li>
+<li><p>crontab job 每天凌晨20分调度<br>[hadoop@hadoop001 sbin]$ ./start-balancer.sh -threshold 5</p>
+</li>
+<li><p>一个DN节点的多个磁盘的数据均衡<br><a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html</a><br>1、dfs.disk.balancer.enabled must be set to true in hdfs-site.xml.<br>2、hdfs diskbalancer -plan 执行计划                   生成ruozedata001.plan.json<br>3、hdfs diskbalancer -execute 执行计划.plan.json      执行<br>4、hdfs diskbalancer -query 执行计划                  查询状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">整体空间占用：30%</span><br><span class="line">threshold： 10</span><br><span class="line">balance之后每个dn的空间占用：20-40%</span><br><span class="line"></span><br><span class="line">dn1：60% ；dn2:10%；dn3:30%</span><br><span class="line">整体：</span><br><span class="line">dn1：40% ；dn2:30%；dn3:30%</span><br><span class="line"></span><br><span class="line">什么时候手动或调度执行？</span><br><span class="line">a.新盘加入</span><br><span class="line">b.监控服务器的磁盘剩余空间 小于阈值 10%，发邮件预警  手动执行</span><br><span class="line">配置多磁盘参数 dfs.datanode.data.dir  /data01,/data02,/data03,/data04    comma-delimited（逗号）</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>-include ：执行balance的DN列表</p>
 </li>
-<li><p>dfs.balance.bandwidthPerSec 300MB ：balance工具在运行中所能占用的带宽，设置的过大会影响其他任务</p>
+<li><p>dfs.balance.balance.bandwidthPerSec 300MB ：balance工具在运行中所能占用的带宽，设置的过大会影响其他任务</p>
 </li>
 </ul>
 <p>建议：</p>

@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,102 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]09 分布式处理框架MapReduce 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]09 分布式处理框架MapReduce 二
+        </h2>
+        <h3 class="post-subtitle">
+            源码解析、执行机制
+        </h3>
+        <div class="post-content-preview">
+            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]08 分布式处理框架MapReduce 一/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]08 分布式处理框架MapReduce 一
+        </h2>
+        <h3 class="post-subtitle">
+            概述、场景、编程模型、架构
+        </h3>
+        <div class="post-content-preview">
+            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
+
+源自于Google的MapReduce论文,论文发表于2004年22月
+Hadoop MapReduce是Google MapReduce的克隆版
+MapReduce优点:海量数量离线处理&amp;易开发&am......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-16
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]07 分布式资源调度YARN 三
+        </h2>
+        <h3 class="post-subtitle">
+            环境搭建、作业执行
+        </h3>
+        <div class="post-content-preview">
+            YARN环境搭建YARN环境搭建
+
+mapred-site.xml
+1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
+yarn-site.xml
+1234567891011&lt;proper......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -436,97 +532,6 @@ Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/大数据概述/">
-        <h2 class="post-title">
-                                 
-            大数据概述
-        </h2>
-        <h3 class="post-subtitle">
-            大数据概述
-        </h3>
-        <div class="post-content-preview">
-            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
-大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
-大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-02
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#大数据" title="大数据">大数据</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]04 MySQL常用操作/">
-        <h2 class="post-title">
-                                 
-            [MySQL]04 MySQL常用操作
-        </h2>
-        <h3 class="post-subtitle">
-            MySQL常用操作
-        </h3>
-        <div class="post-content-preview">
-            创建DB user12345create database test01;grant all privileges on *.* to root@'%' identified by 'root';flush privileges;
-
-kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$ mysql -u root......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]03 MySQL其他操作/">
-        <h2 class="post-title">
-                                 
-            [MySQL]03 MySQL其他操作
-        </h2>
-        <h3 class="post-subtitle">
-            触发器、函数、存储过程、视图、联接
-        </h3>
-        <div class="post-content-preview">
-            查询数据库中的存储过程和函数123456789101112方法一:select `name` from mysql.proc where db = 'your_db_name' and `type` = 'PROCEDURE'   //存储过程select `name` from mysql.proc where db = 'your_db_name' and `type` = 'FUNCT......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-31
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -577,6 +582,10 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
         
             
             <a href="/tags/#YARN" title="YARN" rel="3">YARN</a>
+            
+        
+            
+            <a href="/tags/#MapReduce" title="MapReduce" rel="3">MapReduce</a>
             
         
             
@@ -679,7 +688,7 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
