@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]08 八、kettle连接控件 - 李玉坤 | Blog
+          [Hadoop]11 分布式资源调度YARN 四 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]08 八、kettle连接控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]11 分布式资源调度YARN 四/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                             
                         </div>
-                        <h1>[Kettle]08 八、kettle连接控件</h1>
-                        <h2 class="subheading">kettle连接控件</h2>
+                        <h1>[Hadoop]11 分布式资源调度YARN 四</h1>
+                        <h2 class="subheading">生产调优、生产调度器等问题</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-12-02
+                            2017-04-27
                         </span>
                     </div>
                 
@@ -212,17 +212,134 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><strong>连接是转换里面的第八个分类。<br>连接是结果集通过关键字进行连接。</strong><br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="合并记录"><a href="#合并记录" class="headerlink" title="合并记录"></a>合并记录</h1><p>合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。</p>
-<p>需要设置的参数：<br>旧数据来源：旧数据来源的步骤<br>新数据来源：新数据来源的步骤</p>
-<p>标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。</p>
+                <p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br><strong>假设我们有一台物理机器 128G内存 16个core</strong></p>
+<h1 id="生产如何调优Container参数？"><a href="#生产如何调优Container参数？" class="headerlink" title="生产如何调优Container参数？"></a>生产如何调优Container参数？</h1><p>Container：虚拟化的容器   维度 memory+vcore<br>作用是运行task任务</p>
+<ul>
+<li>装完CentOS，消耗内存1G</li>
+<li>系统预览15%-20%内存(包含系统1G内存)，<br>以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间</li>
+<li>此时需要预留内存为：128*20%=25.6G == 预留 26G</li>
+<li>假设只有DN NM节点，余下内存 128-26=102g</li>
+<li>DN=2G、NM=4G；所以剩下102-2-4=96G</li>
+</ul>
+<h2 id="container内存"><a href="#container内存" class="headerlink" title="container内存"></a>container内存</h2><ul>
+<li>可以调优如下：<ul>
+<li>yarn.nodemanager.resource.memory-mb     96G</li>
+<li>yarn.scheduler.minimum-allocation-mb    1G   极限情况下，只有96个container 内存1G</li>
+<li>yarn.scheduler.maximum-allocation-mb    96G  极限情况下，只有1个container 内存96G</li>
+</ul>
+</li>
+<li>container的内存会自动增加，默认1g递增<br>每个container内存范围:1-96个</li>
+</ul>
+<h2 id="container虚拟核"><a href="#container虚拟核" class="headerlink" title="container虚拟核"></a>container虚拟核</h2><ul>
+<li><p>vcore<br>yarn自己引入的，设计初衷是考虑不同节点的CPU的性能不一样，每个CPU的计算能力不一样。<br>比如某个物理CPU是另外一个物理CPU的2倍，这时通过设置第一个物理CPU的虚拟core来弥补这种差异。</p>
+</li>
+<li><p>十年之前：</p>
+<ul>
+<li>第一台机器 强悍 pcore: vcore=1:2</li>
+<li>第二台机器 不强悍 pcore: vcore=1:1</li>
+<li>在xml配置</li>
+</ul>
+</li>
+<li><p>官网默认 yarn.nodemanager.resource.pcores-vcores-multiplier 2</p>
+</li>
+<li><p>目前已无需调整这个参数，因为现在的物理机性能都差不多<br>所有节点  pcore: vcore=1:2</p>
+</li>
+<li><p>物理核:虚拟核 =1:2  此时这台机器有32个vcore</p>
+</li>
+<li><p>可以调优如下：</p>
+<ul>
+<li>yarn.nodemanager.resource.cpu-vcores            32</li>
+<li>yarn.scheduler.minimum-allocation-vcores    1  极限情况下，只有32个container    </li>
+<li>yarn.scheduler.maximum-allocation-vcores    32 极限情况下，只有1个container</li>
+<li>container个数范围为:1-32个</li>
+</ul>
+</li>
+</ul>
+<h2 id="官方建议"><a href="#官方建议" class="headerlink" title="官方建议"></a>官方建议</h2><ul>
+<li>cloudera公司推荐，一个container的vcore最好不要超过5，那么我们设置4</li>
+<li>yarn.scheduler.maximum-allocation-vcores 4   极限情况下，只有8个container</li>
+</ul>
+<h2 id="综合memory-vcore"><a href="#综合memory-vcore" class="headerlink" title="综合memory+vcore"></a>综合memory+vcore</h2><ul>
+<li>首先可以确定 vcore=4 container 8个</li>
+<li>确定内存：<ul>
+<li>yarn.nodemanager.resource.memory-mb     96G</li>
+<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
+<li>yarn.scheduler.maximum-allocation-mb    12G 极限container 8个</li>
+</ul>
+</li>
+<li>确定vcore<ul>
+<li>yarn.nodemanager.resource.cpu-vcores            32</li>
+<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
+<li>yarn.scheduler.maximum-allocation-vcores    4 极限container 8个</li>
+</ul>
+</li>
+<li>8个container 12G 4vcore</li>
+</ul>
+<p>当然当spark计算时内存不够大，这个参数肯定要调大，那么这种理想化的设置个数必然要打破，以memory为主，也就是说可以舍弃部分vcore（也就是调整vcore的个数来改变container的个数）。</p>
+<h2 id="默认规则"><a href="#默认规则" class="headerlink" title="默认规则"></a>默认规则</h2><p>如果不合理规划，按照官网默认参数</p>
+<ul>
+<li>内存<ul>
+<li>yarn.nodemanager.resource.memory-mb     96G</li>
+<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
+<li>yarn.scheduler.maximum-allocation-mb    8G </li>
+<li>12container  12*2=24 浪费了36-24=12个core</li>
+</ul>
+</li>
+<li>vcore<ul>
+<li>yarn.nodemanager.resource.cpu-vcores        32</li>
+<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
+<li>yarn.scheduler.maximum-allocation-vcores    2</li>
+<li>16 container*8g 内存爆掉</li>
+</ul>
+</li>
+</ul>
+<h2 id="假如该节点还有组件"><a href="#假如该节点还有组件" class="headerlink" title="假如该节点还有组件"></a>假如该节点还有组件</h2><p>假如 256G内存 56core，并且有hbase regionserver进程，那么该如何设置？<br>hbase regionserver = 30G</p>
+<p>256*20%=52</p>
+<p>256-2-4-30-52=168</p>
+<p>56/4=14</p>
+<ul>
+<li>首先可以确定 vcore=4 container 14个</li>
+<li>确定内存：<ul>
+<li>yarn.nodemanager.resource.memory-mb     168G</li>
+<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
+<li>yarn.scheduler.maximum-allocation-mb    12 G 极限container 14个</li>
+</ul>
+</li>
+<li>确定vcore<ul>
+<li>yarn.nodemanager.resource.cpu-vcores        56</li>
+<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
+<li>yarn.scheduler.maximum-allocation-vcores    4 极限container 14个</li>
+</ul>
+</li>
+<li>14个container 12G 4vcore</li>
+</ul>
+<h1 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h1><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
 <ol>
-<li>“identical” – 旧数据和新数据一样</li>
-<li>“changed” – 数据发生了变化;</li>
-<li>“new” – 新数据中有而旧数据中没有的记录</li>
-<li>“deleted” –旧数据中有而新数据中没有的记录<br>关键字段：用于定位两个数据源中的同一条记录。<br>比较字段：对于两个数据源中的同一条记录中，指定需要比较的字段。<br>合并后的数据将包括旧数据来源和新数据来源里的所有数据，对于变化的数据，使用新数据代替旧数据，同时在结果里用一个标示字段，来指定新旧数据的比较结果。<br>注意：<br>旧数据和新数据需要事先按照关键字段排序。<br>旧数据和新数据要有相同的字段名称。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><h1 id="记录关联（笛卡尔积）"><a href="#记录关联（笛卡尔积）" class="headerlink" title="记录关联（笛卡尔积）"></a>记录关联（笛卡尔积）</h1>记录关联就是对两个数据流进行笛卡尔积操作。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><h1 id="记录集连接"><a href="#记录集连接" class="headerlink" title="记录集连接"></a>记录集连接</h1>记录集连接就像数据库的左连接、右连接、内连接、外连接。<br>注意：在进行记录集连接之前，应该要对记录集进行排序。<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>例如：从Excel中读取employees和departments数据，进行内关键，左关联，右关联，全关联，把数据保存到Excel</li>
+<li>FIFO 先进先出</li>
 </ol>
-<p>输入：Excel输入<br>转换：排序记录<br>连接：记录集连接<br>输出：Microsoft Excel输出<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+<ul>
+<li>意思就是队列需要等待，如图中job2必须在job1执行完毕之后才可以执行</li>
+</ul>
+<ol start="2">
+<li>Capacity 计算</li>
+</ol>
+<ul>
+<li>官网 <a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html</a></li>
+<li>有一个专门的队列来运行小任务，但是为了小任务专门设置一个队列预先占用一定的集群资源。</li>
+<li>这会导致大任务的执行时间落后FIFO的调度时间</li>
+<li>如图中有一个常置队列B，小作业job2会直接进入queueB和job1同时进行计算</li>
+<li>如果有大作业过来，就会和FIFO一样需要等待queueA中的job执行结束才可以进行</li>
+</ul>
+<ol start="3">
+<li>Fair 公平</li>
+</ol>
+<ul>
+<li>官网：<a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html</a></li>
+<li>如图中，只要资源允许的情况下，job1和job2可以同时执行，无论job是大作业还是小作业</li>
+</ul>
+<p>apache 默认计算:<br>yarn.resourcemanager.scheduler.class<br>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</p>
+<p>CDH 默认公平:<br>web配置  Fair</p>
+<p>配置方式可去上诉官网连接查看</p>
 
                 
 
@@ -231,12 +348,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]09 九、kettle统计-映射-脚本控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]09 九、kettle统计-映射-脚本控件">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kettle]06 六、kettle流程控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]06 六、kettle流程控件">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]10 分布式处理框架MapReduce 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]10 分布式处理框架MapReduce 三">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +403,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#合并记录"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">合并记录</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录关联（笛卡尔积）"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">记录关联（笛卡尔积）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#记录集连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">记录集连接</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#生产如何调优Container参数？"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">生产如何调优Container参数？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#container内存"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">container内存</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#container虚拟核"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">container虚拟核</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#官方建议"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">官方建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#综合memory-vcore"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">综合memory+vcore</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#默认规则"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">默认规则</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#假如该节点还有组件"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">假如该节点还有组件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度器"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">调度器</span></a></li></ol>
         
         </div>
       </aside>
@@ -306,7 +423,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                         
                     </div>
                 </section>

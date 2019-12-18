@@ -230,8 +230,18 @@
 <li>map task</li>
 <li>reduce task</li>
 </ul>
-<p><strong>图中流程</strong><br>1.用户向Yarn提交应用程序（job app application），jar文件、sql；其中包裹ApplicationMaster程序、启动ApplicationMaster的命令等等<br>2.RM为该job分配第一个container，运行job的ApplicationMaster<br>3.App Master向applications Manager注册，这样就可以在RM WEB界面查询这个job的运行状态<br>4.App Master采用轮询的方式通过RPC协议向RM申请和领取资源<br>5.一旦App Master拿到资源，就对应的与NM通信，要求启动任务<br>6.NM为任务设置好运行环境（jar包等），将任务启动命令写在一个脚本里。并通过该脚本启动任务 task<br>7.各个task通过rpc协议向App Master汇报自己的状态和进度，以此让App Master随时掌握各个task的运行状态。从而在task运行失败重启任务。<br>8.App Master向applications Manager注销且关闭自己</p>
-<h2 id="MapReduce-容错性"><a href="#MapReduce-容错性" class="headerlink" title="MapReduce 容错性"></a>MapReduce 容错性</h2><ul>
+<p><strong>图中流程</strong></p>
+<ol>
+<li>用户向Yarn提交应用程序（job app application），jar文件、sql；其中包裹ApplicationMaster程序、启动ApplicationMaster的命令等等</li>
+<li>RM为该job分配第一个container，运行job的ApplicationMaster</li>
+<li>App Master向applications Manager注册，这样就可以在RM WEB界面查询这个job的运行状态</li>
+<li>App Master采用轮询的方式通过RPC协议向RM申请和领取资源</li>
+<li>一旦App Master拿到资源，就对应的与NM通信，要求启动任务</li>
+<li>NM为任务设置好运行环境（jar包等），将任务启动命令写在一个脚本里。并通过该脚本启动任务 task</li>
+<li>各个task通过rpc协议向App Master汇报自己的状态和进度，以此让App Master随时掌握各个task的运行状态。从而在task运行失败重启任务。</li>
+<li>App Master向applications Manager注销且关闭自己<h2 id="MapReduce-容错性"><a href="#MapReduce-容错性" class="headerlink" title="MapReduce 容错性"></a>MapReduce 容错性</h2></li>
+</ol>
+<ul>
 <li>Case 1. 如果Task运行失败<ul>
 <li>Map Task失败<ul>
 <li>MRAppMaster重启Map Task，Map Task没有依赖性</li>
