@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -265,7 +265,7 @@
 <li>如果Map Task任务从远程机器上拷贝数据会消耗大量的网络带宽</li>
 </ul>
 <p><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
-<h2 id="MapReduce-数据本地性问题-1"><a href="#MapReduce-数据本地性问题-1" class="headerlink" title="MapReduce 数据本地性问题"></a>MapReduce 数据本地性问题</h2><ul>
+<ul>
 <li>HDFS上同一份文件会有多份拷贝（默认是3份）</li>
 <li>MapReduce调度原则<ul>
 <li>在包含副本的节点上启动Map Task任务</li>
@@ -352,7 +352,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MapReduce-源代码解析"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">MapReduce 源代码解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Mapper-定义"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Hadoop Mapper 定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Reducer-定义"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Hadoop Reducer 定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Partitioner-定义和默认实现"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Hadoop Partitioner 定义和默认实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Partitioner抽象类定义"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">Partitioner抽象类定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#默认HashPartitioner实现"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">默认HashPartitioner实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-InputFormat-定义和默认实现"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Hadoop InputFormat 定义和默认实现</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#与-InputFormat-有关的类"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">与 InputFormat 有关的类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#TextInputFormat处理流程"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">TextInputFormat处理流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MapReduce执行机制"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MapReduce执行机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-on-Yarn"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">MapReduce on Yarn</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-容错性"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">MapReduce 容错性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-数据本地性问题"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">MapReduce 数据本地性问题</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-数据本地性问题-1"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">MapReduce 数据本地性问题</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MapReduce-源代码解析"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">MapReduce 源代码解析</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Mapper-定义"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Hadoop Mapper 定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Reducer-定义"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Hadoop Reducer 定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-Partitioner-定义和默认实现"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Hadoop Partitioner 定义和默认实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Partitioner抽象类定义"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">Partitioner抽象类定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#默认HashPartitioner实现"><span class="toc-nav-number">1.3.2.</span> <span class="toc-nav-text">默认HashPartitioner实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hadoop-InputFormat-定义和默认实现"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Hadoop InputFormat 定义和默认实现</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#与-InputFormat-有关的类"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">与 InputFormat 有关的类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#TextInputFormat处理流程"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">TextInputFormat处理流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MapReduce执行机制"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MapReduce执行机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-on-Yarn"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">MapReduce on Yarn</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-容错性"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">MapReduce 容错性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-数据本地性问题"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">MapReduce 数据本地性问题</span></a></li></ol></li></ol>
         
         </div>
       </aside>
