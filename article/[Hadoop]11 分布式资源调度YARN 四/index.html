@@ -335,7 +335,7 @@
 </ol>
 <ul>
 <li>官网：<a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html</a></li>
-<li>如图中，只要资源允许的情况下，job1和job2可以同时执行，无论job是大作业还是小作业</li>
+<li>如图中，job1在占用全部资源的情况下，job2会在job1的某个task运行完毕后借助这块小资源允许job2，运行完毕后归还给job1</li>
 </ul>
 <p>apache 默认计算:<br>yarn.resourcemanager.scheduler.class<br>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</p>
 <p>CDH 默认公平:<br>web配置  Fair</p>
