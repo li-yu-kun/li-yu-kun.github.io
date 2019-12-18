@@ -142,13 +142,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -157,6 +150,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -220,9 +220,10 @@
 <li>AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM</li>
 <li>AM申请到资源以后，便和相应的NM通信，要求NM启动任务，任务都是以Container方式运行的。</li>
 <li>NM启动我们作业对应的task；有几个task就启动几个Container</li>
-<li>任务开始计算进入MapReduce阶段<h2 id="分步流程图"><a href="#分步流程图" class="headerlink" title="分步流程图"></a>分步流程图</h2>1、client将程序打包提交到RM运行。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>2、RM找一台空闲的机器启动一个Container，为了启动AM（一个Container启动一个AM）。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>3、Container进而启动AM，每来一个作业都会启动一个AM<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>4、AM向RM汇报已到位，开始切分任务启动多少个map和reduce所需要的资源，封装成ResourceRequest对象来提交给RM；RM获取对象后并如果资源不够不会立刻给出所有资源，因为集群是繁忙的，当前可能只有20g的空闲内存，RM会慢慢收集其他作业释放的资源，直到100G。（如何解决这个等待策略，可以通过优先级来解决）<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>5、当RM把资源分配个AM的时候，当前的AM就可以启动当前任务；联系有空闲资源的nodemanager来完成任务；把请求封装到COntainerLaunchContext对象里传递给NodeManager。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>6、NodeManager接受到请求之后就会把Container启动起来。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>7、运行当前的Task<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br>8、因为有若干个map，所以ApplicationMaster向空闲的NodeManager会继续申请资源。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>9、task里运行的map还是reduce都是由AM来指挥的。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br>10、每个task会以心跳机制来向ApplicationMaster来汇报作业当前的运行情况。有特别情况会进行重启，或者进行全部作业重启，这些都是ApplicationMaster来管理的。<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""><h2 id="Yarn各个组件之间的心跳信号"><a href="#Yarn各个组件之间的心跳信号" class="headerlink" title="Yarn各个组件之间的心跳信号"></a>Yarn各个组件之间的心跳信号</h2></li>
+<li>任务开始计算进入MapReduce阶段</li>
 </ol>
-<ul>
+<h2 id="分步流程图"><a href="#分步流程图" class="headerlink" title="分步流程图"></a>分步流程图</h2><p>1、client将程序打包提交到RM运行。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>2、RM找一台空闲的机器启动一个Container，为了启动AM（一个Container启动一个AM）。<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>3、Container进而启动AM，每来一个作业都会启动一个AM<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>4、AM向RM汇报已到位，开始切分任务启动多少个map和reduce所需要的资源，封装成ResourceRequest对象来提交给RM；RM获取对象后并如果资源不够不会立刻给出所有资源，因为集群是繁忙的，当前可能只有20g的空闲内存，RM会慢慢收集其他作业释放的资源，直到100G。（如何解决这个等待策略，可以通过优先级来解决）<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>5、当RM把资源分配个AM的时候，当前的AM就可以启动当前任务；联系有空闲资源的nodemanager来完成任务；把请求封装到COntainerLaunchContext对象里传递给NodeManager。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>6、NodeManager接受到请求之后就会把Container启动起来。<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>7、运行当前的Task<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br>8、因为有若干个map，所以ApplicationMaster向空闲的NodeManager会继续申请资源。<br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>9、task里运行的map还是reduce都是由AM来指挥的。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br>10、每个task会以心跳机制来向ApplicationMaster来汇报作业当前的运行情况。有特别情况会进行重启，或者进行全部作业重启，这些都是ApplicationMaster来管理的。<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<h2 id="Yarn各个组件之间的心跳信号"><a href="#Yarn各个组件之间的心跳信号" class="headerlink" title="Yarn各个组件之间的心跳信号"></a>Yarn各个组件之间的心跳信号</h2><ul>
 <li>Application Master与Resource Manager心跳<ul>
 <li>AM-&gt;RM<ul>
 <li>对Container的资源需求（CPU和Memory）和优先级</li>
@@ -253,11 +254,13 @@
 </ul>
 </li>
 <li>RM-&gt;NM<ul>
-<li>已删除和等待清理的Container列表<h2 id="Yarn资源隔离策略"><a href="#Yarn资源隔离策略" class="headerlink" title="Yarn资源隔离策略"></a>Yarn资源隔离策略</h2></li>
+<li>已删除和等待清理的Container列表</li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<h2 id="Yarn资源隔离策略"><a href="#Yarn资源隔离策略" class="headerlink" title="Yarn资源隔离策略"></a>Yarn资源隔离策略</h2><ul>
 <li>内存资源隔离<ul>
 <li>基于线程监控方案（优点：如果瞬间超过设定上限不会立马被kill掉）</li>
 <li>基于cgroups（linux里的资源轻量级方案，如果超过上限会立马被kill掉）</li>
@@ -293,9 +296,11 @@
 </li>
 <li>如果Resource Manager运行失败<ul>
 <li>通过checkpoint机制，定时将其状态保存到磁盘，失败的时候，重新运行</li>
-<li>通过Zookeeper同步状态和实现透明的HA<h1 id="Yarn调度器和调度算法"><a href="#Yarn调度器和调度算法" class="headerlink" title="Yarn调度器和调度算法"></a>Yarn调度器和调度算法</h1></li>
+<li>通过Zookeeper同步状态和实现透明的HA</li>
 </ul>
 </li>
+</ul>
+<h1 id="Yarn调度器和调度算法"><a href="#Yarn调度器和调度算法" class="headerlink" title="Yarn调度器和调度算法"></a>Yarn调度器和调度算法</h1><ul>
 <li>集群资源调度器需要解决：<ul>
 <li>多租户(Multi-tenancy)：<ul>
 <li>多用户同时提交多种应用程序</li>
@@ -312,9 +317,11 @@
 <li>支持三种资源调度器<ul>
 <li>FIFO</li>
 <li>Capacity Scheduler</li>
-<li>Fair Scheduler<h2 id="FIFO调度器"><a href="#FIFO调度器" class="headerlink" title="FIFO调度器"></a>FIFO调度器</h2></li>
+<li>Fair Scheduler</li>
 </ul>
 </li>
+</ul>
+<h2 id="FIFO调度器"><a href="#FIFO调度器" class="headerlink" title="FIFO调度器"></a>FIFO调度器</h2><ul>
 <li>所有向集群提交的作业使用一个队列</li>
 <li>根据提交作业的顺序来运行（先来先服务）</li>
 <li>优点：<ul>
@@ -324,9 +331,11 @@
 </li>
 <li>缺点：<ul>
 <li>资源利用率不高</li>
-<li>不允许抢占<h2 id="Capacity-Scheduler资源调度器"><a href="#Capacity-Scheduler资源调度器" class="headerlink" title="Capacity Scheduler资源调度器"></a>Capacity Scheduler资源调度器</h2></li>
+<li>不允许抢占</li>
 </ul>
 </li>
+</ul>
+<h2 id="Capacity-Scheduler资源调度器"><a href="#Capacity-Scheduler资源调度器" class="headerlink" title="Capacity Scheduler资源调度器"></a>Capacity Scheduler资源调度器</h2><ul>
 <li>设计思想：<ul>
 <li>资源按照比例分配给各个队列</li>
 </ul>
@@ -357,11 +366,12 @@
 <li>支持内存资源调度和CPU资源的调度。</li>
 </ul>
 </li>
-<li>支持抢占（从2.8.0版本开始）<h3 id="Capacity-Scheduler配置"><a href="#Capacity-Scheduler配置" class="headerlink" title="Capacity Scheduler配置"></a>Capacity Scheduler配置</h3><img src="%E5%9B%BE%E7%89%8715.png" alt=""><h3 id="Capacity-Scheduler资源分配算法"><a href="#Capacity-Scheduler资源分配算法" class="headerlink" title="Capacity Scheduler资源分配算法"></a>Capacity Scheduler资源分配算法</h3></li>
+<li>支持抢占（从2.8.0版本开始）</li>
 </ul>
 </li>
 </ul>
-<ol>
+<h3 id="Capacity-Scheduler配置"><a href="#Capacity-Scheduler配置" class="headerlink" title="Capacity Scheduler配置"></a>Capacity Scheduler配置</h3><p><img src="%E5%9B%BE%E7%89%8715.png" alt=""></p>
+<h3 id="Capacity-Scheduler资源分配算法"><a href="#Capacity-Scheduler资源分配算法" class="headerlink" title="Capacity Scheduler资源分配算法"></a>Capacity Scheduler资源分配算法</h3><ol>
 <li>选择队列<br>• 从根队列开始，使用深度优先算法找出资源占用率最低的叶子队列</li>
 <li>选择作业<br>• 默认按照作业优先级和提交时间顺序选择</li>
 <li>选择Container<br>• 取该作业中最高优先级的Container，如果优先级相同会选择满足本地性的Container：Node Local &gt;Rack Local &gt; Different Rack</li>
@@ -392,18 +402,20 @@
 </ul>
 </li>
 <li>单独设置队列内部资源分配方式<ul>
-<li>FAIR DRF FIFO<h3 id="Fair-Scheduler-FAIR资源分配算法"><a href="#Fair-Scheduler-FAIR资源分配算法" class="headerlink" title="Fair Scheduler - FAIR资源分配算法"></a>Fair Scheduler - FAIR资源分配算法</h3></li>
+<li>FAIR DRF FIFO</li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<h3 id="Fair-Scheduler-FAIR资源分配算法"><a href="#Fair-Scheduler-FAIR资源分配算法" class="headerlink" title="Fair Scheduler - FAIR资源分配算法"></a>Fair Scheduler - FAIR资源分配算法</h3><ul>
 <li>总体流程与Capacity Scheduler一致<ul>
 <li>1.选择队列</li>
 <li>2.选择作业</li>
 <li>3.选择Container</li>
 </ul>
 </li>
-<li>选择选择队列和作业使用公平排序算法<ul>
+<li>选择队列和作业使用公平排序算法<ul>
 <li>实际最小份额<br>minShare = Min(资源需求量，配置minShare）</li>
 <li>是否饥饿<br>isNeedy = 资源使用量&lt; minShare</li>
 <li>资源分配比<br>minShareRatio = 资源使用量/Max(minShare, 1)</li>
