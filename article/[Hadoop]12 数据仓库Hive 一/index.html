@@ -237,7 +237,15 @@
 <h1 id="Hive体系架构及部署架构"><a href="#Hive体系架构及部署架构" class="headerlink" title="Hive体系架构及部署架构"></a>Hive体系架构及部署架构</h1><h2 id="Hive体系架构"><a href="#Hive体系架构" class="headerlink" title="Hive体系架构"></a>Hive体系架构</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>第一行：hive访问方式shell以及Thrift/JDBC<br>第二行：元数据管理（Metastore）；<br>Drive中首先解析SQL（SQL Parser）生成逻辑执行计划，然后对逻辑执行计划进行优化（Query Optimizer），最后生成物理执行计划（Physical Plan其中包括序列化反序列化和UDF函数（SerDes和UDFs）），生成最终的执行引擎（Execution）提交到MapReduce<br>第三行：元数据存放的位置（MySQL）；<br>提交到计算引擎（MapReduce）的输入输出-HDFS、HBase等</p>
 <h2 id="部署架构–测试环境"><a href="#部署架构–测试环境" class="headerlink" title="部署架构–测试环境"></a>部署架构–测试环境</h2><p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
 <h2 id="部署架构–生产环境"><a href="#部署架构–生产环境" class="headerlink" title="部署架构–生产环境"></a>部署架构–生产环境</h2><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>其中MySQL、ResourceManage、NameNode都要主从设备；<br>Hive只需要在集群中装一个或者两个作为客户端使用即可</p>
-<h1 id="Hive环境搭建"><a href="#Hive环境搭建" class="headerlink" title="Hive环境搭建"></a>Hive环境搭建</h1><ol>
+<h1 id="Hive和RDBMS的对比"><a href="#Hive和RDBMS的对比" class="headerlink" title="Hive和RDBMS的对比"></a>Hive和RDBMS的对比</h1><pre><code>相同点
+    SQL
+    事务
+    insert/update/delete   Hive-0.14才支持
+        针对Hive数据仓库，写比较少的，批次加载数据到Hive然后进行统计分析
+
+不同点
+    体量/集群规模
+    延迟/时性</code></pre><h1 id="Hive环境搭建"><a href="#Hive环境搭建" class="headerlink" title="Hive环境搭建"></a>Hive环境搭建</h1><ol>
 <li><p>Hive下载：<a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a><br> wget <a href="http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz</a></p>
 </li>
 <li><p>解压<br> tar -zxvf hive-1.1.0-cdh5.7.0.tar.gz -C ~/app/</p>
@@ -319,7 +327,7 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive环境搭建"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive环境搭建</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive和RDBMS的对比"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive和RDBMS的对比</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive环境搭建"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Hive环境搭建</span></a></li></ol>
         
         </div>
       </aside>
