@@ -18,7 +18,7 @@
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/archives/2/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/archives/4/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -211,323 +211,32 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]11 分布式资源调度YARN 四/">
+    <a href="/article/[Linux]01 大数据常用命令 一/">
         <h2 class="post-title">
                                  
-            [Hadoop]11 分布式资源调度YARN 四
+            [Linux]01 大数据常用命令 一
         </h2>
         <h3 class="post-subtitle">
-            生产调优、生产调度器等问题
+            基本操作命令
         </h3>
         <div class="post-content-preview">
-            假设我们有一台物理机器 128G内存 16个core
-生产如何调优Container参数？Container：虚拟化的容器   维度 memory+vcore作用是运行task任务
+            [hadoop@hadoop ~]$12[hadoop@hadoop ~]$ 含义：登录的用户@机器名称 家目录
 
-装完CentOS，消耗内存1G
-系统预览15%-20%内存(包含系统1G内存)，以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间
-此时需要预留内存为：128*20%=25.6G == ......
+
+查看当前光标所在的目录 pwd123[hadoop@hadoop ~]$ pwd/home/hadoop[hadoop@hadoop ~]$
+
+
+切换目录 cd12345678910111213141516171819202122[hadoop@hadoop ~]$ cd /......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-27
+            2017-03-23
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]10 分布式处理框架MapReduce 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]10 分布式处理框架MapReduce 三
-        </h2>
-        <h3 class="post-subtitle">
-            参数调优、api编程
-        </h3>
-        <div class="post-content-preview">
-            参数调优Map Task和Reduce Task数目调整
-Map Task数目
-Map读取文件时，通过InputFormat计算分割文件
-split大小由以下三个参数决定
-dfs.blocksize HDFS Block大小
-mapreduce.input.fileinputformat.split.minsize 划分最小字节数
-mapreduce.input.fileinputforma......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]09 分布式处理框架MapReduce 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]09 分布式处理框架MapReduce 二
-        </h2>
-        <h3 class="post-subtitle">
-            源码解析、执行机制
-        </h3>
-        <div class="post-content-preview">
-            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]08 分布式处理框架MapReduce 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]08 分布式处理框架MapReduce 一
-        </h2>
-        <h3 class="post-subtitle">
-            基本概念、场景、编程模型、架构
-        </h3>
-        <div class="post-content-preview">
-            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
-
-源自于Google的MapReduce论文,论文发表于2004年22月
-Hadoop MapReduce是Google MapReduce的克隆版
-MapReduce优点:海量数量离线处理&amp;易开发&am......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]07 分布式资源调度YARN 三
-        </h2>
-        <h3 class="post-subtitle">
-            环境搭建、常用命令、作业执行
-        </h3>
-        <div class="post-content-preview">
-            YARN环境搭建YARN环境搭建
-
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;proper......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]06 分布式资源调度YARN 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]06 分布式资源调度YARN 二
-        </h2>
-        <h3 class="post-subtitle">
-            执行流程、调度器
-        </h3>
-        <div class="post-content-preview">
-            YARN执行流程
-
-用户向yarn提交一个作业
-RM为该作业分配第一个container(AM)
-RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
-AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM
-AM申请到资......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-11
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]05 分布式资源调度YARN 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]05 分布式资源调度YARN 一
-        </h2>
-        <h3 class="post-subtitle">
-            产生背景、架构、思想
-        </h3>
-        <div class="post-content-preview">
-            YARN产生背景
-MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
-
-
-单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
-节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]04 分布式文件系统HDFS 四
-        </h2>
-        <h3 class="post-subtitle">
-            读写流程详解、错误处理机制、优缺点
-        </h3>
-        <div class="post-content-preview">
-            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
-文件写流程图解往HDFS中写数据的流程如下：
-
-第1幅图：我们跟客户端说，你帮我......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-06
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]03 分布式文件系统HDFS 三
-        </h2>
-        <h3 class="post-subtitle">
-            shell、Java API
-        </h3>
-        <div class="post-content-preview">
-            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
-12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]02 分布式文件系统HDFS 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]02 分布式文件系统HDFS 二
-        </h2>
-        <h3 class="post-subtitle">
-            单机搭建、常见问题
-        </h3>
-        <div class="post-content-preview">
-            HDFS环境搭建官网安装文档Hadoop伪分布式安装步骤http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
-下载Hadoop    http://archive.cloudera.com/cdh5/cdh/5/    2.6.0-cdh5.7.0    或则 wge......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-04
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Linux" title="Linux">Linux</a>
             
         </div>
     
@@ -542,13 +251,9 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 <ul class="pager">
     
         <li class="previous">
-            <a href="/">&larr; Newer Posts</a>
+            <a href="/archives/3/">&larr; Newer Posts</a>
         </li>
     
-    
-        <li class="next">
-            <a href="/archives/3/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 

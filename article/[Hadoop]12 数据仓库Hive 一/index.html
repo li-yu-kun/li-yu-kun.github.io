@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop]05 分布式资源调度YARN 一 - 李玉坤 | Blog
+          [Hadoop]12 数据仓库Hive 一 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]05 分布式资源调度YARN 一/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]12 数据仓库Hive 一/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                              <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                             
                         </div>
-                        <h1>[Hadoop]05 分布式资源调度YARN 一</h1>
-                        <h2 class="subheading">产生背景、架构、思想</h2>
+                        <h1>[Hadoop]12 数据仓库Hive 一</h1>
+                        <h2 class="subheading">概述、发展、架构、环境搭建</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-08
+                            2017-04-30
                         </span>
                     </div>
                 
@@ -212,126 +212,50 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="YARN产生背景"><a href="#YARN产生背景" class="headerlink" title="YARN产生背景"></a>YARN产生背景</h1><ol>
-<li>MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：</li>
-</ol>
+                <h1 id="Hive产生背景及Hive是什么"><a href="#Hive产生背景及Hive是什么" class="headerlink" title="Hive产生背景及Hive是什么"></a>Hive产生背景及Hive是什么</h1><p><strong>Hive产生的背景</strong></p>
 <ul>
-<li>单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行</li>
-<li>节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展，压力很大<ul>
-<li>每个Slave机器可运行的最大Map tasks数量和Reduce tasks数量固定</li>
+<li>MapReduce编程的不便性</li>
+<li>HDFS上的文件缺少Schema</li>
 </ul>
-</li>
-<li>不能够支持除了mapreduce意外的框架：JobTracker承载的任务比较多；整个架构只能支持mapreduce作业，不支持storm，spark作业。<ul>
-<li>难以共享集群资源</li>
-<li>Spark Strom Impala</li>
-</ul>
-</li>
-</ul>
-<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>（MapReduce：Master/Slave架构，1个JobTracker带多个TaskTracker）</p>
+<p><strong>Hive是什么</strong></p>
 <ul>
-<li>JobTracker： 负责资源管理和作业调度，任务分配</li>
-<li>TaskTracker：定期向JT汇报本节点的健康状况、资源使用情况、作业执行情况；接收来自JT的命令：启动任务/杀死任务</li>
+<li>由Facebook开源,最初用于解决海量结构化的日志数据统计问题</li>
+<li>构建在Hadoop之上的数据仓库</li>
+<li>Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)</li>
+<li>通常用于进行离线数据处理(刚开始采用MapReduce )</li>
+<li>底层支持多种不同的执行引擎；<br>【Hive底层的执行引擎有：MapReduce、Tez、Spark】<br>【Hive on MapReduce，Hive on Tez，Hive on Spark】</li>
+<li>支持多种不同的压缩格式、存储格式以及自定义函数<br>【压缩：GZIP、LZO、Snappy、BZIP2..】<br>【存储：TextFile、SequenceFile、RCFile、ORC、Parquet】<br>【UDF：自定义函数】</li>
 </ul>
-<p>在1中；资源叫slot；每台节点只有获取到了slot才可以启动多少个map和多少个reduce；不能够指定cpu资源；启动后也不可更改资源。比较粗糙；难以共享集群资源。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br> <strong>MapReduce V1 执行job流程</strong><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>3. 催生了YARN的诞生<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>YARN：不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度<br>XXX on YARN的好处：（XXX: Spark/MapReduce/Storm/Flink）<br>    与其他计算框架共享集群资源，按资源需要分配，进而提高集群资源的利用率</p>
-<h1 id="YARN概述"><a href="#YARN概述" class="headerlink" title="YARN概述"></a>YARN概述</h1><ul>
-<li>从Hadoop 2.0开始出现了Yarn</li>
-<li>Yet Another Resource Negotiator （另一个种资源协调者）</li>
-<li>通用的资源管理系统<ul>
-<li>为上层应用提供统一的资源管理和调度</li>
+<h1 id="为什么要使用Hive及Hive发展历程"><a href="#为什么要使用Hive及Hive发展历程" class="headerlink" title="为什么要使用Hive及Hive发展历程"></a>为什么要使用Hive及Hive发展历程</h1><p><strong>为什么要使用Hive</strong></p>
+<ul>
+<li>简单、容易上手(提供了类似SQL查i言HQL)</li>
+<li>为超大数据集设计的计算/存储扩展能力(MR计算, HDFS存储)</li>
+<li>统一的元数据管理(可与Presto/Impala/SparkSQL等共享数据)</li>
 </ul>
+<p><strong>Hive发展历程</strong><br>官方版本更新详细目录<br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a></p>
+<p><strong>Hive在Hadoop生态系统的位置</strong><br>在HDFS和Yarn之上的<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h1 id="Hive体系架构及部署架构"><a href="#Hive体系架构及部署架构" class="headerlink" title="Hive体系架构及部署架构"></a>Hive体系架构及部署架构</h1><h2 id="Hive体系架构"><a href="#Hive体系架构" class="headerlink" title="Hive体系架构"></a>Hive体系架构</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>第一行：hive访问方式shell以及Thrift/JDBC<br>第二行：元数据管理（Metastore）；<br>Drive中首先解析SQL（SQL Parser）生成逻辑执行计划，然后对逻辑执行计划进行优化（Query Optimizer），最后生成物理执行计划（Physical Plan其中包括序列化反序列化和UDF函数（SerDes和UDFs）），生成最终的执行引擎（Execution）提交到MapReduce<br>第三行：元数据存放的位置（MySQL）；<br>提交到计算引擎（MapReduce）的输入输出-HDFS、HBase等</p>
+<h2 id="部署架构–测试环境"><a href="#部署架构–测试环境" class="headerlink" title="部署架构–测试环境"></a>部署架构–测试环境</h2><p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h2 id="部署架构–生产环境"><a href="#部署架构–生产环境" class="headerlink" title="部署架构–生产环境"></a>部署架构–生产环境</h2><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>其中MySQL、ResourceManage、NameNode都要主从设备；<br>Hive只需要在集群中装一个或者两个作为客户端使用即可</p>
+<h1 id="Hive环境搭建"><a href="#Hive环境搭建" class="headerlink" title="Hive环境搭建"></a>Hive环境搭建</h1><ol>
+<li><p>Hive下载：<a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a><br> wget <a href="http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz</a></p>
 </li>
-</ul>
-<p><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>ResurceManager(RM)：<br>RM是一个全局的资源管理器，集群只有一个，负责整个系统的资源管理和分配，包括处理客户端请求、启动/监控APP master、监控nodemanager、资源的分配与调度。它主要由两个组件构成：调度器（Scheduler）和应用程序管理器（Applications Manager，ASM）。</p>
-<p>调度器<br>          调度器根据容量、队列等限制条件（如每个队列分配一定的资源，最多执行一定数量的作业等），将系统中的资源分配给各个正在运行的应用程序。需要注意的是，该调度器是一个“纯调度器”，它不再从事任何与具体应用程序相关的工作，比如不负责监控或者跟踪应用的执行状态等，也不负责重新启动因应用执行失败或者硬件故障而产生的失败任务，这些均交由应用程序相关的ApplicationMaster完成。调度器仅根据各个应用程序的资源需求进行资源分配，而资源分配单位用一个抽象概念“资源容器”（Resource Container，简称Container）表示，Container是一个动态资源分配单位，它将内存、CPU、磁盘、网络等资源封装在一起，从而限定每个任务使用的资源量。此外，该调度器是一个可插拔的组件，用户可根据自己的需要设计新的调度器，YARN提供了多种直接可用的调度器，比如Fair Scheduler和Capacity Scheduler等。</p>
-<p>应用程序管理器<br>            应用程序管理器负责管理整个系统中所有应用程序，包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动它等。 </p>
-<h1 id="YARN架构"><a href="#YARN架构" class="headerlink" title="YARN架构"></a>YARN架构</h1><p><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>YARN架构：</p>
-<ol>
-<li>ResourceManager: RM（通常会另外部署一个standby来解决单点故障）<ul>
-<li>一个集群只有一个，全局的资源管理器</li>
-<li>处理客户端的请求： 提交一个作业、杀死一个作业</li>
-<li>监控Node Manger，汇总上报的资源</li>
-<li>根据请求分配资源</li>
-</ul>
+<li><p>解压<br> tar -zxvf hive-1.1.0-cdh5.7.0.tar.gz -C ~/app/</p>
 </li>
-<li>NodeManager: NM<ul>
-<li>每个从属节点一个</li>
-<li>管理自身所属节点的资源</li>
-<li>监控资源使用情况（cpu, memory, disk,network)并向Resource Manager汇报</li>
-<li>接收并处理来自RM的各种命令：启动Container<ul>
-<li>处理来自AM的命令</li>
-<li>单个节点的资源管理</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>ApplicationMaster: AM<ul>
-<li>每个应用程序对应一个：MR、Spark，负责应用程序的管理</li>
-<li>为应用程序向RM申请资源（core、memory），分配给内部task</li>
-<li>需要与NM通信：启动/停止task，task是运行在container里面，AM也是运行在container里面</li>
-</ul>
-</li>
-<li>Container<ul>
-<li>封装了CPU、Memory等资源的一个容器</li>
-<li>是一个任务运行环境的抽象</li>
-</ul>
-</li>
-<li>Client<ul>
-<li>提交作业</li>
-<li>查询作业的运行进度</li>
-<li>杀死作业</li>
-</ul>
+<li><p>配置<br> 系统环境变量(~/.bahs_profile)</p>
+<pre><code>export HIVE_HOME=/home/hadoop/app/hive-1.1.0-cdh5.7.0
+export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql， yum install xxx，或者tar包安装</strong></p>
+<p> 在conf下找到hive-site.xml配置 <strong>hive-site.xml</strong></p>
 </li>
 </ol>
-<p>通常NodeManager会和DataNode混合部署，why?<br>可以从内存、cpu、磁盘的使用来讲。<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
-<h1 id="Yarn-基本思想"><a href="#Yarn-基本思想" class="headerlink" title="Yarn 基本思想"></a>Yarn 基本思想</h1><ul>
-<li>在MapReduce V1中<ul>
-<li>JobTracker = 资源管理器 + 任务调度器</li>
-</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>拷贝mysql驱动到$HIVE_HOME/lib/</p>
 </li>
-<li>在Yarn中做了切分<ul>
-<li>资源管理<ul>
-<li>让ResourceManager负责</li>
-</ul>
+<li><p>启动hive: $HIVE_HOME/bin/hive</p>
 </li>
-<li>任务调度<ul>
-<li>让ApplicationMaster负责<ul>
-<li>每个作业启动一个</li>
-<li>根据作业切分任务tasks</li>
-<li>向Resource Manager申请资源</li>
-<li>与NodeManager协作，将分配申请到的资源给内部任务tasks</li>
-<li>监控tasks运行情况，重启失败的任务</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>JobHistoryServer<ul>
-<li>每个集群每种计算框架一个</li>
-<li>负责搜集归档所有的日志</li>
-</ul>
-</li>
-</ul>
-<h2 id="Yarn-计算资源抽象"><a href="#Yarn-计算资源抽象" class="headerlink" title="Yarn 计算资源抽象"></a>Yarn 计算资源抽象</h2><ul>
-<li>在Yarn中，计算资源被抽象为Container</li>
-<li>每个Container描述：<ul>
-<li>可使用的CPU资源和内存资源</li>
-<li>执行命令</li>
-<li>环境变量</li>
-<li>外部资源</li>
-</ul>
-</li>
-<li>如何获得运行各个任务的Container?<ul>
-<li>由ApplicationMaster向ResourceManager申请</li>
-<li>ApplicationMaster本身也运行在一个Container，这个Container由ResourceManager向自身申请启动</li>
-</ul>
-</li>
-<li>如何启动运行？<ul>
-<li>向Container所属的Node Manager发起运行</li>
-</ul>
-</li>
-</ul>
-<p><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>上图中一个core并不代表一个cpu；它是衡量cpu计算能力的一个单位；比如早期的物理机cpu计算能力差就按照1：1来算core，一个cpu相当于一个core；而后期新买的物理机计算能力强1：2来算core，一个cpu相当于两个core。</p>
+</ol>
 
                 
 
@@ -340,12 +264,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop]06 分布式资源调度YARN 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]06 分布式资源调度YARN 二">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/" data-toggle="tooltip" data-placement="top" title="[Hadoop]04 分布式文件系统HDFS 四">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]11 分布式资源调度YARN 四/" data-toggle="tooltip" data-placement="top" title="[Hadoop]11 分布式资源调度YARN 四">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -395,7 +319,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN产生背景"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN产生背景</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN概述"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">YARN概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">YARN架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn-基本思想"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Yarn 基本思想</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn-计算资源抽象"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Yarn 计算资源抽象</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive环境搭建"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive环境搭建</span></a></li></ol>
         
         </div>
       </aside>
@@ -415,7 +339,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                          <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                         
                     </div>
                 </section>
