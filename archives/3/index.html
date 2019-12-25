@@ -211,6 +211,68 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]04 分布式文件系统HDFS 四
+        </h2>
+        <h3 class="post-subtitle">
+            读写流程详解、错误处理机制、优缺点
+        </h3>
+        <div class="post-content-preview">
+            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
+文件写流程图解往HDFS中写数据的流程如下：
+
+第1幅图：我们跟客户端说，你帮我......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]03 分布式文件系统HDFS 三
+        </h2>
+        <h3 class="post-subtitle">
+            shell、Java API
+        </h3>
+        <div class="post-content-preview">
+            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
+12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Hadoop]02 分布式文件系统HDFS 二/">
         <h2 class="post-title">
                                  
@@ -457,70 +519,6 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Linux]04 大数据常用命令 四/">
-        <h2 class="post-title">
-                                 
-            [Linux]04 大数据常用命令 四
-        </h2>
-        <h3 class="post-subtitle">
-            调度|执行|软连接
-        </h3>
-        <div class="post-content-preview">
-            调度工具crontab比如一个可执行文件test.sh文件内容
-123#!/bin/bash （解释器）date
-执行这个shell脚本需要x执行权限执行命令
-12./test.shsh ./test.sh
-
-后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
-12[root@hadoop ~]# crontab -l* * * * * /root/te......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Linux]03 大数据常用命令 三/">
-        <h2 class="post-title">
-                                 
-            [Linux]03 大数据常用命令 三
-        </h2>
-        <h3 class="post-subtitle">
-            用户权限以及性能相关命令
-        </h3>
-        <div class="post-content-preview">
-            /etc/passwd文件123456789101112131415161718[root@hadoop k]# cat /etc/passwd其中有一行：k:x:1001:1002::/home/k:/bin/bash当/bin/bash是/bin/false或者/sbin/nologin[root@hadoop k]# su - k 命令是切换用户切不过去的在安装CDH的时候/etc/p......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -578,7 +576,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="2">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="4">Hive</a>
             
         
             
@@ -681,7 +679,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
