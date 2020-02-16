@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,75 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]07 分布式资源调度YARN 三
+        </h2>
+        <h3 class="post-subtitle">
+            环境搭建、常用命令、作业执行
+        </h3>
+        <div class="post-content-preview">
+            YARN环境搭建YARN环境搭建
+
+mapred-site.xml
+1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
+yarn-site.xml
+1234567891011&lt;proper......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]06 分布式资源调度YARN 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]06 分布式资源调度YARN 二
+        </h2>
+        <h3 class="post-subtitle">
+            执行流程、调度器
+        </h3>
+        <div class="post-content-preview">
+            YARN执行流程
+
+用户向yarn提交一个作业
+RM为该作业分配第一个container(AM)
+RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
+AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM
+AM申请到资......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-11
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -328,36 +397,6 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
         <div class="tags">
             
               <a href="/tags/#HDFS" title="HDFS">HDFS</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[HBase]01 HBASE简介与环境搭建 一/">
-        <h2 class="post-title">
-                                 
-            [HBase]01 HBASE简介与环境搭建 一
-        </h2>
-        <h3 class="post-subtitle">
-            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点
-        </h3>
-        <div class="post-content-preview">
-            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
-使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
             
         </div>
     
@@ -493,35 +532,6 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[MySQL]03 MySQL其他操作/">
-        <h2 class="post-title">
-                                 
-            [MySQL]03 MySQL其他操作
-        </h2>
-        <h3 class="post-subtitle">
-            触发器、函数、存储过程、视图、联接
-        </h3>
-        <div class="post-content-preview">
-            查询数据库中的存储过程和函数123456789101112方法一:select `name` from mysql.proc where db = 'your_db_name' and `type` = 'PROCEDURE'   //存储过程select `name` from mysql.proc where db = 'your_db_name' and `type` = 'FUNCT......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-31
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -567,7 +577,7 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
     <div class="tags">
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="1">HBASE</a>
+            <a href="/tags/#HBASE" title="HBASE" rel="2">HBASE</a>
             
         
             
@@ -655,19 +665,19 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
-        </li>
-      
-        <li>
           <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
         </li>
       
         <li>
           <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
         </li>
       
         <li>
@@ -686,7 +696,7 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>

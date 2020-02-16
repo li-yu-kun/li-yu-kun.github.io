@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,6 +211,40 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Kettle]08 八、kettle连接控件/">
+        <h2 class="post-title">
+                                 
+            [Kettle]08 八、kettle连接控件
+        </h2>
+        <h3 class="post-subtitle">
+            kettle连接控件
+        </h3>
+        <div class="post-content-preview">
+            连接是转换里面的第八个分类。连接是结果集通过关键字进行连接。
+合并记录合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。
+需要设置的参数：旧数据来源：旧数据来源的步骤新数据来源：新数据来源的步骤
+标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。
+
+“identical” – 旧数......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-12-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Kettle]09 九、kettle统计-映射-脚本控件/">
         <h2 class="post-title">
                                  
@@ -248,27 +282,26 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]08 八、kettle连接控件/">
+    <a href="/article/[Kettle]07 七、kettle查询控件/">
         <h2 class="post-title">
                                  
-            [Kettle]08 八、kettle连接控件
+            [Kettle]07 七、kettle查询控件
         </h2>
         <h3 class="post-subtitle">
-            kettle连接控件
+            kettle查询控件
         </h3>
         <div class="post-content-preview">
-            连接是转换里面的第八个分类。连接是结果集通过关键字进行连接。
-合并记录合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。
-需要设置的参数：旧数据来源：旧数据来源的步骤新数据来源：新数据来源的步骤
-标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。
-
-“identical” – 旧数......
+            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
+HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
+自定义常量数据自定义常量数据是用来生成一些不变的数据。
+实例
+从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-12-02
+            2019-12-01
         </p>
         <div class="tags">
             
@@ -297,39 +330,6 @@ Switch-caseSwitch/case让数据流从一路到多路。
 1表示男性0表示女性2表示保密
 分析输入：Excel输入流程：Switch/case输出：Microsoft Excel输出
 过滤记录过滤记录让数据流从一......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-12-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]07 七、kettle查询控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]07 七、kettle查询控件
-        </h2>
-        <h3 class="post-subtitle">
-            kettle查询控件
-        </h3>
-        <div class="post-content-preview">
-            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
-HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
-自定义常量数据自定义常量数据是用来生成一些不变的数据。
-实例
-从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
         </div>
     </a>
     
@@ -519,46 +519,29 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
 
 <div class="post-preview">
 
-    <a href="/article/大数据压缩/">
+    <a href="/article/[HBase]02 HBase原理与实战 二/">
         <h2 class="post-title">
                                  
-            大数据压缩
+            [HBase]02 HBase原理与实战 二
         </h2>
         <h3 class="post-subtitle">
-            大数据压缩常用格式
+            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
         </h3>
         <div class="post-content-preview">
-            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
-好处
-减少存储磁盘空间
-降低IO(网络的IO和磁盘的IO)
-加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
+            HBase写流程存储结构介绍
 
-坏处
-由于使用数据时，需要先将数据解压，加重CPU负荷
-
-压缩在Hadoop中的应用
-2. 压缩格式
-
-
-压缩格式
-工具
-算法
-扩展名
-codec类
-多文件
-splitable
-n......
+RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
+region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-11
+            2017-05-18
         </p>
         <div class="tags">
             
-              <a href="/tags/#大数据" title="大数据">大数据</a>
+              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
             
         </div>
     
@@ -607,7 +590,7 @@ n......
     <div class="tags">
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="1">HBASE</a>
+            <a href="/tags/#HBASE" title="HBASE" rel="2">HBASE</a>
             
         
             
@@ -695,19 +678,19 @@ n......
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
-        </li>
-      
-        <li>
           <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
         </li>
       
         <li>
           <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
         </li>
       
         <li>
@@ -726,7 +709,7 @@ n......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
