@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [HBase]01 HBASE进阶 三 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]03 HBASE进阶 三/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                            
+                        </div>
+                        <h1>[HBase]01 HBASE进阶 三</h1>
+                        <h2 class="subheading">Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-05-25
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><strong>什么导致hbase性能下降？</strong></p>
+<ul>
+<li>jvm内存分配与gc回收策略</li>
+<li>与hbase运行机制相关的部分配置不合理</li>
+<li>表结构设计及用户使用方式不合理<h2 id="Hbase概念"><a href="#Hbase概念" class="headerlink" title="Hbase概念"></a>Hbase概念</h2><h3 id="Hbase数据存储过程·"><a href="#Hbase数据存储过程·" class="headerlink" title="Hbase数据存储过程·"></a>Hbase数据存储过程·</h3></li>
+<li>Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfile小文件过多会影响查询时长，合并后才可以提高查询效率。）</li>
+<li>当region的大小达到某一阈值之后, 会执行split操作<h3 id="compaction分两种："><a href="#compaction分两种：" class="headerlink" title="compaction分两种："></a>compaction分两种：</h3></li>
+<li>Minor compaction: 选取一些小的 、 相邻的storefile将他们合并成一个更大的storefile</li>
+<li>Major compaction: 将所有的storefile合并成一个storefile, 清理无意义数据、被删除的数据、ttl过期数据 、 版本号超过设定版本号的数据；资源消耗最大。</li>
+<li>Split: 当一个region达到一定的大小就会自动split成两个region<h3 id="compact促发条件："><a href="#compact促发条件：" class="headerlink" title="compact促发条件："></a>compact促发条件：</h3></li>
+<li>Memstore被flush到磁盘, </li>
+<li>用户执行shell命令compact, Major_compact 或者调用了相应的api</li>
+<li>Hbase后台线程周期性触发检查<h2 id="Hbase优化策略"><a href="#Hbase优化策略" class="headerlink" title="Hbase优化策略"></a>Hbase优化策略</h2><h3 id="hbase优化"><a href="#hbase优化" class="headerlink" title="hbase优化"></a>hbase优化</h3></li>
+<li>常见服务端配置优化</li>
+<li>常用优化策略 (以实际需求为主)</li>
+<li>Hbase读/写性能优化<h3 id="HBase优化策略一：服务端优化策略"><a href="#HBase优化策略一：服务端优化策略" class="headerlink" title="HBase优化策略一：服务端优化策略"></a>HBase优化策略一：服务端优化策略</h3></li>
+<li>Jvm设置与gc设置</li>
+<li>hbase-site. xml 部分属性配置<br>max.filesize默认10G；<br>majorcompaction默认1天建议0,通过手动合并，因为需要用到很长时间；<br>min默认3；</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<p>cache.size在偏向读的业务当中可以适当调大一些。<br>flush.size可以设置大一点；<br>block.multiplier建议设置成5;如果太大会有内存溢出的危险。</p>
+<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<p>(hbase.hstore.blockingStoreFiles：默认为7，如果任何一个store(非.META.表里的store)的storefile的文件数大于该值，则在flush memstore前先进行split或者compact，同时把该region添加到flushQueue，延时刷新，这期间会阻塞写操作直到compact完成或者超过hbase.hstore.blockingWaitTime(默认90s)配置的时间，可以设置为30，避免memstore不及时flush。当regionserver运行日志中出现大量的“Region &lt;regionName&gt; has too many store files; delaying flush up to 90000ms”时，说明这个值需要调整了)</p>
+<h3 id="HBase优化策略二：常用优化策略"><a href="#HBase优化策略二：常用优化策略" class="headerlink" title="HBase优化策略二：常用优化策略"></a>HBase优化策略二：常用优化策略</h3><p><strong>HBase常优用化</strong><br>-预先分区   -RowKey优化  -Column优化  -Schema优化</p>
+<ul>
+<li>预先分区<ul>
+<li>创建hbase表的时候会自动创建一个region分区（hbase默认建一个regionserver上建region；后期数据大会分为两个region）</li>
+<li>创建hbase表的时候预先创建一些空的regions(减少io操作；通过预先分区；解决数据倾斜问题；将频繁访问的数据放到多个region中；将不常访问的分区放到一个或几个region中)</li>
+</ul>
+</li>
+<li>Rowkey优化<ul>
+<li>利用hbase默认排序特点, 将一起访问的数据放到一起</li>
+<li>防止热点问题（大量的client集中访问一个节点）, 避免使用时序或者单调的递增递减等</li>
+</ul>
+</li>
+<li>Column优化<ul>
+<li>列族的名称和列的描述命名尽量简短（过长会占据内存空间）</li>
+<li>同一张表中columnfamily的数量不要超过 3 个</li>
+</ul>
+</li>
+<li>Schema优化<ul>
+<li>宽表: 一种 “列多行少” 的设计（事物性能好；hbase的事物建立在行的基础上的；行少插入的时候可以有很好的保障）</li>
+<li>高表: 一种 “列少行多” 的设计（查询性能好；查询的条件放入rowkey中我们可以缓存更多的行；元数据来讲开销大因为行多rowkey多）<pre><code>**hbase主要在于不必苛刻设计于哪种；主要取决于业务。**</code></pre></li>
+</ul>
+</li>
+</ul>
+<h3 id="HBase优化策略三：读写优化策略"><a href="#HBase优化策略三：读写优化策略" class="headerlink" title="HBase优化策略三：读写优化策略"></a>HBase优化策略三：读写优化策略</h3><ul>
+<li>Hbase写优化策略<ul>
+<li>同步批量提交or异步批量提交</li>
+<li>WAL优化, 是否必须, 持久化等级</li>
+</ul>
+</li>
+</ul>
+<p>默认时同步提交数据的；异步提交是可能丢失一些数据的；在业允许的情况下可以开启。</p>
+<p>WAL默认是开启的；一方面确保数据缓存丢失了也可以数据恢复；另一方面是为了集群间的异步复制；更关注写入的吞吐量的时候可以关闭WAL或者采用异步写入。</p>
+<ul>
+<li>Hbase读优化策略 <ul>
+<li>客户端: Scan缓存设置, 批量获取</li>
+<li>服务端: blockcache配置是否合理, Hfile是否过多</li>
+<li>表结构的设计问题</li>
+</ul>
+</li>
+</ul>
+<p>在设置scan检索的时候可以设置scan的cache；scan在检索的时候不会一次将数据加载到本地；而是多次rpc请求加载(防止影响其他业务或者数据量大造成内存溢出)；cache默认100条大小设置的大一点可以减少rpc的请求数据次数。</p>
+<p>查询数据的时候blockcache如果不能命中；还要去Hfile里拉取数据。<br>Hfile不能过多；过多会导致查询缓慢；需要compact合并。</p>
+<h3 id="生产中做过调整的参数"><a href="#生产中做过调整的参数" class="headerlink" title="生产中做过调整的参数"></a>生产中做过调整的参数</h3><ul>
+<li>hbase.client.operation.timeout<br>该参数表示HBase客户端发起一次数据操作直至得到响应之间总的超时时间</li>
+<li>phoenix.query.timeoutMs<br>Phoenix客户端查询超时</li>
+<li>phoenix.query.keepAliveMs<br>当客户端的线程超过线程池的核心线程数量时，空闲线程等等待任务的默认时间。超过这个时间，空闲线程就会关闭，默认是60s</li>
+<li>hbase.client.ipc.pool.size<br>连接池的大小可以通过hbase.client.ipc.pool.size配置项指定，默认为1。</li>
+<li>dfs.socket.timeout<br>旧版本客户端的超时时间 HBase的SocketTimeoutException错误 调大</li>
+<li>dfs.client.socket-timeout<br>新版本客户端的超时时间</li>
+<li>hbase.client.operation.timeout<br>该参数表示HBase客户端发起一次数据操作直至得到响应之间总的超时时间</li>
+<li>hbase.master.namespace.init.timeout<br>如果一个集群region非常多,默认5分钟可能还分配不到namespace表,还得修改hbase.master.namespace.init.timeout超时时间</li>
+<li>hbase.regionserver.executor.openregion.threads<br>开打用户表region的线程数量 默认3</li>
+<li>index.builder.threads.max 默认10<br>根据主表的更新来确定更新索引表的线程数</li>
+</ul>
+<h1 id="HBase协处理器简介"><a href="#HBase协处理器简介" class="headerlink" title="HBase协处理器简介"></a>HBase协处理器简介</h1><ul>
+<li>HBase coprocessor<ul>
+<li>Hbase协处理器受bigtable协处理器的启发, 为用户提供类库和运行时环境, 使得代码能够在hbase regionserver和master上处理</li>
+<li>系统协处理器and表协处理器（coprocessor分为两类协处理器）</li>
+<li>Observer and Endpoint（HBase 提供的coprocessor插件）</li>
+<li>系统协处理器: 全局加载到regionserver托管的所有表和region上（针对整个集群）</li>
+<li>表协处理器: 用户可以指定一张表使用协处理器（针对单张表）</li>
+<li>观察者 (Observer): 类似于关系数据库的触发器</li>
+<li>终端 (Endpoint): 动态的终端有点像存储过程</li>
+</ul>
+</li>
+<li>Observer<ul>
+<li>Regionobserver: 提供客户端的数据操纵事件钩子: Get, Put,Delete, Scan等</li>
+<li>Masterobserver: 提供DDL类型的操作钩子。如创建、删除修改数据表等</li>
+<li>Walobserver: 提供wal相关操作钩子</li>
+</ul>
+</li>
+<li>Observer应用场景<ul>
+<li>安全性: 例如执行get或put操作前, 通过preget或preput方法检查, 是否允许该操作</li>
+<li>引用完整性约束: hbase并不支持关系型数据库中的引用完整性约束概念, 即通常所说的外键；我们可以使用协处理器增强这种约束</li>
+</ul>
+</li>
+<li>Endpoint<ul>
+<li>endpoint是动态rpc插件的接口, 它的实现代码被安装在服务器端, 从而能够通过hbase Rpc唤醒</li>
+<li>调用接口, 它们的实现代码会被目标regionserver远程执行· </li>
+<li>典型的案例: 一个大table有几百个region, 需要计算某列的平均值或者总和</li>
+</ul>
+</li>
+</ul>
+<h1 id="HBase实战：开发RegionObserver协处理器"><a href="#HBase实战：开发RegionObserver协处理器" class="headerlink" title="HBase实战：开发RegionObserver协处理器"></a>HBase实战：开发RegionObserver协处理器</h1><p><strong>◆实现一个endpoint类型的协处理器</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> 待整理</li>
+</ul>
+<p><strong>◆实现一个regionobserver类型的协处理器</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.hbase;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.Cell;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.CellUtil;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.CoprocessorEnvironment;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Delete;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Durability;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Get;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Put;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.client.Result;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.coprocessor.BaseRegionObserver;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.coprocessor.ObserverContext;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.coprocessor.RegionCoprocessorEnvironment;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.regionserver.wal.WALEdit;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.util.Bytes;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by jixin on 18-2-25.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RegionObserverTest</span> <span class="keyword">extends</span> <span class="title">BaseRegionObserver</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">byte</span>[] columnFamily = Bytes.toBytes(<span class="string">"cf"</span>);</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">byte</span>[] countCol = Bytes.toBytes(<span class="string">"countCol"</span>);</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">byte</span>[] unDeleteCol = Bytes.toBytes(<span class="string">"unDeleteCol"</span>);</span><br><span class="line">  <span class="keyword">private</span> RegionCoprocessorEnvironment environment;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//regionserver 打开region前执行</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">(CoprocessorEnvironment e)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    environment = (RegionCoprocessorEnvironment) e;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//RegionServer关闭region前调用</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">(CoprocessorEnvironment e)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 需求一</span></span><br><span class="line"><span class="comment">   * 1. cf:countCol 进行累加操作。 每次插入的时候都要与之前的值进行相加</span></span><br><span class="line"><span class="comment">   * 需要重载prePut方法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">prePut</span><span class="params">(ObserverContext&lt;RegionCoprocessorEnvironment&gt; e, Put put, WALEdit edit,</span></span></span><br><span class="line"><span class="function"><span class="params">      Durability durability)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (put.has(columnFamily, countCol)) &#123;<span class="comment">//获取old countcol value</span></span><br><span class="line">      Result rs = e.getEnvironment().getRegion().get(<span class="keyword">new</span> Get(put.getRow()));</span><br><span class="line">      <span class="keyword">int</span> oldNum = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">for</span> (Cell cell : rs.rawCells()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (CellUtil.matchingColumn(cell, columnFamily, countCol)) &#123;</span><br><span class="line">          oldNum = Integer.valueOf(Bytes.toString(CellUtil.cloneValue(cell)));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//获取new countcol value</span></span><br><span class="line">      List&lt;Cell&gt; cells = put.get(columnFamily, countCol);</span><br><span class="line">      <span class="keyword">int</span> newNum = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">for</span> (Cell cell : cells) &#123;</span><br><span class="line">        <span class="keyword">if</span> (CellUtil.matchingColumn(cell, columnFamily, countCol)) &#123;</span><br><span class="line">          newNum = Integer.valueOf(Bytes.toString(CellUtil.cloneValue(cell)));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//sum AND update Put实例</span></span><br><span class="line">      put.addColumn(columnFamily, countCol, Bytes.toBytes(String.valueOf(oldNum + newNum)));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 需求二</span></span><br><span class="line"><span class="comment">   * 2. 不能直接删除unDeleteCol    删除countCol的时候将unDeleteCol一同删除</span></span><br><span class="line"><span class="comment">   * 需要重载preDelete方法</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">preDelete</span><span class="params">(ObserverContext&lt;RegionCoprocessorEnvironment&gt; e, Delete delete,</span></span></span><br><span class="line"><span class="function"><span class="params">      WALEdit edit,</span></span></span><br><span class="line"><span class="function"><span class="params">      Durability durability)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//判断是否操作删除了cf列族</span></span><br><span class="line">    List&lt;Cell&gt; cells = delete.getFamilyCellMap().get(columnFamily);</span><br><span class="line">    <span class="keyword">if</span> (cells == <span class="keyword">null</span> || cells.size() == <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> deleteFlag = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (Cell cell : cells) &#123;</span><br><span class="line">      <span class="keyword">byte</span>[] qualifier = CellUtil.cloneQualifier(cell);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (Arrays.equals(qualifier, unDeleteCol)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IOException(<span class="string">"can not delete unDel column"</span>);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (Arrays.equals(qualifier, countCol)) &#123;</span><br><span class="line">        deleteFlag = <span class="keyword">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (deleteFlag) &#123;</span><br><span class="line">      delete.addColumn(columnFamily, unDeleteCol);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="HBase实战：HBase协处理器加载"><a href="#HBase实战：HBase协处理器加载" class="headerlink" title="HBase实战：HBase协处理器加载"></a>HBase实战：HBase协处理器加载</h1><ul>
+<li><input disabled="" type="checkbox"> 待整理<ul>
+<li>配置文件加载: 即通过hbase-site. Xml文件配置加载, 一般这样的协处理器是系统级别的.  </li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<ul>
+<li>Shell加载: 可以通过alter命令来对表进行schema修改来加载协处理器</li>
+<li>shell加载；jar包|全类名|优先级（会自动分配）|协处理器相关参数</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<p>首先对regionobserver进行编译 mvn clean install<br>上传到hdfs集群中<br>测试协处理器</p>
+<p><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br><img src="%E5%9B%BE%E7%89%8711.png" alt=""><br><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<ul>
+<li>通过api代码加载: 即通过api的方式来加载协处理器<br>配置文件加载</li>
+</ul>
+<p>Hbase卸载/更新协处理器</p>
+<ul>
+<li>重复加载的第二个coprocessor实例不会发挥作用</li>
+<li>要完成卸载/更新就需要重启JVM, 也就是重启regionserver</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[HBase]02 HBase原理与实战 二/" data-toggle="tooltip" data-placement="top" title="[HBase]02 HBase原理与实战 二">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase概念"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hbase概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Hbase数据存储过程·"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Hbase数据存储过程·</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#compaction分两种："><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">compaction分两种：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#compact促发条件："><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">compact促发条件：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase优化策略"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hbase优化策略</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hbase优化"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">hbase优化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HBase优化策略一：服务端优化策略"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">HBase优化策略一：服务端优化策略</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HBase优化策略二：常用优化策略"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">HBase优化策略二：常用优化策略</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#HBase优化策略三：读写优化策略"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">HBase优化策略三：读写优化策略</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#生产中做过调整的参数"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">生产中做过调整的参数</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase协处理器简介"><span class="toc-nav-number"></span> <span class="toc-nav-text">HBase协处理器简介</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase实战：开发RegionObserver协处理器"><span class="toc-nav-number"></span> <span class="toc-nav-text">HBase实战：开发RegionObserver协处理器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase实战：HBase协处理器加载"><span class="toc-nav-number"></span> <span class="toc-nav-text">HBase实战：HBase协处理器加载</span></a>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

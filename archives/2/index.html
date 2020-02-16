@@ -211,6 +211,38 @@
 
 <div class="post-preview">
 
+    <a href="/article/[HBase]02 HBase原理与实战 二/">
+        <h2 class="post-title">
+                                 
+            [HBase]02 HBase原理与实战 二
+        </h2>
+        <h3 class="post-subtitle">
+            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+        </h3>
+        <div class="post-content-preview">
+            HBase写流程存储结构介绍
+
+RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
+region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[HBase]01 HBASE简介与环境搭建 一/">
         <h2 class="post-title">
                                  
@@ -518,39 +550,6 @@ mapreduce.input.fileinputforma......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]08 分布式处理框架MapReduce 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]08 分布式处理框架MapReduce 一
-        </h2>
-        <h3 class="post-subtitle">
-            基本概念、场景、编程模型、架构
-        </h3>
-        <div class="post-content-preview">
-            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
-
-源自于Google的MapReduce论文,论文发表于2004年22月
-Hadoop MapReduce是Google MapReduce的克隆版
-MapReduce优点:海量数量离线处理&amp;易开发&am......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-16
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -596,11 +595,11 @@ MapReduce优点:海量数量离线处理&amp;易开发&am......
     <div class="tags">
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="2">HBASE</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#HBASE" title="HBASE" rel="3">HBASE</a>
             
         
             
@@ -692,11 +691,11 @@ MapReduce优点:海量数量离线处理&amp;易开发&am......
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
         </li>
       
         <li>
@@ -715,7 +714,7 @@ MapReduce优点:海量数量离线处理&amp;易开发&am......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
