@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]02 二、输入控件 - 李玉坤 | Blog
+          [HBase]01 非关系形数据库HBASE 一  - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]02 二、输入控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]01 非关系形数据库HBASE 一 /">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                              <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
                             
                         </div>
-                        <h1>[Kettle]02 二、输入控件</h1>
-                        <h2 class="subheading">Kettle输入控件</h2>
+                        <h1>[HBase]01 非关系形数据库HBASE 一 </h1>
+                        <h2 class="subheading">概述设计、各组件工作原理、副本机制、安全模式</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-11-27
+                            2017-04-03
                         </span>
                     </div>
                 
@@ -212,35 +212,66 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="%E5%9B%BE%E7%89%871.png" alt=""><br><img src="%E5%9B%BE%E7%89%872.png" alt=""></p>
-<h1 id="CSV文件输入"><a href="#CSV文件输入" class="headerlink" title="CSV文件输入"></a>CSV文件输入</h1><p>CSV文件是一种<strong>带有固定格式</strong>的<strong>文本文件</strong>。<br><img src="%E5%9B%BE%E7%89%873.png" alt=""><br><img src="%E5%9B%BE%E7%89%874.png" alt=""><br><img src="%E5%9B%BE%E7%89%875.png" alt=""><br><img src="%E5%9B%BE%E7%89%876.png" alt=""><br><img src="%E5%9B%BE%E7%89%877.png" alt=""><br><img src="%E5%9B%BE%E7%89%878.png" alt=""><br><img src="%E5%9B%BE%E7%89%879.png" alt=""><br><img src="%E5%9B%BE%E7%89%8710.png" alt=""><br><img src="%E5%9B%BE%E7%89%8711.png" alt=""><br><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
-<h1 id="文本文件输入"><a href="#文本文件输入" class="headerlink" title="文本文件输入"></a>文本文件输入</h1><p>提取<strong>日志信息</strong>的数据是开发常见的操作，日志信息基本都是<strong>文本类型</strong>。<br>tomcat访问日志<br><img src="%E5%9B%BE%E7%89%8713.png" alt=""><br><img src="%E5%9B%BE%E7%89%8714.png" alt=""><br><img src="%E5%9B%BE%E7%89%8715.png" alt=""><br><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
-<h1 id="Excel输入"><a href="#Excel输入" class="headerlink" title="Excel输入"></a>Excel输入</h1><p>微软的Excel目前有两种后缀名的文件分别为：<strong>xls</strong>和<strong>xlsx</strong>。<br>xls:2007年之前<br>xlsx:2007年之后<br><img src="%E5%9B%BE%E7%89%8717.png" alt=""><br><img src="%E5%9B%BE%E7%89%8718.png" alt=""><br><img src="%E5%9B%BE%E7%89%8719.png" alt=""></p>
-<h1 id="多文件合并"><a href="#多文件合并" class="headerlink" title="多文件合并"></a>多文件合并</h1><p>数据往往也是以多个文件的形式出现，有的数据还会分散在多个子文件夹。<br>所以合并数据也是开发中非常常见的操作。<br><img src="%E5%9B%BE%E7%89%8720.png" alt=""></p>
-<h1 id="Get-data-from-XML"><a href="#Get-data-from-XML" class="headerlink" title="Get data from XML"></a>Get data from XML</h1><h2 id="xml"><a href="#xml" class="headerlink" title="xml"></a>xml</h2><p>XML 指可扩展标记语言（EXtensible Markup Language）, XML 被设计用来传输和存储数据。<br><img src="%E5%9B%BE%E7%89%8721.png" alt=""></p>
-<h2 id="XPath"><a href="#XPath" class="headerlink" title="XPath"></a>XPath</h2><p><strong>XPath</strong>即为<strong>XML路径语言</strong>（XML Path Language），它是一种用来确定XML文档中<strong>某部分位置</strong>的语言。</p>
-<p>XPath基于<strong>XML的树状结构</strong>，提供在<strong>数据结构</strong>树中<strong>找寻节点</strong>的能力。</p>
-<h2 id="XPath-语法"><a href="#XPath-语法" class="headerlink" title="XPath-语法"></a>XPath-语法</h2><p><strong>选取节点</strong> XPath <strong>使用路径表达式</strong>在 XML 文档中选取节点。节点是通过沿着<strong>路径</strong>或者 <strong>step</strong> 来选取的。</p>
-<p>下面列出了最有用的路径表达式：<br><img src="%E5%9B%BE%E7%89%8722.png" alt=""></p>
-<h2 id="XPath-路径表达式-示例"><a href="#XPath-路径表达式-示例" class="headerlink" title="XPath-路径表达式-示例"></a>XPath-路径表达式-示例</h2><p><img src="%E5%9B%BE%E7%89%8723.png" alt=""></p>
-<h2 id="Get-data-from-XML-1"><a href="#Get-data-from-XML-1" class="headerlink" title="Get data from XML"></a>Get data from XML</h2><p><img src="%E5%9B%BE%E7%89%8724.png" alt=""><br><img src="%E5%9B%BE%E7%89%8725.png" alt=""><br><img src="%E5%9B%BE%E7%89%8726.png" alt=""><br><img src="%E5%9B%BE%E7%89%8727.png" alt=""><br><img src="%E5%9B%BE%E7%89%8728.png" alt=""><br><img src="%E5%9B%BE%E7%89%8729.png" alt=""><br><img src="%E5%9B%BE%E7%89%8730.png" alt=""></p>
-<h1 id="JSON-Input"><a href="#JSON-Input" class="headerlink" title="JSON Input"></a>JSON Input</h1><h2 id="json"><a href="#json" class="headerlink" title="json"></a>json</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SON(JavaScript Object Notation, JS 对象简谱) 是一种轻量级的数据交换格式。</span><br><span class="line"></span><br><span class="line">JSON核心概念：数组、对象、属性</span><br><span class="line">数组：[ ]</span><br><span class="line">对象：&#123; &#125;</span><br><span class="line">属性：key:value</span><br></pre></td></tr></table></figure>
-<h2 id="JSONPath"><a href="#JSONPath" class="headerlink" title="JSONPath"></a>JSONPath</h2><p>JSONPath<strong>类似于XPath</strong>在xml文档中的定位，JsonPath表达式通常是用来<strong>路径检索</strong>或设置Json的。</p>
-<p>其表达式可以接受“dot–notation”（<strong>点记法</strong>）和“bracket–notation”（<strong>括号记法</strong>）格式</p>
-<p>点记法：$.store.book[0].title</p>
-<p>括号记法：$[‘store’][‘book’][0][‘title’]</p>
-<h2 id="JSONPath-操作符"><a href="#JSONPath-操作符" class="headerlink" title="JSONPath-操作符"></a>JSONPath-操作符</h2><p><img src="%E5%9B%BE%E7%89%8731.png" alt=""><br><img src="%E5%9B%BE%E7%89%8732.png" alt=""></p>
-<h2 id="JSON-Input-1"><a href="#JSON-Input-1" class="headerlink" title="JSON Input"></a>JSON Input</h2><p><img src="%E5%9B%BE%E7%89%8733.png" alt=""><br><img src="%E5%9B%BE%E7%89%8734.png" alt=""><br><img src="%E5%9B%BE%E7%89%8735.png" alt=""><br><img src="%E5%9B%BE%E7%89%8736.png" alt=""></p>
-<h1 id="生成记录"><a href="#生成记录" class="headerlink" title="生成记录"></a>生成记录</h1><h2 id="静态数据"><a href="#静态数据" class="headerlink" title="静态数据"></a>静态数据</h2><p>数据仓库中绝大多数的数据都是<strong>业务系统</strong>生成的<strong>动态数据</strong>，但是其中一部分<strong>维度数据</strong>不是动态的，比如：<strong>日期维度</strong>。</p>
-<p><strong>静态维度数据</strong>就可以<strong>提前生成</strong>。</p>
-<h2 id="生成记录-1"><a href="#生成记录-1" class="headerlink" title="生成记录"></a>生成记录</h2><p><img src="%E5%9B%BE%E7%89%8737.png" alt=""><br><img src="%E5%9B%BE%E7%89%8738.png" alt=""><br><img src="%E5%9B%BE%E7%89%8739.png" alt=""><br><img src="%E5%9B%BE%E7%89%8740.png" alt=""></p>
-<h1 id="表输入"><a href="#表输入" class="headerlink" title="表输入"></a>表输入</h1><h2 id="数据库驱动"><a href="#数据库驱动" class="headerlink" title="数据库驱动"></a>数据库驱动</h2><p>数据库驱动是<strong>不同数据库开发商</strong>（比如oracle mysql等）为了某一种开发语言环境（比如java）能够实现统一的数据库调用而开发的<strong>一个程序</strong>，他的作用相当于一个<strong>翻译人员</strong>。</p>
-<h2 id="数据库驱动-1"><a href="#数据库驱动-1" class="headerlink" title="数据库驱动"></a>数据库驱动</h2><p><img src="%E5%9B%BE%E7%89%8741.png" alt=""></p>
-<h2 id="MySQL驱动下载"><a href="#MySQL驱动下载" class="headerlink" title="MySQL驱动下载"></a>MySQL驱动下载</h2><p><a href="https://dev.mysql.com/downloads/connector/j/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/connector/j/</a><br>根据MySQL数据库不同的版本，下载对应的Java驱动程序。<br><img src="%E5%9B%BE%E7%89%8742.png" alt=""></p>
-<p>\pdi-ce-8.2.0.0-342\data-integration\lib目录<br>下的mysql-connector-java-XXX.jar</p>
-<h2 id="新建数据库连接"><a href="#新建数据库连接" class="headerlink" title="新建数据库连接"></a>新建数据库连接</h2><p><img src="%E5%9B%BE%E7%89%8743.png" alt=""><br><img src="%E5%9B%BE%E7%89%8744.png" alt=""><br><img src="%E5%9B%BE%E7%89%8745.png" alt=""><br><img src="%E5%9B%BE%E7%89%8746.png" alt=""><br><img src="%E5%9B%BE%E7%89%8747.png" alt=""></p>
-<h2 id="获取查询的表"><a href="#获取查询的表" class="headerlink" title="获取查询的表"></a>获取查询的表</h2><p><img src="%E5%9B%BE%E7%89%8748.png" alt=""><br><img src="%E5%9B%BE%E7%89%8749.png" alt=""></p>
-
+                <h1 id="HBase简介及其在大数据生态圈的位置"><a href="#HBase简介及其在大数据生态圈的位置" class="headerlink" title="HBase简介及其在大数据生态圈的位置"></a>HBase简介及其在大数据生态圈的位置</h1><h2 id="HBase简介"><a href="#HBase简介" class="headerlink" title="HBase简介"></a>HBase简介</h2><p>Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。</p>
+<p>使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人为结构化数据构建的分布式存储系统。正如Bigtable利用了谷歌文件系统提供的分布式数据存储一样，Apache HBase在Hadoop和HDFS之上提供了类似于Bigtable的功能。</p>
+<ul>
+<li><p>HBase是一个分布式的、面向列的开源数据库,</p>
+</li>
+<li><p>HBase在Hadoop之上提供了类似于Bigtable的能力</p>
+</li>
+<li><p>HBase不同于一般的关系数据库,它适合非结构化数据存储</p>
+<p><strong>BigTable是什么？</strong></p>
+</li>
+<li><p>BigTable是一种压缩的高性能的高可扩展性的基于Google文件系统gfs的数据库。用于存储大规模的结构化数据；在扩展性和性能方面有很大的优势。</p>
+<p><strong>什么是面向列的数据库？</strong></p>
+</li>
+<li><p>它又叫列式数据库；把每一列的数据值放在一起进行存储；<br>行式存储和列式存储：<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+</li>
+</ul>
+<h2 id="HBase在大数据生态中的位置"><a href="#HBase在大数据生态中的位置" class="headerlink" title="HBase在大数据生态中的位置"></a>HBase在大数据生态中的位置</h2><ul>
+<li>HBase是Apache基金会顶级项目</li>
+<li>HBase基于Hadoop的核心HDFS系统进行数据存储,类似于Hive</li>
+<li>HBase可以存储超大数据并适合用来进行大数据的实时查询</li>
+</ul>
+<h2 id="HBase与HDFS"><a href="#HBase与HDFS" class="headerlink" title="HBase与HDFS"></a>HBase与HDFS</h2><ul>
+<li>HBase建立在Hadoop文件系统之上,利用了Hadoop的文件系统的容错能力</li>
+<li>HBase提供对数据的随机实时读/写访问功能</li>
+<li>HBase内部使用哈希表,并存储索引,可将在HDFS文件中的数据进行快速查找</li>
+</ul>
+<h2 id="HBase使用场景"><a href="#HBase使用场景" class="headerlink" title="HBase使用场景"></a>HBase使用场景</h2><ul>
+<li>瞬间写入量很大,常用数据库不好支撑或需要很高成本支撑的场景</li>
+<li>数据需要长久保存,且量会持久增长到比较大的场景</li>
+<li>HBase不适用于有join,多级索引,表关系复杂的数据模型</li>
+</ul>
+<h1 id="Hbase数据存储模型及与关系型数据库的区别"><a href="#Hbase数据存储模型及与关系型数据库的区别" class="headerlink" title="Hbase数据存储模型及与关系型数据库的区别"></a>Hbase数据存储模型及与关系型数据库的区别</h1><h2 id="CAP定理"><a href="#CAP定理" class="headerlink" title="CAP定理"></a>CAP定理</h2><p>对于一个分布式计算系统不可能全部满足以下三点：hbase为cp类型；它的每一行有单个的regionserver、rowkey、多版本标签等组合来保证行的一致性。</p>
+<ul>
+<li>Consistency 一致性(所有节点在同一时间具有相同的数据)</li>
+<li>Availability 可用性(保证每个请求不管成功或者失败都有响应,但不保证获取的数据为正确的数据)·</li>
+<li>Partition tolerance 分区容错性(系统中任意信息的丢失或失败不会影响系统的继续运作,系统如果不能在某一个时限内达成数据一致性,就必须在上面两个操作之间做出选择)</li>
+</ul>
+<h2 id="ACID定义"><a href="#ACID定义" class="headerlink" title="ACID定义"></a>ACID定义</h2><p>Hbase不支持严格的ACID ；只支持单个的行ACID</p>
+<ul>
+<li><p>原子性<br>整个事务中的所有操作，要么全部完成，要么全部不完成，不可能停滞在中间某个环节。事务在执行过程中发生错误，会被回滚（Rollback）到事务开始前的状态，就像这个事务从来没有执行过一样。</p>
+</li>
+<li><p>一致性<br>一个事务可以封装状态改变（除非它是一个只读的）。事务必须始终保持系统处于一致的状态，不管在任何给定的时间并发事务有多少。</p>
+</li>
+<li><p>隔离性<br>隔离状态执行事务，使它们好像是系统在给定时间内执行的唯一操作。如果有两个事务，运行在相同的时间内，执行相同的功能，事务的隔离性将确保每一事务在系统中认为只有该事务在使用系统。</p>
+</li>
+<li><p>持久性<br>在事务完成以后，该事务对数据库所作的更改便持久的保存在数据库之中，并不会被回滚。</p>
+</li>
+</ul>
+<h2 id="Hbase核心概念"><a href="#Hbase核心概念" class="headerlink" title="Hbase核心概念"></a>Hbase核心概念</h2><ul>
+<li>NameSpace:<br>可以把NameSpace理解为RDBMS的“数据库”</li>
+<li>Table:<br>表名必须是能用在文件路径里的合法名字</li>
+<li>Row:<br>在表里面,每一行代表着一个数据对象,每一行都是以一个行键( Row Key )来进行唯一标识的,行键并没有什么特定的数据类型,以二进制的字节来存储</li>
+<li>Column:<br>HBase的列由Column family和Column qualifier组成 ,由冒号(:)进行进行间隔。比如family:qualifier</li>
+<li>RowKey:<br>可以唯一标识一行记录,不可被改变. </li>
+<li>Column Family:<br>在定义HBase表的时候需要提前设置好列族,表中所有的列都需要组织在列族里面</li>
+<li>Column Qualifier:<br>列族中的数据通过列标识来进行映射,可以理解为一个键值对,Column Qualifier就是Key.</li>
+<li>Cell:<br>每一个行键,列族和列标识共同组成一个单元,</li>
+<li>Timestamp:<br>每个值都会有一个timestamp,作为该值特定版本的标识符</li>
+</ul>
+<h2 id="Hbase与传统关系型数据库的区别"><a href="#Hbase与传统关系型数据库的区别" class="headerlink" title="Hbase与传统关系型数据库的区别"></a>Hbase与传统关系型数据库的区别</h2>
                 
 
                 <hr>
@@ -248,12 +279,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]03 三、输出控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]03 三、输出控件">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop]02 分布式文件系统HDFS 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]02 分布式文件系统HDFS 二">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]01 分布式文件系统HDFS 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -303,7 +334,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CSV文件输入"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">CSV文件输入</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#文本文件输入"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">文本文件输入</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Excel输入"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Excel输入</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#多文件合并"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">多文件合并</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Get-data-from-XML"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Get data from XML</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#xml"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">xml</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#XPath"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">XPath</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#XPath-语法"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">XPath-语法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#XPath-路径表达式-示例"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">XPath-路径表达式-示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Get-data-from-XML-1"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">Get data from XML</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#JSON-Input"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">JSON Input</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#json"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">json</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JSONPath"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">JSONPath</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JSONPath-操作符"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">JSONPath-操作符</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JSON-Input-1"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">JSON Input</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#生成记录"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">生成记录</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#静态数据"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">静态数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生成记录-1"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">生成记录</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#表输入"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">表输入</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库驱动"><span class="toc-nav-number">8.1.</span> <span class="toc-nav-text">数据库驱动</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库驱动-1"><span class="toc-nav-number">8.2.</span> <span class="toc-nav-text">数据库驱动</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MySQL驱动下载"><span class="toc-nav-number">8.3.</span> <span class="toc-nav-text">MySQL驱动下载</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#新建数据库连接"><span class="toc-nav-number">8.4.</span> <span class="toc-nav-text">新建数据库连接</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#获取查询的表"><span class="toc-nav-number">8.5.</span> <span class="toc-nav-text">获取查询的表</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase简介及其在大数据生态圈的位置"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase简介及其在大数据生态圈的位置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase简介"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">HBase简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase在大数据生态中的位置"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase在大数据生态中的位置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase与HDFS"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">HBase与HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase使用场景"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">HBase使用场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase数据存储模型及与关系型数据库的区别"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hbase数据存储模型及与关系型数据库的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CAP定理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">CAP定理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ACID定义"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">ACID定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase核心概念"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Hbase核心概念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase与传统关系型数据库的区别"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Hbase与传统关系型数据库的区别</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -323,7 +354,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                          <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
                         
                     </div>
                 </section>
