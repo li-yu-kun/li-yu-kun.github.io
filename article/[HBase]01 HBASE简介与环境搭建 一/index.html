@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [HBase]01 非关系形数据库HBASE 一  - 李玉坤 | Blog
+          [HBase]01 HBASE简介与环境搭建 一 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]01 非关系形数据库HBASE 一 /">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]01 HBASE简介与环境搭建 一/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,7 +91,7 @@
                               <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
                             
                         </div>
-                        <h1>[HBase]01 非关系形数据库HBASE 一 </h1>
+                        <h1>[HBase]01 HBASE简介与环境搭建 一</h1>
                         <h2 class="subheading">HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -260,18 +260,25 @@
 <li><p>持久性<br>在事务完成以后，该事务对数据库所作的更改便持久的保存在数据库之中，并不会被回滚。</p>
 </li>
 </ul>
-<h2 id="Hbase核心概念"><a href="#Hbase核心概念" class="headerlink" title="Hbase核心概念"></a>Hbase核心概念</h2><ul>
+<h2 id="Hbase核心概念"><a href="#Hbase核心概念" class="headerlink" title="Hbase核心概念"></a>Hbase核心概念</h2><p>一行数据eg：row =&gt; rw1 column=cf1:q1, timestamp=1550351947916, value=val1</p>
+<ul>
 <li>NameSpace:<br>可以把NameSpace理解为RDBMS的“数据库”</li>
 <li>Table:<br>表名必须是能用在文件路径里的合法名字</li>
 <li>Row:<br>在表里面,每一行代表着一个数据对象,每一行都是以一个行键( Row Key )来进行唯一标识的,行键并没有什么特定的数据类型,以二进制的字节来存储</li>
 <li>Column:<br>HBase的列由Column family和Column qualifier组成 ,由冒号(:)进行进行间隔。比如family:qualifier</li>
 <li>RowKey:<br>可以唯一标识一行记录,不可被改变. </li>
-<li>Column Family:<br>在定义HBase表的时候需要提前设置好列族,表中所有的列都需要组织在列族里面</li>
+<li>Column Family:<br>在定义HBase表的时候需要提前设置好列族,表中所有的列都需要组织在列族里面<br>一行数据同属于一个cf，一个table =&gt; N * cf , 一个cf =&gt; n * col</li>
+</ul>
+<blockquote>
+<p>cf =&gt;<br>           {NAME =&gt; ‘cf1’, BLOOMFILTER =&gt; ‘ROW’, VERSIONS =&gt; ‘1’,<br>            IN_MEMORY =&gt; ‘false’, KEEP_DELETED_CELLS =&gt; ‘FALSE’,<br>            DATA_BLOCK_ENCODING =&gt; ‘NONE’, TTL =&gt; ‘FOREVER’,<br>            COMPRESSION =&gt; ‘NONE’, MIN_VERSIONS =&gt; ‘0’, BLOCKCACHE =&gt; ‘true’,<br>            BLOCKSIZE =&gt; ‘65536’, REPLICATION_SCOPE =&gt; ‘0’}</p>
+</blockquote>
+<ul>
 <li>Column Qualifier:<br>列族中的数据通过列标识来进行映射,可以理解为一个键值对,Column Qualifier就是Key.</li>
-<li>Cell:<br>每一个行键,列族和列标识共同组成一个单元,</li>
+<li>Cell:<br>每一个行键,列族和列标识共同组成一个单元<br>cell: rk, cf:col, version</li>
 <li>Timestamp:<br>每个值都会有一个timestamp,作为该值特定版本的标识符</li>
 </ul>
-<h2 id="Hbase与传统关系型数据库的区别"><a href="#Hbase与传统关系型数据库的区别" class="headerlink" title="Hbase与传统关系型数据库的区别"></a>Hbase与传统关系型数据库的区别</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>传统存储：<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>Hbase归类存储：<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+<h2 id="Hbase与传统关系型数据库的区别"><a href="#Hbase与传统关系型数据库的区别" class="headerlink" title="Hbase与传统关系型数据库的区别"></a>Hbase与传统关系型数据库的区别</h2><p>1.动态列<br>2.存储数据形式<br>3.事物<br>4.分布式：可扩展的<br>5.支持的列多<br>6.kv存储<br>7.表之间的耦合性低<br>8.存在数据冗余<br>9.大数据量查询性能比较高<br>10.null不存的<br>11.本身二级索引不支持(rowkey scan: 全表 、范围)，后续可以自己去做<br>12.trigger 触发器不支持<br>13.字段的支持格式单一(bytes)</p>
+<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>传统存储：<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>Hbase归类存储：<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
 <h2 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h2><p>可想象为大的map;详见下图：<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>访问数据步骤如下图：<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
 <h1 id="Hbase伪分布式集群安装"><a href="#Hbase伪分布式集群安装" class="headerlink" title="Hbase伪分布式集群安装"></a>Hbase伪分布式集群安装</h1><p><strong>前置条件安装并且启动HDFS</strong></p>
 <ol>
@@ -327,12 +334,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]01 分布式文件系统HDFS 一">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop]02 分布式文件系统HDFS 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]02 分布式文件系统HDFS 二">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/初识Hadoop/" data-toggle="tooltip" data-placement="top" title="初识Hadoop">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]01 分布式文件系统HDFS 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
