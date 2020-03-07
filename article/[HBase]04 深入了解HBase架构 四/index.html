@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -346,7 +346,49 @@
 </ul>
 </li>
 </ul>
-
+<h1 id="HBase-调优点"><a href="#HBase-调优点" class="headerlink" title="HBase 调优点"></a>HBase 调优点</h1><pre><code>- WAL关闭
+- flush
+- block cache: 
+- memstore: size
+- compact: 阀值
+- split: 阀值
+- balancing 
+- RK：
+    - 长度不建议过长
+    - RK设计
+        - 加timestamp
+        - reverse
+        - hash/md5
+        - salting
+        - pre-split
+        ...
+    - 二级索引
+        Phoenix Solr ES
+- TTL
+- version
+- compression(snappy)
+- API
+    put/list&lt;put&gt;/bulkload
+    scan/get(batch/only one)
+- conf
+    - zk
+    - retry
+    - timeout
+    - flush
+    - compact
+        - 资源消耗过大/多
+            - IO资源 带宽
+            Minor Compact：建议 5-6 文件
+            Major Compact: 手动处理
+    - split
+- JVM
+    - gc
+    - hdfs
+    - zk
+- HFile 大小
+    - 问题：HFile大小和HDFS block size什么关系？？
+    - HFile文件是否过大
+        hbase.hstore.compaction.max.size = RegionSize /hbase.hstore.compactionThreshold</code></pre>
                 
 
                 <hr>
@@ -354,7 +396,7 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
+                            <a href="/article/数据仓库实战一/" data-toggle="tooltip" data-placement="top" title="数据仓库实战一">&larr; Previous Post</a>
                         </li>
                     
                     
@@ -409,7 +451,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase体系结构组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase体系结构组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Regions"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Regions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-HMaster"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase HMaster</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ZooKeeper-协调器"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">ZooKeeper: 协调器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#How-the-Components-Work-Together"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">How the Components Work Together</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-First-Read-or-Write"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HBase First Read or Write</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Meta-Table"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">HBase Meta Table</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Server-Components"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Region Server Components</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-1"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">HBase Write Steps (1)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-2"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">HBase Write Steps (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-MemStore"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">HBase MemStore</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Region-Flush"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">HBase Region Flush</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">HBase HFile</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile-Structure"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">HBase HFile Structure</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HFile-Index"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">HFile Index</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">HBase Read Merge</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge-1"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">HBase Read Merge</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Minor-Compaction"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">HBase Minor Compaction</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Major-Compaction"><span class="toc-nav-number">14.2.</span> <span class="toc-nav-text">HBase Major Compaction</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Split"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">Region Split</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Read-Load-Balancing"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">Read Load Balancing</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication"><span class="toc-nav-number">17.</span> <span class="toc-nav-text">HDFS Data Replication</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication-2"><span class="toc-nav-number">18.</span> <span class="toc-nav-text">HDFS Data Replication (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Crash-Recovery"><span class="toc-nav-number">19.</span> <span class="toc-nav-text">HBase Crash Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Data-Recovery"><span class="toc-nav-number">20.</span> <span class="toc-nav-text">Data Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Apache-HBase-Architecture-Benefits"><span class="toc-nav-number">21.</span> <span class="toc-nav-text">Apache HBase Architecture Benefits</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase体系结构组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase体系结构组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Regions"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Regions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-HMaster"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase HMaster</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ZooKeeper-协调器"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">ZooKeeper: 协调器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#How-the-Components-Work-Together"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">How the Components Work Together</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-First-Read-or-Write"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HBase First Read or Write</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Meta-Table"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">HBase Meta Table</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Server-Components"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Region Server Components</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-1"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">HBase Write Steps (1)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-2"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">HBase Write Steps (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-MemStore"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">HBase MemStore</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Region-Flush"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">HBase Region Flush</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">HBase HFile</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile-Structure"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">HBase HFile Structure</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HFile-Index"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">HFile Index</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">HBase Read Merge</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge-1"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">HBase Read Merge</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Minor-Compaction"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">HBase Minor Compaction</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Major-Compaction"><span class="toc-nav-number">14.2.</span> <span class="toc-nav-text">HBase Major Compaction</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Split"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">Region Split</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Read-Load-Balancing"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">Read Load Balancing</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication"><span class="toc-nav-number">17.</span> <span class="toc-nav-text">HDFS Data Replication</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication-2"><span class="toc-nav-number">18.</span> <span class="toc-nav-text">HDFS Data Replication (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Crash-Recovery"><span class="toc-nav-number">19.</span> <span class="toc-nav-text">HBase Crash Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Data-Recovery"><span class="toc-nav-number">20.</span> <span class="toc-nav-text">Data Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Apache-HBase-Architecture-Benefits"><span class="toc-nav-number">21.</span> <span class="toc-nav-text">Apache HBase Architecture Benefits</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-调优点"><span class="toc-nav-number">22.</span> <span class="toc-nav-text">HBase 调优点</span></a></li></ol>
         
         </div>
       </aside>
