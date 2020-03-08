@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]03 三、输出控件 - 李玉坤 | Blog
+          数据仓库实战1.0 三 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]03 三、输出控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/数据仓库实战1.0 三/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                             
                         </div>
-                        <h1>[Kettle]03 三、输出控件</h1>
-                        <h2 class="subheading">Kettle输出控件</h2>
+                        <h1>数据仓库实战1.0 三</h1>
+                        <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-11-28
+                            2017-06-21
                         </span>
                     </div>
                 
@@ -212,18 +212,11 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>输出属于<strong>ETL</strong>的<strong>L</strong>，L就是Load加载。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="Excel输出"><a href="#Excel输出" class="headerlink" title="Excel输出"></a>Excel输出</h1><p><strong>输出</strong>是<strong>转换</strong>里面的第二个分类。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
-<h1 id="文本文件输出"><a href="#文本文件输出" class="headerlink" title="文本文件输出"></a>文本文件输出</h1><p><strong>数据操作常见的格式是：TXT和CSV。</strong><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
-<h1 id="SQL文件输出"><a href="#SQL文件输出" class="headerlink" title="SQL文件输出"></a>SQL文件输出</h1><p>SQL文件输出可以<strong>导出</strong>数据库<strong>表</strong>的<strong>结构</strong>和<strong>数据</strong>。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
-<h1 id="表输出"><a href="#表输出" class="headerlink" title="表输出"></a>表输出</h1><p><strong>表输出</strong>就是把<strong>数据写入到指定的表</strong>！<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
-<h1 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h1><p><strong>更新</strong>就是把<strong>数据库</strong>已经<strong>存在</strong>的记录与<strong>数据</strong>流里面的<strong>记录</strong>进行比对，如果<strong>不同</strong>就进行<strong>更新</strong>。</p>
-<p>注意：如果记录<strong>不存在</strong>，则会<strong>出现错误</strong>！<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
-<h1 id="插入更新"><a href="#插入更新" class="headerlink" title="插入更新"></a>插入更新</h1><p><strong>插入更新</strong>就是把<strong>数据库</strong>已经<strong>存在</strong>的记录与<strong>数据流</strong>里面的<strong>记录</strong>进行比对，如果<strong>不同</strong>就进行<strong>更新</strong>。</p>
-<p>如果记录<strong>不存在</strong>，则会<strong>插入数据</strong>！<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
-<h1 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h1><p><strong>自定义常量数据</strong>就是生成<strong>key-value</strong>形式的常量数据。</p>
-<h2 id="自定义常量数据"><a href="#自定义常量数据" class="headerlink" title="自定义常量数据"></a>自定义常量数据</h2><p><img src="%E5%9B%BE%E7%89%8712.png" alt=""><br><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
-<h2 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h2><p>删除就是<strong>删除数据库表</strong>中指定条件的数据。<br><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+                <h1 id="DWS层"><a href="#DWS层" class="headerlink" title="DWS层"></a>DWS层</h1><p>取出所有需要的字段明细，接下来的ads需求报表都会取决于这个dws层的报表。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">#parameters</span><br><span class="line">#mac: YESTERDAY=`date -v -1d +%Y-%m-%d`</span><br><span class="line">YESTERDAY=`date -d&quot;-1 day&quot; +%Y-%m-%d`</span><br><span class="line">TODAY=`date  +%Y-%m-%d`</span><br><span class="line">#mac: YESTERDAYTIME=&quot;`date -v -1d +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">YESTERDAYTIME=&quot;`date -d&quot;-1 day&quot; +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">TODAYTIME=&quot;`date  +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">HIVE_DATABASENAME=mydw_erp</span><br><span class="line">HIVE_DWS_TABLENAME=dws_bill</span><br><span class="line"></span><br><span class="line">hive -e &quot;</span><br><span class="line">insert overwrite table $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWS_TABLENAME&#125;</span><br><span class="line">SELECT </span><br><span class="line">a.id,</span><br><span class="line">b.id as itemid,</span><br><span class="line">b.DepotId,</span><br><span class="line">d.name as depotName,</span><br><span class="line">a.type,</span><br><span class="line">a.subtype,</span><br><span class="line">a.number,</span><br><span class="line">b.MaterialId,</span><br><span class="line">m.name as materialName,</span><br><span class="line">b.OperNumber,</span><br><span class="line">b.UnitPrice,</span><br><span class="line">b.AllPrice,</span><br><span class="line">m.SafetyStock,</span><br><span class="line">mc.name as secondCategory,</span><br><span class="line">mcfirst.name as firstCategory,</span><br><span class="line">a.OrganId,</span><br><span class="line">s.supplier as supplierOrCustomer,</span><br><span class="line">s.type as  supplierOrCustomerType,</span><br><span class="line">a.CreateTime</span><br><span class="line">from </span><br><span class="line">mydw_erp.dwd_depothead  a</span><br><span class="line">left join </span><br><span class="line">mydw_erp.dwd_depotitem  b </span><br><span class="line">on a.id = b.headerid</span><br><span class="line">left join </span><br><span class="line">mydw_erp.dwd_material  m</span><br><span class="line">on b.MaterialId = m.id</span><br><span class="line">left join</span><br><span class="line">mydw_erp.dwd_materialcategory mc</span><br><span class="line">on m.categoryid=mc.id </span><br><span class="line">left join</span><br><span class="line">mydw_erp.dwd_materialcategory mcfirst</span><br><span class="line">on mc.parentid=mcfirst.id </span><br><span class="line">left join </span><br><span class="line">mydw_erp.dwd_depot d </span><br><span class="line">on b.depotid = d.id</span><br><span class="line">left join mydw_erp.dwd_supplier s</span><br><span class="line">on a.OrganId=s.id</span><br><span class="line">where</span><br><span class="line">a.endday=&apos;9999-99-99&apos; and b.endday=&apos;9999-99-99&apos;</span><br><span class="line">and m.endday=&apos;9999-99-99&apos; and mc.endday=&apos;9999-99-99&apos; </span><br><span class="line">and mcfirst.endday=&apos;9999-99-99&apos; and d.endday=&apos;9999-99-99&apos; and s.endday=&apos;9999-99-99&apos;;</span><br><span class="line">&quot;</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<h1 id="ADS层的数据需求"><a href="#ADS层的数据需求" class="headerlink" title="ADS层的数据需求"></a>ADS层的数据需求</h1><p>1.订单总量(含退货)、退货订单总量【一般简单需求】<br>2.采购订单总量(含退货+仓库其他入库)、销售订单总量(含退货+仓库其他出库)、零售订单总量(含退货)【一般简单需求】<br>3.采购入库(仓库其他入库)商品总量+总价、采购退货商品总量+总价<br>4.销售出库(仓库其他出库)商品总量+总价、销售退货商品总量+总价<br>5.零售出库商品总量+总价、零售退货商品总量+总价<br>6.仓库商品总量+总价<br>7.各个仓库的订单总量(含退货)、退货订单总量、商品总量、总价<br>8.销售总价Top 3的商品是哪些<br>9.一级类别的哪个商品是最畅销的<br>10.各个供应商供应的货款最大的是哪个商品<br>11.各个客户最喜欢买的商品是哪个<br>12.每年每个月的各个商品各个仓库的采购、销售的数量是多少<br>13.最近30天 每天每小时订单总量(含退货)、退货订单总量</p>
+<p>对于以上需求都可以使用 insert overwrite 方式只输出一个表即可</p>
 
                 
 
@@ -232,12 +225,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]04 四、kettle转换控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]04 四、kettle转换控件">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kettle]02 二、输入控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]02 二、输入控件">Next Post &rarr;</a>
+                            <a href="/article/数据仓库实战1.0 二/" data-toggle="tooltip" data-placement="top" title="数据仓库实战1.0 二">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -287,7 +280,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Excel输出"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Excel输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#文本文件输出"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">文本文件输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SQL文件输出"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">SQL文件输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#表输出"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">表输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#更新"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">更新</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#插入更新"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">插入更新</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#删除"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">删除</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#自定义常量数据"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">自定义常量数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除-1"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">删除</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#DWS层"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DWS层</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#ADS层的数据需求"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">ADS层的数据需求</span></a></li></ol>
         
         </div>
       </aside>
@@ -307,7 +300,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                         
                     </div>
                 </section>

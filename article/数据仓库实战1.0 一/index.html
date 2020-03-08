@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -287,6 +287,7 @@
 <li>减少重复开发：规范好数仓的分层，通过中间层的数据，能够减少重复计算，增加一次计算的复用。</li>
 <li>隔离原始数据: 数据的敏感，使得真实的数据 和统计的数据 分离</li>
 </ul>
+<p><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
 <p>注意：数仓的分层并不是层次越多越好，也不是层次越少越好；有的公司6、7层，有的公司只有ods和ads两层；这要取决于公司的业务、人力成本、开发效率等相关；适合自己公司的分层才是最好的数仓分层。</p>
 <h1 id="数仓模型"><a href="#数仓模型" class="headerlink" title="数仓模型"></a>数仓模型</h1><h2 id="星型模型"><a href="#星型模型" class="headerlink" title="星型模型"></a>星型模型</h2><p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>一个fact事实表，多个dim表<br>额外：变态版星型模型(订单事实表 + 订单明细事实表–&gt;fact_depotitems)</p>
 <p>特点：</p>
