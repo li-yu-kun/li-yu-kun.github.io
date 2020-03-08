@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          数据仓库实战1.0 二 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/数据仓库实战1.0 二/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                            
+                        </div>
+                        <h1>数据仓库实战1.0 二</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-06-15
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="数仓分层搭建"><a href="#数仓分层搭建" class="headerlink" title="数仓分层搭建"></a>数仓分层搭建</h1><h2 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">drop table erp.ods_depothead;</span><br><span class="line">CREATE  TABLE erp.ods_depothead (</span><br><span class="line">Id bigint ,Type string ,SubType string ,ProjectId bigint ,DefaultNumber string,</span><br><span class="line">Number string ,OperPersonName string ,CreateTime timestamp ,OperTime timestamp ,OrganId bigint,</span><br><span class="line">HandsPersonId bigint ,AccountId bigint ,ChangeAmount decimal(24,6) ,AllocationProjectId bigint ,TotalPrice decimal(24,6) ,</span><br><span class="line">PayType string ,Remark string ,Salesman string,AccountIdList string ,AccountMoneyList string ,</span><br><span class="line">Discount decimal(24,6) ,DiscountMoney decimal(24,6) ,DiscountLastMoney decimal(24,6) ,OtherMoney decimal(24,6) ,</span><br><span class="line">OtherMoneyList string,OtherMoneyItem string ,AccountDay int ,Status string ,LinkNumber string ,tenant_id bigint ,delete_Flag string,</span><br><span class="line">UpdateTime timestamp</span><br><span class="line">)COMMENT &apos;单据主表&apos;</span><br><span class="line">ROW FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED BY &apos;\t&apos;</span><br><span class="line">LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS TEXTFILE;</span><br><span class="line"></span><br><span class="line">drop table erp.ods_depothead_update;</span><br><span class="line">CREATE  TABLE erp.ods_depothead_update (</span><br><span class="line">Id bigint ,Type string ,SubType string ,ProjectId bigint ,DefaultNumber string,</span><br><span class="line">Number string ,OperPersonName string ,CreateTime timestamp ,OperTime timestamp ,OrganId bigint,</span><br><span class="line">HandsPersonId bigint ,AccountId bigint ,ChangeAmount decimal(24,6) ,AllocationProjectId bigint ,TotalPrice decimal(24,6) ,</span><br><span class="line">PayType string ,Remark string ,Salesman string,AccountIdList string ,AccountMoneyList string ,</span><br><span class="line">Discount decimal(24,6) ,DiscountMoney decimal(24,6) ,DiscountLastMoney decimal(24,6) ,OtherMoney decimal(24,6) ,</span><br><span class="line">OtherMoneyList string,OtherMoneyItem string ,AccountDay int ,Status string ,LinkNumber string ,tenant_id bigint ,delete_Flag string,</span><br><span class="line">UpdateTime timestamp</span><br><span class="line">)COMMENT &apos;每日单据主表更新表&apos;</span><br><span class="line">PARTITIONED BY (UpdateDay string)</span><br><span class="line">ROW FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED BY &apos;\t&apos;</span><br><span class="line">LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS TEXTFILE;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">drop table erp.dwd_depothead;</span><br><span class="line">CREATE  TABLE erp.dwd_depothead (</span><br><span class="line">Id bigint ,Type string ,SubType string ,ProjectId bigint ,DefaultNumber string,</span><br><span class="line">Number string ,OperPersonName string ,CreateTime timestamp ,OperTime timestamp ,OrganId bigint,</span><br><span class="line">HandsPersonId bigint ,AccountId bigint ,ChangeAmount decimal(24,6) ,AllocationProjectId bigint ,TotalPrice decimal(24,6) ,</span><br><span class="line">PayType string ,Remark string ,Salesman string,AccountIdList string ,AccountMoneyList string ,</span><br><span class="line">Discount decimal(24,6) ,DiscountMoney decimal(24,6) ,DiscountLastMoney decimal(24,6) ,OtherMoney decimal(24,6) ,</span><br><span class="line">OtherMoneyList string,OtherMoneyItem string ,AccountDay int ,Status string ,LinkNumber string ,tenant_id bigint ,delete_Flag string,</span><br><span class="line">UpdateTime timestamp,</span><br><span class="line">StartDay string comment &apos;数据起始时间&apos;,</span><br><span class="line">EndDay string comment &apos;数据结束时间&apos;</span><br><span class="line">)COMMENT &apos;单据主表拉链表&apos;</span><br><span class="line">ROW FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED BY &apos;\t&apos;</span><br><span class="line">LINES TERMINATED BY &apos;\n&apos;</span><br><span class="line">STORED AS TEXTFILE;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ODS层"><a href="#ODS层" class="headerlink" title="ODS层"></a>ODS层</h2><p>工具：sqoop（或者datax也可以）<br>osd层是从关系型数据库（MySQL或者Oracle等）直接抽取到hive数仓ods_*同名表里</p>
+<p>如下对应关系：</p>
+<ul>
+<li>MySQL: depothead</li>
+<li>HIVE ODS: ods_depothead  普通的内部表   全量<br>   ods_depothead_update 普通的内部分区表 按天增量</li>
+</ul>
+<p>说明：<br>全量就是第一次搭建数仓的时候第一次抽取的当天之前所有数据；<br>增量就是T+1中的1，每天根据update时间抽取昨天的数据。</p>
+<p><strong>前置条件：创建hive的mydw_erp数据库，将hive里ods和ods_update表建立完毕</strong></p>
+<p>ods全量表脚本代码：<br>在调用ods_init.sh脚本的时候只需要将表名传入即可<br>如：./ods_init.sh depothead</p>
+<p>ods_init.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">if [ $# != 1 ] ; then</span><br><span class="line">	echo &quot;USAGE: $0 TABLENAME Table for initialization of full data sync.&quot;</span><br><span class="line">	echo &quot;e.g.: $0 depothead.&quot;</span><br><span class="line">	exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#parameters</span><br><span class="line">#mac: YESTERDAY=`date -v -1d +%Y-%m-%d`</span><br><span class="line">YESTERDAY=`date -d&quot;-1 day&quot; +%Y-%m-%d`</span><br><span class="line">TODAY=`date  +%Y-%m-%d`</span><br><span class="line">#mac: YESTERDAYTIME=&quot;`date -v -1d +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">YESTERDAYTIME=&quot;`date -d&quot;-1 day&quot; +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line"># TODAYTIME=&quot;`date  +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">TODAYTIME=&quot;`2019-12-29 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">MySQL_DATABASENAME=&quot;erp&quot;</span><br><span class="line">MySQL_TABLENAME=&quot;$1&quot;</span><br><span class="line">MySQL_URL=&quot;jdbc:mysql://hadoop:3306&quot;</span><br><span class="line">MySQL_USER=&quot;root&quot;</span><br><span class="line">MySQL_PASSWORD=&quot;root&quot;</span><br><span class="line"></span><br><span class="line">HDFS_PATH=&quot;hdfs://hadoop:8020&quot;</span><br><span class="line">HIVE_DATABASENAME=&quot;mydw_erp&quot;</span><br><span class="line">HIVE_ODS_TABLENAME=&quot;ods_$&#123;1&#125;&quot;</span><br><span class="line">HIVE_PATH=&quot;$&#123;HDFS_PATH&#125;/user/hive/warehouse/$&#123;HIVE_DATABASENAME&#125;.db/$&#123;HIVE_ODS_TABLENAME&#125;&quot;</span><br><span class="line"></span><br><span class="line">#import</span><br><span class="line">sqoop import \</span><br><span class="line">--connect $&#123;MySQL_URL&#125;/$&#123;MySQL_DATABASENAME&#125; \</span><br><span class="line">--username $&#123;MySQL_USER&#125; \</span><br><span class="line">--password $&#123;MySQL_PASSWORD&#125; \</span><br><span class="line">--query &quot;select * from &quot;$&#123;MySQL_TABLENAME&#125;&quot; where updatetime&lt;&apos;$&#123;TODAYTIME&#125;&apos; and \$CONDITIONS&quot; \</span><br><span class="line">-m 1 \</span><br><span class="line">--hive-import \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--target-dir &quot;$&#123;HIVE_PATH&#125;&quot; \</span><br><span class="line">--hive-database $&#123;HIVE_DATABASENAME&#125; \</span><br><span class="line">--hive-table $&#123;HIVE_ODS_TABLENAME&#125; \</span><br><span class="line">--null-string &apos;\\N&apos; \</span><br><span class="line">--null-non-string &apos;\\N&apos; \</span><br><span class="line">--fields-terminated-by &quot;\t&quot; \</span><br><span class="line">--lines-terminated-by &quot;\n&quot;</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>ods增量表脚本代码：<br>在调用ods_update.sh脚本的时候只需要将表名传入即可<br>如：./ods_update.sh depothead</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">if [ $# != 1 ] ; then</span><br><span class="line">	echo &quot;USAGE: $0 TABLENAME Table for initialization of incremental data sync.&quot;</span><br><span class="line">	echo &quot; e.g.: $0 depothead&quot;</span><br><span class="line">	exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#parameters</span><br><span class="line">#mac: YESTERDAY=`date -v -1d +%Y-%m-%d`</span><br><span class="line">#YESTERDAY=`date -d&quot;-1 day&quot; +%Y-%m-%d`</span><br><span class="line">TODAY=`date  +%Y-%m-%d`</span><br><span class="line">#mac: YESTERDAYTIME=&quot;`date -v -1d +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">#YESTERDAYTIME=&quot;`date -d&quot;-1 day&quot; +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">#TODAYTIME=&quot;`date  +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">YESTERDAY=&quot;2019-12-29&quot;</span><br><span class="line">YESTERDAYTIME=&quot;2019-12-29 00:00:00&quot;</span><br><span class="line">TODAYTIME=&quot;2019-12-30 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">MySQL_DATABASENAME=&quot;erp&quot;</span><br><span class="line">MySQL_TABLENAME=&quot;$1&quot;</span><br><span class="line">MySQL_URL=&quot;jdbc:mysql://hadoop:3306&quot;</span><br><span class="line">MySQL_USER=&quot;root&quot;</span><br><span class="line">MySQL_PASSWORD=&quot;root&quot;</span><br><span class="line"></span><br><span class="line">HDFS_PATH=&quot;hdfs://hadoop:8020&quot;</span><br><span class="line">HIVE_DATABASENAME=&quot;mydw_erp&quot;</span><br><span class="line">HIVE_ODS_TABLENAME_UPDATE=&quot;ods_$&#123;1&#125;_update&quot;</span><br><span class="line">HIVE_PATH=&quot;$&#123;HDFS_PATH&#125;/user/hive/warehouse/$&#123;HIVE_DATABASENAME&#125;.db/$&#123;HIVE_ODS_TABLENAME_UPDATE&#125;/updateday=$&#123;YESTERDAY&#125;&quot;</span><br><span class="line"></span><br><span class="line">#import</span><br><span class="line">sqoop import \</span><br><span class="line">--connect $&#123;MySQL_URL&#125;/$&#123;MySQL_DATABASENAME&#125; \</span><br><span class="line">--username $&#123;MySQL_USER&#125; \</span><br><span class="line">--password $&#123;MySQL_PASSWORD&#125; \</span><br><span class="line">--query &quot;select * from &quot;$&#123;MySQL_TABLENAME&#125;&quot; where updatetime&gt;=&apos;$&#123;YESTERDAYTIME&#125;&apos; and updatetime&lt;&apos;$&#123;TODAYTIME&#125;&apos; and \$CONDITIONS&quot; \</span><br><span class="line">-m 1 \</span><br><span class="line">--hive-import \</span><br><span class="line">--delete-target-dir \</span><br><span class="line">--target-dir &quot;$&#123;HIVE_PATH&#125;&quot; \</span><br><span class="line">--hive-database $&#123;HIVE_DATABASENAME&#125; \</span><br><span class="line">--hive-table $&#123;HIVE_ODS_TABLENAME_UPDATE&#125; \</span><br><span class="line">--null-string &apos;\\N&apos; \</span><br><span class="line">--null-non-string &apos;\\N&apos; \</span><br><span class="line">--fields-terminated-by &quot;\t&quot; \</span><br><span class="line">--lines-terminated-by &quot;\n&quot; \</span><br><span class="line">--hive-partition-key &quot;updateday&quot; \</span><br><span class="line">--hive-partition-value $&#123;YESTERDAY&#125;</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<h2 id="DWD层"><a href="#DWD层" class="headerlink" title="DWD层"></a>DWD层</h2><p>对ods层数据的一个汇总和过滤，对更新数据的处理。</p>
+<p>因为数据源是DML语句 要把update记录维护好 之前的数据也记录起来<br>为了保存历史的一些状态，需要用拉链表来记录数据；dwd_update就可以称为拉链操作。startday标识数据的生命开始，endday标识数据的生命结束：startday 2019-12-29 endday 9999-99-99(默认),在dwd_update脚本触发的时候会更改老数据的endday，代表生命周期结束时间。</p>
+<p>拉链表取数逻辑：<br>select * from t where endday=’9999-99-99’;<br>好处: 节省存储空间+满足业务需求+计算简单</p>
+<p>dwd全量表脚本代码：<br>在调用dwd_init.sh脚本的时候只需要将表名传入即可<br>如：./dwd_init.sh depothead</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!/bin/bash</span><br><span class="line">if [ $# != 1 ] ; then</span><br><span class="line">	echo &quot;USAGE: $0 TABLENAME&quot;</span><br><span class="line">	echo &quot; e.g.: $0 depothead&quot;</span><br><span class="line">	exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">#parameters</span><br><span class="line">#mac: YESTERDAY=`date -v -1d +%Y-%m-%d`</span><br><span class="line">YESTERDAY=`date -d&quot;-1 day&quot; +%Y-%m-%d`</span><br><span class="line">TODAY=`date  +%Y-%m-%d`</span><br><span class="line">#mac: YESTERDAYTIME=&quot;`date -v -1d +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">YESTERDAYTIME=&quot;`date -d&quot;-1 day&quot; +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">#TODAYTIME=&quot;`date  +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">TODAYTIME=&quot;`2019-12-29 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">HIVE_DATABASENAME=&quot;erp&quot;</span><br><span class="line">HIVE_ODS_TABLENAME=&quot;ods_$&#123;1&#125;&quot;</span><br><span class="line">HIVE_ODS_TABLENAME_UPDATE=&quot;ods_$&#123;1&#125;_update&quot;</span><br><span class="line">HIVE_DWD_TABLENAME=&quot;dwd_$&#123;1&#125;&quot;</span><br><span class="line"></span><br><span class="line">hive -e &quot;</span><br><span class="line">insert overwrite table $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWD_TABLENAME&#125;</span><br><span class="line">SELECT </span><br><span class="line"></span><br><span class="line">*,</span><br><span class="line">&apos;$&#123;YESTERDAY&#125;&apos; as startday, </span><br><span class="line">&apos;9999-99-99&apos; as endday </span><br><span class="line"></span><br><span class="line">from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_ODS_TABLENAME&#125;;</span><br><span class="line">&quot;</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>dwd增量表脚本代码：<br>将更新的数据汇总到dwd全量表里，将老数据的失效时间更新为当下时间。</p>
+<p>在调用dwd_update.sh脚本的时候只需要将表名传入即可<br>如：./dwd_update.sh depothead</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!/bin/bash</span><br><span class="line">if [ $# != 1 ] ; then</span><br><span class="line">	echo &quot;USAGE: $0 TABLENAME&quot;</span><br><span class="line">	echo &quot; e.g.: $0 depothead&quot;</span><br><span class="line">	exit 1;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#parameters</span><br><span class="line">#mac: YESTERDAY=`date -v -1d +%Y-%m-%d`</span><br><span class="line">#YESTERDAY=`date -d&quot;-1 day&quot; +%Y-%m-%d`</span><br><span class="line">TODAY=`date  +%Y-%m-%d`</span><br><span class="line">#mac: YESTERDAYTIME=&quot;`date -v -1d +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">#YESTERDAYTIME=&quot;`date -d&quot;-1 day&quot; +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line">#TODAYTIME=&quot;`date  +%Y-%m-%d` 00:00:00&quot;</span><br><span class="line"></span><br><span class="line">YESTERDAY=&quot;2019-12-29&quot;</span><br><span class="line">YESTERDAYTIME=&quot;2019-12-29 00:00:00&quot;</span><br><span class="line">TODAYTIME=&quot;2019-12-30 00:00:00&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HIVE_DATABASENAME=&quot;erp&quot;</span><br><span class="line">HIVE_ODS_TABLENAME=&quot;ods_$&#123;1&#125;&quot;</span><br><span class="line">HIVE_ODS_TABLENAME_UPDATE=&quot;ods_$&#123;1&#125;_update&quot;</span><br><span class="line">HIVE_DWD_TABLENAME=&quot;dwd_$&#123;1&#125;&quot;</span><br><span class="line"></span><br><span class="line">HIVE_HOME=/home/hadoop/app/hive-1.1.0-cdh5.7.0</span><br><span class="line"></span><br><span class="line">echo &quot;DWD Table: $&#123;HIVE_DWD_TABLENAME&#125;&quot;</span><br><span class="line">case $&#123;1&#125; in </span><br><span class="line">depothead) </span><br><span class="line">SQL=$(cat &lt;&lt;!EOF</span><br><span class="line">insert overwrite table $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWD_TABLENAME&#125;</span><br><span class="line">  select * from</span><br><span class="line">  (</span><br><span class="line">    select </span><br><span class="line">    a.id, a.type, a.subtype, a.projectid, a.defaultnumber, a.number, </span><br><span class="line">	a.operpersonname, a.createtime, a.opertime, a.organid, a.handspersonid, a.accountid, a.changeamount, </span><br><span class="line">	a.allocationprojectid, a.totalprice, a.paytype, a.remark, a.salesman, a.accountidlist, a.accountmoneylist, </span><br><span class="line">	a.discount, a.discountmoney, a.discountlastmoney, a.othermoney, a.othermoneylist, a.othermoneyitem, </span><br><span class="line">	a.accountday, a.status, a.linknumber, a.tenant_id, a.delete_flag, a.updatetime,</span><br><span class="line"></span><br><span class="line">	a.startday,</span><br><span class="line">	case</span><br><span class="line">	    when a.endday = &apos;9999-99-99&apos; and b.id is not null then &apos;$&#123;YESTERDAY&#125;&apos;</span><br><span class="line">	    else a.endday</span><br><span class="line">	end as endday</span><br><span class="line">	from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWD_TABLENAME&#125; as a</span><br><span class="line">	left outer join (select * from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_ODS_TABLENAME_UPDATE&#125; where updateday=&apos;$&#123;YESTERDAY&#125;&apos;) as b</span><br><span class="line">	on b.id = a.id </span><br><span class="line"></span><br><span class="line">	union all</span><br><span class="line">	  </span><br><span class="line">	select </span><br><span class="line"> 	id, type, subtype, projectid, defaultnumber, number, </span><br><span class="line">	operpersonname, createtime, opertime, organid, handspersonid, accountid, changeamount, </span><br><span class="line">	allocationprojectid, totalprice, paytype, remark, salesman, accountidlist, accountmoneylist, </span><br><span class="line">	discount, discountmoney, discountlastmoney, othermoney, othermoneylist, othermoneyitem, </span><br><span class="line">	accountday, status, linknumber, tenant_id, delete_flag, updatetime, </span><br><span class="line">	&apos;$&#123;YESTERDAY&#125;&apos; as startday, &apos;9999-99-99&apos; as endday</span><br><span class="line"></span><br><span class="line">	 from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_ODS_TABLENAME_UPDATE&#125;  where updateday=&apos;$&#123;YESTERDAY&#125;&apos;</span><br><span class="line">  ) as t;</span><br><span class="line"></span><br><span class="line">!EOF)</span><br><span class="line"></span><br><span class="line">;; </span><br><span class="line"></span><br><span class="line">depotitem) </span><br><span class="line">SQL=$(cat &lt;&lt;!EOF</span><br><span class="line">	insert overwrite table $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWD_TABLENAME&#125;</span><br><span class="line">	  select * from</span><br><span class="line">	  (</span><br><span class="line">	    select </span><br><span class="line">     	a.id, a.headerid, a.materialid, a.munit, a.opernumber, a.basicnumber, a.unitprice, a.taxunitprice, </span><br><span class="line">     	a.allprice, a.remark, a.img, a.incidentals, a.depotid, a.anotherdepotid, a.taxrate, a.taxmoney, </span><br><span class="line">     	a.taxlastmoney, a.otherfield1, a.otherfield2, a.otherfield3, a.otherfield4, a.otherfield5, </span><br><span class="line">     	a.mtype, a.tenant_id, a.delete_flag, a.updatetime,</span><br><span class="line"></span><br><span class="line">		a.startday,</span><br><span class="line">		case</span><br><span class="line">		    when a.endday = &apos;9999-99-99&apos; and b.id is not null then &apos;$&#123;YESTERDAY&#125;&apos;</span><br><span class="line">		    else a.endday</span><br><span class="line">		end as endday</span><br><span class="line">		from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_DWD_TABLENAME&#125; as a</span><br><span class="line">		left outer join (select * from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_ODS_TABLENAME_UPDATE&#125; where updateday=&apos;$&#123;YESTERDAY&#125;&apos;) as b</span><br><span class="line">		on b.id = a.id </span><br><span class="line"></span><br><span class="line">		union all</span><br><span class="line">		  </span><br><span class="line">		select </span><br><span class="line">     	id, headerid, materialid, munit, opernumber, basicnumber, unitprice, taxunitprice, </span><br><span class="line">     	allprice, remark, img, incidentals, depotid, anotherdepotid, taxrate, taxmoney, </span><br><span class="line">     	taxlastmoney, otherfield1, otherfield2, otherfield3, otherfield4, otherfield5, </span><br><span class="line">     	mtype, tenant_id, delete_flag, updatetime,</span><br><span class="line"></span><br><span class="line">		&apos;$&#123;YESTERDAY&#125;&apos; as startday, &apos;9999-99-99&apos; as endday</span><br><span class="line">		 from $&#123;HIVE_DATABASENAME&#125;.$&#123;HIVE_ODS_TABLENAME_UPDATE&#125;  where updateday=&apos;$&#123;YESTERDAY&#125;&apos;</span><br><span class="line">	  ) as t;</span><br><span class="line">	  </span><br><span class="line">!EOF)</span><br><span class="line"></span><br><span class="line">;;</span><br><span class="line"></span><br><span class="line">*)</span><br><span class="line"> echo &quot;Not match table,please to check it.&quot;</span><br><span class="line"> exit </span><br><span class="line">;;</span><br><span class="line">esac </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$&#123;HIVE_HOME&#125;/bin/hive -e &quot;$SQL&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/数据仓库实战1.0 一/" data-toggle="tooltip" data-placement="top" title="数据仓库实战1.0 一">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数仓分层搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数仓分层搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#建表语句"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">建表语句</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ODS层"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">ODS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWD层"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">DWD层</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
