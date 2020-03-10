@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -282,21 +282,20 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]06 六、kettle流程控件/">
+    <a href="/article/[Kettle]07 七、kettle查询控件/">
         <h2 class="post-title">
                                  
-            [Kettle]06 六、kettle流程控件
+            [Kettle]07 七、kettle查询控件
         </h2>
         <h3 class="post-subtitle">
-            kettle流程控件
+            kettle查询控件
         </h3>
         <div class="post-content-preview">
-            流程是转换里面的第六个分类。流程主要用来控制数据流程和数据流向。
-Switch-caseSwitch/case让数据流从一路到多路。
-实例从Excel输入读取数据，按sex进行数据分类，把女性、男性、保密分别保存不同的Excel文件里面。
-1表示男性0表示女性2表示保密
-分析输入：Excel输入流程：Switch/case输出：Microsoft Excel输出
-过滤记录过滤记录让数据流从一......
+            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
+HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
+自定义常量数据自定义常量数据是用来生成一些不变的数据。
+实例
+从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
         </div>
     </a>
     
@@ -316,20 +315,21 @@ Switch-caseSwitch/case让数据流从一路到多路。
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]07 七、kettle查询控件/">
+    <a href="/article/[Kettle]06 六、kettle流程控件/">
         <h2 class="post-title">
                                  
-            [Kettle]07 七、kettle查询控件
+            [Kettle]06 六、kettle流程控件
         </h2>
         <h3 class="post-subtitle">
-            kettle查询控件
+            kettle流程控件
         </h3>
         <div class="post-content-preview">
-            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
-HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
-自定义常量数据自定义常量数据是用来生成一些不变的数据。
-实例
-从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
+            流程是转换里面的第六个分类。流程主要用来控制数据流程和数据流向。
+Switch-caseSwitch/case让数据流从一路到多路。
+实例从Excel输入读取数据，按sex进行数据分类，把女性、男性、保密分别保存不同的Excel文件里面。
+1表示男性0表示女性2表示保密
+分析输入：Excel输入流程：Switch/case输出：Microsoft Excel输出
+过滤记录过滤记录让数据流从一......
         </div>
     </a>
     
@@ -519,27 +519,33 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
 
 <div class="post-preview">
 
-    <a href="/article/数据仓库实战1.0 三/">
+    <a href="/article/浅谈大数据平台建设/">
         <h2 class="post-title">
                                  
             数据仓库实战1.0 三
         </h2>
         <h3 class="post-subtitle">
-            dws层、ads层需求
+            
         </h3>
         <div class="post-content-preview">
-            DWS层取出所有需要的字段明细，接下来的ads需求报表都会取决于这个dws层的报表。
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#!/bin/bash#parameters#mac: YESTERDAY=`da......
+            一个公司大数据团队刚开始如何选择大数据平台落地方案
+选择机器云机器云上（一般是阿里云） IDC机房 公司内部机器
+云上: 
+
+优点：节省运维成本  对运维的要求很低  快速扩容 缩减
+缺点：云上服务器都是虚拟化的，性能降低 20%，云上服务器不算公司资产【小公司，不care】【公司上市，或者经投资ABCD轮，都要算公司资产】
+
+点评: 前期的支付费用缓慢型 刚开始做可以使用云机器  但是如果......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-06-21
+            2019-08-21
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#大数据" title="大数据">大数据</a>
             
         </div>
     
@@ -620,7 +626,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#大数据" title="大数据" rel="4">大数据</a>
             
         
             
@@ -688,11 +694,11 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
         </li>
       
         <li>
@@ -711,7 +717,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>

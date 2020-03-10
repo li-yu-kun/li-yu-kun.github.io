@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop]11 分布式资源调度YARN 四 - 李玉坤 | Blog
+          数据仓库实战1.0 三 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]11 分布式资源调度YARN 四/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/浅谈大数据平台建设/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                              <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
                             
                         </div>
-                        <h1>[Hadoop]11 分布式资源调度YARN 四</h1>
-                        <h2 class="subheading">生产调优、生产调度器等问题</h2>
+                        <h1>数据仓库实战1.0 三</h1>
+                        <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-27
+                            2019-08-21
                         </span>
                     </div>
                 
@@ -212,134 +212,66 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br><strong>假设我们有一台物理机器 128G内存 16个core</strong></p>
-<h1 id="生产如何调优Container参数？"><a href="#生产如何调优Container参数？" class="headerlink" title="生产如何调优Container参数？"></a>生产如何调优Container参数？</h1><p>Container：虚拟化的容器   维度 memory+vcore<br>作用是运行task任务</p>
+                <p>一个公司大数据团队刚开始如何选择大数据平台落地方案</p>
+<h1 id="选择机器"><a href="#选择机器" class="headerlink" title="选择机器"></a>选择机器</h1><h2 id="云机器"><a href="#云机器" class="headerlink" title="云机器"></a>云机器</h2><p>云上（一般是阿里云） IDC机房 公司内部机器</p>
+<p>云上: </p>
 <ul>
-<li>装完CentOS，消耗内存1G</li>
-<li>系统预览15%-20%内存(包含系统1G内存)，<br>以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间</li>
-<li>此时需要预留内存为：128*20%=25.6G == 预留 26G</li>
-<li>假设只有DN NM节点，余下内存 128-26=102g</li>
-<li>DN=2G、NM=4G；所以剩下102-2-4=96G</li>
+<li>优点：节省运维成本  对运维的要求很低  快速扩容 缩减</li>
+<li>缺点：云上服务器都是虚拟化的，性能降低 20%，云上服务器不算公司资产【小公司，不care】【公司上市，或者经投资ABCD轮，都要算公司资产】</li>
 </ul>
-<h2 id="container内存"><a href="#container内存" class="headerlink" title="container内存"></a>container内存</h2><ul>
-<li>可以调优如下：<ul>
-<li>yarn.nodemanager.resource.memory-mb     96G</li>
-<li>yarn.scheduler.minimum-allocation-mb    1G   极限情况下，只有96个container 内存1G</li>
-<li>yarn.scheduler.maximum-allocation-mb    96G  极限情况下，只有1个container 内存96G</li>
+<p>点评: 前期的支付费用缓慢型 刚开始做可以使用云机器  但是如果周期长 费用是方案中最高的</p>
+<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<p>64个core 一般是32个物理core 两个cpu</p>
+<p>系统盘  /  linux系统 存放：大数据安装包 组件 shell脚本<br>数据盘  /data01  存放：hdfs数据  kudu数据<br>    /data02</p>
+<pre><code>1台 : 64vcore  256内存  100G  10T 49w一年 
+20台: 49*20= 1000W</code></pre><h2 id="物理机"><a href="#物理机" class="headerlink" title="物理机"></a>物理机</h2><p>结论: 必然的选择IDC机房  </p>
+<h3 id="IDC机房"><a href="#IDC机房" class="headerlink" title="IDC机房:"></a>IDC机房:</h3><pre><code>不虚拟化 性能高  算公司资产
+运维能力top1 必须有专门的运维人员</code></pre><p>点评: 支付费用刚开始肉疼  后期只需支付IDC机房托管费用（后期这个钱如果和云机器对比还可以）</p>
+<h3 id="公司内部机器"><a href="#公司内部机器" class="headerlink" title="公司内部机器"></a>公司内部机器</h3><ul>
+<li>好处：没有IDC托管费用</li>
+<li>坏处：不可靠 园区断电【人家可能就是不通知你，突然断电硬盘很可能损坏】</li>
 </ul>
-</li>
-<li>container的内存会自动增加，默认1g递增<br>每个container内存范围:1-96个</li>
-</ul>
-<h2 id="container虚拟核"><a href="#container虚拟核" class="headerlink" title="container虚拟核"></a>container虚拟核</h2><ul>
-<li><p>vcore<br>yarn自己引入的，设计初衷是考虑不同节点的CPU的性能不一样，每个CPU的计算能力不一样。<br>比如某个物理CPU是另外一个物理CPU的2倍，这时通过设置第一个物理CPU的虚拟core来弥补这种差异。</p>
-</li>
-<li><p>十年之前：</p>
-<ul>
-<li>第一台机器 强悍 pcore: vcore=1:2</li>
-<li>第二台机器 不强悍 pcore: vcore=1:1</li>
-<li>在xml配置</li>
-</ul>
-</li>
-<li><p>官网默认 yarn.nodemanager.resource.pcores-vcores-multiplier 2</p>
-</li>
-<li><p>目前已无需调整这个参数，因为现在的物理机性能都差不多<br>所有节点  pcore: vcore=1:2</p>
-</li>
-<li><p>物理核:虚拟核 =1:2  此时这台机器有32个vcore</p>
-</li>
-<li><p>可以调优如下：</p>
-<ul>
-<li>yarn.nodemanager.resource.cpu-vcores            32</li>
-<li>yarn.scheduler.minimum-allocation-vcores    1  极限情况下，只有32个container    </li>
-<li>yarn.scheduler.maximum-allocation-vcores    32 极限情况下，只有1个container</li>
-<li>container个数范围为:1-32个</li>
-</ul>
-</li>
-</ul>
-<h2 id="官方建议"><a href="#官方建议" class="headerlink" title="官方建议"></a>官方建议</h2><ul>
-<li>cloudera公司推荐，一个container的vcore最好不要超过5，那么我们设置4</li>
-<li>yarn.scheduler.maximum-allocation-vcores 4   极限情况下，只有8个container</li>
-</ul>
-<h2 id="综合memory-vcore"><a href="#综合memory-vcore" class="headerlink" title="综合memory+vcore"></a>综合memory+vcore</h2><ul>
-<li>首先可以确定 vcore=4 container 8个</li>
-<li>确定内存：<ul>
-<li>yarn.nodemanager.resource.memory-mb     96G</li>
-<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
-<li>yarn.scheduler.maximum-allocation-mb    12G 极限container 8个</li>
-</ul>
-</li>
-<li>确定vcore<ul>
-<li>yarn.nodemanager.resource.cpu-vcores            32</li>
-<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
-<li>yarn.scheduler.maximum-allocation-vcores    4 极限container 8个</li>
-</ul>
-</li>
-<li>8个container 12G 4vcore</li>
-</ul>
-<p>当然当spark计算时内存不够大，这个参数肯定要调大，那么这种理想化的设置个数必然要打破，以memory为主，也就是说可以舍弃部分vcore（也就是调整vcore的个数来改变container的个数）。</p>
-<h2 id="默认规则"><a href="#默认规则" class="headerlink" title="默认规则"></a>默认规则</h2><p>如果不合理规划，按照官网默认参数</p>
-<ul>
-<li>内存<ul>
-<li>yarn.nodemanager.resource.memory-mb     96G</li>
-<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
-<li>yarn.scheduler.maximum-allocation-mb    8G </li>
-<li>12container  12*2=24 浪费了36-24=12个core</li>
-</ul>
-</li>
-<li>vcore<ul>
-<li>yarn.nodemanager.resource.cpu-vcores        32</li>
-<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
-<li>yarn.scheduler.maximum-allocation-vcores    2</li>
-<li>16 container*8g 内存爆掉</li>
-</ul>
-</li>
-</ul>
-<h2 id="假如该节点还有组件"><a href="#假如该节点还有组件" class="headerlink" title="假如该节点还有组件"></a>假如该节点还有组件</h2><p>假如 256G内存 56core，并且有hbase regionserver进程，那么该如何设置？<br>hbase regionserver = 30G</p>
-<p>256*20%=52</p>
-<p>256-2-4-30-52=168</p>
-<p>56/4=14</p>
-<ul>
-<li>首先可以确定 vcore=4 container 14个</li>
-<li>确定内存：<ul>
-<li>yarn.nodemanager.resource.memory-mb     168G</li>
-<li>yarn.scheduler.minimum-allocation-mb    1G  </li>
-<li>yarn.scheduler.maximum-allocation-mb    12 G 极限container 14个</li>
-</ul>
-</li>
-<li>确定vcore<ul>
-<li>yarn.nodemanager.resource.cpu-vcores        56</li>
-<li>yarn.scheduler.minimum-allocation-vcores    1    </li>
-<li>yarn.scheduler.maximum-allocation-vcores    4 极限container 14个</li>
-</ul>
-</li>
-<li>14个container 12G 4vcore</li>
-</ul>
-<h1 id="调度器"><a href="#调度器" class="headerlink" title="调度器"></a>调度器</h1><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
-<ol>
-<li>FIFO 先进先出</li>
-</ol>
-<ul>
-<li>意思就是队列需要等待，如图中job2必须在job1执行完毕之后才可以执行</li>
-</ul>
-<ol start="2">
-<li>Capacity 计算</li>
-</ol>
-<ul>
-<li>官网 <a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html</a></li>
-<li>有一个专门的队列来运行小任务，但是为了小任务专门设置一个队列预先占用一定的集群资源。</li>
-<li>这会导致大任务的执行时间落后FIFO的调度时间</li>
-<li>如图中有一个常置队列B，小作业job2会直接进入queueB和job1同时进行计算</li>
-<li>如果有大作业过来，就会和FIFO一样需要等待queueA中的job执行结束才可以进行</li>
-</ul>
-<ol start="3">
-<li>Fair 公平</li>
-</ol>
-<ul>
-<li>官网：<a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/FairScheduler.html</a></li>
-<li>如图中，job1在占用全部资源的情况下，job2会在job1的某个task运行完毕后借助这块小资源允许job2，运行完毕后归还给job1</li>
-</ul>
-<p>apache 默认计算:<br>yarn.resourcemanager.scheduler.class<br>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</p>
-<p>CDH 默认公平:<br>web配置  Fair</p>
-<p>配置方式可去上诉官网连接查看</p>
+<p>点评: 创业公司  小团队  可以考虑先内部机器</p>
+<h1 id="如何采购服务器"><a href="#如何采购服务器" class="headerlink" title="如何采购服务器"></a>如何采购服务器</h1><p>直接百度搜索服务器供应商</p>
+<p>1、找3家供应商<br>2、说出自己的需求：数据量，做存储还是计算，还是做数据挖掘、机器学习（显卡）<br>3、让他们推荐配置 报价<br>4、适当说一下自己的预算</p>
+<p>如果说出了自己的需求，对方一脸懵逼？？？建议还是换一家供应商</p>
+<p>dell服务器，最近几年性价比最高</p>
+<p>官网机器链接（官网的价格是最贵的，不建议直接从官网购买，找供应商）<br><a href="https://www.dell.com/zh-cn/work/shop/%E6%9C%8D%E5%8A%A1%E5%99%A8-%E5%AD%98%E5%82%A8%E5%99%A8%E5%8F%8A%E7%BD%91%E7%BB%9C%E4%BA%A4%E6%8D%A2%E6%9C%BA/poweredge-r740-%E6%9C%BA%E6%9E%B6%E5%BC%8F%E6%9C%8D%E5%8A%A1%E5%99%A8/spd/poweredge-r740/r740-jlnb74002cn?configurationid=0a53e882-302e-4c92-ac2c-93d5f6e74d7c" target="_blank" rel="noopener">https://www.dell.com/zh-cn/work/shop/%E6%9C%8D%E5%8A%A1%E5%99%A8-%E5%AD%98%E5%82%A8%E5%99%A8%E5%8F%8A%E7%BD%91%E7%BB%9C%E4%BA%A4%E6%8D%A2%E6%9C%BA/poweredge-r740-%E6%9C%BA%E6%9E%B6%E5%BC%8F%E6%9C%8D%E5%8A%A1%E5%99%A8/spd/poweredge-r740/r740-jlnb74002cn?configurationid=0a53e882-302e-4c92-ac2c-93d5f6e74d7c</a></p>
+<p>官网价格: 16W一台 没有GTX显卡 </p>
+<h1 id="确定服务器"><a href="#确定服务器" class="headerlink" title="确定服务器"></a>确定服务器</h1><p>对比三家供应商 ，拿到最终的报价单 配置机型 电源功率+网络拓扑图</p>
+<p>整理对比 写出优缺</p>
+<p>价格+服务+口碑<br>1、企查查查看公司概况<br>2、现场视察公司</p>
+<p>1、邮件汇报boss<br>2、meet 讨论<br>3、boss让采购部门去三家都去寻价  拿自己估算的最低价去对比<br>4、boss问你 ：价格 服务 口碑等综合考虑</p>
+<p>提醒: 时间控制在1-2week  内存条等硬件会随着时间 价格浮动</p>
+<p>让供应商确定 报价单有效期</p>
+<h1 id="确定供应商"><a href="#确定供应商" class="headerlink" title="确定供应商"></a>确定供应商</h1><p>确定了一家供应商</p>
+<p>供应商给合同word–》自己公司法务审核 boss审核 –》修改<br>时间 1个月<br>供应商打印合同 盖章–》我们<br>我们盖章 回给他们 供应商收到合同之后 </p>
+<p>我们开始 打第一笔钱  一般是合同价格30%<br>            二       3个月或者6个月结清 70%</p>
+<p>当他们收到第一笔钱 才去采购<br>机器时间 配置 差不多在1-2week</p>
+<h1 id="确定IDC机房"><a href="#确定IDC机房" class="headerlink" title="确定IDC机房"></a>确定IDC机房</h1><p>同样选择三家 报价</p>
+<p>20台2u服务器 1个防火墙 2个交换机<br>一个机架 47U  20*2=40u</p>
+<p>1个机架 16A(加安培): 10个 2u服务器 +1防火墙 300W+1个交换机= 23000W<br>1个机架 16A(加安培): 10个 2u服务器 +1个交换机 =   23000W</p>
+<p>坑: 问IDC供应商 我有20台机器，把采购的配置 电源功率发给他 让他算 规划 </p>
+<p>再重复 对比三家IDC机房商家、整理对比、开会、合同等</p>
+<h1 id="云专线"><a href="#云专线" class="headerlink" title="云专线"></a>云专线</h1><p>寻找云专线供应商 光纤 直达的 北京到上海 一般是20ms【走公网20s都够呛】</p>
+<p>需要同步云上的数据 到IDC机房 必然 云专线<br>报价: 500M带宽 7000/月 一根 * 2 =1.4W/月<br>      +一次操作费1.6W【阿里云从2019-07后开始收费】</p>
+<p>再重复 对比三家云专线商家、整理对比、开会、合同等</p>
+<h1 id="最终定下"><a href="#最终定下" class="headerlink" title="最终定下"></a>最终定下</h1><p>机器+机房+云专线 ok ，约时间 把服务器上架  网络打通  防火墙（华为） 交换机 全部配置<br>熟练工 2天</p>
+<p>调试完毕，督促：所有服务器要重启一下  up network  free -m 磁盘格式化</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>R740XD 戴尔服务器型号 XD表示扩展槽多一些<br>4210 cpu型号 *2 两个cpu 每个10核<br>2.4T 每块硬盘的空间 SAS硬盘<br>2.5 2.5寸 大小<br>10K  转速 *4 指4块  越高磁盘io越大<br>H740P 8GB 缓存卡<br>750w 电源</p>
+<p>16G一根 便宜 16<em>16 256G<br>32G一根 贵   32</em>8 256G</p>
+<p><a href="https://www.cnblogs.com/happy-king/p/10023001.html" target="_blank" rel="noopener">https://www.cnblogs.com/happy-king/p/10023001.html</a></p>
+<p>480GB SATA SSD*2  raid5 /根目录</p>
+<p>2.4TB SAS 2.5 10K*8  不做raid<br>      /data01 2.4T<br>      /data02 2.4T<br>      。。。<br>      /data8  2.4T<br>      热拔插 </p>
+<p>老大 电源750W<em>2<br>小弟 电源1100W</em>2  为未来机器加显卡 GTX 准备</p>
+<p>机器费用 ： 163W<br>托管费用IDC:  10000-9000/月1个机柜  =2W/月  24w/年</p>
+<p>云专线 按年 500M 2根 1.4*12=16.8W +1.6w阿里云费用</p>
+<p>总共: 第一年起步预算要200W  以后每年准备40W 在IDC 云专线</p>
+<hr>
+<h1 id="网络拓扑图"><a href="#网络拓扑图" class="headerlink" title="网络拓扑图"></a>网络拓扑图</h1><p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<p>企业公网 1M收费 195元、主备交换机</p>
+<p>现在交换机的接口数量是有限的 挂载的服务器数量也是有限的 注意要预留每台交换机的口子</p>
+<p>假如现在 再购买 50台 </p>
 
                 
 
@@ -348,12 +280,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop]12 数据仓库Hive 一/" data-toggle="tooltip" data-placement="top" title="[Hadoop]12 数据仓库Hive 一">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop]10 分布式处理框架MapReduce 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]10 分布式处理框架MapReduce 三">Next Post &rarr;</a>
+                            <a href="/article/数据仓库实战1.0 三/" data-toggle="tooltip" data-placement="top" title="数据仓库实战1.0 三">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -403,7 +335,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#生产如何调优Container参数？"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">生产如何调优Container参数？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#container内存"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">container内存</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#container虚拟核"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">container虚拟核</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#官方建议"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">官方建议</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#综合memory-vcore"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">综合memory+vcore</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#默认规则"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">默认规则</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#假如该节点还有组件"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">假如该节点还有组件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度器"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">调度器</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#选择机器"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">选择机器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#云机器"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">云机器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#物理机"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">物理机</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#IDC机房"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">IDC机房:</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#公司内部机器"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">公司内部机器</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何采购服务器"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">如何采购服务器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#确定服务器"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">确定服务器</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#确定供应商"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">确定供应商</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#确定IDC机房"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">确定IDC机房</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#云专线"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">云专线</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#最终定下"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">最终定下</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#案例"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">案例</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#网络拓扑图"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">网络拓扑图</span></a></li></ol>
         
         </div>
       </aside>
@@ -423,7 +355,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
+                          <a class="tag" href="/tags/#大数据" title="大数据">大数据</a>
                         
                     </div>
                 </section>
