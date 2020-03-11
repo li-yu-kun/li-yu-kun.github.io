@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -208,6 +208,38 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]04 分布式文件系统HDFS 四
+        </h2>
+        <h3 class="post-subtitle">
+            读写流程详解、错误处理机制、优缺点
+        </h3>
+        <div class="post-content-preview">
+            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
+文件写流程图解往HDFS中写数据的流程如下：
+
+第1幅图：我们跟客户端说，你帮我......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -307,17 +339,18 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/初识Hadoop/">
+    <a href="/article/大数据概述/">
         <h2 class="post-title">
                                  
-            初识Hadoop
+            大数据概述
         </h2>
         <h3 class="post-subtitle">
-            初识Hadoop
+            大数据概述
         </h3>
         <div class="post-content-preview">
-            学习建议官网地址： https://hadoop.apache.org 
-Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名看下图：Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的......
+            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
+大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
+大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
         </div>
     </a>
     
@@ -337,18 +370,17 @@ Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子�
 
 <div class="post-preview">
 
-    <a href="/article/大数据概述/">
+    <a href="/article/初识Hadoop/">
         <h2 class="post-title">
                                  
-            大数据概述
+            初识Hadoop
         </h2>
         <h3 class="post-subtitle">
-            大数据概述
+            初识Hadoop
         </h3>
         <div class="post-content-preview">
-            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
-大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
-大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
+            学习建议官网地址： https://hadoop.apache.org 
+Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名看下图：Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的......
         </div>
     </a>
     
@@ -487,41 +519,6 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Linux]04 大数据常用命令 四/">
-        <h2 class="post-title">
-                                 
-            [Linux]04 大数据常用命令 四
-        </h2>
-        <h3 class="post-subtitle">
-            调度|执行|软连接
-        </h3>
-        <div class="post-content-preview">
-            调度工具crontab比如一个可执行文件test.sh文件内容
-123#!/bin/bash （解释器）date
-执行这个shell脚本需要x执行权限执行命令
-12./test.shsh ./test.sh
-
-后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
-12[root@hadoop ~]# crontab -l* * * * * /root/te......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -567,7 +564,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
     <div class="tags">
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="4">HBASE</a>
+            <a href="/tags/#HBASE" title="HBASE" rel="5">HBASE</a>
             
         
             
@@ -690,7 +687,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
