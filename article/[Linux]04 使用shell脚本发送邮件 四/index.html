@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Linux]04 使用shell脚本发送邮件 四 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Linux]04 使用shell脚本发送邮件 四/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                            
+                        </div>
+                        <h1>[Linux]04 使用shell脚本发送邮件 四</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-07-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h1><p>要使用脚本发送邮件，必须设置发送邮箱开启IMAP/SMTP服务。否则将会报错。</p>
+<p>同时脚本所在服务器需要有sendEmail命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#下载安装包</span><br><span class="line">wget http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz</span><br><span class="line">#创建目录</span><br><span class="line">mkdir -p /usr/local/bin</span><br><span class="line">#解压</span><br><span class="line">tar zxf sendEmail-v1.56.tar.gz -C /usr/src/</span><br><span class="line">#进入解压目录</span><br><span class="line">cd /usr/src/sendEmail-v1.56/</span><br><span class="line">#复制程序到指定目录</span><br><span class="line">cp -a sendEmail /usr/local/bin/</span><br><span class="line">#给执行权限</span><br><span class="line">chmod +x /usr/local/bin/sendEmail</span><br><span class="line">#安装组件</span><br><span class="line">yum install perl-Net-SSLeay perl-IO-Socket-SSL -y</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用脚本发送测试邮件"><a href="#使用脚本发送测试邮件" class="headerlink" title="使用脚本发送测试邮件"></a>使用脚本发送测试邮件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">#收件箱</span><br><span class="line">EMAIL_RECIVER=&quot;li__yukun@163.com&quot;</span><br><span class="line">#发送者邮箱</span><br><span class="line">EMAIL_SENDER=2504413761@qq.com</span><br><span class="line">#邮箱用户名</span><br><span class="line">EMAIL_USERNAME=2504413761</span><br><span class="line">#邮箱密码</span><br><span class="line">#使用qq邮箱进行发送需要注意：首先需要开启：POP3/SMTP服务，其次发送邮件的密码需要使用在开启POP3/SMTP服务时候腾讯提供的第三方客户端登陆码。</span><br><span class="line">EMAIL_PASSWORD=vxddqmqvrxhqebdb</span><br><span class="line"></span><br><span class="line">#附件路径</span><br><span class="line">FILE1_PATH=&quot;/root/anaconda-ks.cfg&quot;</span><br><span class="line"></span><br><span class="line">#smtp服务器地址</span><br><span class="line">EMAIL_SMTPHOST=smtp.qq.com</span><br><span class="line"></span><br><span class="line">EMAIL_TITLE=&quot;测试&quot;</span><br><span class="line">EMAIL_CONTENT=&quot;谢谢!&quot;</span><br><span class="line"></span><br><span class="line">sendEmail -f $&#123;EMAIL_SENDER&#125; -t $&#123;EMAIL_RECIVER&#125; -s $&#123;EMAIL_SMTPHOST&#125; -u $&#123;EMAIL_TITLE&#125; -xu $&#123;EMAIL_USERNAME&#125; -xp $&#123;EMAIL_PASSWORD&#125; -m $&#123;EMAIL_CONTENT&#125; -a $&#123;FILE1_PATH&#125; -o message-charset=utf-8</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# ./test.sh </span><br><span class="line">Apr 12 14:49:44 hadoop sendEmail[11425]: Email was sent successfully!</span><br></pre></td></tr></table></figure>
+<h1 id="执行成功查看结果"><a href="#执行成功查看结果" class="headerlink" title="执行成功查看结果"></a>执行成功查看结果</h1><p><img src="%E5%9B%BE%E7%89%8701.jpeg" alt=""><br><img src="%E5%9B%BE%E7%89%8702.jpeg" alt=""></p>
+<h1 id="带表格告警的邮件"><a href="#带表格告警的邮件" class="headerlink" title="带表格告警的邮件"></a>带表格告警的邮件</h1><p>准备数据/root/test.txt<br>如果cpu大于80那么就标红</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# cat test.txt </span><br><span class="line">192.168.232.8 90 95 10</span><br><span class="line">192.168.232.9 20 40 40</span><br><span class="line">192.168.232.10 80 50 40</span><br><span class="line">[root@hadoop ~]# pwd</span><br><span class="line">/root</span><br><span class="line"></span><br><span class="line">[root@hadoop ~]# cat test.sh </span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">EMAIL_RECIVER=&quot;li__yukun@163.com&quot;</span><br><span class="line">#发送者邮箱</span><br><span class="line">EMAIL_SENDER=2504413761@qq.com</span><br><span class="line">#邮箱用户名</span><br><span class="line">EMAIL_USERNAME=2504413761</span><br><span class="line">#邮箱密码</span><br><span class="line">#使用qq邮箱进行发送需要注意：首先需要开启：POP3/SMTP服务，其次发送邮件的密码需要使用在开启POP3/SMTP服务时候腾讯提供的第三方客户端登陆码。</span><br><span class="line">EMAIL_PASSWORD=vxddqmqvrxhqebdb</span><br><span class="line"></span><br><span class="line">FILE1_PATH=&quot;/root/anaconda-ks.cfg&quot;</span><br><span class="line"></span><br><span class="line">#smtp服务器地址</span><br><span class="line">EMAIL_SMTPHOST=smtp.qq.com</span><br><span class="line"></span><br><span class="line">EMAIL_TITLE=&quot;测试&quot;</span><br><span class="line">EMAIL_CONTENT=&quot;谢谢!&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">html_input()&#123;</span><br><span class="line">echo &quot;&lt;tr&gt;</span><br><span class="line">&lt;td&gt;$1&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$2&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$3&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$4&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;&quot; &gt;&gt;/root/mail.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">html_input_red()&#123;</span><br><span class="line">echo &quot;&lt;tr bgcolor=&quot;#FF0000&quot;&gt;</span><br><span class="line">&lt;td&gt;$1&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$2&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$3&lt;/td&gt;</span><br><span class="line">&lt;td&gt;$4&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;&quot; &gt;&gt;/root/mail.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set_info()&#123;</span><br><span class="line">i=1</span><br><span class="line">echo &quot;</span><br><span class="line">&lt;table border=1&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;th&gt;主机ip&lt;/th&gt;</span><br><span class="line">&lt;th&gt;cpu使用率&lt;/th&gt;</span><br><span class="line">&lt;th&gt;内存使用率&lt;/th&gt;</span><br><span class="line">&lt;th&gt;磁盘使用率&lt;/th&gt;</span><br><span class="line">&lt;/tr&gt;&quot; &gt; /root/mail.html</span><br><span class="line">    host_list=$(awk &apos;&#123;print $1&#125;&apos; /root/test.txt) #主机信息</span><br><span class="line">    for html_host in $host_list</span><br><span class="line">    do</span><br><span class="line">        j=2</span><br><span class="line"></span><br><span class="line">        html_cpu=$(awk &apos;NR==i &#123; print $j&#125;&apos; i=$i j=$j /root/test.txt) #本条对应cpu</span><br><span class="line">        let &quot;j++&quot;</span><br><span class="line">        html_mem=$(awk &apos;NR==i &#123; print $j&#125;&apos; i=$i j=$j /root/test.txt) #本条对应内存</span><br><span class="line">        let &quot;j++&quot;</span><br><span class="line">        html_dis=$(awk &apos;NR==i &#123; print $j&#125;&apos; i=$i j=$j /root/test.txt) #本条对应磁盘</span><br><span class="line"></span><br><span class="line">        if [ $html_cpu -gt 80 ];then</span><br><span class="line">            html_input_red $html_host $html_cpu $html_mem $html_dis #构造每行表格信息</span><br><span class="line">        else</span><br><span class="line">            html_input $html_host $html_cpu $html_mem $html_dis #构造每行表格信息</span><br><span class="line">        fi</span><br><span class="line"></span><br><span class="line">        let &quot;i++&quot;</span><br><span class="line">        echo $html_host $html_cpu $html_mem $html_dis $i $j</span><br><span class="line">    done</span><br><span class="line">echo &quot;&lt;/table&gt;&quot; &gt;&gt; /root/mail.html</span><br><span class="line">&#125;     # 制作mail.html,并使用邮件发送</span><br><span class="line"></span><br><span class="line">set_info</span><br><span class="line"></span><br><span class="line">EMAIL_EXCEL=$(cat /root/mail.html)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sendEmail -f $&#123;EMAIL_SENDER&#125; -t $&#123;EMAIL_RECIVER&#125; -s $&#123;EMAIL_SMTPHOST&#125; -u $&#123;EMAIL_TITLE&#125; -xu $&#123;EMAIL_USERNAME&#125; -xp $&#123;EMAIL_PASSWORD&#125; -m $&#123;EMAIL_EXCEL&#125; $&#123;EMAIL_CONTENT&#125; -a $&#123;FILE1_PATH&#125; -o message-charset=utf-8 -o message-content-type=html </span><br><span class="line">[root@hadoop ~]#</span><br></pre></td></tr></table></figure>
+<h1 id="结果："><a href="#结果：" class="headerlink" title="结果："></a>结果：</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# ./test.sh </span><br><span class="line">192.168.232.8 90 95 10 2 4</span><br><span class="line">192.168.232.9 20 40 40 3 4</span><br><span class="line">192.168.232.10 80 50 40 4 4</span><br><span class="line">Apr 12 17:12:21 hadoop sendEmail[12064]: Email was sent successfully!</span><br></pre></td></tr></table></figure>
+
+<p>mail.html文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;table border=1&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;th&gt;主机ip&lt;/th&gt;</span><br><span class="line">&lt;th&gt;cpu使用率&lt;/th&gt;</span><br><span class="line">&lt;th&gt;内存使用率&lt;/th&gt;</span><br><span class="line">&lt;th&gt;磁盘使用率&lt;/th&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;tr bgcolor=#FF0000&gt;</span><br><span class="line">&lt;td&gt;192.168.232.8&lt;/td&gt;</span><br><span class="line">&lt;td&gt;90&lt;/td&gt;</span><br><span class="line">&lt;td&gt;95&lt;/td&gt;</span><br><span class="line">&lt;td&gt;10&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;td&gt;192.168.232.9&lt;/td&gt;</span><br><span class="line">&lt;td&gt;20&lt;/td&gt;</span><br><span class="line">&lt;td&gt;40&lt;/td&gt;</span><br><span class="line">&lt;td&gt;40&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;tr&gt;</span><br><span class="line">&lt;td&gt;192.168.232.10&lt;/td&gt;</span><br><span class="line">&lt;td&gt;80&lt;/td&gt;</span><br><span class="line">&lt;td&gt;50&lt;/td&gt;</span><br><span class="line">&lt;td&gt;40&lt;/td&gt;</span><br><span class="line">&lt;/tr&gt;</span><br><span class="line">&lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="%E5%9B%BE%E7%89%8703.jpeg" alt=""><br><img src="%E5%9B%BE%E7%89%8704.jpeg" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/浅谈大数据平台建设/" data-toggle="tooltip" data-placement="top" title="浅谈大数据平台建设">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Scala]03 scala语言知识点 三/" data-toggle="tooltip" data-placement="top" title="[Scala]03 scala语言知识点 三">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前置条件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前置条件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#使用脚本发送测试邮件"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">使用脚本发送测试邮件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#执行成功查看结果"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">执行成功查看结果</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#带表格告警的邮件"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">带表格告警的邮件</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#结果："><span class="toc-nav-number">5.</span> <span class="toc-nav-text">结果：</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

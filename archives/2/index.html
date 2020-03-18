@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -208,6 +208,66 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Linux]04 使用shell脚本发送邮件 四/">
+        <h2 class="post-title">
+                                 
+            [Linux]04 使用shell脚本发送邮件 四
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前置条件要使用脚本发送邮件，必须设置发送邮箱开启IMAP/SMTP服务。否则将会报错。
+同时脚本所在服务器需要有sendEmail命令
+1234567891011121314#下载安装包wget http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz#创建目录mkdir -p /usr/local/b......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-07-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Scala]03 scala语言知识点 三/">
+        <h2 class="post-title">
+                                 
+            [Scala]03 scala语言知识点 三
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            ...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-07-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Scala" title="Scala">Scala</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -488,72 +548,6 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[HBase]03 HBASE进阶 三/">
-        <h2 class="post-title">
-                                 
-            [HBase]03 HBASE进阶 三
-        </h2>
-        <h3 class="post-subtitle">
-            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
-        </h3>
-        <div class="post-content-preview">
-            什么导致hbase性能下降？
-
-jvm内存分配与gc回收策略
-与hbase运行机制相关的部分配置不合理
-表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
-Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-05-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[HBase]02 HBase原理与实战 二/">
-        <h2 class="post-title">
-                                 
-            [HBase]02 HBase原理与实战 二
-        </h2>
-        <h3 class="post-subtitle">
-            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
-        </h3>
-        <div class="post-content-preview">
-            HBase写流程存储结构介绍
-
-RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
-region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-05-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -623,7 +617,7 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="4">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="5">Linux</a>
             
         
             
@@ -631,11 +625,11 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="4">大数据</a>
+            <a href="/tags/#Scala" title="Scala" rel="3">Scala</a>
             
         
             
-            <a href="/tags/#Scala" title="Scala" rel="2">Scala</a>
+            <a href="/tags/#大数据" title="大数据" rel="4">大数据</a>
             
         
             
@@ -695,11 +689,11 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
         </li>
       
         <li>
@@ -726,7 +720,7 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">7</span></li></ul>
     </div>
 
         <hr>
