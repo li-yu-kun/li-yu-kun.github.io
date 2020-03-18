@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Scala]02 scala语言知识点 二 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Scala]02 scala语言知识点 二/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Scala" title="Scala">Scala</a>
+                            
+                        </div>
+                        <h1>[Scala]02 scala语言知识点 二</h1>
+                        <h2 class="subheading">Scala值和变量声明、Scala常用类型、方法与函数的定义和使用以及区别、Scala的call-by-name和call-by-value、循环和高级for循环、常见集合使用、异常处理、类定义继承、单例对象、函数式编程思想</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-07-20
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Scala是一门怎样的语言，具有哪些优点？"><a href="#Scala是一门怎样的语言，具有哪些优点？" class="headerlink" title="Scala是一门怎样的语言，具有哪些优点？"></a>Scala是一门怎样的语言，具有哪些优点？</h1><ul>
+<li>快速实验<ul>
+<li>快速尝试各种语法和代码</li>
+</ul>
+</li>
+<li>一致性<ul>
+<li>静态类型系统+面向对象+函数式编程</li>
+</ul>
+</li>
+<li>面向对象<ul>
+<li>所有的变量和方法都封装在对象中</li>
+</ul>
+</li>
+<li>函数式编程<ul>
+<li>函数可以独立存在，可以定义一个函数作为另外一个函数的返回值，也可以接受函数作为函数的参数</li>
+</ul>
+</li>
+<li>异步编程<ul>
+<li>函数式编程提倡变量不可变，使得异步编程变得十分容易</li>
+</ul>
+</li>
+<li>基于JVM<ul>
+<li>Scala会被编译成为Bytecode，所以Scala能无缝集成已有的Java类库</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h2 id="Scala语法基础-从Hello-World说起"><a href="#Scala语法基础-从Hello-World说起" class="headerlink" title="Scala语法基础-从Hello World说起"></a>Scala语法基础-从Hello World说起</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h2 id="Scala值和变量声明"><a href="#Scala值和变量声明" class="headerlink" title="Scala值和变量声明"></a>Scala值和变量声明</h2><ul>
+<li>val变量和var变量<ul>
+<li>val声明的变量不可变，相当于java中的final<ul>
+<li>val a = 1</li>
+<li>a = 2 // 出错啦</li>
+</ul>
+</li>
+<li>var声明的变量可变<ul>
+<li>var a = 1</li>
+<li>a = 2 // OK</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>在scala的类中，val会自动带有getter方法，var会自动带有getter和setter方法</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h2 id="Scala常用类型"><a href="#Scala常用类型" class="headerlink" title="Scala常用类型"></a>Scala常用类型</h2><ul>
+<li>Scala没有区分基本类型和包装类型，统一定义为class类。<ul>
+<li>1.toString() // 生成字符串1</li>
+</ul>
+</li>
+<li>7种数值类型+1种Boolean类型<ul>
+<li>Byte -&gt; RichByte</li>
+<li>Char -&gt; RichChar</li>
+<li>Short -&gt; RichShort</li>
+<li>Int -&gt; RichInt</li>
+<li>Long -&gt; RichLong</li>
+<li>Float -&gt; RichFloat</li>
+<li>Double -&gt; RichDouble</li>
+</ul>
+</li>
+<li>在基本数据类型上使用那些没有提供的方法时，scala会尝试“隐式转换”转换成增强类型<ul>
+<li>Example<ul>
+<li>1.to(10) // 生成出Range(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)<h2 id="方法的定义和使用"><a href="#方法的定义和使用" class="headerlink" title="方法的定义和使用"></a>方法的定义和使用</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">• 方法定义</span><br><span class="line">	• 格式</span><br><span class="line">	def 方法名(参数名: 参数类型): 返回值类型 = &#123;</span><br><span class="line">		return xxx // return可省略</span><br><span class="line">	&#125;</span><br><span class="line">	• 当返回值为unit时</span><br><span class="line">	def 方法名(参数名: 参数类型) &#123;</span><br><span class="line">		// 方法体</span><br><span class="line">	&#125;</span><br><span class="line">	• 无参数函数定义</span><br><span class="line">	def 方法名 &#123;</span><br><span class="line">		// 方法体</span><br><span class="line">	&#125;</span><br><span class="line">• Example</span><br><span class="line">	def m1(a: Int, b: Int): Int = &#123;</span><br><span class="line">		a + b</span><br><span class="line">	&#125;</span><br><span class="line">	def m2() = 100</span><br><span class="line">	def m3 = 100</span><br></pre></td></tr></table></figure>
+<h2 id="函数的定义和使用"><a href="#函数的定义和使用" class="headerlink" title="函数的定义和使用"></a>函数的定义和使用</h2><ul>
+<li>函数定义<ul>
+<li>函数在scala中是一等公民</li>
+<li>val 函数名:(参数类型1, … , 参数类型n)=&gt;返回值类型 = (T1,…, Tn) =&gt; 函数体<ul>
+<li>val f0:(Int)=&gt;Boolean=i=&gt;{i%2==0}</li>
+<li>val f1:Int=&gt;Boolean=i=&gt;{i%2==0}</li>
+<li>val f2:Int=&gt;Boolean=i=&gt;i%2==0</li>
+<li>val f3:Int=&gt;Boolean=i=_%2==0</li>
+</ul>
+</li>
+<li>val 函数名 = (参数名1: 参数类型1, … , 参数名n: 参数类型n) =&gt;函数体<ul>
+<li>val add0=(x:Int,y:Int)=&gt;{x+y}</li>
+<li>val add1=(x:Int,y:Int)=&gt;x+y</li>
+<li>val add2=(Int,Int)=&gt;Int=&gt;(x+y)=&gt;{x+y}</li>
+<li>val add3=(Int,Int)=&gt;Int=&gt;(x+y)=&gt;x+y</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>函数必须有参数列表，否则报错<ul>
+<li>val f1 = =&gt; 100 // 错误</li>
+<li>val f2 = () =&gt; 100 // 正确</li>
+</ul>
+</li>
+</ul>
+<h2 id="函数与方法区别"><a href="#函数与方法区别" class="headerlink" title="函数与方法区别"></a>函数与方法区别</h2><ul>
+<li>方法不可以赋值给变量但是函数可以<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def m1(a:Int,b:Int)=&#123;</span><br><span class="line">	a+b</span><br><span class="line">&#125;</span><br><span class="line">val m=m1 //错误：方法不可以赋值给一个变量</span><br><span class="line">val m=m1_ //正确：方法自动转换为函数</span><br><span class="line">m:(Int,Int)=&gt;Int=&lt;function2&gt;</span><br></pre></td></tr></table></figure></li>
+<li>对于一个无参数的方法是没有参数列表的，而对于函数是有一个空参数列表。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def x=println(&quot;Hi Scala&quot;)</span><br><span class="line">x:Unit</span><br><span class="line">val y=x</span><br><span class="line">y:()=&gt;Unit=&lt;function0&gt;</span><br></pre></td></tr></table></figure></li>
+<li>函数名后必须加括号才代表函数调用，否则为该函数本身，而方法名后不加括号为方法调用<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">y //仅代表函数本身</span><br><span class="line">res0:()=&gt;Unit=&lt;function0&gt;</span><br><span class="line">y()//函数调用</span><br></pre></td></tr></table></figure>
+<h2 id="Scala的call-by-name和call-by-value"><a href="#Scala的call-by-name和call-by-value" class="headerlink" title="Scala的call-by-name和call-by-value"></a>Scala的call-by-name和call-by-value</h2>传值调用（call-by-value）：先计算参数表达式的值，再应用到函数内部<br>传名调用（call-by-name）：将未计算的参数表达式直接应用到函数内部<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">object testCallBy &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    callByName(something())</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def something() = &#123;</span><br><span class="line">    println(&quot;calling something&quot;)</span><br><span class="line">    1 // return value</span><br><span class="line">  &#125;</span><br><span class="line">  def callByValue(x: Int) = &#123;</span><br><span class="line">    println(&quot;x1=&quot; + x)</span><br><span class="line">    println(&quot;x2=&quot; + x)</span><br><span class="line">  &#125;</span><br><span class="line">  def callByName(x: =&gt; Int) = &#123;</span><br><span class="line">    println(&quot;x1=&quot; + x)</span><br><span class="line">    println(&quot;x2=&quot; + x)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+当调用callByName 运行结果是：<br>calling something<br>x1=1<br>calling something<br>x2=1</li>
+</ul>
+<p>当调用callByValue 运行结果是：<br>calling something<br>x1=1<br>x2=1</p>
+<p><strong>两者对比</strong><br>call-by-value在进入函数体之前就对参数表达式进行了计算，这避免了函数内部多次使用参数时重复计算其值，在一定程度上提高了效率。</p>
+<p>但是call-by-name的一个优势在于，如果参数在函数体内部没有被使用到，那么它就不用计算参数表达式的值了。在这种情况下，call-by-name的效率会高一点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">object notUse &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]) = &#123;</span><br><span class="line">    val flag = true</span><br><span class="line">    println(useOrNotUse(flag, 1, getANumber()))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def getANumber() = &#123;</span><br><span class="line">    println(&quot;getANumber调用了&quot;)</span><br><span class="line">    2 // return value</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def useOrNotUse(flag: Boolean, x: Int, y: =&gt; Int) = &#123;</span><br><span class="line">    if (flag) &#123;</span><br><span class="line">      x</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">      x + y</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>方法useOrNotUse的第三个参数y被定义为call-by-name的。当flag=true时，方法useOrNotUse不需要使用到y。所以不会调用getANumber()方法。结果如下：<br>1<br>当我们把flag设置为false时，需要用到y，此时才会调用getANumber()方法。此时运行结果如下：<br>getANumber调用了<br>3</p>
+<h2 id="Example-方法计时器"><a href="#Example-方法计时器" class="headerlink" title="Example - 方法计时器"></a>Example - 方法计时器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">object TimeTest&#123;</span><br><span class="line">  def time[R](block:=&gt;R):R=&#123;  //这里使用了call-by-name参数</span><br><span class="line">    val t0 = System.currentTimeMillis()</span><br><span class="line">	val result = block</span><br><span class="line">	val t1 = System.currentTimeMillis()</span><br><span class="line">	println(&quot;Elapsed time = &quot; +(t1-t0)+&quot;ms&quot;)</span><br><span class="line">	result</span><br><span class="line">  &#125;</span><br><span class="line">  def method(x:Int):Unit = &#123;</span><br><span class="line">    println(&quot;print test = &quot;+x)</span><br><span class="line">  &#125;</span><br><span class="line">  def main(args:Array[String]:Unit=&#123;</span><br><span class="line">  time(method(100))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="循环和高级for循环"><a href="#循环和高级for循环" class="headerlink" title="循环和高级for循环"></a>循环和高级for循环</h2><ul>
+<li><p>拥有于java相同的while和do循环</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while(x&gt;0)&#123;</span><br><span class="line">	//do while</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>for循环于java不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">for(x &lt;- 表达式)&#123;</span><br><span class="line">	//do for</span><br><span class="line">&#125;</span><br><span class="line">for(x &lt;- 1 to n)&#123;</span><br><span class="line">	//do for</span><br><span class="line">&#125;</span><br><span class="line">for(x &lt;- &quot;Hello,World!&quot;)&#123;</span><br><span class="line">	//do for</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">val s=&quot;Hello,World!&quot;</span><br><span class="line">//(until 包前不包后,每次迭代为1) by x 自定义步长</span><br><span class="line">for(x &lt;- 0 until s.length by 2)&#123;</span><br><span class="line">	//do for</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="常见集合使用"><a href="#常见集合使用" class="headerlink" title="常见集合使用"></a>常见集合使用</h2><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+</li>
+<li><p>C 操作时间为常数</p>
+</li>
+<li><p>eC 操作时间在满足某些假设的前提下为常数</p>
+</li>
+<li><p>aC该操作的均摊运行时间为常数。某些调用的可能耗时较长，但多次调用之下，每次调用的平均耗时是常数。</p>
+</li>
+<li><p>L 操作是线性的，耗时与容器的大小成正比。</p>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<ul>
+<li>map<ul>
+<li>在列表中的每个元素上计算一个函数,并且返回一个包含相同数目元素的列表<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val nums =List (1,2,3)</span><br><span class="line">val squareNurns1= nums.map(num =&gt; num*num)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>flatMap<ul>
+<li>结合了map和flatten的功能,接收一个可以处理 套列表的函数,把返回结果连接起来<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val nestedNumbers = List(List(1,2), List(3,4))</span><br><span class="line">nestedNumbers.flatMapl(x=&gt; x.map(Math.pow(_,2)))</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>filter<ul>
+<li>移除任何使得传入的函数返回false的元素<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">val nums = Lis(1,2,3,4) </span><br><span class="line">nums.filter((i:Int) =&gt;i% 2==0)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>zip<ul>
+<li>两个列表的元素合成一个由元组对组成的列表里<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List(1,2,3).zip(List(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;))</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>partitior<ul>
+<li>断言函数的返回值对列表进行拆分<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List(1,2,3,4,5,6,7,8,9,10).prtition(_% 2 ==0)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<ul>
+<li>如果在.map, .flatMap中遇到异常如何处理？</li>
+<li>Scala提供了scala.util.Try 类型更加优雅的处理异常<ul>
+<li>如果成功返回Success</li>
+<li>如果抛出异常返回Failure并携带异常信息</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><p><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
+<h2 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h2><ul>
+<li>Scala继承类和java一样使用extends关键字</li>
+<li>可以将类、字段或者方法声明为final，确保它们不能被重写</li>
+<li>重写一个非抽象方法必须使用override关键词</li>
+<li>可以将类定义为abstract作为抽象类，子类中重写超类的抽象方法时不需要使用override关键词</li>
+<li>调用超类与Java一致使用super关键词</li>
+<li>只有主构造器才能调用超类的构造器</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
+<h2 id="单例对象"><a href="#单例对象" class="headerlink" title="单例对象"></a>单例对象</h2><p><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
+<h2 id="函数式编程思想"><a href="#函数式编程思想" class="headerlink" title="函数式编程思想"></a>函数式编程思想</h2><ul>
+<li>函数式编程关心的是数据的映射而命令式编程关心的是解决问题的步骤</li>
+<li>函数式编程提倡<ul>
+<li>没有可变的变量<ul>
+<li>例如无论sqrt(x)，这个函数的值只取决于函数的输入的值</li>
+</ul>
+</li>
+<li>没有类似于命令式编程中循环元素</li>
+</ul>
+</li>
+<li>好处<ul>
+<li>不依赖于外部的状态，也不修改外部的状态，使得代码容易推理，单元测试和调试变得十分容易</li>
+<li>由于多个线程之前不共享状态，因此不会造成资源的竞争，可以更好的支持并发</li>
+</ul>
+</li>
+</ul>
+<h2 id="函数式编程思想Example"><a href="#函数式编程思想Example" class="headerlink" title="函数式编程思想Example"></a>函数式编程思想Example</h2><p><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/浅谈大数据平台建设/" data-toggle="tooltip" data-placement="top" title="浅谈大数据平台建设">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Scala]01 scala编程IDEA环境 一/" data-toggle="tooltip" data-placement="top" title="[Scala]01 scala编程IDEA环境 一">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Scala是一门怎样的语言，具有哪些优点？"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Scala是一门怎样的语言，具有哪些优点？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Scala语法基础-从Hello-World说起"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Scala语法基础-从Hello World说起</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Scala值和变量声明"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Scala值和变量声明</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Scala常用类型"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Scala常用类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法的定义和使用"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">方法的定义和使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#函数的定义和使用"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">函数的定义和使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#函数与方法区别"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">函数与方法区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Scala的call-by-name和call-by-value"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">Scala的call-by-name和call-by-value</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Example-方法计时器"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">Example - 方法计时器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#循环和高级for循环"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">循环和高级for循环</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常见集合使用"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">常见集合使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异常处理"><span class="toc-nav-number">1.11.</span> <span class="toc-nav-text">异常处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类定义"><span class="toc-nav-number">1.12.</span> <span class="toc-nav-text">类定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类继承"><span class="toc-nav-number">1.13.</span> <span class="toc-nav-text">类继承</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#单例对象"><span class="toc-nav-number">1.14.</span> <span class="toc-nav-text">单例对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#函数式编程思想"><span class="toc-nav-number">1.15.</span> <span class="toc-nav-text">函数式编程思想</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#函数式编程思想Example"><span class="toc-nav-number">1.16.</span> <span class="toc-nav-text">函数式编程思想Example</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Scala" title="Scala">Scala</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
