@@ -95,7 +95,7 @@
                         <h2 class="subheading">概述、发展、架构、环境搭建</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-30
+                            2017-09-07
                         </span>
                     </div>
                 
@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -253,17 +253,19 @@
 <li><p>配置<br> 系统环境变量(~/.bahs_profile)</p>
 <pre><code>export HIVE_HOME=/home/hadoop/app/hive-1.1.0-cdh5.7.0
 export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql， yum install xxx，或者tar包安装</strong></p>
-<p> 在conf下找到hive-site.xml配置 <strong>hive-site.xml</strong></p>
-</li>
-</ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p> 在conf下对hive-env.sh配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Set HADOOP_HOME to point to a specific hadoop install directory</span><br><span class="line"> HADOOP_HOME=/home/hadoop/app/hadoop</span><br><span class="line"></span><br><span class="line"># Hive Configuration Directory can be controlled by:</span><br><span class="line"> export HIVE_CONF_DIR=/home/hadoop/app/hive</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li><p>拷贝mysql驱动到$HIVE_HOME/lib/</p>
+<p> 在conf下新建hive-site.xml配置 <strong>hive-site.xml</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>启动hive: $HIVE_HOME/bin/hive</p>
+<li><p>拷贝mysql驱动到$HIVE_HOME/lib/<br>初始化数据库 schematool -initSchema -dbType mysql</p>
+</li>
+<li><p>启动hive: $HIVE_HOME/bin/hive<br>如果要连接hiveserver2 需要分别启动<br>hive –service metastore<br>hive –service hiveserver2</p>
 </li>
 </ol>
+<p>【注意】Hive启动时报错“which: no hbase in ”</p>
+<p>在Hive的所在的机器上添加Hbase的环境变量即可<br>1、编辑<br>export HBASE_HOME=/opt/module/hbase-2.2.1<br>export PATH=$PATH:$HBASE_HOME/bin<br>2、环境变量生效<br>source ~/.bahs_profile</p>
 
                 
 

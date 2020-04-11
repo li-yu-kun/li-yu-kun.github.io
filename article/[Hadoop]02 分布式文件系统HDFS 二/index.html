@@ -95,7 +95,7 @@
                         <h2 class="subheading">单机搭建、常见问题</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-04
+                            2017-05-31
                         </span>
                     </div>
                 
@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -231,11 +231,16 @@ export PATH=\$JAVA_HOME/bin:$PATH</code></pre><p> 使得环境变量生效： so
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;hdfs://hadoop000:8020&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;/home/hadoop/app/tmp&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 <p><strong>hdfs-site.xml</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
 <ol start="5">
-<li>启动hdfs<br> 格式化文件系统（仅第一次执行即可，不要重复执行）：hdfs/hadoop namenode -format<br> 启动hdfs: sbin/start-dfs.sh<br> 验证是否启动成功：<pre><code>jps</code></pre> 　DataNode<pre><code>　SecondaryNameNode
+<li><p>启动hdfs<br> 格式化文件系统（仅第一次执行即可，不要重复执行）：hdfs/hadoop namenode -format<br> 启动hdfs: sbin/start-dfs.sh<br> 验证是否启动成功：</p>
+<pre><code>jps</code></pre><p> 　DataNode</p>
+<pre><code>　SecondaryNameNode
 　NameNode
-浏览器访问方式 http://hadoop000:50070</code></pre><img src="%E5%9B%BE%E7%89%8710.png" alt=""></li>
-<li>停止hdfs<br> sbin/stop-dfs.sh </li>
+浏览器访问方式 http://hadoop000:50070</code></pre><p><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
+</li>
+<li><p>停止hdfs<br> sbin/stop-dfs.sh </p>
+</li>
 </ol>
 <h1 id="HDFS关键设置及常见问题"><a href="#HDFS关键设置及常见问题" class="headerlink" title="HDFS关键设置及常见问题"></a>HDFS关键设置及常见问题</h1><h2 id="常用配置"><a href="#常用配置" class="headerlink" title="常用配置"></a>常用配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置文件路径：$HADOOP_HOME$/etc/hadoop</span><br><span class="line">主要配置文件：</span><br><span class="line">•hdfs-site.xml</span><br><span class="line">•core-site.xml</span><br></pre></td></tr></table></figure>
 <p><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
@@ -296,7 +301,7 @@ export PATH=\$JAVA_HOME/bin:$PATH</code></pre><p> 使得环境变量生效： so
 </li>
 <li><p>crontab job 每天凌晨20分调度<br>[hadoop@hadoop001 sbin]$ ./start-balancer.sh -threshold 5</p>
 </li>
-<li><p>一个DN节点的多个磁盘的数据均衡<br><a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html</a><br>1、dfs.disk.balancer.enabled must be set to true in hdfs-site.xml.<br>2、hdfs diskbalancer -plan 执行计划                   生成ruozedata001.plan.json<br>3、hdfs diskbalancer -execute 执行计划.plan.json      执行<br>4、hdfs diskbalancer -query 执行计划                  查询状态</p>
+<li><p>一个DN节点的多个磁盘的数据均衡<br><a href="https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html" target="_blank" rel="noopener">https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSDiskbalancer.html</a><br>1、dfs.disk.balancer.enabled must be set to true in hdfs-site.xml.<br>2、hdfs diskbalancer -plan 执行计划                   生成xxx.plan.json<br>3、hdfs diskbalancer -execute 执行计划.plan.json      执行<br>4、hdfs diskbalancer -query 执行计划                  查询状态</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">整体空间占用：30%</span><br><span class="line">threshold： 10</span><br><span class="line">balance之后每个dn的空间占用：20-40%</span><br><span class="line"></span><br><span class="line">dn1：60% ；dn2:10%；dn3:30%</span><br><span class="line">整体：</span><br><span class="line">dn1：40% ；dn2:30%；dn3:30%</span><br><span class="line"></span><br><span class="line">什么时候手动或调度执行？</span><br><span class="line">a.新盘加入</span><br><span class="line">b.监控服务器的磁盘剩余空间 小于阈值 10%，发邮件预警  手动执行</span><br><span class="line">配置多磁盘参数 dfs.datanode.data.dir  /data01,/data02,/data03,/data04    comma-delimited（逗号）</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>-include ：执行balance的DN列表</p>

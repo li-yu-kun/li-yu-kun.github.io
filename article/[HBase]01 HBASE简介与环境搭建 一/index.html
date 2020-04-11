@@ -18,7 +18,7 @@
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]01 HBASE简介与环境搭建 一/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]01 HBase简介与环境搭建 一/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -92,10 +92,10 @@
                             
                         </div>
                         <h1>[HBase]01 HBASE简介与环境搭建 一</h1>
-                        <h2 class="subheading">HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点</h2>
+                        <h2 class="subheading">HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-05-15
+                            2017-10-10
                         </span>
                     </div>
                 
@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -262,37 +262,55 @@
 </ul>
 <h2 id="Hbase核心概念"><a href="#Hbase核心概念" class="headerlink" title="Hbase核心概念"></a>Hbase核心概念</h2><p>一行数据eg：row =&gt; rw1 column=cf1:q1, timestamp=1550351947916, value=val1</p>
 <ul>
-<li>NameSpace:<br>可以把NameSpace理解为RDBMS的“数据库”</li>
-<li>Table:<br>表名必须是能用在文件路径里的合法名字</li>
-<li>Row:<br>在表里面,每一行代表着一个数据对象,每一行都是以一个行键( Row Key )来进行唯一标识的,行键并没有什么特定的数据类型,以二进制的字节来存储</li>
-<li>Column:<br>HBase的列由Column family和Column qualifier组成 ,由冒号(:)进行进行间隔。比如family:qualifier</li>
-<li>RowKey:<br>可以唯一标识一行记录,不可被改变. </li>
-<li>Column Family:<br>在定义HBase表的时候需要提前设置好列族,表中所有的列都需要组织在列族里面<br>一行数据同属于一个cf，一个table =&gt; N * cf , 一个cf =&gt; n * col</li>
-</ul>
+<li><p>NameSpace:<br>可以把NameSpace理解为RDBMS的“数据库”</p>
+</li>
+<li><p>Table:<br>表名必须是能用在文件路径里的合法名字</p>
+</li>
+<li><p>Row:<br>在表里面,每一行代表着一个数据对象,每一行都是以一个行键( Row Key )来进行唯一标识的,行键并没有什么特定的数据类型,以二进制的字节来存储</p>
+</li>
+<li><p>Column:<br>HBase的列由Column family和Column qualifier组成 ,由冒号(:)进行进行间隔。比如family:qualifier</p>
+</li>
+<li><p>RowKey:<br>可以唯一标识一行记录,不可被改变. </p>
+</li>
+<li><p>Column Family:<br>在定义HBase表的时候需要提前设置好列族,表中所有的列都需要组织在列族里面<br>一行数据同属于一个cf，一个table =&gt; N * cf , 一个cf =&gt; n * col</p>
 <blockquote>
-<p>cf =&gt;<br>           {NAME =&gt; ‘cf1’, BLOOMFILTER =&gt; ‘ROW’, VERSIONS =&gt; ‘1’,<br>            IN_MEMORY =&gt; ‘false’, KEEP_DELETED_CELLS =&gt; ‘FALSE’,<br>            DATA_BLOCK_ENCODING =&gt; ‘NONE’, TTL =&gt; ‘FOREVER’,<br>            COMPRESSION =&gt; ‘NONE’, MIN_VERSIONS =&gt; ‘0’, BLOCKCACHE =&gt; ‘true’,<br>            BLOCKSIZE =&gt; ‘65536’, REPLICATION_SCOPE =&gt; ‘0’}</p>
-</blockquote>
-<ul>
-<li>Column Qualifier:<br>列族中的数据通过列标识来进行映射,可以理解为一个键值对,Column Qualifier就是Key.</li>
-<li>Cell:<br>每一个行键,列族和列标识共同组成一个单元<br>cell: rk, cf:col, version</li>
-<li>Timestamp:<br>每个值都会有一个timestamp,作为该值特定版本的标识符</li>
+<p>cf =&gt; </p>
+<pre><code>{NAME =&gt; &apos;cf1&apos;, BLOOMFILTER =&gt; &apos;ROW&apos;, VERSIONS =&gt; &apos;1&apos;, 
+ IN_MEMORY =&gt; &apos;false&apos;, KEEP_DELETED_CELLS =&gt; &apos;FALSE&apos;, 
+ DATA_BLOCK_ENCODING =&gt; &apos;NONE&apos;, TTL =&gt; &apos;FOREVER&apos;, 
+ COMPRESSION =&gt; &apos;NONE&apos;, MIN_VERSIONS =&gt; &apos;0&apos;, BLOCKCACHE =&gt; &apos;true&apos;, 
+ BLOCKSIZE =&gt; &apos;65536&apos;, REPLICATION_SCOPE =&gt; &apos;0&apos;}</code></pre></blockquote>
+</li>
+<li><p>Column Qualifier:<br>列族中的数据通过列标识来进行映射,可以理解为一个键值对,Column Qualifier就是Key.</p>
+</li>
+<li><p>Cell:<br>每一个行键,列族和列标识共同组成一个单元<br>cell: rk, cf:col, version</p>
+</li>
+<li><p>Timestamp:<br>每个值都会有一个timestamp,作为该值特定版本的标识符</p>
+</li>
 </ul>
 <h2 id="Hbase与传统关系型数据库的区别"><a href="#Hbase与传统关系型数据库的区别" class="headerlink" title="Hbase与传统关系型数据库的区别"></a>Hbase与传统关系型数据库的区别</h2><p>1.动态列<br>2.存储数据形式<br>3.事物<br>4.分布式：可扩展的<br>5.支持的列多<br>6.kv存储<br>7.表之间的耦合性低<br>8.存在数据冗余<br>9.大数据量查询性能比较高<br>10.null不存的<br>11.本身二级索引不支持(rowkey scan: 全表 、范围)，后续可以自己去做<br>12.trigger 触发器不支持<br>13.字段的支持格式单一(bytes)</p>
 <p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>传统存储：<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>Hbase归类存储：<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
 <h2 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h2><p>可想象为大的map;详见下图：<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>访问数据步骤如下图：<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
 <h1 id="Hbase伪分布式集群安装"><a href="#Hbase伪分布式集群安装" class="headerlink" title="Hbase伪分布式集群安装"></a>Hbase伪分布式集群安装</h1><p><strong>前置条件安装并且启动HDFS</strong></p>
 <ol>
-<li>下载HBase 传到服务器并且解压<br><a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a></li>
-<li>配置文件<br>把Hadoop_Home/etc/hadoop/hdfs-site.xml和core.site.xml拷贝到HBase_home/conf下</li>
+<li>下载HBase 传到服务器并且解压【hbase-1.2.0-cdh5.7.0】<br><a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a></li>
+<li>配置文件<br>把$Hadoop_Home/etc/hadoop/hdfs-site.xml和core.site.xml拷贝到$HBase_home/conf下</li>
 </ol>
+<p>或者进入$HBase_home/conf目录下 建立软连接<br>ln -s $Hadoop_Home/etc/hadoop/hdfs-site.xml hdfs-site.xml<br>ln -s $Hadoop_Home/etc/hadoop/core-site.xml core-site.xml</p>
 <ul>
-<li><strong>配置HBase_home/conf/hbase-env.sh</strong><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79</span><br></pre></td></tr></table></figure></li>
+<li><strong>配置HBase_home/conf/hbase-env.sh</strong><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79</span><br><span class="line">export HBASE_PID_DIR=/home/hadoop/tmp</span><br><span class="line">export HBASE_MANAGES_ZK=false</span><br></pre></td></tr></table></figure></li>
 <li><strong>配置HBase_home/conf/hbase-site.xml</strong></li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>　　--hbase持久保存的目录</span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop000:8020/hbase<span class="tag">&lt;/<span class="name">value</span>&gt;</span>   </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>        </span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>   </span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>zk的data目录路径<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>        </span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.cluster.distributed<span class="tag">&lt;/<span class="name">name</span>&gt;</span> --是否以集群方式运行（虽然一个节点也可配置为true）  </span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>　　--hbase持久保存的目录</span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop:8020/hbase<span class="tag">&lt;/<span class="name">value</span>&gt;</span>   </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>        </span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>   </span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>zk的data目录路径<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>        </span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.cluster.distributed<span class="tag">&lt;/<span class="name">name</span>&gt;</span> --是否以集群方式运行（虽然一个节点也可配置为true）  </span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>常用配置参数详解</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;?xml-stylesheet type=&quot;text/xsl&quot; href=&quot;configuration.xsl&quot;?&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;!--hbase.rootdir的前端与$HADOOP_HOME/conf/core-site.xml的fs.defaultFS一致 --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.rootdir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://hadoop:9000/hbase&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--本地文件系统的临时文件夹。可以修改到一个更为持久的目录上。(/tmp会在重启时清除) --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.tmp.dir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;/home/hadoop/tmp/hbase&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--如果只设置单个 Hmaster，那么 hbase.master 属性参数需要设置为 master5:60000 (主机名:60000) --&gt;</span><br><span class="line">                &lt;!--如果要设置多个 Hmaster，那么我们只需要提供端口 60000，因为选择真正的 master 的事情会有 zookeeper 去处理 --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.master&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;60000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--这个参数用户设置 ZooKeeper 快照的存储位置，默认值为 /tmp，显然在重启的时候会清空。因为笔者的 ZooKeeper 是独立安装的，所以这里路径是指向了 $ZOOKEEPER_HOME/conf/zoo.cfg 中 dataDir 所设定的位置 --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;/home/hadoop/tmp/zookeeper&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;ruozedata001&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">                &lt;!--表示客户端连接 ZooKeeper 的端口 --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.zookeeper.property.clientPort&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;2181&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">                &lt;!--ZooKeeper 会话超时。Hbase 把这个值传递改 zk 集群，向它推荐一个会话的最大超时时间 --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;zookeeper.session.timeout&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;120000&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--当 regionserver 遇到 ZooKeeper session expired ， regionserver 将选择 restart 而不是 abort --&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hbase.regionserver.restart.on.zk.expire&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;hbase.online.schema.update.enable&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;true&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">	&lt;property&gt;</span><br><span class="line">		&lt;name&gt;hbase.coprocessor.abortonerror&lt;/name&gt;</span><br><span class="line">		&lt;value&gt;false&lt;/value&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <ol start="3">
-<li>启动和停止<br>hbase_home/bin/start-hbase.sh<br>jps检查：<br>　HQuorumPeer<br>　HRegionServer<br>　HMaster<br>　NameNode<br>　SecondaryNameNode<br>　DataNode<br>网页链接检查：<br><a href="http://hadoop000:16010" target="_blank" rel="noopener">http://hadoop000:16010</a></li>
+<li>启动和停止<br>hbase_home/bin/start-hbase.sh<br>jps检查：<br>　HQuorumPeer<br>　HRegionServer<br>　HMaster<br>　NameNode<br>　SecondaryNameNode<br>　DataNode<br>网页链接检查：<br><a href="http://hadoop:60010" target="_blank" rel="noopener">http://hadoop:60010</a></li>
 </ol>
+<p>注意：如果重新部署或者升级，需要删除下列东东</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop bin]$ ./stop-hbase.sh </span><br><span class="line">hdfs的hbase文件</span><br><span class="line">[hadoop@hadoop ~]$ hdfs dfs -rm -r -skipTrash /hbase</span><br><span class="line">hbase的元数据</span><br><span class="line">[zk: hadoop:2181(CONNECTED) 0] ls /</span><br><span class="line">[zookeeper, hbase]</span><br><span class="line">[zk: hadoop:2181(CONNECTED) 1] rmr /hbase</span><br></pre></td></tr></table></figure>
+
 <h1 id="Hbase基础架构"><a href="#Hbase基础架构" class="headerlink" title="Hbase基础架构"></a>Hbase基础架构</h1><p><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
 <ul>
 <li>Hmaster<ul>
@@ -326,6 +344,21 @@
 <li>可扩展的基于jruby的(JIRB) shell</li>
 <li>支持通过Hadoop metrics子系统将指标导出到文件或Ganglia或通过JMX</li>
 </ul>
+<h1 id="RowKey的设计"><a href="#RowKey的设计" class="headerlink" title="RowKey的设计"></a>RowKey的设计</h1><p>如果不设计rowkey 默认一个表只有一个region </p>
+<h2 id="盐表"><a href="#盐表" class="headerlink" title="盐表"></a>盐表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create &apos;FileTable&apos;,&apos;fileInfo&apos;, SPLITS =&gt; [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]  </span><br><span class="line">一共 4+1=5区域：~-a, a-b , b-c , c-d , d-~</span><br><span class="line">region [startkey,endkey)</span><br><span class="line"></span><br><span class="line">put &apos;FileTable&apos; , &apos;001&apos;,&apos;order:ordersum&apos;,&apos;200&apos; 区域：~-a</span><br><span class="line">put &apos;FileTable&apos; , &apos;a-002&apos;,&apos;order:ordersum&apos;,&apos;200&apos; 区域：a-b</span><br><span class="line">put &apos;FileTable&apos; , &apos;a-xxxxx&apos;,&apos;order:ordersum&apos;,&apos;200&apos; 区域：a-b 加如有1亿条 区域：a-b的数据</span><br><span class="line">put &apos;FileTable&apos; , &apos;c-002&apos;,&apos;order:ordersum&apos;,&apos;200&apos; 区域：c-d</span><br><span class="line">put &apos;FileTable&apos; , &apos;g-002&apos;,&apos;order:ordersum&apos;,&apos;200&apos; 区域：d-~</span><br><span class="line">a对应的region 所在比如 hadoop机器  繁忙</span><br><span class="line">其他机器闲 造成数据写入热点  读写不均匀</span><br></pre></td></tr></table></figure>
+
+<p>改进后：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">create &apos;FileTable&apos;, &apos;order&apos;, SPLITS =&gt; [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;]</span><br><span class="line"></span><br><span class="line">~ 1</span><br><span class="line">1 2</span><br><span class="line">2 3</span><br><span class="line">3 4</span><br><span class="line">4 ~</span><br><span class="line"></span><br><span class="line">rowkey: 10001--&gt; 1 2</span><br><span class="line">        99999--&gt; 4 ~</span><br></pre></td></tr></table></figure>
+<p>这种加盐的方式可简单理解为：固定长度随机数+rowkey原有值==》新rowkey 去存储</p>
+<p>好处：通过随机数 提高写的吞吐量  保证 数据在 所有region中 是均衡的</p>
+<p>缺点: 因为添加的是随机数，基于原有的rk查询时 无法知道随机数是什么，那么就需要去各个region去查找，必然增加读的开销</p>
+<p>hbase天然的 写的优势大  读的优势少 加盐方式适用于业务场景  重写轻读 </p>
+<h2 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">rowKey, Value</span><br><span class="line">md5(1)-》1==》 95f111a-1 , name=小明</span><br><span class="line">md5(2)-》2==》 6gggda2-2 , name=小王</span><br><span class="line">md5(3)-》3==》 ijaq111-3 , name=小李</span><br><span class="line"></span><br><span class="line">create &apos;FileTable&apos;, &apos;order&apos;, &#123;NUMREGIONS =&gt; 5, SPLITALGO =&gt; &apos;HexStringSplit&apos;&#125;</span><br><span class="line">自带的hash方式：SPLITALGO =&gt; &apos;HexStringSplit&apos;  </span><br><span class="line">分5个分区：NUMREGIONS =&gt; 5</span><br><span class="line"></span><br><span class="line">put &apos;FileTable&apos; , &apos;1&apos;,&apos;order:ordersum&apos;,&apos;200&apos;</span><br><span class="line">put &apos;FileTable&apos; , &apos;abc123-1&apos;,&apos;order:ordersum&apos;,&apos;200&apos;</span><br><span class="line">put &apos;FileTable&apos; , &apos;dfg333-2&apos;,&apos;order:ordersum&apos;,&apos;200&apos;</span><br></pre></td></tr></table></figure>
+
+<p>注意选取的哈希算法要必须需要转换唯一<br>即：算法选择必须是同一行rk hash之后值是一样的，不要不一样<br>例一：1–》abc123   1–》 dfg777  一对多转换不行<br>例二：1–》abc123   唯一可行</p>
+<p>hash方式：基于rk的完整部分或者部分数据 进行hash，hash的值作为前缀；</p>
+<p>好处: 数据也可以均匀的分散到各个region，就是分散到各个集群节点上，避免了热点，天然的优势支持 get操作，但是前提你要知道原rk值和rowkey拼接结构</p>
+<p>坏处: 基于rk的完整部分进行hash，不利于scan操作比如前缀过滤，因为数据在原有的rowkey的自然顺序上被打乱了，需要多个region 取数 </p>
 
                 
 
@@ -389,7 +422,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase简介及其在大数据生态圈的位置"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase简介及其在大数据生态圈的位置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase简介"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">HBase简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase在大数据生态中的位置"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase在大数据生态中的位置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase与HDFS"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">HBase与HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase使用场景"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">HBase使用场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase数据存储模型及与关系型数据库的区别"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hbase数据存储模型及与关系型数据库的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CAP定理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">CAP定理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ACID定义"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">ACID定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase核心概念"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Hbase核心概念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase与传统关系型数据库的区别"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Hbase与传统关系型数据库的区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase数据模型"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">Hbase数据模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase伪分布式集群安装"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hbase伪分布式集群安装</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase基础架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hbase基础架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase特点"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">HBase特点</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase简介及其在大数据生态圈的位置"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase简介及其在大数据生态圈的位置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase简介"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">HBase简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase在大数据生态中的位置"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase在大数据生态中的位置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase与HDFS"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">HBase与HDFS</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase使用场景"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">HBase使用场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase数据存储模型及与关系型数据库的区别"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hbase数据存储模型及与关系型数据库的区别</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CAP定理"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">CAP定理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ACID定义"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">ACID定义</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase核心概念"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Hbase核心概念</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase与传统关系型数据库的区别"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Hbase与传统关系型数据库的区别</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase数据模型"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">Hbase数据模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase伪分布式集群安装"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hbase伪分布式集群安装</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase基础架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hbase基础架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase特点"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">HBase特点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RowKey的设计"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">RowKey的设计</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#盐表"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">盐表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hash"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">hash</span></a></li></ol></li></ol>
         
         </div>
       </aside>

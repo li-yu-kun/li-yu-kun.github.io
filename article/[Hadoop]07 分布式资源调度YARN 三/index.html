@@ -95,7 +95,7 @@
                         <h2 class="subheading">环境搭建、常用命令、作业执行</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-04-13
+                            2017-07-23
                         </span>
                     </div>
                 
@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -217,7 +217,7 @@
 <li><p>mapred-site.xml</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></li>
 <li><p>yarn-site.xml</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;ruozedata001:38088&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"># web界面防火墙 38088 50070 开放这两个端口</span><br><span class="line"># yarn.resourcemanager.webapp.address修改8088为38088</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;hadoop:38088&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"># web界面防火墙 38088 50070 开放这两个端口</span><br><span class="line"># yarn.resourcemanager.webapp.address修改8088为38088</span><br></pre></td></tr></table></figure></li>
 <li><p>yarn-env.sh<br>export YARN_PID_DIR=/home/hadoop/tmp</p>
 </li>
 <li><p>启动YARN相关的进程<br>sbin/start-yarn.sh</p>
