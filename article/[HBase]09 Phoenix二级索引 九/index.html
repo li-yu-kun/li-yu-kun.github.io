@@ -142,13 +142,6 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -157,6 +150,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -233,27 +233,13 @@
 <p>接下来数据导入完毕后就用到了构建异步索引</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">建表语法就是在普通索引语法后面加一个 ASYNC 【不会促发构建索引机制】</span><br><span class="line">CREATE INDEX async_index ON my_schema.my_table (v) ASYNC</span><br><span class="line"></span><br><span class="line">开始 构建异步索引</span><br><span class="line">$&#123;HBASE_HOME&#125;/bin/hbase </span><br><span class="line">org.apache.phoenix.mapreduce.index.IndexTool</span><br><span class="line">  --schema MY_SCHEMA </span><br><span class="line">  --data-table MY_TABLE </span><br><span class="line">  --index-table ASYNC_IDX</span><br><span class="line">  --output-path ASYNC_IDX_HFILES</span><br></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<p>索引的优化<br>以下属性都必须在各节点上的hbase-site.xml中设置为true才能起效，<br>1.index.builder.threads.max:（默认值：10）<br>    根据主表的更新来确定更新索引表的线程数</p>
-<p>2.index.builder.threads.keepalivetime：（默认值：60）<br>    builder线程池中线程的存活时间</p>
-<p>3.index.write.threads.max:（默认值：10）<br>    更新索引表时所能使用的线程数(即同时能更新多少张索引表)，其数量最好与索引表的数量一致</p>
-<p>4.index.write.threads.keepalivetime（默认值：60）<br>     更新索引表的线程所能存活的时间</p>
-<p>5.hbase.htable.threads.max（默认值：2147483647）<br>     每张索引表所能使用的线程(即在一张索引表中同时可以有多少线程对其进行写入更新)，增加此值可以提高更新索引的并发量</p>
-<p>6.hbase.htable.threads.keepalivetime（默认值：60）<br>     索引表上更新索引的线程的存活时间</p>
-<p>7.index.tablefactoy.cache.size（默认值：10）<br>     允许缓存的索引表的数量<br>     增加此值，可以在更新索引表时不用每次都去重复的创建htable，由于是缓存在内存中，所以其值越大，其需要的内存越多</p>
+<h1 id="索引的优化"><a href="#索引的优化" class="headerlink" title="索引的优化"></a>索引的优化</h1><p>以下属性都必须在各节点上的hbase-site.xml中设置为true才能起效，<br>1.index.builder.threads.max:（默认值：10）<br>根据主表的更新来确定更新索引表的线程数</p>
+<p>2.index.builder.threads.keepalivetime：（默认值：60）<br>builder线程池中线程的存活时间</p>
+<p>3.index.write.threads.max:（默认值：10）<br>更新索引表时所能使用的线程数(即同时能更新多少张索引表)，其数量最好与索引表的数量一致</p>
+<p>4.index.write.threads.keepalivetime（默认值：60）<br>更新索引表的线程所能存活的时间</p>
+<p>5.hbase.htable.threads.max（默认值：2147483647）<br>每张索引表所能使用的线程(即在一张索引表中同时可以有多少线程对其进行写入更新)，增加此值可以提高更新索引的并发量</p>
+<p>6.hbase.htable.threads.keepalivetime（默认值：60）<br>索引表上更新索引的线程的存活时间</p>
+<p>7.index.tablefactoy.cache.size（默认值：10）<br>允许缓存的索引表的数量<br>增加此值，可以在更新索引表时不用每次都去重复的创建htable，由于是缓存在内存中，所以其值越大，其需要的内存越多</p>
 
                 
 
@@ -317,7 +303,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#覆盖索引"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">覆盖索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#函数索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">函数索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#可变索引"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">可变索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#不可变索引"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">不可变索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#同步索引"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">同步索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#异步索引"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">异步索引</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#覆盖索引"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">覆盖索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#函数索引"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">函数索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#可变索引"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">可变索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#不可变索引"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">不可变索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#同步索引"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">同步索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#异步索引"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">异步索引</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#索引的优化"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">索引的优化</span></a></li></ol>
         
         </div>
       </aside>
