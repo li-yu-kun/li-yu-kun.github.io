@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop]04 分布式文件系统HDFS 四 - 李玉坤 | Blog
+          Kafka 是如何保证数据可靠性和一致性 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]04 分布式文件系统HDFS 四/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/Kafka 是如何保证数据可靠性和一致性/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                              <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
                             
                         </div>
-                        <h1>[Hadoop]04 分布式文件系统HDFS 四</h1>
-                        <h2 class="subheading">读写流程详解、错误处理机制、优缺点</h2>
+                        <h1>Kafka 是如何保证数据可靠性和一致性</h1>
+                        <h2 class="subheading">数据可靠性、数据一致性</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-06-14
+                            2019-09-15
                         </span>
                     </div>
                 
@@ -212,43 +212,31 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="HDFS文件读写流程详解"><a href="#HDFS文件读写流程详解" class="headerlink" title="HDFS文件读写流程详解"></a>HDFS文件读写流程详解</h1><p><img src="%E5%9B%BE%E7%89%8720.png" alt=""><br>首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。</p>
-<h2 id="文件写流程图解"><a href="#文件写流程图解" class="headerlink" title="文件写流程图解"></a>文件写流程图解</h2><p><img src="%E5%9B%BE%E7%89%8721.png" alt=""><br><img src="%E5%9B%BE%E7%89%8722.png" alt=""><br>往HDFS中写数据的流程如下：</p>
+                <h1 id="数据可靠性"><a href="#数据可靠性" class="headerlink" title="数据可靠性"></a>数据可靠性</h1><p>Kafka 作为一个商业级消息中间件，消息可靠性的重要性可想而知。本文从 Producter 往 Broker 发送消息、Topic 分区副本以及 Leader 选举几个角度介绍数据的可靠性。</p>
+<h2 id="Topic-分区副本"><a href="#Topic-分区副本" class="headerlink" title="Topic 分区副本"></a>Topic 分区副本</h2><p>在 Kafka 0.8.0 之前，Kafka 是没有副本的概念的，那时候人们只会用 Kafka 存储一些不重要的数据，因为没有副本，数据很可能会丢失。但是随着业务的发展，支持副本的功能越来越强烈，所以为了保证数据的可靠性，Kafka 从 0.8.0 版本开始引入了分区副本（详情请参见 KAFKA-50）。也就是说每个分区可以人为的配置几个副本（比如创建主题的时候指定 replication-factor，也可以在 Broker 级别进行配置 default.replication.factor），一般会设置为3。</p>
+<p>Kafka 可以保证单个分区里的事件是有序的，分区可以在线（可用），也可以离线（不可用）。在众多的分区副本里面有一个副本是 Leader，其余的副本是 follower，所有的读写操作都是经过 Leader 进行的，同时 follower 会定期地去 leader 上的复制数据。当 Leader 挂了的时候，其中一个 follower 会重新成为新的 Leader。通过分区副本，引入了数据冗余，同时也提供了 Kafka 的数据可靠性。</p>
+<p><strong>Kafka 的分区多副本架构是 Kafka 可靠性保证的核心，把消息写入多个副本可以使 Kafka 在发生崩溃时仍能保证消息的持久性。</strong></p>
+<h2 id="Producer-往-Broker-发送消息"><a href="#Producer-往-Broker-发送消息" class="headerlink" title="Producer 往 Broker 发送消息"></a>Producer 往 Broker 发送消息</h2><p>如果我们要往 Kafka 对应的主题发送消息，我们需要通过 Producer 完成。前面我们讲过 Kafka 主题对应了多个分区，每个分区下面又对应了多个副本；为了让用户设置数据可靠性， Kafka 在 Producer 里面提供了消息确认机制。也就是说我们可以通过配置来决定消息发送到对应分区的几个副本才算消息发送成功。可以在定义 Producer 时通过 acks 参数指定（在 0.8.2.X 版本之前是通过 request.required.acks 参数设置的，详见 KAFKA-3043）。这个参数支持以下三种值：</p>
 <ul>
-<li>第1幅图：我们跟客户端说，你帮我写一个200M的数据吧，客户端说没问题啊，但是…</li>
-<li>第2幅图：客户端不知道我们对数据有没有其他的要求啊，问我们是不是忘了什么东西呢？我们想起来我们还是有要求的，第一我们要把数据分成若干块，并且每块的大小是128M，第二，每个数据块应该复制3份。其实这就是我们说的HDFS的文件分块和多副本，如果你不说的话客户端怎么知道到底怎么分，复制多少份呢？</li>
-<li>第3幅图：由上面的对话我们发现，如果对于每个文件客户端都要这么问一下，是不是太麻烦了？所以说一个好的客户端应该是，用户就算不说你也要知道有这两个属性：块的大小，一个文件应该按照怎样的大小切分（通常是64M或128M）；复制因子，每个块应该复制多少份（通常是3份），也就是说如果用户不主动提供这些属性，那么就按照默认的来。</li>
-<li>第4幅图：现在客户端已经知道了每个块的大小了，那么把200M的文件分成128M和72M两个块，一个长一个短。</li>
-<li>第5幅图：切分后客户端就开始工作了，既然有两个块，那先上传第一个块，于是客户端请求Namenode帮它写一个128M的块，并且要复制3份。</li>
-<li>第6幅图：Namenode接受到客户端的请求后，既然需要3个副本，那么就需要找到3个DataNode，Namenode就会想怎么去找到这3个DataNode呢？我该告诉客户端哪些信息呢？于是它就去它管理的DataNode中找一些满足要求的空闲节点。</li>
-<li>第7幅图：Namenode找到了3个节点，现在把找到的节点发给客户端，表示：兄弟，你不是要我帮你写数据嘛，我给你找到了这3个合适的DataNode，并且已经按距离远近给你排过序了，第一个是最近的，你把数据给他们让他们帮你写吧。</li>
-<li>第8幅图：客户端收到3个DataNode地址后，直接把数据发送到第一个节点(DataNode1)上，然后DataNode1开始把数据写到他的硬盘中。</li>
-<li>第9、10、11幅图：DataNode1在接受数据的同时，会把刚刚收到的数据发送到第二个DataNode2上，同理DataNode2也是，接收的同时把数据立马发给DataNode3，到了DataNode3已经是最后一个DataNode了。整个过程跟流水线一样，接收一点就发一点。（个人感觉跟计算机网络中令牌环网的工作原理有些类似）<br>第12幅图：Namenode是所有DataNode的老大，所以DataNode在存完数据后要跟老大汇报，告诉他说，我第一个块的数据已经写完了。</li>
-<li>第13幅图：3个DataNode都报告完成后，好，这样第一个数据块就写完了，下面对第二个块重复这个步骤。</li>
-<li>第14幅图：所有的块都写完了之后，客户端关闭跟Namenode的连接。这时Namenode已经存储了文件的元数据，也就是文件被拆成了几块，复制了几份，每块分别存储在哪个DataNode上。</li>
-<li>最后一幅图说明了每个角色在写数据过程中的作用:<br>Client：切分文件成数据块。<br>Namenode：对于每个数据块，找到存储的DataNode地址。<br>DataNode：多副本方式存储数据。</li>
+<li>acks = 0：意味着如果生产者能够通过网络把消息发送出去，那么就认为消息已成功写入 Kafka 。在这种情况下还是有可能发生错误，比如发送的对象无能被序列化或者网卡发生故障，但如果是分区离线或整个集群长时间不可用，那就不会收到任何错误。在 acks=0 模式下的运行速度是非常快的（这就是为什么很多基准测试都是基于这个模式），你可以得到惊人的吞吐量和带宽利用率，不过如果选择了这种模式， 一定会丢失一些消息。</li>
+<li>acks = 1：意味若 Leader 在收到消息并把它写入到分区数据文件（不一定同步到磁盘上）时会返回确认或错误响应。在这个模式下，如果发生正常的 Leader 选举，生产者会在选举时收到一个 LeaderNotAvailableException 异常，如果生产者能恰当地处理这个错误，它会重试发送悄息，最终消息会安全到达新的 Leader 那里。不过在这个模式下仍然有可能丢失数据，比如消息已经成功写入 Leader，但在消息被复制到 follower 副本之前 Leader发生崩溃。</li>
+<li>acks = all（这个和 request.required.acks = -1 含义一样）：意味着 Leader 在返回确认或错误响应之前，会等待所有同步副本都收到悄息。如果和 min.insync.replicas 参数结合起来，就可以决定在返回确认前至少有多少个副本能够收到悄息，生产者会一直重试直到消息被成功提交。不过这也是最慢的做法，因为生产者在继续发送其他消息之前需要等待所有副本都收到当前的消息。</li>
 </ul>
-<h2 id="文件读流程图解"><a href="#文件读流程图解" class="headerlink" title="文件读流程图解"></a>文件读流程图解</h2><p><img src="%E5%9B%BE%E7%89%8723.png" alt=""></p>
+<p>根据实际的应用场景，我们设置不同的 acks，以此保证数据的可靠性。</p>
+<p>另外，Producer 发送消息还可以选择同步（默认，通过 producer.type=sync 配置） 或者异步（producer.type=async）模式。如果设置成异步，虽然会极大的提高消息发送的性能，但是这样会增加丢失数据的风险。如果需要确保消息的可靠性，必须将 producer.type 设置为 sync。</p>
+<h2 id="Leader-选举"><a href="#Leader-选举" class="headerlink" title="Leader 选举"></a>Leader 选举</h2><p>在介绍 Leader 选举之前，让我们先来了解一下 ISR（in-sync replicas）列表。每个分区的 leader 会维护一个 ISR 列表，ISR 列表里面就是 follower 副本的 Borker 编号，只有跟得上 Leader 的 follower 副本才能加入到 ISR 里面，这个是通过 replica.lag.time.max.ms 参数配置的，具体可以参见 《一文了解 Kafka 的副本复制机制》。只有 ISR 里的成员才有被选为 leader 的可能。</p>
+<p>所以当 Leader 挂掉了，而且 unclean.leader.election.enable=false 的情况下，Kafka 会从 ISR 列表中选择第一个 follower 作为新的 Leader，因为这个分区拥有最新的已经 committed 的消息。通过这个可以保证已经 committed 的消息的数据可靠性。</p>
+<p>综上所述，为了保证数据的可靠性，我们最少需要配置一下几个参数：</p>
 <ul>
-<li>第1幅图：写文件已经搞定了，那么怎么读文件呢？我们先跟客户端说，嘿兄弟！帮我读个文件呗！</li>
-<li>第2幅图：客户端跟Namenode发了个请求，把文件名发送给Namenode，表示我想要这个这个文件的信息。</li>
-<li>第3幅图：Namenode找了找，然后找到了一个结果，结果包含这个文件被拆成了多少块，每个块存储在哪些DataNode上的信息，并且DataNode同样是按照距离排序的。然后把这个结果发送给客户端，说，嘿兄弟！你要的文件在这些DataNode上，你去找吧。</li>
-<li>第4幅图：现在客户端知道了文件的存储情况，所以就一个个去DataNode上访问就好了。</li>
-<li>最后提出了一个问题：如果这个过程中DataNode挂了，或者数据在传输中出了问题怎么办？事实上HDFS对于这些问题都是能够完美解决的。</li>
+<li>producer 级别：acks=all（或者 request.required.acks=-1），同时发生模式为同步 producer.type=sync</li>
+<li>topic 级别：设置 replication.factor&gt;=3，并且 min.insync.replicas&gt;=2；</li>
+<li>broker 级别：关闭不完全的 Leader 选举，即 unclean.leader.election.enable=false；</li>
 </ul>
-<h1 id="HDFS错误处理机制"><a href="#HDFS错误处理机制" class="headerlink" title="HDFS错误处理机制"></a>HDFS错误处理机制</h1><p><img src="%E5%9B%BE%E7%89%8724.png" alt=""><br><img src="%E5%9B%BE%E7%89%8725.png" alt=""><br><img src="%E5%9B%BE%E7%89%8726.png" alt=""></p>
-<h1 id="HDFS优缺点"><a href="#HDFS优缺点" class="headerlink" title="HDFS优缺点"></a>HDFS优缺点</h1><p>优点：</p>
-<ul>
-<li>数据冗余、硬件容错</li>
-<li>处理流式的数据访问</li>
-<li>适合存储大文件</li>
-<li>可构建在廉价机器上</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>低延迟的数据访问</li>
-<li>不适合小文件存储</li>
-</ul>
+<h1 id="数据一致性"><a href="#数据一致性" class="headerlink" title="数据一致性"></a>数据一致性</h1><p>这里介绍的数据一致性主要是说不论是老的 Leader 还是新选举的 Leader，Consumer 都能读到一样的数据。那么 Kafka 是如何实现的呢？</p>
+<p><img src="1.png" alt=""></p>
+<p>假设分区的副本为3，其中副本0是 Leader，副本1和副本2是 follower，并且在 ISR 列表里面。虽然副本0已经写入了 Message4，但是 Consumer 只能读取到 Message2。因为所有的 ISR 都同步了 Message2，只有 High Water Mark 以上的消息才支持 Consumer 读取，而 High Water Mark 取决于 ISR 列表里面偏移量最小的分区，对应于上图的副本2，这个很类似于木桶原理。</p>
+<p>这样做的原因是还没有被足够多副本复制的消息被认为是“不安全”的，如果 Leader 发生崩溃，另一个副本成为新 Leader，那么这些消息很可能丢失了。如果我们允许消费者读取这些消息，可能就会破坏一致性。试想，一个消费者从当前 Leader（副本0） 读取并处理了 Message4，这个时候 Leader 挂掉了，选举了副本1为新的 Leader，这时候另一个消费者再去从新的 Leader 读取消息，发现这个消息其实并不存在，这就导致了数据不一致性问题。</p>
+<p>当然，引入了 High Water Mark 机制，会导致 Broker 间的消息复制因为某些原因变慢，那么消息到达消费者的时间也会随之变长（因为我们会先等待消息复制完毕）。延迟时间可以通过参数 replica.lag.time.max.ms 参数配置，它指定了副本在复制消息时可被允许的最大延迟时间。</p>
 
                 
 
@@ -257,12 +245,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/大数据概述/" data-toggle="tooltip" data-placement="top" title="大数据概述">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/" data-toggle="tooltip" data-placement="top" title="[Hadoop]03 分布式文件系统HDFS 三">Next Post &rarr;</a>
+                            <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/" data-toggle="tooltip" data-placement="top" title="Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -312,7 +300,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS文件读写流程详解"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS文件读写流程详解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件写流程图解"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件写流程图解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件读流程图解"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">文件读流程图解</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS错误处理机制"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS错误处理机制</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS优缺点"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HDFS优缺点</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据可靠性"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据可靠性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Topic-分区副本"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Topic 分区副本</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Producer-往-Broker-发送消息"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Producer 往 Broker 发送消息</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Leader-选举"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Leader 选举</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据一致性"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">数据一致性</span></a></li></ol>
         
         </div>
       </aside>
@@ -332,7 +320,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#HDFS" title="HDFS">HDFS</a>
+                          <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
                         
                     </div>
                 </section>

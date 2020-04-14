@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -212,21 +212,21 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="1、Kafka-都有哪些特点？"><a href="#1、Kafka-都有哪些特点？" class="headerlink" title="1、Kafka 都有哪些特点？"></a>1、Kafka 都有哪些特点？</h1><ul>
+                <h1 id="Kafka-都有哪些特点？"><a href="#Kafka-都有哪些特点？" class="headerlink" title="Kafka 都有哪些特点？"></a>Kafka 都有哪些特点？</h1><ul>
 <li>高吞吐量、低延迟：kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒，每个topic可以分多个partition, consumer group 对partition进行consume操作。</li>
 <li>可扩展性：kafka集群支持热扩展</li>
 <li>持久性、可靠性：消息被持久化到本地磁盘，并且支持数据备份防止数据丢失</li>
 <li>容错性：允许集群中节点失败（若副本数量为n,则允许n-1个节点失败）</li>
 <li>高并发：支持数千个客户端同时读写</li>
 </ul>
-<h1 id="2、请简述下你在哪些场景下会选择-Kafka？"><a href="#2、请简述下你在哪些场景下会选择-Kafka？" class="headerlink" title="2、请简述下你在哪些场景下会选择 Kafka？"></a>2、请简述下你在哪些场景下会选择 Kafka？</h1><ul>
+<h1 id="请简述下你在哪些场景下会选择-Kafka？"><a href="#请简述下你在哪些场景下会选择-Kafka？" class="headerlink" title="请简述下你在哪些场景下会选择 Kafka？"></a>请简述下你在哪些场景下会选择 Kafka？</h1><ul>
 <li>日志收集：一个公司可以用Kafka可以收集各种服务的log，通过kafka以统一接口服务的方式开放给各种consumer，例如hadoop、HBase、Solr等。</li>
 <li>消息系统：解耦和生产者和消费者、缓存消息等。</li>
 <li>用户活动跟踪：Kafka经常被用来记录web用户或者app用户的各种活动，如浏览网页、搜索、点击等活动，这些活动信息被各个服务器发布到kafka的topic中，然后订阅者通过订阅这些topic来做实时的监控分析，或者装载到hadoop、数据仓库中做离线分析和挖掘。</li>
 <li>运营指标：Kafka也经常用来记录运营监控数据。包括收集各种分布式应用的数据，生产各种操作的集中反馈，比如报警和报告。</li>
 <li>流式处理：比如spark streaming和 Flink</li>
 </ul>
-<h1 id="3、-Kafka-的设计架构你知道吗？"><a href="#3、-Kafka-的设计架构你知道吗？" class="headerlink" title="3、 Kafka 的设计架构你知道吗？"></a>3、 Kafka 的设计架构你知道吗？</h1><p><img src="1.png" alt=""></p>
+<h1 id="Kafka-的设计架构你知道吗？"><a href="#Kafka-的设计架构你知道吗？" class="headerlink" title="Kafka 的设计架构你知道吗？"></a>Kafka 的设计架构你知道吗？</h1><p><img src="1.png" alt=""></p>
 <p>Kafka 架构分为以下几个部分</p>
 <ul>
 <li>Producer ：消息生产者，就是向 kafka broker 发消息的客户端。</li>
@@ -237,27 +237,35 @@
 <li>Partition：为了实现扩展性，一个非常大的 topic 可以分布到多个 broker上，每个 partition 是一个有序的队列。partition 中的每条消息都会被分配一个有序的id（offset）。将消息发给 consumer，kafka 只保证按一个 partition 中的消息的顺序，不保证一个 topic 的整体（多个 partition 间）的顺序。</li>
 <li>Offset：kafka 的存储文件都是按照 offset.kafka 来命名，用 offset 做名字的好处是方便查找。例如你想找位于 2049 的位置，只要找到 2048.kafka 的文件即可。当然 the first offset 就是 00000000000.kafka。</li>
 </ul>
-<h1 id="4、Kafka-分区的目的？"><a href="#4、Kafka-分区的目的？" class="headerlink" title="4、Kafka 分区的目的？"></a>4、Kafka 分区的目的？</h1><p>分区对于 Kafka 集群的好处是：实现负载均衡。分区对于消费者来说，可以提高并发度，提高效率。</p>
-<h1 id="5、你知道-Kafka-是如何做到消息的有序性？"><a href="#5、你知道-Kafka-是如何做到消息的有序性？" class="headerlink" title="5、你知道 Kafka 是如何做到消息的有序性？"></a>5、你知道 Kafka 是如何做到消息的有序性？</h1><p>kafka 中的每个 partition 中的消息在写入时都是有序的，而且单独一个 partition 只能由一个消费者去消费，可以在里面保证消息的顺序性。但是分区之间的消息是不保证有序的。</p>
-<h1 id="6、Kafka-的高可靠性是怎么实现的？"><a href="#6、Kafka-的高可靠性是怎么实现的？" class="headerlink" title="6、Kafka 的高可靠性是怎么实现的？"></a>6、Kafka 的高可靠性是怎么实现的？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
-<h1 id="7、请谈一谈-Kafka-数据一致性原理"><a href="#7、请谈一谈-Kafka-数据一致性原理" class="headerlink" title="7、请谈一谈 Kafka 数据一致性原理"></a>7、请谈一谈 Kafka 数据一致性原理</h1><p>一致性就是说不论是老的 Leader 还是新选举的 Leader，Consumer 都能读到一样的数据。<br><img src="1.jpg" alt=""></p>
+<h1 id="Kafka-分区的目的？"><a href="#Kafka-分区的目的？" class="headerlink" title="Kafka 分区的目的？"></a>Kafka 分区的目的？</h1><p>分区对于 Kafka 集群的好处是：实现负载均衡。分区对于消费者来说，可以提高并发度，提高效率。</p>
+<h1 id="你知道-Kafka-是如何做到消息的有序性？"><a href="#你知道-Kafka-是如何做到消息的有序性？" class="headerlink" title="你知道 Kafka 是如何做到消息的有序性？"></a>你知道 Kafka 是如何做到消息的有序性？</h1><p>kafka 中的每个 partition 中的消息在写入时都是有序的，而且单独一个 partition 只能由一个消费者去消费，可以在里面保证消息的顺序性。但是分区之间的消息是不保证有序的。</p>
+<h1 id="Kafka-的高可靠性是怎么实现的？"><a href="#Kafka-的高可靠性是怎么实现的？" class="headerlink" title="Kafka 的高可靠性是怎么实现的？"></a>Kafka 的高可靠性是怎么实现的？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
+<h1 id="请谈一谈-Kafka-数据一致性原理"><a href="#请谈一谈-Kafka-数据一致性原理" class="headerlink" title="请谈一谈 Kafka 数据一致性原理"></a>请谈一谈 Kafka 数据一致性原理</h1><p>一致性就是说不论是老的 Leader 还是新选举的 Leader，Consumer 都能读到一样的数据。<br><img src="1.jpg" alt=""></p>
 <p>假设分区的副本为3，其中副本0是 Leader，副本1和副本2是 follower，并且在 ISR 列表里面。虽然副本0已经写入了 Message4，但是 Consumer 只能读取到 Message2。因为所有的 ISR 都同步了 Message2，只有 High Water Mark 以上的消息才支持 Consumer 读取，而 High Water Mark 取决于 ISR 列表里面偏移量最小的分区，对应于上图的副本2，这个很类似于木桶原理。</p>
 <p>这样做的原因是还没有被足够多副本复制的消息被认为是“不安全”的，如果 Leader 发生崩溃，另一个副本成为新 Leader，那么这些消息很可能丢失了。如果我们允许消费者读取这些消息，可能就会破坏一致性。试想，一个消费者从当前 Leader（副本0） 读取并处理了 Message4，这个时候 Leader 挂掉了，选举了副本1为新的 Leader，这时候另一个消费者再去从新的 Leader 读取消息，发现这个消息其实并不存在，这就导致了数据不一致性问题。</p>
 <p>当然，引入了 High Water Mark 机制，会导致 Broker 间的消息复制因为某些原因变慢，那么消息到达消费者的时间也会随之变长（因为我们会先等待消息复制完毕）。延迟时间可以通过参数 replica.lag.time.max.ms 参数配置，它指定了副本在复制消息时可被允许的最大延迟时间。</p>
-<h1 id="8、ISR、OSR、AR-是什么？"><a href="#8、ISR、OSR、AR-是什么？" class="headerlink" title="8、ISR、OSR、AR 是什么？"></a>8、ISR、OSR、AR 是什么？</h1><p>ISR：In-Sync Replicas 副本同步队列</p>
+<h1 id="ISR、OSR、AR-是什么？"><a href="#ISR、OSR、AR-是什么？" class="headerlink" title="ISR、OSR、AR 是什么？"></a>ISR、OSR、AR 是什么？</h1><p>ISR：In-Sync Replicas 副本同步队列</p>
 <p>OSR：Out-of-Sync Replicas </p>
 <p>AR：Assigned Replicas 所有副本</p>
 <p>ISR是由leader维护，follower从leader同步数据有一些延迟（具体可以参见 图文了解 Kafka 的副本复制机制），超过相应的阈值会把 follower 剔除出 ISR, 存入OSR（Out-of-Sync Replicas ）列表，新加入的follower也会先存放在OSR中。AR=ISR+OSR。</p>
-<h1 id="9、LEO、HW、LSO、LW等分别代表什么"><a href="#9、LEO、HW、LSO、LW等分别代表什么" class="headerlink" title="9、LEO、HW、LSO、LW等分别代表什么"></a>9、LEO、HW、LSO、LW等分别代表什么</h1><p>LEO：是 LogEndOffset 的简称，代表当前日志文件中下一条</p>
+<h1 id="LEO、HW、LSO、LW等分别代表什么"><a href="#LEO、HW、LSO、LW等分别代表什么" class="headerlink" title="LEO、HW、LSO、LW等分别代表什么"></a>LEO、HW、LSO、LW等分别代表什么</h1><p>LEO：是 LogEndOffset 的简称，代表当前日志文件中下一条</p>
 <p>HW：水位或水印（watermark）一词，也可称为高水位(high watermark)，通常被用在流式处理领域（比如Apache Flink、Apache Spark等），以表征元素或事件在基于时间层面上的进度。在Kafka中，水位的概念反而与时间无关，而是与位置信息相关。严格来说，它表示的就是位置信息，即位移（offset）。取 partition 对应的 ISR中 最小的 LEO 作为 HW，consumer 最多只能消费到 HW 所在的位置上一条信息。</p>
 <p>LSO：是 LastStableOffset 的简称，对未完成的事务而言，LSO 的值等于事务中第一条消息的位置(firstUnstableOffset)，对已完成的事务而言，它的值同 HW 相同 </p>
 <p>LW：Low Watermark 低水位, 代表 AR 集合中最小的 logStartOffset 值。</p>
-<h1 id="10、Kafka-在什么情况下会出现消息丢失？"><a href="#10、Kafka-在什么情况下会出现消息丢失？" class="headerlink" title="10、Kafka 在什么情况下会出现消息丢失？"></a>10、Kafka 在什么情况下会出现消息丢失？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
-<h1 id="11、怎么尽可能保证-Kafka-的可靠性"><a href="#11、怎么尽可能保证-Kafka-的可靠性" class="headerlink" title="11、怎么尽可能保证 Kafka 的可靠性"></a>11、怎么尽可能保证 Kafka 的可靠性</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
-<h1 id="12、消费者和消费者组有什么关系？"><a href="#12、消费者和消费者组有什么关系？" class="headerlink" title="12、消费者和消费者组有什么关系？"></a>12、消费者和消费者组有什么关系？</h1><p>每个消费者从属于消费组。具体关系如下：</p>
+<h1 id="Kafka-在什么情况下会出现消息丢失？"><a href="#Kafka-在什么情况下会出现消息丢失？" class="headerlink" title="Kafka 在什么情况下会出现消息丢失？"></a>Kafka 在什么情况下会出现消息丢失？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
+<h1 id="怎么尽可能保证-Kafka-的可靠性"><a href="#怎么尽可能保证-Kafka-的可靠性" class="headerlink" title="怎么尽可能保证 Kafka 的可靠性"></a>怎么尽可能保证 Kafka 的可靠性</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
+<h1 id="消费者和消费者组有什么关系？"><a href="#消费者和消费者组有什么关系？" class="headerlink" title="消费者和消费者组有什么关系？"></a>消费者和消费者组有什么关系？</h1><p>每个消费者从属于消费组。具体关系如下：</p>
 <p><img src="2.jpg" alt=""></p>
-<h1 id="13、Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"><a href="#13、Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？" class="headerlink" title="13、Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"></a>13、Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？</h1><p><a href="https://li-yu-kun.github.io/archive/">测连接</a></p>
-
+<h1 id="Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"><a href="#Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？" class="headerlink" title="Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"></a>Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？</h1><p><a href="https://li-yu-kun.github.io/article/Airbnb%20%E6%98%AF%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%20balanced%20Kafka%20reader%20%E6%9D%A5%E6%89%A9%E5%B1%95%20Spark%20streaming%20%E5%AE%9E%E6%97%B6%E6%B5%81%E5%A4%84%E7%90%86%E8%83%BD%E5%8A%9B%E7%9A%84/">Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的</a></p>
+<h1 id="数据传输的事务有几种？"><a href="#数据传输的事务有几种？" class="headerlink" title="数据传输的事务有几种？"></a>数据传输的事务有几种？</h1><p>数据传输的事务定义通常有以下三种级别：<br>（1）最多一次: 消息不会被重复发送，最多被传输一次，但也有可能一次不传输</p>
+<p>（2）最少一次: 消息不会被漏发送，最少被传输一次，但也有可能被重复传输.</p>
+<p>（3）精确的一次（Exactly once）: 不会漏传输也不会重复传输,每个消息都传输被</p>
+<h1 id="Kafka-消费者是否可以消费指定分区消息？"><a href="#Kafka-消费者是否可以消费指定分区消息？" class="headerlink" title="Kafka 消费者是否可以消费指定分区消息？"></a>Kafka 消费者是否可以消费指定分区消息？</h1><p>Kafa consumer消费消息时，向broker发出fetch请求去消费特定分区的消息，consumer指定消息在日志中的偏移量（offset），就可以消费从这个位置开始的消息，customer拥有了offset的控制权，可以向后回滚去重新消费之前的消息，这是很有意义的</p>
+<h1 id="Kafka消息是采用Pull模式，还是Push模式？"><a href="#Kafka消息是采用Pull模式，还是Push模式？" class="headerlink" title="Kafka消息是采用Pull模式，还是Push模式？"></a>Kafka消息是采用Pull模式，还是Push模式？</h1><p>Kafka最初考虑的问题是，customer应该从brokes拉取消息还是brokers将消息推送到consumer，也就是pull还push。在这方面，Kafka遵循了一种大部分消息系统共同的传统的设计：producer将消息推送到broker，consumer从broker拉取消息。</p>
+<p>一些消息系统比如Scribe和Apache Flume采用了push模式，将消息推送到下游的consumer。这样做有好处也有坏处：由broker决定消息推送的速率，对于不同消费速率的consumer就不太好处理了。消息系统都致力于让consumer以最大的速率最快速的消费消息，但不幸的是，push模式下，当broker推送的速率远大于consumer消费的速率时，consumer恐怕就要崩溃了。最终Kafka还是选取了传统的pull模式。</p>
+<p>Pull模式的另外一个好处是consumer可以自主决定是否批量的从broker拉取数据。Push模式必须在不知道下游consumer消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免consumer崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull模式下，consumer就可以根据自己的消费能力去决定这些策略。</p>
+<p>Pull有个缺点是，如果broker没有可供消费的消息，将导致consumer不断在循环中轮询，直到新消息到t达。为了避免这点，Kafka有个参数可以让consumer阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发</p>
+<h1 id="Kafka-消息格式的演变清楚吗？"><a href="#Kafka-消息格式的演变清楚吗？" class="headerlink" title="Kafka 消息格式的演变清楚吗？"></a>Kafka 消息格式的演变清楚吗？</h1>
                 
 
                 <hr>
@@ -320,7 +328,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1、Kafka-都有哪些特点？"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">1、Kafka 都有哪些特点？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2、请简述下你在哪些场景下会选择-Kafka？"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">2、请简述下你在哪些场景下会选择 Kafka？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3、-Kafka-的设计架构你知道吗？"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">3、 Kafka 的设计架构你知道吗？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4、Kafka-分区的目的？"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">4、Kafka 分区的目的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5、你知道-Kafka-是如何做到消息的有序性？"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">5、你知道 Kafka 是如何做到消息的有序性？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#6、Kafka-的高可靠性是怎么实现的？"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">6、Kafka 的高可靠性是怎么实现的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#7、请谈一谈-Kafka-数据一致性原理"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">7、请谈一谈 Kafka 数据一致性原理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#8、ISR、OSR、AR-是什么？"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">8、ISR、OSR、AR 是什么？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#9、LEO、HW、LSO、LW等分别代表什么"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">9、LEO、HW、LSO、LW等分别代表什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#10、Kafka-在什么情况下会出现消息丢失？"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">10、Kafka 在什么情况下会出现消息丢失？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#11、怎么尽可能保证-Kafka-的可靠性"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">11、怎么尽可能保证 Kafka 的可靠性</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#12、消费者和消费者组有什么关系？"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">12、消费者和消费者组有什么关系？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#13、Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">13、Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-都有哪些特点？"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka 都有哪些特点？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#请简述下你在哪些场景下会选择-Kafka？"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">请简述下你在哪些场景下会选择 Kafka？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的设计架构你知道吗？"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Kafka 的设计架构你知道吗？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-分区的目的？"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Kafka 分区的目的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#你知道-Kafka-是如何做到消息的有序性？"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">你知道 Kafka 是如何做到消息的有序性？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的高可靠性是怎么实现的？"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Kafka 的高可靠性是怎么实现的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#请谈一谈-Kafka-数据一致性原理"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">请谈一谈 Kafka 数据一致性原理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#ISR、OSR、AR-是什么？"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">ISR、OSR、AR 是什么？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#LEO、HW、LSO、LW等分别代表什么"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">LEO、HW、LSO、LW等分别代表什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-在什么情况下会出现消息丢失？"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Kafka 在什么情况下会出现消息丢失？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#怎么尽可能保证-Kafka-的可靠性"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">怎么尽可能保证 Kafka 的可靠性</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#消费者和消费者组有什么关系？"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">消费者和消费者组有什么关系？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据传输的事务有几种？"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">数据传输的事务有几种？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-消费者是否可以消费指定分区消息？"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">Kafka 消费者是否可以消费指定分区消息？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka消息是采用Pull模式，还是Push模式？"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">Kafka消息是采用Pull模式，还是Push模式？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-消息格式的演变清楚吗？"><span class="toc-nav-number">17.</span> <span class="toc-nav-text">Kafka 消息格式的演变清楚吗？</span></a></li></ol>
         
         </div>
       </aside>

@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -211,6 +211,36 @@
 
 <div class="post-preview">
 
+    <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/">
+        <h2 class="post-title">
+                                 
+            Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的
+        </h2>
+        <h3 class="post-subtitle">
+            Airbnb 日志事件获取、Spark 的并行度由 Kafka 分区数量决定、事件的倾斜和大小不一、近实时摄取数据、解决方案
+        </h3>
+        <div class="post-content-preview">
+            Airbnb 日志事件获取日志事件从客户端（例如移动应用程序和 Web 浏览器）和在线服务发出，其中包含行为或操作的关键信息。每个事件都有一个特定的信息。例如，当客人在 Airbnb.com 上搜索马里布的海滨别墅时，将生成包含位置，登记和结账日期等的搜索事件。
+在 Airbnb，事件记录对于我们理解客人和房东，然后为他们提供更好的体验至关重要。它为业务决策提供信息，并推动工程功能（如搜索，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-09-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#大数据" title="大数据">大数据</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Interview] Kafka/">
         <h2 class="post-title">
                                  
@@ -220,11 +250,11 @@
              
         </h3>
         <div class="post-content-preview">
-            1、Kafka 都有哪些特点？
+            Kafka 都有哪些特点？
 高吞吐量、低延迟：kafka每秒可以处理几十万条消息，它的延迟最低只有几毫秒，每个topic可以分多个partition, consumer group 对partition进行consume操作。
 可扩展性：kafka集群支持热扩展
 持久性、可靠性：消息被持久化到本地磁盘，并且支持数据备份防止数据丢失
-容错性：允许集群中节点失败（若副本数量为n,则允许n-1......
+容错性：允许集群中节点失败（若副本数量为n,则允许n-1个节......
         </div>
     </a>
     
@@ -494,38 +524,6 @@ CentOS 5wget -O /etc/yum.rep......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Kafka]03 Kafka入门 三/">
-        <h2 class="post-title">
-                                 
-            [Kafka]03 Kafka入门 三
-        </h2>
-        <h3 class="post-subtitle">
-            集群搭建、Kafka 的操作、Kafka 的日志
-        </h3>
-        <div class="post-content-preview">
-            我们在工作中，为了保证环境的高可用，防止单点，Kafka 都是以集群的方式出现的，下面就带领大家一起搭建一套 Kafka 集群环境。
-我们在官网下载 Kafka，下载地址为：http://kafka.apache.org/downloads，下载我们需要的版本，推荐使用稳定的版本。
-搭建集群①下载并解压
-12345cd /usr/local/srcwget http://mirrors.tu......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-01-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -579,6 +577,10 @@ CentOS 5wget -O /etc/yum.rep......
             
         
             
+            <a href="/tags/#Kafka" title="Kafka" rel="5">Kafka</a>
+            
+        
+            
             <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
             
         
@@ -600,10 +602,6 @@ CentOS 5wget -O /etc/yum.rep......
         
             
             <a href="/tags/#Interview" title="Interview" rel="1">Interview</a>
-            
-        
-            
-            <a href="/tags/#Kafka" title="Kafka" rel="4">Kafka</a>
             
         
             
@@ -714,7 +712,7 @@ CentOS 5wget -O /etc/yum.rep......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
