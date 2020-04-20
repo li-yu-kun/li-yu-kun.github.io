@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -239,7 +239,7 @@
 </ul>
 <h1 id="Kafka-分区的目的？"><a href="#Kafka-分区的目的？" class="headerlink" title="Kafka 分区的目的？"></a>Kafka 分区的目的？</h1><p>分区对于 Kafka 集群的好处是：实现负载均衡。分区对于消费者来说，可以提高并发度，提高效率。</p>
 <h1 id="你知道-Kafka-是如何做到消息的有序性？"><a href="#你知道-Kafka-是如何做到消息的有序性？" class="headerlink" title="你知道 Kafka 是如何做到消息的有序性？"></a>你知道 Kafka 是如何做到消息的有序性？</h1><p>kafka 中的每个 partition 中的消息在写入时都是有序的，而且单独一个 partition 只能由一个消费者去消费，可以在里面保证消息的顺序性。但是分区之间的消息是不保证有序的。</p>
-<h1 id="Kafka-的高可靠性是怎么实现的？"><a href="#Kafka-的高可靠性是怎么实现的？" class="headerlink" title="Kafka 的高可靠性是怎么实现的？"></a>Kafka 的高可靠性是怎么实现的？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
+<h1 id="Kafka-的高可靠性是怎么实现的？"><a href="#Kafka-的高可靠性是怎么实现的？" class="headerlink" title="Kafka 的高可靠性是怎么实现的？"></a>Kafka 的高可靠性是怎么实现的？</h1><p><a href="https://li-yu-kun.github.io/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a></p>
 <h1 id="请谈一谈-Kafka-数据一致性原理"><a href="#请谈一谈-Kafka-数据一致性原理" class="headerlink" title="请谈一谈 Kafka 数据一致性原理"></a>请谈一谈 Kafka 数据一致性原理</h1><p>一致性就是说不论是老的 Leader 还是新选举的 Leader，Consumer 都能读到一样的数据。<br><img src="1.jpg" alt=""></p>
 <p>假设分区的副本为3，其中副本0是 Leader，副本1和副本2是 follower，并且在 ISR 列表里面。虽然副本0已经写入了 Message4，但是 Consumer 只能读取到 Message2。因为所有的 ISR 都同步了 Message2，只有 High Water Mark 以上的消息才支持 Consumer 读取，而 High Water Mark 取决于 ISR 列表里面偏移量最小的分区，对应于上图的副本2，这个很类似于木桶原理。</p>
 <p>这样做的原因是还没有被足够多副本复制的消息被认为是“不安全”的，如果 Leader 发生崩溃，另一个副本成为新 Leader，那么这些消息很可能丢失了。如果我们允许消费者读取这些消息，可能就会破坏一致性。试想，一个消费者从当前 Leader（副本0） 读取并处理了 Message4，这个时候 Leader 挂掉了，选举了副本1为新的 Leader，这时候另一个消费者再去从新的 Leader 读取消息，发现这个消息其实并不存在，这就导致了数据不一致性问题。</p>
@@ -252,8 +252,8 @@
 <p>HW：水位或水印（watermark）一词，也可称为高水位(high watermark)，通常被用在流式处理领域（比如Apache Flink、Apache Spark等），以表征元素或事件在基于时间层面上的进度。在Kafka中，水位的概念反而与时间无关，而是与位置信息相关。严格来说，它表示的就是位置信息，即位移（offset）。取 partition 对应的 ISR中 最小的 LEO 作为 HW，consumer 最多只能消费到 HW 所在的位置上一条信息。</p>
 <p>LSO：是 LastStableOffset 的简称，对未完成的事务而言，LSO 的值等于事务中第一条消息的位置(firstUnstableOffset)，对已完成的事务而言，它的值同 HW 相同 </p>
 <p>LW：Low Watermark 低水位, 代表 AR 集合中最小的 logStartOffset 值。</p>
-<h1 id="Kafka-在什么情况下会出现消息丢失？"><a href="#Kafka-在什么情况下会出现消息丢失？" class="headerlink" title="Kafka 在什么情况下会出现消息丢失？"></a>Kafka 在什么情况下会出现消息丢失？</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
-<h1 id="怎么尽可能保证-Kafka-的可靠性"><a href="#怎么尽可能保证-Kafka-的可靠性" class="headerlink" title="怎么尽可能保证 Kafka 的可靠性"></a>怎么尽可能保证 Kafka 的可靠性</h1><p>可以参见我这篇文章：Kafka 是如何保证数据可靠性和一致性</p>
+<h1 id="Kafka-在什么情况下会出现消息丢失？"><a href="#Kafka-在什么情况下会出现消息丢失？" class="headerlink" title="Kafka 在什么情况下会出现消息丢失？"></a>Kafka 在什么情况下会出现消息丢失？</h1><p><a href="https://li-yu-kun.github.io/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a></p>
+<h1 id="怎么尽可能保证-Kafka-的可靠性"><a href="#怎么尽可能保证-Kafka-的可靠性" class="headerlink" title="怎么尽可能保证 Kafka 的可靠性"></a>怎么尽可能保证 Kafka 的可靠性</h1><p><a href="https://li-yu-kun.github.io/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a></p>
 <h1 id="消费者和消费者组有什么关系？"><a href="#消费者和消费者组有什么关系？" class="headerlink" title="消费者和消费者组有什么关系？"></a>消费者和消费者组有什么关系？</h1><p>每个消费者从属于消费组。具体关系如下：</p>
 <p><img src="2.jpg" alt=""></p>
 <h1 id="Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"><a href="#Kafka-的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？" class="headerlink" title="Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？"></a>Kafka 的每个分区只能被一个消费者线程，如何做到多个线程同时消费一个分区？</h1><p><a href="https://li-yu-kun.github.io/article/Airbnb%20%E6%98%AF%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87%20balanced%20Kafka%20reader%20%E6%9D%A5%E6%89%A9%E5%B1%95%20Spark%20streaming%20%E5%AE%9E%E6%97%B6%E6%B5%81%E5%A4%84%E7%90%86%E8%83%BD%E5%8A%9B%E7%9A%84/">Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的</a></p>

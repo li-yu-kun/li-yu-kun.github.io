@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -262,7 +262,7 @@
 <p>再均衡能够给消费者组及 Broker 带来高性能、高可用性和伸缩，但在再均衡期间消费者是无法读取消息的，即整个 Broker 集群有小一段时间是不可用的。因此要避免不必要的再均衡。</p>
 <p>Offset Commit：Consumer 从 Broker 中取一批消息写入 Buffer 进行消费，在规定的时间内消费完消息后，会自动将其消费消息的 Offset 提交给 Broker，以记录下哪些消息是消费过的。当然，若在时限内没有消费完毕，其是不会提交 Offset 的。</p>
 <h1 id="Kafka的工作原理和过程"><a href="#Kafka的工作原理和过程" class="headerlink" title="Kafka的工作原理和过程"></a>Kafka的工作原理和过程</h1><p>①消息写入算法</p>
-<p>消息发送者将消息发送给 Broker, 并形成最终的可供消费者消费的 log，是已给比较复杂的过程：</p>
+<p>消息发送者将消息发送给 Broker, 并形成最终的可供消费者消费的 log，是一个比较复杂的过程：</p>
 <ul>
 <li>Producer 先从 Zookeeper 中找到该 Partition 的 Leader。</li>
 <li>Producer将消息发送给该 Leader。</li>

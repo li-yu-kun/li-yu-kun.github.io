@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [HBase]07 Phoenix工具与盐表 七 - 李玉坤 | Blog
+          [Kafka] Kafka的副本机制 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]07 Phoenix工具与盐表 七/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kafka] Kafka的副本机制/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+                              <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
                             
                         </div>
-                        <h1>[HBase]07 Phoenix工具与盐表 七</h1>
-                        <h2 class="subheading">Phoenix如何和HBase namespace映射、dbeaver的安装配置、盐表简述</h2>
+                        <h1>[Kafka] Kafka的副本机制</h1>
+                        <h2 class="subheading">Kafka 复制机制、</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-02-19
+                            2019-09-19
                         </span>
                     </div>
                 
@@ -212,27 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="Phoenix的schema与HBase的namespace"><a href="#Phoenix的schema与HBase的namespace" class="headerlink" title="Phoenix的schema与HBase的namespace"></a>Phoenix的schema与HBase的namespace</h1><p>官网介绍：<a href="http://phoenix.apache.org/namspace_mapping.html" target="_blank" rel="noopener">http://phoenix.apache.org/namspace_mapping.html</a></p>
-<p>默认情况下在Phoenix中create schema 默认不会映射到namespace；需要在服务端和客户端都开启phoenix.schema.isNamespaceMappingEnabled</p>
-<p>服务端:hbase-site.xml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;phoenix.schema.isNamespaceMappingEnabled&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;phoenix.schema.mapSystemTablesToNamespace&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-
-<p>如果之前没有设置以上参数，重新设置需要重启集群<br>stop-hbase.sh<br>start-hbase.sh</p>
-<p>客户端【phoenix的bin目录下】:之前做了软连接  所以也有这2个参数<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<p>之后在Phoenix中create schema 就会映射到namespace</p>
-<p><strong>【注意】</strong>：基于这2个参数可以延申一个工作中需要注意的点；要看清楚其他组件（hadoop）文档的配置参数，要注意是server 还是 client；假如不清楚，在服务端和客户端都配置。</p>
-<h1 id="dbeaver"><a href="#dbeaver" class="headerlink" title="dbeaver"></a>dbeaver</h1><p>1、官网下载 <a href="https://dbeaver.io/" target="_blank" rel="noopener">https://dbeaver.io/</a><br>2、安装配置jdk1.8运行环境<br>3、安装dbesver（windows 直接下exe文件运行安装即可）<br>4、hosts文件配置 hbase的集群（window: C:\Windows\System32\drivers\etc）<br>5、下载Phoenix-client jar（使用sz命令或者xftp等工具）<br>   phoenix-4.14.0-cdh5.14.2-client.jar  下载到window本地<br>6、选择连接phoenix<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>7、如果遇到 抛错Unexpected version format: XXX错误 即是jdk版本错误<br>   到phoenix安装目录找到并修改dbeaver.ini文件，在第一行加上 本机java的bin路径<br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-vm</span><br><span class="line">C:/Program Files/Java/jdk1.8.0_211/bin</span><br></pre></td></tr></table></figure></p>
-<h1 id="盐表"><a href="#盐表" class="headerlink" title="盐表"></a>盐表</h1><p>盐表是一种特殊的预分区表：写之前加前缀，读之前去除前缀<br>官方文档：<a href="http://phoenix.apache.org/salted.html" target="_blank" rel="noopener">http://phoenix.apache.org/salted.html</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">create table my_schema.my_table </span><br><span class="line">(id integer primary key, </span><br><span class="line">name varchar,</span><br><span class="line">age integer,</span><br><span class="line">address varchar) </span><br><span class="line">salt_buckets = 20;</span><br></pre></td></tr></table></figure>
-<p>上诉SQL建表语句 salt_buckets = 20 代表本表会被切分为20块分散到20个region上；官网规定 salt_buckets ：1~256 ；有一个不成文规定：regionserver 多少台 就设置多少，方便每个regionserver管理本表一个region；假如计划后期有加机器，<strong>可以预先设置好 salt_buckets，因为这个参数一旦设置好后不可更改</strong></p>
-<p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>【注意】：hbase UI 界面中 Requests：读一次+1 写一次+1</p>
-<ul>
-<li>好处: 其实本质就是在rowkey前加随机数；有助于数据均匀的落在各个region–&gt;各个节点,从而提供写的性能 </li>
-<li>坏处<br>【角度1】:  <pre><code>1-1000 非盐表 数据在一个regionserver  查询性能高
-1-1000 盐表 数据在多个regionserver  查询性能低</code></pre>【角度2】: <pre><code>1-1KW 非盐表 数据在一个regionserver  查询性能低  
-1-1KW 盐表 数据在多个regionserver  查询性能高</code></pre></li>
-</ul>
-<p>【注意】:规划20个rs节点，salt_buckets=20；<br>数据量越来越多，新增了50台，salt_buckets=20–》70；phoenix是没有直接增加bucket的方法，只能先drop–&gt;再create–&gt;再导数据</p>
+                <h1 id="Kafka-复制机制"><a href="#Kafka-复制机制" class="headerlink" title="Kafka 复制机制"></a>Kafka 复制机制</h1><p>Kafka 主题中的每个分区都有一个预写日志（write-ahead log），我们写入 Kafka 的消息就存储在这里面。这里面的每条消息都有一个唯一的偏移量，用于标识它在当前分区日志中的位置。如下图所示：<br><img src="2.png" alt=""><br>Kafka 中的每个主题分区都被复制了 n 次，其中的 n 是主题的复制因子（replication factor）。这允许 Kafka 在集群服务器发生故障时自动切换到这些副本，以便在出现故障时消息仍然可用。Kafka 的复制是以分区为粒度的，分区的预写日志被复制到 n 个服务器。 在 n 个副本中，一个副本作为 leader，其他副本成为 followers。顾名思义，producer 只能往 leader 分区上写数据（读也只能从 leader 分区上进行），followers 只按顺序从 leader 上复制日志。</p>
 
                 
 
@@ -241,12 +221,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[HBase]08 Phoenix二级索引 八/" data-toggle="tooltip" data-placement="top" title="[HBase]08 Phoenix二级索引 八">&larr; Previous Post</a>
+                            <a href="/article/[Kettle]01 一、入门/" data-toggle="tooltip" data-placement="top" title="[Kettle]01 一、入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/基于docker安装superset/" data-toggle="tooltip" data-placement="top" title="基于docker安装superset">Next Post &rarr;</a>
+                            <a href="/article/Kafka 是如何保证数据可靠性和一致性/" data-toggle="tooltip" data-placement="top" title="Kafka 是如何保证数据可靠性和一致性">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -296,7 +276,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Phoenix的schema与HBase的namespace"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Phoenix的schema与HBase的namespace</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#dbeaver"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">dbeaver</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#盐表"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">盐表</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-复制机制"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka 复制机制</span></a></li></ol>
         
         </div>
       </aside>
@@ -316,7 +296,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+                          <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
                         
                     </div>
                 </section>
