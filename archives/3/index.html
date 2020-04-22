@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,37 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/基于docker安装superset/">
+        <h2 class="post-title">
+                                 
+            基于docker安装superset
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            更换yum源将Centos7的yum配置为阿里云的镜像（完美解决yum下载太慢的问题）
+1、备份mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/
+
+CentOS 5wget -O /etc/yum.rep......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-02-11
+        </p>
+        <div class="tags">
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -283,10 +314,9 @@
             关键术语、工作原理和过程
         </h3>
         <div class="post-content-preview">
-            Kafka 中的关键术语解释
-Topic：主题。在 Kafka 中，使用一个类别属性来划分消息的所属类，划分消息的这个类称为 Topic。Topic 相当于消息的分类标签，是一个逻辑概念。
+            Kafka 中的关键术语Topic：主题。在 Kafka 中，使用一个类别属性来划分消息的所属类，划分消息的这个类称为 Topic。Topic 相当于消息的分类标签，是一个逻辑概念。
 物理上不同 Topic 的消息分开存储，逻辑上一个 Topic 的消息虽然保存于一个或多个 Broker 上但用户只需指定消息的 Topic 即可生产或消费数据而不必关心数据存于何处。
-Partition......
+Partition：分区......
         </div>
     </a>
     
@@ -317,9 +347,9 @@ Partition......
         <div class="post-content-preview">
             较之传统的消息中间件（例如 ActiveMQ、RabbitMQ），Kafka 具有高吞吐量、内置分区、支持消息副本和高容错的特性，非常适合大规模消息处理应用程序。
 Kafka 官网：http://kafka.apache.org/
-Kafka 主要设计目标如下：
+Kafka 主要设计目标
 以时间复杂度为 O(1) 的方式提供消息持久化能力，即使对 TB 级以上数据也能保证常数时间的访问性能。
-高吞吐率。即使在非常廉价......
+高吞吐率。即使在非常廉价的商用......
         </div>
     </a>
     
@@ -514,38 +544,6 @@ OLTP and operational analytics for Apache Hadoop
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[HBase]05 HBase容灾与监控 五/">
-        <h2 class="post-title">
-                                 
-            [HBase]05 HBase容灾与监控 五
-        </h2>
-        <h3 class="post-subtitle">
-            Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
-        </h3>
-        <div class="post-content-preview">
-            Hbase备份与恢复四种方案：◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot
-CopyTable
-支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,
-CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-12-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -595,11 +593,11 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
             
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="7">Kafka</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="6">Kafka</a>
+            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
             
         
             
@@ -734,7 +732,7 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

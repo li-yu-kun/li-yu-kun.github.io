@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -212,8 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Kafka 中的关键术语解释</p>
-<p><strong>Topic：</strong>主题。在 Kafka 中，使用一个类别属性来划分消息的所属类，划分消息的这个类称为 Topic。Topic 相当于消息的分类标签，是一个逻辑概念。</p>
+                <h1 id="Kafka-中的关键术语"><a href="#Kafka-中的关键术语" class="headerlink" title="Kafka 中的关键术语"></a>Kafka 中的关键术语</h1><p><strong>Topic：</strong>主题。在 Kafka 中，使用一个类别属性来划分消息的所属类，划分消息的这个类称为 Topic。Topic 相当于消息的分类标签，是一个逻辑概念。</p>
 <p>物理上不同 Topic 的消息分开存储，逻辑上一个 Topic 的消息虽然保存于一个或多个 Broker 上但用户只需指定消息的 Topic 即可生产或消费数据而不必关心数据存于何处。</p>
 <p><strong>Partition：</strong>分区。Topic 中的消息被分割为一个或多个 Partition，其是一个物理概念，对应到系统上 就是一个或若干个目录。Partition 内部的消息是有序的，但 Partition 间的消息是无序的。</p>
 <p>Segment 段。将 Partition 进一步细分为了若干的 Segment，每个 Segment 文件的大小相等。</p>
@@ -415,7 +414,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的工作原理和过程"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka的工作原理和过程</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-中的关键术语"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka 中的关键术语</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的工作原理和过程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Kafka的工作原理和过程</span></a></li></ol>
         
         </div>
       </aside>

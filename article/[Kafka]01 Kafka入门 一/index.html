@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -214,14 +214,14 @@
 
                 <p>较之传统的消息中间件（例如 ActiveMQ、RabbitMQ），Kafka 具有高吞吐量、内置分区、支持消息副本和高容错的特性，非常适合大规模消息处理应用程序。</p>
 <h1 id="Kafka-官网："><a href="#Kafka-官网：" class="headerlink" title="Kafka 官网："></a>Kafka 官网：</h1><p><a href="http://kafka.apache.org/" target="_blank" rel="noopener">http://kafka.apache.org/</a></p>
-<h1 id="Kafka-主要设计目标如下："><a href="#Kafka-主要设计目标如下：" class="headerlink" title="Kafka 主要设计目标如下："></a>Kafka 主要设计目标如下：</h1><ul>
+<h1 id="Kafka-主要设计目标"><a href="#Kafka-主要设计目标" class="headerlink" title="Kafka 主要设计目标"></a>Kafka 主要设计目标</h1><ul>
 <li>以时间复杂度为 O(1) 的方式提供消息持久化能力，即使对 TB 级以上数据也能保证常数时间的访问性能。</li>
 <li>高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒 100K 条消息的传输。</li>
 <li>支持 Kafka Server 间的消息分区，及分布式消费，同时保证每个 Partition 内的消息顺序传输。</li>
 <li>同时支持离线数据处理和实时数据处理。</li>
 <li>支持在线水平扩展。</li>
 </ul>
-<h1 id="Kafka-通常用于两大类应用程序："><a href="#Kafka-通常用于两大类应用程序：" class="headerlink" title="Kafka 通常用于两大类应用程序："></a>Kafka 通常用于两大类应用程序：</h1><ul>
+<h1 id="Kafka-通常用于两大类应用程序"><a href="#Kafka-通常用于两大类应用程序" class="headerlink" title="Kafka 通常用于两大类应用程序"></a>Kafka 通常用于两大类应用程序</h1><ul>
 <li>建立实时流数据管道，以可靠地在系统或应用程序之间获取数据。</li>
 <li>构建实时流应用程序，以转换或响应数据流。</li>
 </ul>
@@ -233,34 +233,29 @@
 <li>每个记录由一个键，一个值和一个时间戳组成。</li>
 </ul>
 <p>Kafka 架构体系如下图：<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="Kafka-的常见应用场景："><a href="#Kafka-的常见应用场景：" class="headerlink" title="Kafka 的常见应用场景："></a>Kafka 的常见应用场景：</h1><p>①用户的活动跟踪：用户在网站的不同活动消息发布到不同的主题中心，然后可以对这些消息进行实时监测、实时处理。</p>
+<h1 id="Kafka-的常见应用场景"><a href="#Kafka-的常见应用场景" class="headerlink" title="Kafka 的常见应用场景"></a>Kafka 的常见应用场景</h1><p>①用户的活动跟踪：用户在网站的不同活动消息发布到不同的主题中心，然后可以对这些消息进行实时监测、实时处理。</p>
 <p>当然，也可以加载到 Hadoop 或离线处理数据仓库，对用户进行画像。像淘宝、天猫、京东这些大型电商平台，用户的所有活动都要进行追踪的。</p>
 <p>②日志收集如下图：<br><img src="%E5%9B%BE%E7%89%8702.jpg" alt=""></p>
 <p>③限流削峰如下图：</p>
 <p><img src="%E5%9B%BE%E7%89%8703.jpg" alt=""></p>
 <p>④高吞吐率实现：Kafka 与其他 MQ 相比，最大的特点就是高吞吐率。为了增加存储能力，Kafka 将所有的消息都写入到了低速大容量的硬盘。</p>
 <p>按理说，这将导致性能损失，但实际上，Kafka 仍然可以保持超高的吞吐率，并且其性能并未受到影响。</p>
-<h1 id="其主要采用如下方式实现了高吞吐率："><a href="#其主要采用如下方式实现了高吞吐率：" class="headerlink" title="其主要采用如下方式实现了高吞吐率："></a>其主要采用如下方式实现了高吞吐率：</h1><ul>
+<h1 id="Kafka主要采用如下方式实现了高吞吐率"><a href="#Kafka主要采用如下方式实现了高吞吐率" class="headerlink" title="Kafka主要采用如下方式实现了高吞吐率"></a>Kafka主要采用如下方式实现了高吞吐率</h1><ul>
 <li>顺序读写：Kafka 将消息写入到了分区 Partition 中，而分区中的消息又是顺序读写的。顺序读写要快于随机读写。</li>
 <li>零拷贝：生产者、消费者对于 Kafka 中的消息是采用零拷贝实现的。</li>
 <li>批量发送：Kafka 允许批量发送模式。</li>
 <li>消息压缩：Kafka 允许对消息集合进行压缩。</li>
 </ul>
-<h1 id="Kafka的优点如下："><a href="#Kafka的优点如下：" class="headerlink" title="Kafka的优点如下："></a>Kafka的优点如下：</h1><p>①解耦：在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。</p>
-<p>消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。</p>
-<p>这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。</p>
-<p>②冗余（副本）：有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。</p>
-<p>消息队列把数据进行持久化直到它们已经被完全处理，通过这一方式规避了数据丢失风险。</p>
-<p>许多消息队列所采用的”插入-获取-删除”范式中，在把一个消息从队列中删除之前，需要你的处理系统明确的指出该消息已经被处理完毕，从而确保你的数据被安全的保存直到你使用完毕。</p>
+<h1 id="Kafka的优点"><a href="#Kafka的优点" class="headerlink" title="Kafka的优点"></a>Kafka的优点</h1><p>①解耦：在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。<br>消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。<br>这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。</p>
+<p>②冗余（副本）：有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。<br>消息队列把数据进行持久化直到它们已经被完全处理，通过这一方式规避了数据丢失风险。<br>许多消息队列所采用的”插入-获取-删除”范式中，在把一个消息从队列中删除之前，需要你的处理系统明确的指出该消息已经被处理完毕，从而确保你的数据被安全的保存直到你使用完毕。</p>
 <p>③扩展性：因为消息队列解耦了你的处理过程，所以增大消息入队和处理的频率是很容易的，只要另外增加处理过程即可。不需要改变代码、不需要调节参数。扩展就像调大电力按钮一样简单。</p>
-<p>④灵活性&amp;峰值处理能力：在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见；如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。</p>
-<p>使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。</p>
+<p>④灵活性&amp;峰值处理能力：在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见；如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。<br>使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。</p>
 <p>⑤可恢复性：系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理消息的进程挂掉，加入队列中的消息仍然可以在系统恢复后被处理。</p>
 <p>⑥顺序保证：在大多使用场景下，数据处理的顺序都很重要。大部分消息队列本来就是排序的，并且能保证数据会按照特定的顺序来处理。Kafka 保证一个 Partition 内的消息的有序性。</p>
 <p>⑦缓冲：在任何重要的系统中，都会有需要不同的处理时间的元素。例如，加载一张图片比应用过滤器花费更少的时间。</p>
 <p>消息队列通过一个缓冲层来帮助任务最高效率的执行，写入队列的处理会尽可能的快速。该缓冲有助于控制和优化数据流经过系统的速度。</p>
 <p>⑧异步通信：很多时候，用户不想也不需要立即处理消息。消息队列提供了异步处理机制，允许用户把一个消息放入队列，但并不立即处理它。想向队列中放入多少消息就放多少，然后在需要的时候再去处理它们。</p>
-<h1 id="Kafka-于其他-MQ-对比如下："><a href="#Kafka-于其他-MQ-对比如下：" class="headerlink" title="Kafka 于其他 MQ 对比如下："></a>Kafka 于其他 MQ 对比如下：</h1><p>①RabbitMQ：RabbitMQ 是使用 Erlang 编写的一个开源的消息队列，本身支持很多的协议：AMQP，XMPP，SMTP，STOMP，也正因如此，它非常重量级，更适合于企业级的开发。</p>
+<h1 id="Kafka-与其他-MQ-对比"><a href="#Kafka-与其他-MQ-对比" class="headerlink" title="Kafka 与其他 MQ 对比"></a>Kafka 与其他 MQ 对比</h1><p>①RabbitMQ：RabbitMQ 是使用 Erlang 编写的一个开源的消息队列，本身支持很多的协议：AMQP，XMPP，SMTP，STOMP，也正因如此，它非常重量级，更适合于企业级的开发。</p>
 <p>同时实现了 Broker 构架，这意味着消息在发送给客户端时先在中心队列排队。对路由，负载均衡或者数据持久化都有很好的支持。</p>
 <p>②Redis：Redis 是一个基于 Key-Value 对的 NoSQL 数据库，开发维护很活跃。</p>
 <p>虽然它是一个 Key-Value 数据库存储系统，但它本身支持 MQ 功能，所以完全可以当做一个轻量级的队列服务来使用。</p>
@@ -273,14 +268,14 @@
 <p>但是 ZeroMQ 仅提供非持久性的队列，也就是说如果宕机，数据将会丢失。其中，Twitter 的 Storm 0.9.0 以前的版本中默认使用 ZeroMQ 作为数据流的传输（Storm 从 0.9 版本开始同时支持 ZeroMQ 和 Netty 作为传输模块）。</p>
 <p>④ActiveMQ：ActiveMQ 是 Apache 下的一个子项目。类似于 ZeroMQ，它能够以代理人和点对点的技术实现队列。同时类似于 RabbitMQ，它少量代码就可以高效地实现高级应用场景。</p>
 <p>⑤Kafka/Jafka：Kafka 是 Apache 下的一个子项目，是一个高性能跨语言分布式发布/订阅消息队列系统，而 Jafka 是在 Kafka 之上孵化而来的，即 Kafka 的一个升级版。</p>
-<h1 id="具有以下特性："><a href="#具有以下特性：" class="headerlink" title="具有以下特性："></a>具有以下特性：</h1><ul>
+<h1 id="Kafka的特性："><a href="#Kafka的特性：" class="headerlink" title="Kafka的特性："></a>Kafka的特性：</h1><ul>
 <li>快速持久化，可以在 O(1) 的系统开销下进行消息持久化。</li>
 <li>高吞吐，在一台普通的服务器上既可以达到 10W/s 的吞吐速率。</li>
 <li>完全的分布式系统，Broker、Producer、Consumer 都原生自动支持分布式，自动实现负载均衡。</li>
 <li>支持 Hadoop 数据并行加载，对于像 Hadoop 的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。</li>
 </ul>
 <p>Kafka 通过 Hadoop 的并行加载机制统一了在线和离线的消息处理。Apache Kafka 相对于 ActiveMQ 是一个非常轻量级的消息系统，除了性能非常好之外，还是一个工作良好的分布式系统。</p>
-<h1 id="Kafka的几种重要角色如下："><a href="#Kafka的几种重要角色如下：" class="headerlink" title="Kafka的几种重要角色如下："></a>Kafka的几种重要角色如下：</h1><p>①Kafka 作为存储系统：任何允许发布与使用无关的消息发布的消息队列都有效地充当了运行中消息的存储系统。Kafka 的不同之处在于它是一个非常好的存储系统。</p>
+<h1 id="Kafka在市场的几种重要角色"><a href="#Kafka在市场的几种重要角色" class="headerlink" title="Kafka在市场的几种重要角色"></a>Kafka在市场的几种重要角色</h1><p>①Kafka 作为存储系统：任何允许发布与使用无关的消息发布的消息队列都有效地充当了运行中消息的存储系统。Kafka 的不同之处在于它是一个非常好的存储系统。</p>
 <p>写入 Kafka 的数据将写入磁盘并进行复制以实现容错功能。Kafka 允许生产者等待确认，以便直到完全复制并确保即使写入服务器失败的情况下写入也不会完成。</p>
 <p>Kafka 的磁盘结构可以很好地扩展使用-无论服务器上有 50KB 还是 50TB 的持久数据，Kafka 都将执行相同的操作。</p>
 <p>由于认真对待存储并允许客户端控制其读取位置，因此您可以将 Kafka 视为一种专用于高性能，低延迟提交日志存储，复制和传播的专用分布式文件系统。</p>
@@ -367,7 +362,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-官网："><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka 官网：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-主要设计目标如下："><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Kafka 主要设计目标如下：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-通常用于两大类应用程序："><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Kafka 通常用于两大类应用程序：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的常见应用场景："><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Kafka 的常见应用场景：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#其主要采用如下方式实现了高吞吐率："><span class="toc-nav-number">5.</span> <span class="toc-nav-text">其主要采用如下方式实现了高吞吐率：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的优点如下："><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Kafka的优点如下：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-于其他-MQ-对比如下："><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Kafka 于其他 MQ 对比如下：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#具有以下特性："><span class="toc-nav-number">8.</span> <span class="toc-nav-text">具有以下特性：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的几种重要角色如下："><span class="toc-nav-number">9.</span> <span class="toc-nav-text">Kafka的几种重要角色如下：</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-官网："><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Kafka 官网：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-主要设计目标"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Kafka 主要设计目标</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-通常用于两大类应用程序"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Kafka 通常用于两大类应用程序</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的常见应用场景"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Kafka 的常见应用场景</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka主要采用如下方式实现了高吞吐率"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Kafka主要采用如下方式实现了高吞吐率</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的优点"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Kafka的优点</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-与其他-MQ-对比"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Kafka 与其他 MQ 对比</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的特性："><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Kafka的特性：</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka在市场的几种重要角色"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">Kafka在市场的几种重要角色</span></a></li></ol>
         
         </div>
       </aside>
