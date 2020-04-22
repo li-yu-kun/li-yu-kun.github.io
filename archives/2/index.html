@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -400,13 +400,46 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 
 <div class="post-preview">
 
+    <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka如何将分区放置到不同的Broker中
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            熟悉 Kafka 的小伙伴肯定知道，每个主题有多个分区，每个分区会存在多个副本，本文今天要讨论的是这些副本是怎么样放置在 Kafka 集群的 Broker 中的。
+大家可能在网上看过这方面的知识，网上对这方面的知识是千变一律，都是如下说明的：
+为了更好的做负载均衡，Kafka尽量将所有的Partition均匀分配到整个集群上。Kafka分配Replica的算法如下：
+
+将所有存活的N个Bro......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-04-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Kafka] Kafka消息格式的演变/">
         <h2 class="post-title">
                                  
             [Kafka] Kafka消息格式的演变
         </h2>
         <h3 class="post-subtitle">
-             
+            Kafka 0.7.x 消息格式、Kafka 0.8.x (0.9.x) 消息格式、Kafka 0.10.x 消息格式
         </h3>
         <div class="post-content-preview">
             用 Kafka 这么久，从来都没去了解 Kafka 消息的格式。今天特意去网上搜索了以下，发现这方面的资料真少，很多资料都是官方文档的翻译；而且 Kafka 消息支持压缩，对于压缩消息的格式的介绍更少。基于此，本文将以图文模式介绍 Kafka 0.7.x、0.8.x 以及 0.10.x 等版本 Message 格式，因为 Kafka 0.9.x 版本的消息格式和 0.8.x 一样，我就不单独......
@@ -490,37 +523,6 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[HBase]07 Phoenix工具与盐表 七/">
-        <h2 class="post-title">
-                                 
-            [HBase]07 Phoenix工具与盐表 七
-        </h2>
-        <h3 class="post-subtitle">
-            Phoenix如何和HBase namespace映射、dbeaver的安装配置、盐表简述
-        </h3>
-        <div class="post-content-preview">
-            Phoenix的schema与HBase的namespace官网介绍：http://phoenix.apache.org/namspace_mapping.html
-默认情况下在Phoenix中create schema 默认不会映射到namespace；需要在服务端和客户端都开启phoenix.schema.isNamespaceMappingEnabled
-服务端:hbase-site.......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-02-19
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -570,7 +572,7 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="7">Kafka</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="8">Kafka</a>
             
         
             
@@ -709,7 +711,7 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

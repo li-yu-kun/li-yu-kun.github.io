@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -265,7 +265,7 @@
 <p>一些消息系统比如Scribe和Apache Flume采用了push模式，将消息推送到下游的consumer。这样做有好处也有坏处：由broker决定消息推送的速率，对于不同消费速率的consumer就不太好处理了。消息系统都致力于让consumer以最大的速率最快速的消费消息，但不幸的是，push模式下，当broker推送的速率远大于consumer消费的速率时，consumer恐怕就要崩溃了。最终Kafka还是选取了传统的pull模式。</p>
 <p>Pull模式的另外一个好处是consumer可以自主决定是否批量的从broker拉取数据。Push模式必须在不知道下游consumer消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免consumer崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull模式下，consumer就可以根据自己的消费能力去决定这些策略。</p>
 <p>Pull有个缺点是，如果broker没有可供消费的消息，将导致consumer不断在循环中轮询，直到新消息到t达。为了避免这点，Kafka有个参数可以让consumer阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发</p>
-<h1 id="Kafka-消息格式的演变清楚吗？"><a href="#Kafka-消息格式的演变清楚吗？" class="headerlink" title="Kafka 消息格式的演变清楚吗？"></a>Kafka 消息格式的演变清楚吗？</h1><p>Kafka 的消息格式经过了四次大变化，具体可以参见[Kafka消息格式演变]</p>
+<h1 id="Kafka-消息格式的演变清楚吗？"><a href="#Kafka-消息格式的演变清楚吗？" class="headerlink" title="Kafka 消息格式的演变清楚吗？"></a>Kafka 消息格式的演变清楚吗？</h1><p>Kafka 的消息格式经过了四次大变化，具体可以参见<a href="https://li-yu-kun.github.io/article/[Kafka]%20Kafka%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%BC%94%E5%8F%98/">Kafka消息格式演变</a></p>
 
                 
 
