@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,131 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka如何将分区放置到不同的Broker中
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            熟悉 Kafka 的小伙伴肯定知道，每个主题有多个分区，每个分区会存在多个副本，本文今天要讨论的是这些副本是怎么样放置在 Kafka 集群的 Broker 中的。
+大家可能在网上看过这方面的知识，网上对这方面的知识是千变一律，都是如下说明的：
+为了更好的做负载均衡，Kafka尽量将所有的Partition均匀分配到整个集群上。Kafka分配Replica的算法如下：
+
+将所有存活的N个Bro......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-04-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka消息格式的演变/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka消息格式的演变
+        </h2>
+        <h3 class="post-subtitle">
+            Kafka 0.7.x 消息格式、Kafka 0.8.x (0.9.x) 消息格式、Kafka 0.10.x 消息格式
+        </h3>
+        <div class="post-content-preview">
+            用 Kafka 这么久，从来都没去了解 Kafka 消息的格式。今天特意去网上搜索了以下，发现这方面的资料真少，很多资料都是官方文档的翻译；而且 Kafka 消息支持压缩，对于压缩消息的格式的介绍更少。基于此，本文将以图文模式介绍 Kafka 0.7.x、0.8.x 以及 0.10.x 等版本 Message 格式，因为 Kafka 0.9.x 版本的消息格式和 0.8.x 一样，我就不单独......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-04-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]09 Phoenix二级索引 九/">
+        <h2 class="post-title">
+                                 
+            [HBase]09 Phoenix二级索引 九
+        </h2>
+        <h3 class="post-subtitle">
+            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
+        </h3>
+        <div class="post-content-preview">
+            覆盖索引语法：
+12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
+本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
+好处 ：空间换时......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-03-06
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]08 Phoenix二级索引 八/">
+        <h2 class="post-title">
+                                 
+            [HBase]08 Phoenix二级索引 八
+        </h2>
+        <h3 class="post-subtitle">
+            全局索引、本地索引
+        </h3>
+        <div class="post-content-preview">
+            Phoenix二级索引官网：http://phoenix.apache.org/secondary_indexing.html
+建表和建索引
+12345678910111213141516171819202122232425建表：0: jdbc:phoenix:&gt; select * from my_schema.my_table;+-----+---------------------......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-02-27
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -398,148 +523,6 @@ Kafka 主要设计目标
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Scala]03 scala语言知识点 三/">
-        <h2 class="post-title">
-                                 
-            [Scala]03 scala语言知识点 三
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            ...
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-01-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Scala" title="Scala">Scala</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Linux]04 使用shell脚本发送邮件 四/">
-        <h2 class="post-title">
-                                 
-            [Linux]04 使用shell脚本发送邮件 四
-        </h2>
-        <h3 class="post-subtitle">
-            前置条件、使用脚本发送普通邮件、带表格告警的邮件
-        </h3>
-        <div class="post-content-preview">
-            前置条件要使用脚本发送邮件，必须设置发送邮箱开启IMAP/SMTP服务。否则将会报错。
-同时脚本所在服务器需要有sendEmail命令
-1234567891011121314#下载安装包wget http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz#创建目录mkdir -p /usr/local/b......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-01-02
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Scala]02 scala语言知识点 二/">
-        <h2 class="post-title">
-                                 
-            [Scala]02 scala语言知识点 二
-        </h2>
-        <h3 class="post-subtitle">
-            Scala值和变量声明、Scala常用类型、方法与函数的定义和使用以及区别、Scala的call-by-name和call-by-value、循环和高级for循环、常见集合使用、异常处理、类定义继承、单例对象、函数式编程思想
-        </h3>
-        <div class="post-content-preview">
-            Scala是一门怎样的语言，具有哪些优点？
-快速实验
-快速尝试各种语法和代码
-
-
-一致性
-静态类型系统+面向对象+函数式编程
-
-
-面向对象
-所有的变量和方法都封装在对象中
-
-
-函数式编程
-函数可以独立存在，可以定义一个函数作为另外一个函数的返回值，也可以接受函数作为函数的参数
-
-
-异步编程
-函数式编程提倡变量不可变，使得异步编程变得十分容易
-
-
-基于JVM
-Scala会被编译成为Byteco......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-12-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Scala" title="Scala">Scala</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Scala]01 scala编程IDEA环境 一/">
-        <h2 class="post-title">
-                                 
-            [Scala]01 scala编程IDEA环境 一
-        </h2>
-        <h3 class="post-subtitle">
-            IDEA搭建环境步骤、pom文件
-        </h3>
-        <div class="post-content-preview">
-            1、新建一个maven项目；点击next2、项目分组id和项目名称；点击next3、选择自己的maven路径；点击next4、点击finish
-pom文件
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-12-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Scala" title="Scala">Scala</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -585,11 +568,11 @@ pom文件
     <div class="tags">
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="8">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
@@ -597,11 +580,11 @@ pom文件
             
         
             
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
             
         
             
@@ -728,7 +711,7 @@ pom文件
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

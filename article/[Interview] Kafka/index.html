@@ -142,13 +142,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -157,6 +150,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -266,6 +266,57 @@
 <p>Pull模式的另外一个好处是consumer可以自主决定是否批量的从broker拉取数据。Push模式必须在不知道下游consumer消费能力和消费策略的情况下决定是立即推送每条消息还是缓存之后批量推送。如果为了避免consumer崩溃而采用较低的推送速率，将可能导致一次只推送较少的消息而造成浪费。Pull模式下，consumer就可以根据自己的消费能力去决定这些策略。</p>
 <p>Pull有个缺点是，如果broker没有可供消费的消息，将导致consumer不断在循环中轮询，直到新消息到t达。为了避免这点，Kafka有个参数可以让consumer阻塞知道新消息到达(当然也可以阻塞知道消息的数量达到某个特定的量这样就可以批量发</p>
 <h1 id="Kafka-消息格式的演变清楚吗？"><a href="#Kafka-消息格式的演变清楚吗？" class="headerlink" title="Kafka 消息格式的演变清楚吗？"></a>Kafka 消息格式的演变清楚吗？</h1><p>Kafka 的消息格式经过了四次大变化，具体可以参见<a href="https://li-yu-kun.github.io/article/[Kafka]%20Kafka%E6%B6%88%E6%81%AF%E6%A0%BC%E5%BC%8F%E7%9A%84%E6%BC%94%E5%8F%98/">Kafka消息格式演变</a></p>
+<p>18、Kafka 偏移量的演变清楚吗？<br>参见我这篇文章：图解Apache Kafka消息偏移量的演变(0.7.x~0.10.x)<br>19、Kafka 高效文件存储设计特点</p>
+<ul>
+<li>Kafka把topic中一个parition大文件分成多个小文件段，通过多个小文件段，就容易定期清除或删除已经消费完文件，减少磁盘占用。</li>
+<li>通过索引信息可以快速定位message和确定response的最大大小。</li>
+<li>通过index元数据全部映射到memory，可以避免segment file的IO磁盘操作。</li>
+<li>通过索引文件稀疏存储，可以大幅降低index文件元数据占用空间大小</li>
+</ul>
+<p>20、Kafka创建Topic时如何将分区放置到不同的Broker中</p>
+<ul>
+<li>副本因子不能大于 Broker 的个数；</li>
+<li>第一个分区（编号为0）的第一个副本放置位置是随机从 brokerList 选择的；</li>
+<li>其他分区的第一个副本放置位置相对于第0个分区依次往后移。也就是如果我们有5个 Broker，5个分区，假设第一个分区放在第四个 Broker 上，那么第二个分区将会放在第五个 Broker 上；第三个分区将会放在第一个 Broker 上；第四个分区将会放在第二个 Broker 上，依次类推；</li>
+<li>剩余的副本相对于第一个副本放置位置其实是由 nextReplicaShift 决定的，而这个数也是随机产生的</li>
+</ul>
+<p>具体可以参见 </p>
+<p>21、Kafka新建的分区会在哪个目录下创建</p>
+<p>在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘上用于提高读写性能。</p>
+<p>当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。<br>如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个目录下创建文件夹用于存放数据。</p>
+<p>但是如果 log.dirs 参数配置了多个目录，那么 Kafka 会在哪个文件夹中创建分区目录呢？答案是：Kafka 会在含有分区目录最少的文件夹中创建新的分区目录，分区目录名为 Topic名+分区ID。注意，是分区文件夹总数最少的目录，而不是磁盘使用量最少的目录！也就是说，如果你给 log.dirs 参数新增了一个新的磁盘，新的分区目录肯定是先在这个新的磁盘上创建直到这个新的磁盘目录拥有的分区目录不是最少为止。</p>
+<p>具体可以参见：</p>
+<p>22、谈一谈 Kafka 的再均衡<br>在Kafka中，当有新消费者加入或者订阅的topic数发生变化时，会触发Rebalance(再均衡：在同一个消费者组当中，分区的所有权从一个消费者转移到另外一个消费者)机制，Rebalance顾名思义就是重新均衡消费者消费。Rebalance的过程如下：</p>
+<p>第一步：所有成员都向coordinator发送请求，请求入组。一旦所有成员都发送了请求，coordinator会从中选择一个consumer担任leader的角色，并把组成员信息以及订阅信息发给leader。<br>第二步：leader开始分配消费方案，指明具体哪个consumer负责消费哪些topic的哪些partition。一旦完成分配，leader会将这个方案发给coordinator。coordinator接收到分配方案之后会把方案发给各个consumer，这样组内的所有成员就都知道自己应该消费哪些分区了。<br>所以对于Rebalance来说，Coordinator起着至关重要的作用</p>
+<p>23、谈谈 Kafka 分区分配策略</p>
+<p>参见我这篇文章 Kafka分区分配策略(Partition Assignment Strategy)</p>
+<p>24、Kafka Producer 是如何动态感知主题分区数变化的？<br>参见我这篇文章：Kafka Producer是如何动态感知Topic分区数变化</p>
+<p>25、 Kafka 是如何实现高吞吐率的？<br>Kafka是分布式消息系统，需要处理海量的消息，Kafka的设计是把所有的消息都写入速度低容量大的硬盘，以此来换取更强的存储能力，但实际上，使用硬盘并没有带来过多的性能损失。kafka主要使用了以下几个方式实现了超高的吞吐率：</p>
+<p>顺序读写；</p>
+<p>零拷贝</p>
+<p>文件分段</p>
+<p>批量发送</p>
+<p>数据压缩。</p>
+<p>26、Kafka 监控都有哪些？<br>参见我另外几篇文章：Apache Kafka监控之KafkaOffsetMonitor<br>雅虎开源的Kafka集群管理器(Kafka Manager)<br>Apache Kafka监控之Kafka Web Console<br>还有 JMX</p>
+<p>27、如何为Kafka集群选择合适的Topics/Partitions数量</p>
+<p>参见我另外几篇文章：如何为Kafka集群选择合适的Topics/Partitions数量</p>
+<p>28、谈谈你对 Kafka 事务的了解？</p>
+<p>参见这篇文章：<a href="http://www.jasongj.com/kafka/transaction/" target="_blank" rel="noopener">http://www.jasongj.com/kafka/transaction/</a></p>
+<p>29、谈谈你对 Kafka 幂等的了解？</p>
+<p>参见这篇文章：<a href="https://www.jianshu.com/p/b1599f46229b" target="_blank" rel="noopener">https://www.jianshu.com/p/b1599f46229b</a></p>
+<p>30、Kafka 缺点？</p>
+<ul>
+<li>由于是批量发送，数据并非真正的实时；</li>
+<li>对于mqtt协议不支持；</li>
+<li>不支持物联网传感数据直接接入；</li>
+<li>仅支持统一分区内消息有序，无法实现全局消息有序；</li>
+<li>监控不完善，需要安装插件；</li>
+<li>依赖zookeeper进行元数据管理；</li>
+</ul>
+<p>31、Kafka 新旧消费者的区别<br>旧的 Kafka 消费者 API 主要包括：SimpleConsumer（简单消费者） 和 ZookeeperConsumerConnectir（高级消费者）。SimpleConsumer 名字看起来是简单消费者，但是其实用起来很不简单，可以使用它从特定的分区和偏移量开始读取消息。高级消费者和现在新的消费者有点像，有消费者群组，有分区再均衡，不过它使用 ZK 来管理消费者群组，并不具备偏移量和再均衡的可操控性。</p>
+<p>现在的消费者同时支持以上两种行为，所以为啥还用旧消费者 API 呢？</p>
+<p>32、Kafka 分区数可以增加或减少吗？为什么？</p>
+<p>我们可以使用 bin/kafka-topics.sh 命令对 Kafka 增加 Kafka 的分区数据，但是 Kafka 不支持减少分区数。<br>Kafka 分区数据不支持减少是由很多原因的，比如减少的分区其数据放到哪里去？是删除，还是保留？删除的话，那么这些没消费的消息不就丢了。如果保留这些消息如何放到其他分区里面？追加到其他分区后面的话那么就破坏了 Kafka 单个分区的有序性。如果要保证删除分区数据插入到其他分区保证有序性，那么实现起来逻辑就会非常复杂。</p>
 
                 
 

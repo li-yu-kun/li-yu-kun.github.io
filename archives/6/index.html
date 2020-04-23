@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,137 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]09 分布式处理框架MapReduce 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]09 分布式处理框架MapReduce 二
+        </h2>
+        <h3 class="post-subtitle">
+            源码解析、执行机制
+        </h3>
+        <div class="post-content-preview">
+            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-08-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]08 分布式处理框架MapReduce 一/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]08 分布式处理框架MapReduce 一
+        </h2>
+        <h3 class="post-subtitle">
+            基本概念、场景、编程模型、架构
+        </h3>
+        <div class="post-content-preview">
+            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
+
+源自于Google的MapReduce论文,论文发表于2004年22月
+Hadoop MapReduce是Google MapReduce的克隆版
+MapReduce优点:海量数量离线处理&amp;易开发&am......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-07-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]07 分布式资源调度YARN 三
+        </h2>
+        <h3 class="post-subtitle">
+            环境搭建、常用命令、作业执行
+        </h3>
+        <div class="post-content-preview">
+            YARN环境搭建YARN环境搭建
+
+mapred-site.xml
+1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
+yarn-site.xml
+1234567891011&lt;proper......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-07-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]06 分布式资源调度YARN 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]06 分布式资源调度YARN 二
+        </h2>
+        <h3 class="post-subtitle">
+            执行流程、调度器
+        </h3>
+        <div class="post-content-preview">
+            YARN执行流程
+
+用户向yarn提交一个作业
+RM为该作业分配第一个container(AM)
+RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
+AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM
+AM申请到资......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-07-15
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -396,131 +527,6 @@ Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]01 分布式文件系统HDFS 一
-        </h2>
-        <h3 class="post-subtitle">
-            概述设计、各组件工作原理、副本机制、安全模式
-        </h3>
-        <div class="post-content-preview">
-            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
-什么是HDFS
-Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
-源自Google的GFS论文
-发表于2003年，HDFS是GFS的克隆版
-基于JAVA实现的一个分布式文件系统
-基于unix/linux
-是Hadoop最重要的核心......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-05-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]03 MySQL其他操作/">
-        <h2 class="post-title">
-                                 
-            [MySQL]03 MySQL其他操作
-        </h2>
-        <h3 class="post-subtitle">
-            触发器、函数、存储过程、视图、联接
-        </h3>
-        <div class="post-content-preview">
-            查询数据库中的存储过程和函数123456789101112方法一:select `name` from mysql.proc where db = 'your_db_name' and `type` = 'PROCEDURE'   //存储过程select `name` from mysql.proc where db = 'your_db_name' and `type` = 'FUNCT......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-05-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]02 MySQL语法/">
-        <h2 class="post-title">
-                                 
-            [MySQL]02 MySQL语法
-        </h2>
-        <h3 class="post-subtitle">
-            MySQL常用操作
-        </h3>
-        <div class="post-content-preview">
-            用户管理：12345678910111213141516　　1、新建用户：　　　　&gt;CREATE USER name IDENTIFIED BY 'ssapdrow';　　2、更改密码：　　　　&gt;SET PASSWORD FOR name=PASSWORD('fdddfd');　　3、权限管理　　　　&gt;SHOW GRANTS FOR name;    //查看name用户权......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-05-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[MySQL]04 MySQL常用操作/">
-        <h2 class="post-title">
-                                 
-            [MySQL]04 MySQL常用操作
-        </h2>
-        <h3 class="post-subtitle">
-            MySQL常用操作
-        </h3>
-        <div class="post-content-preview">
-            创建DB user12345create database test01;grant all privileges on *.* to root@'%' identified by 'root';flush privileges;
-
-kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$ mysql -u root......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-04-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -566,11 +572,11 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
     <div class="tags">
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="8">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
@@ -578,11 +584,11 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
             
         
             
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
             
         
             
@@ -709,7 +715,7 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -400,26 +400,22 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 
 <div class="post-preview">
 
-    <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
+    <a href="/article/[Kafka] 为Kafka集群选择合适的TopicsPartitions数量/">
         <h2 class="post-title">
                                  
-            [Kafka] Kafka如何将分区放置到不同的Broker中
+            [Kafka] 为Kafka集群选择合适的Topics/Partitions数量
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            熟悉 Kafka 的小伙伴肯定知道，每个主题有多个分区，每个分区会存在多个副本，本文今天要讨论的是这些副本是怎么样放置在 Kafka 集群的 Broker 中的。
-大家可能在网上看过这方面的知识，网上对这方面的知识是千变一律，都是如下说明的：
-为了更好的做负载均衡，Kafka尽量将所有的Partition均匀分配到整个集群上。Kafka分配Replica的算法如下：
-
-将所有存活的N个Bro......
+            越多的分区可以提供更高的吞吐量　　首先我们需要明白以下事实：在kafka中，单个patition是kafka并行操作的最小单元。在producer和broker端，向每一个分区写入数据是可以完全并行化的，此时，可以通过加大硬件资源的利用率来提升系统的吞吐量，例如对数据进行压缩。在consumer段，kafka只允许单个partition的数据被一个consumer线程消费。因此，在consu......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-04-10
+            2019-04-23
         </p>
         <div class="tags">
             
@@ -433,22 +429,23 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 
 <div class="post-preview">
 
-    <a href="/article/[Kafka] Kafka消息格式的演变/">
+    <a href="/article/[Kafka] Kafka Producer是如何动态感知Topic分区数变化/">
         <h2 class="post-title">
                                  
-            [Kafka] Kafka消息格式的演变
+            [Kafka] Kafka Producer是如何动态感知Topic分区数变化
         </h2>
         <h3 class="post-subtitle">
-            Kafka 0.7.x 消息格式、Kafka 0.8.x (0.9.x) 消息格式、Kafka 0.10.x 消息格式
+            
         </h3>
         <div class="post-content-preview">
-            用 Kafka 这么久，从来都没去了解 Kafka 消息的格式。今天特意去网上搜索了以下，发现这方面的资料真少，很多资料都是官方文档的翻译；而且 Kafka 消息支持压缩，对于压缩消息的格式的介绍更少。基于此，本文将以图文模式介绍 Kafka 0.7.x、0.8.x 以及 0.10.x 等版本 Message 格式，因为 Kafka 0.9.x 版本的消息格式和 0.8.x 一样，我就不单独......
+            　我们都知道，使用Kafka Producer往Kafka的Broker发送消息的时候，Kafka会根据消息的key计算出这条消息应该发送到哪个分区。默认的分区计算类是HashPartitioner，其实现如下：
+12345class HashPartitioner(props: VerifiableProperties = null) extends Partitioner &#123; ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-04-03
+            2019-04-20
         </p>
         <div class="tags">
             
@@ -462,29 +459,26 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]09 Phoenix二级索引 九/">
+    <a href="/article/Kafka分区分配策略/">
         <h2 class="post-title">
                                  
-            [HBase]09 Phoenix二级索引 九
+            [Kafka] Kafka分区分配策略
         </h2>
         <h3 class="post-subtitle">
-            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
+            
         </h3>
         <div class="post-content-preview">
-            覆盖索引语法：
-12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
-本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
-好处 ：空间换时......
+            用过 Kafka 的同学用过都知道，每个 Topic 一般会有很多个 partitions。为了使得我们能够及时消费消息，我们也可能会启动多个 Consumer 去消费，而每个 Consumer 又会启动一个或多个streams去分别消费 Topic 里面的数据。我们又知道，Kafka 存在 Consumer Group 的概念，也就是 group.id 一样的 Consumer，这些 Co......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2018-03-06
+            2019-04-17
         </p>
         <div class="tags">
             
-              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -494,28 +488,27 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]08 Phoenix二级索引 八/">
+    <a href="/article/[Kafka] Kafka新建的分区会在哪个目录下创建/">
         <h2 class="post-title">
                                  
-            [HBase]08 Phoenix二级索引 八
+            [Kafka] Kafka新建的分区会在哪个目录下创建
         </h2>
         <h3 class="post-subtitle">
-            全局索引、本地索引
+            
         </h3>
         <div class="post-content-preview">
-            Phoenix二级索引官网：http://phoenix.apache.org/secondary_indexing.html
-建表和建索引
-12345678910111213141516171819202122232425建表：0: jdbc:phoenix:&gt; select * from my_schema.my_table;+-----+---------------------......
+            我们知道，在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘上用于提高读写性能。当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。
+如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个目录......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2018-02-27
+            2019-04-13
         </p>
         <div class="tags">
             
-              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -568,11 +561,11 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
     <div class="tags">
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="8">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
@@ -580,11 +573,11 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
             
         
             
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
             
         
             
@@ -711,7 +704,7 @@ Apache Spark自2014年以来迅速普及。它提供了一个适用常见数据�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

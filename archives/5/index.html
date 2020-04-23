@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/tags/">Tags</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,151 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]03 HBase进阶 三/">
+        <h2 class="post-title">
+                                 
+            [HBase]03 HBASE进阶 三
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+        </h3>
+        <div class="post-content-preview">
+            什么导致hbase性能下降？
+
+jvm内存分配与gc回收策略
+与hbase运行机制相关的部分配置不合理
+表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
+Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]02 HBase原理与实战 二/">
+        <h2 class="post-title">
+                                 
+            [HBase]02 HBase原理与实战 二
+        </h2>
+        <h3 class="post-subtitle">
+            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+        </h3>
+        <div class="post-content-preview">
+            HBase写流程存储结构介绍
+
+RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
+region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
+        <h2 class="post-title">
+                                 
+            [HBase]01 HBASE简介与环境搭建 一
+        </h2>
+        <h3 class="post-subtitle">
+            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
+        </h3>
+        <div class="post-content-preview">
+            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
+使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/大数据压缩/">
+        <h2 class="post-title">
+                                 
+            大数据压缩
+        </h2>
+        <h3 class="post-subtitle">
+            大数据压缩常用格式
+        </h3>
+        <div class="post-content-preview">
+            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
+好处
+减少存储磁盘空间
+降低IO(网络的IO和磁盘的IO)
+加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
+
+坏处
+由于使用数据时，需要先将数据解压，加重CPU负荷
+
+压缩在Hadoop中的应用
+2. 压缩格式
+
+
+压缩格式
+工具
+算法
+扩展名
+codec类
+多文件
+splitable
+n......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#大数据" title="大数据">大数据</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -410,137 +555,6 @@ mapreduce.input.fileinputforma......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]09 分布式处理框架MapReduce 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]09 分布式处理框架MapReduce 二
-        </h2>
-        <h3 class="post-subtitle">
-            源码解析、执行机制
-        </h3>
-        <div class="post-content-preview">
-            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-08-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]08 分布式处理框架MapReduce 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]08 分布式处理框架MapReduce 一
-        </h2>
-        <h3 class="post-subtitle">
-            基本概念、场景、编程模型、架构
-        </h3>
-        <div class="post-content-preview">
-            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
-
-源自于Google的MapReduce论文,论文发表于2004年22月
-Hadoop MapReduce是Google MapReduce的克隆版
-MapReduce优点:海量数量离线处理&amp;易开发&am......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]07 分布式资源调度YARN 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]07 分布式资源调度YARN 三
-        </h2>
-        <h3 class="post-subtitle">
-            环境搭建、常用命令、作业执行
-        </h3>
-        <div class="post-content-preview">
-            YARN环境搭建YARN环境搭建
-
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;proper......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop]06 分布式资源调度YARN 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop]06 分布式资源调度YARN 二
-        </h2>
-        <h3 class="post-subtitle">
-            执行流程、调度器
-        </h3>
-        <div class="post-content-preview">
-            YARN执行流程
-
-用户向yarn提交一个作业
-RM为该作业分配第一个container(AM)
-RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
-AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RＭ进行申请，申请到后返回给AM
-AM申请到资......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-15
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -586,11 +600,11 @@ AM申请到资......
     <div class="tags">
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="8">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
@@ -598,11 +612,11 @@ AM申请到资......
             
         
             
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
             
         
             
@@ -729,7 +743,7 @@ AM申请到资......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
