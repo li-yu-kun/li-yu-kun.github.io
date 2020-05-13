@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -349,17 +349,17 @@ mapreduce.input.fileinputforma......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce的join操作/">
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce 四/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式处理框架MapReduce的join操作
+            [Hadoop] 分布式处理框架MapReduce 四
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Map Join的操作map类
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475package com.kun.map_join;import org.apac......
+            MapReduce1架构JobTracker: JT作业的管理者 (管理的)将作业分解成一堆的任务：Task（MapTask和ReduceTask）将任务分派给TaskTracker运行作业的监控、容错处理（task作业挂了，重启task的机制）在一定的时间间隔内，JT没有收到TT的心跳信息，TT可能是挂了，TT上运行的任务会被指派到其他TT上去执行
+TaskTracker: TT任务的执行......
         </div>
     </a>
     
@@ -379,17 +379,17 @@ mapreduce.input.fileinputforma......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce 四/">
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce的join操作/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式处理框架MapReduce 四
+            [Hadoop] 分布式处理框架MapReduce的join操作
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            MapReduce1架构JobTracker: JT作业的管理者 (管理的)将作业分解成一堆的任务：Task（MapTask和ReduceTask）将任务分派给TaskTracker运行作业的监控、容错处理（task作业挂了，重启task的机制）在一定的时间间隔内，JT没有收到TT的心跳信息，TT可能是挂了，TT上运行的任务会被指派到其他TT上去执行
-TaskTracker: TT任务的执行......
+            Map Join的操作map类
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475package com.kun.map_join;import org.apac......
         </div>
     </a>
     

@@ -142,6 +142,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -150,13 +157,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -417,259 +417,17 @@
 <td>否</td>
 <td>org.apache.hadoop.io.compress.SnappyCodec</td>
 </tr>
-<tr>
-<td>### 数据压缩-使用场景？</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- HDFS命令行写入：将数据压缩后写入</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Flume写入：写入时指定hdfs.codeC参数</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Sqoop写入：写入时指定参数</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>–compression-codec org.apache.hadoop.io.compress.SnappyCodec</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- HBase 数据存储: 创建表时指定</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>create ‘xx_table’, {NAME =&gt; ‘xx_cf’, COMPRESSION =&gt; ‘GZ’}</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Mapreduce中间结果和最终结果：hadoop jar xxx “-Dmapred.compress.map.output=true” \</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>“-Dmapred.map.output.compression.codec=xxx” \</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>“-Dmapred.output.compress=true” “-Dmapred.output.compression.codec=xxx”</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Hive中间结果和最终结果：</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>set hive.exec.compress.intermediate=true</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>set mapred.map.output.compression.codec=xxx</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>set mapred.map.output.compression.codec=xxx</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>set hive.exec.compress.output=true</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>set mapred.output.compression.codec=xxx</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Spark（RDD分区、广播变量、shuffle输出）：</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>• rdd：spark.rdd.compress，是否压缩已序列化的rdd，默认关闭</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>• broadcast：spark.broadcast.compress，是否压缩broadcast数据，默认打开</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>• 结果存储：saveAsTextFile(path,codec)</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>• 压缩算法：spark.io.compression.codec，默认为snappy</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody></table>
+<h3 id="数据压缩-使用场景？"><a href="#数据压缩-使用场景？" class="headerlink" title="数据压缩-使用场景？"></a>数据压缩-使用场景？</h3><ul>
+<li>HDFS命令行写入：将数据压缩后写入</li>
+<li>Flume写入：写入时指定hdfs.codeC参数</li>
+<li>Sqoop写入：写入时指定参数</li>
+<li>-compression-codec org.apache.hadoop.io.compress.SnappyCodec</li>
+<li>HBase 数据存储: 创建表时指定<br>create ‘xx_table’, {NAME =&gt; ‘xx_cf’, COMPRESSION =&gt; ‘GZ’}</li>
+<li>Mapreduce中间结果和最终结果：hadoop jar xxx “-Dmapred.compress.map.output=true” <br>“-Dmapred.map.output.compression.codec=xxx” <br>“-Dmapred.output.compress=true” “-Dmapred.output.compression.codec=xxx”</li>
+<li>Hive中间结果和最终结果：<br>set hive.exec.compress.intermediate=true<br>set mapred.map.output.compression.codec=xxx<br>set mapred.map.output.compression.codec=xxx<br>set hive.exec.compress.output=true<br>set mapred.output.compression.codec=xxx</li>
+<li>Spark（RDD分区、广播变量、shuffle输出）：<br>• rdd：spark.rdd.compress，是否压缩已序列化的rdd，默认关闭<br>• broadcast：spark.broadcast.compress，是否压缩broadcast数据，默认打开<br>• 结果存储：saveAsTextFile(path,codec)<br>• 压缩算法：spark.io.compression.codec，默认为snappy</li>
+</ul>
 <h3 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h3><ul>
 <li>选择何种压缩格式：<ul>
 <li>考虑是否支持切分</li>
@@ -768,7 +526,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS环境搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS关键设置及常见问题"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS关键设置及常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用配置"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">常用配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常见问题"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#小文件问题"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">小文件问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Namenode内存管理"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Namenode内存管理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据迁移"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">数据迁移</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据平衡"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">数据平衡</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs-balancer"><span class="toc-nav-number">2.2.4.1.</span> <span class="toc-nav-text">hdfs balancer</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何提高数据存取效率"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何提高数据存取效率</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据压缩-作用"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">数据压缩-作用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-评价指标"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">数据压缩-评价指标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-类型"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">数据压缩-类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#纠删码（hadoop3-0之后的功能）"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">纠删码（hadoop3.0之后的功能）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-1"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异构存储"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">异构存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令-1"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-2"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS环境搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS关键设置及常见问题"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">HDFS关键设置及常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用配置"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">常用配置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常见问题"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">常见问题</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#小文件问题"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">小文件问题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Namenode内存管理"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">Namenode内存管理</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据迁移"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">数据迁移</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据平衡"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">数据平衡</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs-balancer"><span class="toc-nav-number">2.2.4.1.</span> <span class="toc-nav-text">hdfs balancer</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何提高数据存取效率"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">如何提高数据存取效率</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据压缩-作用"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">数据压缩-作用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-评价指标"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">数据压缩-评价指标</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-类型"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">数据压缩-类型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据压缩-使用场景？"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">数据压缩-使用场景？</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议"><span class="toc-nav-number">3.1.4.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#纠删码（hadoop3-0之后的功能）"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">纠删码（hadoop3.0之后的功能）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-1"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#异构存储"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">异构存储</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#相关命令-1"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">相关命令</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用建议-2"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">使用建议</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>

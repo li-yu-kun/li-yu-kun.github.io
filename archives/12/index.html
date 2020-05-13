@@ -134,6 +134,13 @@
 
                         
                         <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -142,13 +149,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -246,21 +246,16 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]05 shell 脚本语法/">
+    <a href="/article/[Linux]06 大数据常用shell脚本案例/">
         <h2 class="post-title">
                                  
-            [Linux]05 shell 脚本语法
+            [Linux]06 大数据常用shell脚本案例
         </h2>
         <h3 class="post-subtitle">
-            调度|执行|软连接
+            HDFS文件判断是否存在
         </h3>
         <div class="post-content-preview">
-            入门
-shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
-而且脚本需要有执行权限+x
-我们也可以通过sh [文件名] 来执行本文件；也是用sh命令来执行这个脚本
-
-123456789101112131415161718192021222324252627[hadoop@hadoop data]$ sh --helpGNU bash, version 4.2.46(2)-releas......
+            HDFS文件判断是否存在123456789hdfs dfs -test -e $outputPathif [ $? -eq 0 ]; then    echo &quot;rm outputPath: $outputPath&quot;    hdfs dfs -rm -r $outputPathfi...
         </div>
     </a>
     
@@ -280,16 +275,21 @@ shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]06 大数据常用shell脚本案例/">
+    <a href="/article/[Linux]05 shell 脚本语法/">
         <h2 class="post-title">
                                  
-            [Linux]06 大数据常用shell脚本案例
+            [Linux]05 shell 脚本语法
         </h2>
         <h3 class="post-subtitle">
-            HDFS文件判断是否存在
+            调度|执行|软连接
         </h3>
         <div class="post-content-preview">
-            HDFS文件判断是否存在123456789hdfs dfs -test -e $outputPathif [ $? -eq 0 ]; then    echo &quot;rm outputPath: $outputPath&quot;    hdfs dfs -rm -r $outputPathfi...
+            入门
+shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
+而且脚本需要有执行权限+x
+我们也可以通过sh [文件名] 来执行本文件；也是用sh命令来执行这个脚本
+
+123456789101112131415161718192021222324252627[hadoop@hadoop data]$ sh --helpGNU bash, version 4.2.46(2)-releas......
         </div>
     </a>
     
