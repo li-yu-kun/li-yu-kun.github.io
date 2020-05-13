@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,102 +211,6 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Spark]08 Spark操作外部数据源/">
-        <h2 class="post-title">
-                                 
-            [Spark]08 Spark操作外部数据源
-        </h2>
-        <h3 class="post-subtitle">
-            操作Parquet文件数据、操作Hive表数据、操作MySQL表数据
-        </h3>
-        <div class="post-content-preview">
-            @[toc]
-产生背景每个Spark应用程序从读取数据开始，到保存数据结束
-
-加载和保存数据是不容易的比如大数据场景解析关系型数据库需要用工具如sqoop将数据转到hbase等。
-解析原始数据也不容易 ：text/json/parquet
-数据直接的转换也麻烦
-数据集存储在各个存储系统中无法统一拉取和推送
-
-用户的需要：    方便快速从不同的数据源（json、parquet、rdbms），......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-05-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Spark" title="Spark">Spark</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Spark]10 Spark Streaming入门/">
-        <h2 class="post-title">
-                                 
-            [Spark]10 Spark Streaming入门
-        </h2>
-        <h3 class="post-subtitle">
-            spark概念、Spark Streaming应用场景、Spark Streaming集成Spark生态系统的使用、Spark Streaming发展史、从词频统计功能着手入门Spark Streaming、spark-submit提交、spark-shell提交、Spark Streaming工作原理(粗粒度)、Spark Streaming工作原理(细粒度)
-        </h3>
-        <div class="post-content-preview">
-            spark概念Spark流是核心Spark API的扩展，它支持对实时数据流进行可伸缩、高吞吐量、容错的流处理。数据可以从Kafka、Flume、Kinesis或TCP sockets等许多来源获取，也可以使用map、reduce、join和window等高级函数表示的复杂算法进行处理。最后，可以将处理后的数据推送到文件系统、数据库和实时仪表板。事实上，您可以将Spark的机器学习和图形处理......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-05-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Spark" title="Spark">Spark</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Spark]14 Spark Streaming整合Kafka/">
-        <h2 class="post-title">
-                                 
-            [Spark]14 Spark Streaming整合Kafka
-        </h2>
-        <h3 class="post-subtitle">
-            Spark Streaming整合Kafka的版本选择详解、Receiver方式整合之概述、Receiver方式整合之Kafka测试、Receiver方式整合之Spark、Streaming应用开发、Receiver方式整合之本地环境联调、Receiver方式整合之服务器环境联调及Streaming、UI讲解、Direct方式整合之概述（推荐）、Direct方式整合之Spark Streaming应用开发及本地环境测试、Direct方式整合之服务器环境联调
-        </h3>
-        <div class="post-content-preview">
-            官方文档：http://spark.apache.org/docs/2.2.0/streaming-kafka-integration.html
-Spark Streaming整合Kafka的版本选择详解在spark2.2之前建议选择spark-streaming-kafka-0-8版本；虽然spark-streaming-kafka-0-10是优化更好的；但是2.2之前的相关api还不稳定......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-05-29
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Spark" title="Spark">Spark</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/article/[Spark]09 Spark SQL扩展和总结/">
         <h2 class="post-title">
                                  
@@ -346,6 +250,73 @@ SQL Analyzer
 
 <div class="post-preview">
 
+    <a href="/article/[Spark]12 Spark Streaming进阶与案例实战/">
+        <h2 class="post-title">
+                                 
+            [Spark]12 Spark Streaming进阶与案例实战
+        </h2>
+        <h3 class="post-subtitle">
+            实战之updateStateByKey算子的使用、Checkpointing、何时启用检查点、实战之将统计结果写入到MySQL数据库中、实战之窗口函数的使用、实战之黑名单过滤、实战之Spark Streaming整合Spark SQL操作
+        </h3>
+        <div class="post-content-preview">
+            实战之updateStateByKey算子的使用updateStateByKey操作允许您在使用新信息不断更新状态的同时维护任意状态。要使用它，您需要执行两个步骤。1、定义状态——状态可以是任意数据类型。2、定义状态更新函数——用函数指定如何使用以前的状态和输入流中的新值更新状态。
+在每个批处理中，Spark将为所有现有键应用状态更新功能，而不管它们是否在批处理中有新数据。如果update函......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-05-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Spark" title="Spark">Spark</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Spark]08 Spark操作外部数据源/">
+        <h2 class="post-title">
+                                 
+            [Spark]08 Spark操作外部数据源
+        </h2>
+        <h3 class="post-subtitle">
+            操作Parquet文件数据、操作Hive表数据、操作MySQL表数据
+        </h3>
+        <div class="post-content-preview">
+            @[toc]
+产生背景每个Spark应用程序从读取数据开始，到保存数据结束
+
+加载和保存数据是不容易的比如大数据场景解析关系型数据库需要用工具如sqoop将数据转到hbase等。
+解析原始数据也不容易 ：text/json/parquet
+数据直接的转换也麻烦
+数据集存储在各个存储系统中无法统一拉取和推送
+
+用户的需要：    方便快速从不同的数据源（json、parquet、rdbms），......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-05-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Spark" title="Spark">Spark</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Spark]11 Spark Streaming核心概念与编程/">
         <h2 class="post-title">
                                  
@@ -357,6 +328,35 @@ SQL Analyzer
         <div class="post-content-preview">
             Spark streaming以及基本工作原理接收实时输入数据流，然后将数据拆分成多个batch，比如每收集1秒的数据封装为一个batch，然后将每个batch交给Spark的计算引擎进行处理，最后会生产出一个结果数据流，其中的数据，也是由一个一个的batch所组成的。
 核心概念之StreamingContext要初始化一个Spark流程序，必须创建一个StreamingContext对象，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-05-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Spark" title="Spark">Spark</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Spark]10 Spark Streaming入门/">
+        <h2 class="post-title">
+                                 
+            [Spark]10 Spark Streaming入门
+        </h2>
+        <h3 class="post-subtitle">
+            spark概念、Spark Streaming应用场景、Spark Streaming集成Spark生态系统的使用、Spark Streaming发展史、从词频统计功能着手入门Spark Streaming、spark-submit提交、spark-shell提交、Spark Streaming工作原理(粗粒度)、Spark Streaming工作原理(细粒度)
+        </h3>
+        <div class="post-content-preview">
+            spark概念Spark流是核心Spark API的扩展，它支持对实时数据流进行可伸缩、高吞吐量、容错的流处理。数据可以从Kafka、Flume、Kinesis或TCP sockets等许多来源获取，也可以使用map、reduce、join和window等高级函数表示的复杂算法进行处理。最后，可以将处理后的数据推送到文件系统、数据库和实时仪表板。事实上，您可以将Spark的机器学习和图形处理......
         </div>
     </a>
     
@@ -441,17 +441,17 @@ Flume 可以配置为将数据推送到机器上的端口。
 
 <div class="post-preview">
 
-    <a href="/article/[Spark]12 Spark Streaming进阶与案例实战/">
+    <a href="/article/[Spark]14 Spark Streaming整合Kafka/">
         <h2 class="post-title">
                                  
-            [Spark]12 Spark Streaming进阶与案例实战
+            [Spark]14 Spark Streaming整合Kafka
         </h2>
         <h3 class="post-subtitle">
-            实战之updateStateByKey算子的使用、Checkpointing、何时启用检查点、实战之将统计结果写入到MySQL数据库中、实战之窗口函数的使用、实战之黑名单过滤、实战之Spark Streaming整合Spark SQL操作
+            Spark Streaming整合Kafka的版本选择详解、Receiver方式整合之概述、Receiver方式整合之Kafka测试、Receiver方式整合之Spark、Streaming应用开发、Receiver方式整合之本地环境联调、Receiver方式整合之服务器环境联调及Streaming、UI讲解、Direct方式整合之概述（推荐）、Direct方式整合之Spark Streaming应用开发及本地环境测试、Direct方式整合之服务器环境联调
         </h3>
         <div class="post-content-preview">
-            实战之updateStateByKey算子的使用updateStateByKey操作允许您在使用新信息不断更新状态的同时维护任意状态。要使用它，您需要执行两个步骤。1、定义状态——状态可以是任意数据类型。2、定义状态更新函数——用函数指定如何使用以前的状态和输入流中的新值更新状态。
-在每个批处理中，Spark将为所有现有键应用状态更新功能，而不管它们是否在批处理中有新数据。如果update函......
+            官方文档：http://spark.apache.org/docs/2.2.0/streaming-kafka-integration.html
+Spark Streaming整合Kafka的版本选择详解在spark2.2之前建议选择spark-streaming-kafka-0-8版本；虽然spark-streaming-kafka-0-10是优化更好的；但是2.2之前的相关api还不稳定......
         </div>
     </a>
     
@@ -595,11 +595,11 @@ sparks......
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
             
         
             
-            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
