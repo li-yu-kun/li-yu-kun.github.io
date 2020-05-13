@@ -142,13 +142,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -157,6 +150,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -238,8 +238,13 @@
 </ul>
 </li>
 </ul>
-<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h2 id="Scala语法基础-从Hello-World说起"><a href="#Scala语法基础-从Hello-World说起" class="headerlink" title="Scala语法基础-从Hello World说起"></a>Scala语法基础-从Hello World说起</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<p><strong>Scala</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def products=orders.flatMap(o=&gt;o.products)</span><br></pre></td></tr></table></figure>
+<p><strong>Java</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public List&lt;Product&gt; getProducts()&#123;</span><br><span class="line">	List&lt;Product&gt; products = new ArrayList&lt;Product&gt;();</span><br><span class="line">	for(Order order : orders)&#123;</span><br><span class="line">		products.addAll(order.getProducts());</span><br><span class="line">	&#125;</span><br><span class="line">	return products;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Scala语法基础-从Hello-World说起"><a href="#Scala语法基础-从Hello-World说起" class="headerlink" title="Scala语法基础-从Hello World说起"></a>Scala语法基础-从Hello World说起</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Public class HelloWorld&#123;</span><br><span class="line">	public static void main(String[] args)&#123;</span><br><span class="line">		System.out.println(&quot;Hello,World!&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">object HelloWorld&#123;</span><br><span class="line">	def main(args:Array[String]):Unit = &#123;</span><br><span class="line">		println(&quot;Hello,World!&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Scala值和变量声明"><a href="#Scala值和变量声明" class="headerlink" title="Scala值和变量声明"></a>Scala值和变量声明</h2><ul>
 <li>val变量和var变量<ul>
 <li>val声明的变量不可变，相当于java中的final<ul>
@@ -256,7 +261,7 @@
 </li>
 <li>在scala的类中，val会自动带有getter方法，var会自动带有getter和setter方法</li>
 </ul>
-<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<p><img src="3.png" alt=""></p>
 <h2 id="Scala常用类型"><a href="#Scala常用类型" class="headerlink" title="Scala常用类型"></a>Scala常用类型</h2><ul>
 <li>Scala没有区分基本类型和包装类型，统一定义为class类。<ul>
 <li>1.toString() // 生成字符串1</li>
@@ -281,6 +286,7 @@
 </li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">• 方法定义</span><br><span class="line">	• 格式</span><br><span class="line">	def 方法名(参数名: 参数类型): 返回值类型 = &#123;</span><br><span class="line">		return xxx // return可省略</span><br><span class="line">	&#125;</span><br><span class="line">	• 当返回值为unit时</span><br><span class="line">	def 方法名(参数名: 参数类型) &#123;</span><br><span class="line">		// 方法体</span><br><span class="line">	&#125;</span><br><span class="line">	• 无参数函数定义</span><br><span class="line">	def 方法名 &#123;</span><br><span class="line">		// 方法体</span><br><span class="line">	&#125;</span><br><span class="line">• Example</span><br><span class="line">	def m1(a: Int, b: Int): Int = &#123;</span><br><span class="line">		a + b</span><br><span class="line">	&#125;</span><br><span class="line">	def m2() = 100</span><br><span class="line">	def m3 = 100</span><br></pre></td></tr></table></figure>
+
 <h2 id="函数的定义和使用"><a href="#函数的定义和使用" class="headerlink" title="函数的定义和使用"></a>函数的定义和使用</h2><ul>
 <li>函数定义<ul>
 <li>函数在scala中是一等公民</li>
@@ -360,7 +366,11 @@
 </ul>
 </li>
 </ul>
-<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p><strong>Java</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">	methodThatThrowsIOException();</span><br><span class="line">&#125;<span class="keyword">catch</span>(IOException e)&#123;</span><br><span class="line">	<span class="comment">//do IOException</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(Throwable e)&#123;</span><br><span class="line">	<span class="comment">//do Throwable</span></span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">	<span class="comment">//do finally</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Scala</strong>使用模式匹配捕获异常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">try&#123;</span><br><span class="line">	methodThatMayThrowAnException()</span><br><span class="line">&#125;catch&#123;</span><br><span class="line">	case e:IOException =&gt; // do IOException</span><br><span class="line">	case _:Throwable =&gt; // do Throwable</span><br><span class="line">&#125;finally&#123;</span><br><span class="line">	//do finally</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>如果在.map, .flatMap中遇到异常如何处理？</li>
 <li>Scala提供了scala.util.Try 类型更加优雅的处理异常<ul>
@@ -369,7 +379,8 @@
 </ul>
 </li>
 </ul>
-<p><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import scala.util.&#123;Try,Success,Failure&#125;</span><br><span class="line">def divideBy(x:Int,y:Int):Try[Int]=&#123;</span><br><span class="line">	Try(x/y)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">divideBy(1,0)match&#123;</span><br><span class="line">	case Success(i) =&gt; println(s&quot;Success,value is:$i&quot;)</span><br><span class="line">	case Failure(s) =&gt; println(s&quot;Failed,message is:$s&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//Failed,message is:java.lang.ArithmeticException:/by zero</span><br><span class="line">println(divideBy(1,1).getOrElse(0))//1</span><br><span class="line">println(divideBy(1,0).getOrElse(0))//0</span><br><span class="line"></span><br><span class="line">50.to(55).zip(0.to(5)).map(pair =&gt; divideBy(pair._1,pair._2).getOrElse(0))</span><br><span class="line">//scala.collection.immutable.lndexedSeq[Int] = Vector(0,51,17,13,11)</span><br></pre></td></tr></table></figure>
+
 <h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><p><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
 <h2 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h2><ul>
 <li>Scala继承类和java一样使用extends关键字</li>
@@ -406,7 +417,7 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Linux]04 使用shell脚本发送邮件 四/" data-toggle="tooltip" data-placement="top" title="[Linux]04 使用shell脚本发送邮件 四">&larr; Previous Post</a>
+                            <a href="/article/[Linux]06 使用shell脚本发送邮件 四/" data-toggle="tooltip" data-placement="top" title="[Linux]04 使用shell脚本发送邮件 四">&larr; Previous Post</a>
                         </li>
                     
                     

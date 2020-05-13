@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -211,26 +211,34 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]03 scala语言知识点 三/">
+    <a href="/article/[Spark]08 Spark操作外部数据源/">
         <h2 class="post-title">
                                  
-            [Scala]03 scala语言知识点 三
+            [Spark]08 Spark操作外部数据源
         </h2>
         <h3 class="post-subtitle">
-            
+            操作Parquet文件数据、操作Hive表数据、操作MySQL表数据
         </h3>
         <div class="post-content-preview">
-            ...
+            @[toc]
+产生背景每个Spark应用程序从读取数据开始，到保存数据结束
+
+加载和保存数据是不容易的比如大数据场景解析关系型数据库需要用工具如sqoop将数据转到hbase等。
+解析原始数据也不容易 ：text/json/parquet
+数据直接的转换也麻烦
+数据集存储在各个存储系统中无法统一拉取和推送
+
+用户的需要：    方便快速从不同的数据源（json、parquet、rdbms），......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2018-01-10
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -240,28 +248,26 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]04 使用shell脚本发送邮件 四/">
+    <a href="/article/[Spark]10 Spark Streaming入门/">
         <h2 class="post-title">
                                  
-            [Linux]04 使用shell脚本发送邮件 四
+            [Spark]10 Spark Streaming入门
         </h2>
         <h3 class="post-subtitle">
-            前置条件、使用脚本发送普通邮件、带表格告警的邮件
+            spark概念、Spark Streaming应用场景、Spark Streaming集成Spark生态系统的使用、Spark Streaming发展史、从词频统计功能着手入门Spark Streaming、spark-submit提交、spark-shell提交、Spark Streaming工作原理(粗粒度)、Spark Streaming工作原理(细粒度)
         </h3>
         <div class="post-content-preview">
-            前置条件要使用脚本发送邮件，必须设置发送邮箱开启IMAP/SMTP服务。否则将会报错。
-同时脚本所在服务器需要有sendEmail命令
-1234567891011121314#下载安装包wget http://caspian.dotconf.net/menu/Software/SendEmail/sendEmail-v1.56.tar.gz#创建目录mkdir -p /usr/local/b......
+            spark概念Spark流是核心Spark API的扩展，它支持对实时数据流进行可伸缩、高吞吐量、容错的流处理。数据可以从Kafka、Flume、Kinesis或TCP sockets等许多来源获取，也可以使用map、reduce、join和window等高级函数表示的复杂算法进行处理。最后，可以将处理后的数据推送到文件系统、数据库和实时仪表板。事实上，您可以将Spark的机器学习和图形处理......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2018-01-02
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#Linux" title="Linux">Linux</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -271,48 +277,27 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]02 scala语言知识点 二/">
+    <a href="/article/[Spark]14 Spark Streaming整合Kafka/">
         <h2 class="post-title">
                                  
-            [Scala]02 scala语言知识点 二
+            [Spark]14 Spark Streaming整合Kafka
         </h2>
         <h3 class="post-subtitle">
-            Scala值和变量声明、Scala常用类型、方法与函数的定义和使用以及区别、Scala的call-by-name和call-by-value、循环和高级for循环、常见集合使用、异常处理、类定义继承、单例对象、函数式编程思想
+            Spark Streaming整合Kafka的版本选择详解、Receiver方式整合之概述、Receiver方式整合之Kafka测试、Receiver方式整合之Spark、Streaming应用开发、Receiver方式整合之本地环境联调、Receiver方式整合之服务器环境联调及Streaming、UI讲解、Direct方式整合之概述（推荐）、Direct方式整合之Spark Streaming应用开发及本地环境测试、Direct方式整合之服务器环境联调
         </h3>
         <div class="post-content-preview">
-            Scala是一门怎样的语言，具有哪些优点？
-快速实验
-快速尝试各种语法和代码
-
-
-一致性
-静态类型系统+面向对象+函数式编程
-
-
-面向对象
-所有的变量和方法都封装在对象中
-
-
-函数式编程
-函数可以独立存在，可以定义一个函数作为另外一个函数的返回值，也可以接受函数作为函数的参数
-
-
-异步编程
-函数式编程提倡变量不可变，使得异步编程变得十分容易
-
-
-基于JVM
-Scala会被编译成为Byteco......
+            官方文档：http://spark.apache.org/docs/2.2.0/streaming-kafka-integration.html
+Spark Streaming整合Kafka的版本选择详解在spark2.2之前建议选择spark-streaming-kafka-0-8版本；虽然spark-streaming-kafka-0-10是优化更好的；但是2.2之前的相关api还不稳定......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-12-24
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -322,28 +307,36 @@ Scala会被编译成为Byteco......
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]01 scala编程IDEA环境 一/">
+    <a href="/article/[Spark]09 Spark SQL扩展和总结/">
         <h2 class="post-title">
                                  
-            [Scala]01 scala编程IDEA环境 一
+            [Spark]09 Spark SQL扩展和总结
         </h2>
         <h3 class="post-subtitle">
-            IDEA搭建环境步骤、pom文件
+            Spark SQL使用场景、Spark SQL 原理、SQL Analyzer、SQL Optimizer、SQL Optimizer 谓词下推、SQL Optimizer 列值裁剪、SQL Planner、Spark SQL加载数据、RDD DataFrame/Dataset、Local Cloud(HDFS/S3)、DataFrame与SQL的对比、Schema、SaveMode、处理复杂的JSON数据、SQL的覆盖程度、外部数据源
         </h3>
         <div class="post-content-preview">
-            1、新建一个maven项目；点击next2、项目分组id和项目名称；点击next3、选择自己的maven路径；点击next4、点击finish
-pom文件
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364......
+            @[toc]
+Spark SQL使用场景
+文件中数据的特殊查询（即席查询；即席查询是可以进行特殊的字段查询自定义的查询；普通查询就是别人已经定义好的查询方式）
+实时SQL分析流数据
+可以进行ETL操作
+与外部数据库的交互
+具有更大集群的可伸缩查询性能Spark SQL 原理求大于18岁的同学总成绩平均分
+
+原理SQL Parser
+SQL Analyzer
+经过Parser之后的Logica......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-12-20
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -353,32 +346,27 @@ pom文件
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]06 Phoenix入门 六/">
+    <a href="/article/[Spark]11 Spark Streaming核心概念与编程/">
         <h2 class="post-title">
                                  
-            [HBase]06 Phoenix入门 六
+            [Spark]11 Spark Streaming核心概念与编程
         </h2>
         <h3 class="post-subtitle">
-            Phoenix简介、Phoenix安装、Phoenix使用
+            Spark streaming以及基本工作原理、核心概念之StreamingContext、核心概念之DStream、核心概念之Input DStreams和Receivers：基本资源-高级资源、核心概念之Transformation和Output Operations、spark streaming中有状态转化操作？：介绍 无状态转换的例子 有状态转换 基于窗口的转化操作 检查点机制 驱动器程序容错 并行度、案例实战之Spark Streaming处理socket数据、案例实战之Spark Streaming处理文件系统数据
         </h3>
         <div class="post-content-preview">
-            Phoenix简介
-构建在Apache HBase之上的一个SQL中间层
-可以在Apache HBase上执行SQL查询,性能强劲
-较完善的查询支持,支持二级索引,查询效率较高
-OLTP and operational analytics for Apache Hadoop
-
-小知识插入：OLTP 联机事务处理  比如关系型数据库 Oracle MySQLOLAP 联机分析处理  比如hiv......
+            Spark streaming以及基本工作原理接收实时输入数据流，然后将数据拆分成多个batch，比如每收集1秒的数据封装为一个batch，然后将每个batch交给Spark的计算引擎进行处理，最后会生产出一个结果数据流，其中的数据，也是由一个一个的batch所组成的。
+核心概念之StreamingContext要初始化一个Spark流程序，必须创建一个StreamingContext对象，......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-12-08
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -388,29 +376,32 @@ OLTP and operational analytics for Apache Hadoop
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]05 HBase容灾与监控 五/">
+    <a href="/article/[Spark]13 Spark Streaming整合Flume/">
         <h2 class="post-title">
                                  
-            [HBase]05 HBase容灾与监控 五
+            [Spark]13 Spark Streaming整合Flume
         </h2>
         <h3 class="post-subtitle">
-            Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
+            Push方式整合之概述、Push方式整合之Flume、Agent配置开发、Push方式整合之Spark、Streaming应用开发、Push方式整合之本地IDEA环境联调、Push方式整合之服务器环境联调、Pull方式整合之概述（推荐）、Pull方式整合之Spark、Streaming应用开发、Pull方式整合之本地IDEA环境联调、Pull方式整合之服务器环境联调
         </h3>
         <div class="post-content-preview">
-            Hbase备份与恢复四种方案：◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot
-CopyTable
-支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,
-CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读......
+            官方文档http://spark.apache.org/docs/2.2.0/streaming-flume-integration.html
+Push方式整合之概述在集群中选择一台这样的机器
+
+启动Flume + Spark流媒体应用程序时，必须在该机器上运行其中一个Spark处理程序。
+Flume 可以配置为将数据推送到机器上的端口。
+
+由于采用了推送模型，streaming应用程序需要......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-12-01
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -420,27 +411,27 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
 
 <div class="post-preview">
 
-    <a href="/article/数据仓库实战1.0 三/">
+    <a href="/article/[Spark]15 Spark Streaming整合Flume&Kafka/">
         <h2 class="post-title">
                                  
-            数据仓库实战1.0 三
+            [Spark]15 Spark Streaming整合Flume&Kafka
         </h2>
         <h3 class="post-subtitle">
-            dws层、ads层需求
+            处理流程画图剖析、日志产生器开发并结合log4j完成日志的输出、使用Flume采集Log4j产生的日志、使用KafkaSInk将Flume收集到的数据输出到Kafka、Spark Streaming消费Kafka的数据进行统计、本地测试和生产环境使用的拓展
         </h3>
         <div class="post-content-preview">
-            DWS层取出所有需要的字段明细，接下来的ads需求报表都会取决于这个dws层的报表。
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#!/bin/bash#parameters#mac: YESTERDAY=`da......
+            处理流程画图剖析
+日志产生器开发并结合log4j完成日志的输出123456789101112131415161718import org.apache.log4j.Logger;/** * 模拟日志产生 */public class LoggerGenerator &#123;    private static Logger logger = Logger.getLogger(Logger......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-11-26
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -450,28 +441,27 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
 
 <div class="post-preview">
 
-    <a href="/article/数据仓库实战1.0 二/">
+    <a href="/article/[Spark]12 Spark Streaming进阶与案例实战/">
         <h2 class="post-title">
                                  
-            数据仓库实战1.0 二
+            [Spark]12 Spark Streaming进阶与案例实战
         </h2>
         <h3 class="post-subtitle">
-            ODS、DWD层的详细操作
+            实战之updateStateByKey算子的使用、Checkpointing、何时启用检查点、实战之将统计结果写入到MySQL数据库中、实战之窗口函数的使用、实战之黑名单过滤、实战之Spark Streaming整合Spark SQL操作
         </h3>
         <div class="post-content-preview">
-            数仓架构
-数仓分层流程
-数仓分层搭建建表语句123456789101112131415161718192021222324252627282930313233343536373839404142434445464748drop table erp.ods_depothead;CREATE  TABLE erp.ods_depothead (Id bigint ,Type string ,Su......
+            实战之updateStateByKey算子的使用updateStateByKey操作允许您在使用新信息不断更新状态的同时维护任意状态。要使用它，您需要执行两个步骤。1、定义状态——状态可以是任意数据类型。2、定义状态更新函数——用函数指定如何使用以前的状态和输入流中的新值更新状态。
+在每个批处理中，Spark将为所有现有键应用状态更新功能，而不管它们是否在批处理中有新数据。如果update函......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-11-17
+            2019-05-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -481,34 +471,31 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
 
 <div class="post-preview">
 
-    <a href="/article/数据仓库实战1.0 一/">
+    <a href="/article/[Spark]07 DateFrame&Dataset/">
         <h2 class="post-title">
                                  
-            数据仓库实战1.0 一
+            [Spark]07 DateFrame&Dataset
         </h2>
         <h3 class="post-subtitle">
-            ERP系统、数仓与数据集市概念、数仓分层、数仓建模
+            DataFrame产生背景、DataFrame概述、DataFrame和RDD的对比、DataFrame基本API操作、DataFrame与RDD互操作方式、DataFrame API操作案例实战、DataSet概述及使用
         </h3>
         <div class="post-content-preview">
-            ERP系统制造业和电商行业等的ERP系统随着时间的增加数据量不断扩张，带来的问题就是数据量过大，传统的数据库无法实现特定的指标分析。
-术语：
+            DataFrame产生背景DataFrame它不是Spark SQL提出的，而是早起在R、Pandas语言就已经有了的。
 
-SPU = Standard Product Unit 
-（标准产品单位）SPU是商品信息聚合的最小单位，是一组可复用、易检索的标准化信息的集合，该集合描述了一个产品的特性。
-例如：iPhone X 可以确定一个产品即为一个SPU。
+Spark RDD API vs MapReduce API        Threshold使用spark和mr开发需要学习对应语言scala和java等；门槛较高
+R/Pandas            one machine这些语言仅仅支持单机处理
 
-
-SKU=St......
+sparks......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-11-09
+            2019-05-25
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -518,27 +505,28 @@ SKU=St......
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]04 深入了解HBase架构 四/">
+    <a href="/article/[Spark]06 Spark环境搭建/">
         <h2 class="post-title">
                                  
-            [HBase]04 深入了解HBase架构 四
+            [Spark]06 Spark环境搭建
         </h2>
         <h3 class="post-subtitle">
-            Hbase架构大全，包含组件、读写、底层原理
+            Spark源码编译、Spark单机环境搭建
         </h3>
         <div class="post-content-preview">
-            HBase体系结构组件在物理上，HBase由三种服务器组成，属于主从架构。regionserver为读写提供数据。在访问数据时，客户端直接与HBase regionserver通信。region分配、DDL(创建、删除表)操作由HBase主进程处理。Zookeeper是HDFS的一部分，它的作用是维护集群的状态。
-Hadoop DataNode存储Region Server的数据。所有HBa......
+            Spark源码编译1 写在前面的话有些小伙伴可能会问：Spark官网不是已经提供了Spark针对不同版本的安装包了吗，我们为什么还需要对Spark源码进行编译呢？针对这个问题我们到Spark官网: spark.apache.org来看下，如下图所示:Spark官网的确是提供了一些Hadoop版本的Spark安装包，但是提供的这些是否能够满足我们的要求呢？答案肯定是否定的，原因如下几点
+
+在生......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-11-01
+            2019-05-21
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -591,11 +579,11 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
     <div class="tags">
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
@@ -611,15 +599,19 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
             
         
             
+            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
+            
+        
+            
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
             
         
             
-            <a href="/tags/#MapReduce" title="MapReduce" rel="3">MapReduce</a>
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="4">Hive</a>
+            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
             
         
             
@@ -631,7 +623,7 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="5">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="7">Linux</a>
             
         
             
@@ -643,7 +635,15 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
             
         
             
-            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            <a href="/tags/#Spark" title="Spark" rel="17">Spark</a>
+            
+        
+            
+            <a href="/tags/#Sqoop" title="Sqoop" rel="1">Sqoop</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
             
@@ -703,23 +703,23 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%5BSpark%5D%20Spark%E5%AD%A6%E4%B9%A0-shuffle%E5%92%8CRDD/">[Spark] Spark学习-shuffle和RDD</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%5BSpark%5D%20spark%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B(%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90)/">[Spark] spark编程模型(各种算子)</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8A%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4/">[Flink] Flink的部署以及作业提交</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%8A%B6%E6%80%81%20-%20Working%20with%20State/">[Flink] Flink中的处理状态 - Working with State</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">[Flink] Flink的分布式运行原理</a>
         </li>
       
     </ul>
@@ -734,7 +734,7 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

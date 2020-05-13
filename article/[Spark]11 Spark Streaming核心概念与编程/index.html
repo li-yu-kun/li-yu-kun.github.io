@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Spark]11 Spark Streaming核心概念与编程 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Spark]11 Spark Streaming核心概念与编程/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                            
+                        </div>
+                        <h1>[Spark]11 Spark Streaming核心概念与编程</h1>
+                        <h2 class="subheading">Spark streaming以及基本工作原理、核心概念之StreamingContext、核心概念之DStream、核心概念之Input DStreams和Receivers：基本资源-高级资源、核心概念之Transformation和Output Operations、spark streaming中有状态转化操作？：介绍 无状态转换的例子 有状态转换 基于窗口的转化操作 检查点机制 驱动器程序容错 并行度、案例实战之Spark Streaming处理socket数据、案例实战之Spark Streaming处理文件系统数据</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2019-05-29
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="Spark-streaming以及基本工作原理"><a href="#Spark-streaming以及基本工作原理" class="headerlink" title="Spark streaming以及基本工作原理"></a>Spark streaming以及基本工作原理</h2><p>接收实时输入数据流，然后将数据拆分成多个batch，比如每收集1秒的数据封装为一个batch，然后将每个batch交给Spark的计算引擎进行处理，最后会生产出一个结果数据流，其中的数据，也是由一个一个的batch所组成的。<br><img src="https://img-blog.csdnimg.cn/20181205161823149.png" alt="在这里插入图片描述"></p>
+<h2 id="核心概念之StreamingContext"><a href="#核心概念之StreamingContext" class="headerlink" title="核心概念之StreamingContext"></a>核心概念之StreamingContext</h2><p>要初始化一个Spark流程序，必须创建一个StreamingContext对象，它是所有Spark流功能的主要入口点。</p>
+<p>可以从SparkConf对象创建StreamingContext对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.spark._</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.streaming._</span><br><span class="line"></span><br><span class="line">val conf = <span class="keyword">new</span> SparkConf().setAppName(appName).setMaster(master)</span><br><span class="line">val ssc = <span class="keyword">new</span> StreamingContext(conf, Seconds(<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>batch interval可以根据你的应用程序需求的延迟要求以及集群可用的资源情况来设置;具体可以参考官网<br><a href="http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#initializing-streamingcontext" target="_blank" rel="noopener">http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#initializing-streamingcontext</a></p>
+<p><strong>定义上下文之后，您必须执行以下操作</strong>：</p>
+<p>1、通过创建输入DStreams定义输入源。<br>2、通过对DStreams应用转换和输出操作来定义流计算。<br>3、开始接收数据并使用streamingContext.start()进行处理。<br>4、使用streamingContext.awaitTermination()等待进程停止(手动或由于任何错误)。<br>5、可以使用streamingContext.stop()手动停止处理。</p>
+<p><strong>注意</strong></p>
+<ul>
+<li>一旦Context启动，就不能设置或添加新的流计算。</li>
+<li>Context一旦停止，就不能重新启动。【start()不能再stop()之后】</li>
+<li>在同一时段一个StreamingContext只能存活在一个JVM。</li>
+<li>StreamingContext上的stop()也会停止SparkContext。若要仅停止StreamingContext，请将名为stopSparkContext的stop()的可选参数设置为false。</li>
+<li>可以重用SparkContext来创建多个StreamingContext，只要在创建下一个StreamingContext之前停止前一个StreamingContext(不停止SparkContext)。<h2 id="核心概念之DStream"><a href="#核心概念之DStream" class="headerlink" title="核心概念之DStream"></a>核心概念之DStream</h2><a href="http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#discretized-streams-dstreams" target="_blank" rel="noopener">http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#discretized-streams-dstreams</a><br>Discretized Stream或DStream是Sparkstreaming提供的基本抽象。它表示连续的数据流，要么是从源接收到的输入数据流，要么是通过转换输入流生成的经过处理的数据流。在内部，<strong>DStream由一系列连续的rdd表示</strong>，rdd是Spark对不可变的分布式数据集的抽象(有关更多细节，请参阅Spark编程指南)。DStream中的每个RDD都包含来自某个时间间隔的数据，如下图所示。<br><img src="https://img-blog.csdnimg.cn/20181206112443140.png" alt="在这里插入图片描述"><br>应用于DStream的任何操作都转换为底层rdd上的操作。例如，在前面将行流转换为单词的示例中，flatMap映射操作应用于行DStream中的每个RDD，以生成words DStream的RDD。如下图所示。<br><img src="https://img-blog.csdnimg.cn/20181206112544805.png" alt="在这里插入图片描述"><br>这些底层的RDD转换由Spark引擎计算。DStream操作隐藏了大部分细节，并为开发人员提供了一个更高级的API，以便于使用。这些操作将在后面几节中详细讨论。</li>
+</ul>
+<p>个人总结：对DStream操作算子，比如map/flatMap，其实底层会被翻译为对DStream中的每个RDD都做相同的操作；<br>因为一个DStream是由不同批次的RDD所构成的。</p>
+<h2 id="核心概念之Input-DStreams和Receivers"><a href="#核心概念之Input-DStreams和Receivers" class="headerlink" title="核心概念之Input DStreams和Receivers"></a>核心概念之Input DStreams和Receivers</h2><p>Input DStreams是表示从流源头接收的输入数据流的DStreams。</p>
+<p>在这个上个spark学习笔记八的例子中，lines是一个输入DStream，因为它表示从netcat服务器接收到的数据流。</p>
+<p>每个输入DStream(除了文件系统；文件系统已经存在直接就可以处理不需要接受)都与一个Receiver(Scala doc、Java doc)对象相关联，该对象从源接收数据并将其存储在Spark内存中进行处理。</p>
+<p><strong>Spark流提供了两类内置流源</strong>：<br>基本资源:StreamingContext API中直接可用的资源。示例:file systems, socket 连接。<br>高级资源:可以通过额外的实用程序类获得Kafka、Flume、Kinesis等资源。如链接一节中所讨论的，这些需要针对额外依赖项进行链接。</p>
+<p><strong>注意</strong>：<br>1、在本地运行Spark流程序时，不要使用“local”或“local[1]”作为主URL。这两种方法都意味着只使用一个线程在本地运行任务。如果您正在使用基于接收器的输入DStream(例如socket、Kafka、Flume等)，那么将使用单个线程来运行接收器，没有线程来处理接收到的数据。因此，在本地运行时，始终使用“local[n]”作为主URL，其中要运行的接收方数量为n &gt;(有关如何设置主URL的信息，请参阅Spark属性)。<br>2、将逻辑扩展到在集群上运行时，分配给Spark流应用程序的内核数量必须大于接收器的数量。否则系统将接收数据，但无法处理它。</p>
+<h3 id="基本资源"><a href="#基本资源" class="headerlink" title="基本资源"></a>基本资源</h3><p>我们已经在快速示例中查看了ssl . sockettextstream(…)，它从通过TCP套接字连接接收到的文本数据创建DStream。除了套接字，StreamingContext API还提供了从文件创建DStreams作为输入源的方法</p>
+<p>File Streams:对于从与HDFS API(即HDFS、S3、NFS等)兼容的任何文件系统上的文件读取数据，可以将DStream创建为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">streamingContext.fileStream[KeyClass, ValueClass, InputFormatClass](dataDirectory)</span><br></pre></td></tr></table></figure>
+<p>Spark流将监视目录dataDirectory并处理在该目录中创建的任何文件(不支持在嵌套目录中编写的文件)。请注意:</p>
+<ul>
+<li>文件必须具有相同的数据格式。</li>
+<li>必须在dataDirectory中创建文件，方法是将文件原子地移动或重命名到数据目录中。</li>
+<li>一旦移动，文件就不能更改。因此，如果文件是连续追加的，则不会读取新数据。</li>
+</ul>
+<p>对于简单的文本文件，有一个更简单的方法streamingContext.textFileStream(dataDirectory)。文件流不需要运行接收器，因此不需要分配核心。<br>Python API文件流不可用，只有textfilestream可用。</p>
+<h3 id="高级资源"><a href="#高级资源" class="headerlink" title="高级资源"></a>高级资源</h3><p><a href="http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#advanced-sources" target="_blank" rel="noopener">http://spark.apache.org/docs/2.2.0/streaming-programming-guide.html#advanced-sources</a></p>
+<h2 id="核心概念之Transformation和Output-Operations"><a href="#核心概念之Transformation和Output-Operations" class="headerlink" title="核心概念之Transformation和Output Operations"></a>核心概念之Transformation和Output Operations</h2><p>与RDD类似，转换允许修改来自输入DStream的数据。DStreams支持普通Spark RDD上可用的许多转换。一些常见的如下：<br>| Transformation    |  Meaning |<br>|–|–|<br>| map(func) | 通过将源DStream的每个元素传递给函数func来返回一个新的DStream 。 |<br>|  flatMap(func) |  与map类似，但每个输入项可以映射到0个或更多输出项。  |<br>|  filter(func) |  通过只选择func返回true的源DStream的记录来返回一个新的DStream。  |<br>| repartition(numPartitions)  |  通过创建更多或更少的分区来更改此DStream中的并行度级别。  |<br>| union(otherStream)  | 返回一个新的DStream，它包含源DStream和otherDStream中元素的并集。   |<br>|count()   |  通过计算源DStream的每个RDD中的元素数量，返回单元素RDD的新DStream。  |<br>| reduce(func)  |  通过使用函数func（它接受两个参数并返回一个）聚合源DStream的每个RDD中的元素，返回单元素RDD的新DStream 。该函数应该是关联的和可交换的，以便可以并行计算。  |<br>| countByValue()  |  当在类型K的元素的DStream上调用时，返回（K，Long）对的新DStream，其中每个键的值是其在源DStream的每个RDD中的频率。  |<br>|  reduceByKey(func, [numTasks]) |  当在（K，V）对的DStream上调用时，返回（K，V）对的新DStream，其中使用给定的reduce函数聚合每个键的值。注意：默认情况下，这使用Spark的默认并行任务数（本地模式为2，在群集模式下，数量由config属性确定spark.default.parallelism）进行分组。您可以传递可选numTasks参数来设置不同数量的任务。  |<br>|  join(otherStream, [numTasks]) | 当在（K，V）和（K，W）对的两个DStream上调用时，返回（K，（V，W））对的新DStream与每个键的所有元素对。   |<br>| cogroup(otherStream, [numTasks])  |   当在（K，V）和（K，W）对的DStream上调用时，返回（K，Seq [V]，Seq [W]）元组的新DStream。 |<br>| transform(func)  | 通过将RDD-to-RDD函数应用于源DStream的每个RDD来返回新的DStream。这可以用于在DStream上执行任意RDD操作。   |<br>|  updateStateByKey(func) |  返回一个新的“状态”DStream，其中通过在键的先前状态和键的新值上应用给定函数来更新每个键的状态。这可用于维护每个密钥的任意状态数据。  |<br>输出操作允许将DStream的数据推送到外部系统，如数据库或文件系统。由于输出操作实际上允许外部系统使用转换后的数据，因此它们会触发所有DStream转换的实际执行（类似于RDD的操作）。目前，定义了以下输出操作：<br>| Output Operation |     Meaning |<br>|–|–|<br>| print() | 在运行流应用程序的驱动程序节点上打印DStream中每批数据的前十个元素。这对开发和调试很有用。 Python API这在Python API中称为 pprint（）。 |<br>| saveAsTextFiles(prefix, [suffix]) | 将此DStream的内容保存为文本文件。每个批处理间隔的文件名是基于前缀和后缀生成的：“prefix-TIME_IN_MS [.suffix]”。 |<br>| saveAsObjectFiles(prefix, [suffix]) |将此DStream的内容保存为SequenceFiles序列化Java对象。每个批处理间隔的文件名是基于前缀和 后缀生成的：“prefix-TIME_IN_MS [.suffix]”。Python API这在Python API中不可用。   |<br>| saveAsHadoopFiles(prefix, [suffix]) | 将此DStream的内容保存为Hadoop文件。每个批处理间隔的文件名是基于前缀和后缀生成的：“prefix-TIME_IN_MS [.suffix]”。 Python API这在Python API中不可用。 |<br>| foreachRDD(func) | 最通用的输出运算符，它将函数func应用于从流生成的每个RDD。此函数应将每个RDD中的数据推送到外部系统，例如将RDD保存到文件，或通过网络将其写入数据库。请注意，函数func在运行流应用程序的驱动程序进程中执行，并且通常会在其中执行RDD操作，这将强制计算流式RDD。 |</p>
+<h2 id="spark-streaming中有状态转化操作？"><a href="#spark-streaming中有状态转化操作？" class="headerlink" title="spark streaming中有状态转化操作？"></a>spark streaming中有状态转化操作？</h2><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>许多应用需要处理及时收到的数据，Spark Streaming是Spark为这些应用而设计的模型。它允许用户使用一套和批处理非常接近的 API 来编写流式计算应用，这样就可以大量重用批处理应用的技术甚至代码。<br>和Spark基于RDD的概念很相似，Spark Streaming使用离散化流(discretized stream)作为抽象表示，叫作 DStream。DStream 是随时间推移而收到的数据的序列。在内部，每个时间区间收到的数据都作为 RDD 存在，而 DStream 是由这些 RDD 所组成的序列(因此得名“离散化”)。DStream 可以从各种输入源创建，比如 Flume、Kafka 或者 HDFS。创建出来的 DStream 支持两种操作，一种是转化操作(transformation)，会生成一个新的DStream，另一种是输出操作(output operation)，可以把数据写入外部系统中。DStream提供了许多与 RDD 所支持的操作相类似的操作支持，还增加了与时间相关的新操作，比如滑动窗口。</p>
+<h3 id="无状态转换的例子："><a href="#无状态转换的例子：" class="headerlink" title="无状态转换的例子："></a>无状态转换的例子：</h3><p>•    map<br>•    flatmap<br>•    filter<br>•    repartition<br>•    reducebykey<br>•    groupbykey<br>无状态转化操作也能在多个 DStream 间整合数据，不过也是在各个时间区间内。例如，键值对 DStream 拥有和 RDD 一样的与连接相关的转化操作，也就cogroup()、join()、leftOuterJoin() 等<br>Transform(): 可以让你直接操作其内部的rdd。</p>
+<h3 id="有状态转换"><a href="#有状态转换" class="headerlink" title="有状态转换"></a>有状态转换</h3><p>DStream 的有状态转化操作是跨时间区间跟踪数据的操作;也就是说，一些先前批次的数据也被用来在新的批次中计算结果。主要的两种类型是滑动窗口和 updateStateByKey()，前者以一个时间阶段为滑动窗口进行操作，后者则用来跟踪每个键的状态变化(例如构建一个代表用户会话的对象)。</p>
+<h3 id="基于窗口的转化操作"><a href="#基于窗口的转化操作" class="headerlink" title="基于窗口的转化操作"></a>基于窗口的转化操作</h3><p>所有基于窗口的操作都需要两个参数，分别为窗口时长以及滑动步长，两者都必须是StreamContext 的批次间隔的整数倍。窗口时长控制每次计算最近的多少个批次的数据，其实就是最近的 windowDuration/batchInterval 个批次。如果有一个以 10 秒为批次间隔的源DStream，要创建一个最近 30 秒的时间窗口(即最近 3 个批次)，就应当把 windowDuration设为 30 秒。而滑动步长的默认值与批次间隔相等，用来控制对新的 DStream 进行计算的间隔。如果源 DStream 批次间隔为 10 秒，并且我们只希望每两个批次计算一次窗口结果，就应该把滑动步长设置为 20 秒。</p>
+<p>尽管可以使用window()写出所有的窗口操作，Spark Streaming还是提供了一些其他的窗口操作，让用户可以高效而方便地使用。首先，reduceByWindow() 和 reduceByKeyAndWindow()让我们可以对每个窗口更高效地进行归约操作。<br>输出操作<br>输出操作指定了对流数据经转化操作得到的数据所要执行的操作(例如把结果推入外部数据库或输出到屏幕上)。</p>
+<ol>
+<li><p>print</p>
+</li>
+<li><p>ipAddressRequestCount.saveAsTextFiles(“outputDir”, “txt”)</p>
+</li>
+<li><p>saveashadoopfiles</p>
+</li>
+<li><p>Sequence file</p>
+</li>
+<li><p>foreachrdd<br>24*7不间断运行</p>
+<h3 id="检查点机制"><a href="#检查点机制" class="headerlink" title="检查点机制"></a>检查点机制</h3><p>检查点机制是我们在Spark Streaming中用来保障容错性的主要机制。它可以使SparkStreaming阶段性地把应用数据存储到诸如HDFS或Amazon S3这样的可靠存储系统中，以供恢复时使用。具体来说，检查点机制主要为以下两个目的服务。<br>•    控制发生失败时需要重算的状态数。SparkStreaming可以通过转化图的谱系图来重算状态，检查点机制则可以控制需要在转化图中回溯多远。<br>•    提供驱动器程序容错。如果流计算应用中的驱动器程序崩溃了，你可以重启驱动器程序并让驱动器程序从检查点恢复，这样Spark Streaming就可以读取之前运行的程序处理数据的进度，并从那里继续。</p>
+<h3 id="驱动器程序容错"><a href="#驱动器程序容错" class="headerlink" title="驱动器程序容错"></a>驱动器程序容错</h3><p>驱动器程序的容错要求我们以特殊的方式创建 StreamingContext。我们需要把检查点目录提供给 StreamingContext。与直接调用 new StreamingContext 不同，应该使用StreamingContext.getOrCreate() 函数。<br>性能考量<br>批次和窗口大小（500ms）</p>
+<h3 id="并行度"><a href="#并行度" class="headerlink" title="并行度"></a>并行度</h3><p>• 增加接收器数目有时如果记录太多导致单台机器来不及读入并分发的话，接收器会成为系统瓶颈。这时你就需要通过创建多个输入 DStream(这样会创建多个接收器)来增加接收器数目，然后使用 union 来把数据合并为一个数据源。<br>• 将收到的数据显式地重新分区<br>如果接收器数目无法再增加，你可以通过使用 DStream.repartition 来显式重新分区输<br>入流(或者合并多个流得到的数据流)来重新分配收到的数据。<br>• 提高聚合计算的并行度<br>对于像 reduceByKey() 这样的操作，你可以在第二个参数中指定并行度。</p>
+<h2 id="案例实战之Spark-Streaming处理socket数据"><a href="#案例实战之Spark-Streaming处理socket数据" class="headerlink" title="案例实战之Spark Streaming处理socket数据"></a>案例实战之Spark Streaming处理socket数据</h2><p>添加依赖</p>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Spark Streaming 依赖--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.spark<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spark-streaming_2.11<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spark.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 没有此依赖会报找不到相关类的错误--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.module<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-module-scala_2.11<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 没有此依赖会报找不到相关类的错误--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.jpountz.lz4<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lz4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>编写NetworkWordcount</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.spark</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.SparkConf</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Spark Streaming处理Socket数据</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * 本地测试： nc -lk 6789</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">object NetworkWordCount &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">    val sparkConf = <span class="keyword">new</span> SparkConf().setMaster(<span class="string">"local[2]"</span>).setAppName(<span class="string">"NetworkWordCount"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 创建StreamingContext需要两个参数：SparkConf和batch interval</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    val ssc = <span class="keyword">new</span> StreamingContext(sparkConf, Seconds(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">    val lines = ssc.socketTextStream(<span class="string">"localhost"</span>, <span class="number">6789</span>)</span><br><span class="line"></span><br><span class="line">    val result = lines.flatMap(_.split(<span class="string">" "</span>)).map((_,<span class="number">1</span>)).reduceByKey(_+_)</span><br><span class="line"></span><br><span class="line">    result.print()</span><br><span class="line">    </span><br><span class="line">    ssc.start()</span><br><span class="line">    ssc.awaitTermination()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20181206144632155.png" alt="在这里插入图片描述"></p>
+<h2 id="案例实战之Spark-Streaming处理文件系统数据"><a href="#案例实战之Spark-Streaming处理文件系统数据" class="headerlink" title="案例实战之Spark Streaming处理文件系统数据"></a>案例实战之Spark Streaming处理文件系统数据</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.spark</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.SparkConf</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 使用Spark Streaming处理文件系统(local/hdfs)的数据</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">object FileWordCount &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span>: Unit </span>= &#123;</span><br><span class="line">    <span class="comment">//local；文件系统是本地的不用receive接受；本地测试的时候不需要2个core</span></span><br><span class="line">    val sparkConf = <span class="keyword">new</span> SparkConf().setMaster(<span class="string">"local"</span>).setAppName(<span class="string">"FileWordCount"</span>)</span><br><span class="line">    val ssc = <span class="keyword">new</span> StreamingContext(sparkConf, Seconds(<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">    val lines = ssc.textFileStream(<span class="string">"file:///Users/rocky/data/imooc/ss/"</span>)</span><br><span class="line"></span><br><span class="line">    val result = lines.flatMap(_.split(<span class="string">" "</span>)).map((_,<span class="number">1</span>)).reduceByKey(_+_)</span><br><span class="line">    result.print()</span><br><span class="line"></span><br><span class="line">    ssc.start()</span><br><span class="line">    ssc.awaitTermination()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Spark]09 Spark SQL扩展和总结/" data-toggle="tooltip" data-placement="top" title="[Spark]09 Spark SQL扩展和总结">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Spark]13 Spark Streaming整合Flume/" data-toggle="tooltip" data-placement="top" title="[Spark]13 Spark Streaming整合Flume">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-streaming以及基本工作原理"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Spark streaming以及基本工作原理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#核心概念之StreamingContext"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">核心概念之StreamingContext</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#核心概念之DStream"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">核心概念之DStream</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#核心概念之Input-DStreams和Receivers"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">核心概念之Input DStreams和Receivers</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基本资源"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">基本资源</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#高级资源"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">高级资源</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#核心概念之Transformation和Output-Operations"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">核心概念之Transformation和Output Operations</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#spark-streaming中有状态转化操作？"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">spark streaming中有状态转化操作？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#介绍"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#无状态转换的例子："><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">无状态转换的例子：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有状态转换"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">有状态转换</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基于窗口的转化操作"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">基于窗口的转化操作</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#检查点机制"><span class="toc-nav-number">6.5.</span> <span class="toc-nav-text">检查点机制</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#驱动器程序容错"><span class="toc-nav-number">6.6.</span> <span class="toc-nav-text">驱动器程序容错</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#并行度"><span class="toc-nav-number">6.7.</span> <span class="toc-nav-text">并行度</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#案例实战之Spark-Streaming处理socket数据"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">案例实战之Spark Streaming处理socket数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#案例实战之Spark-Streaming处理文件系统数据"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">案例实战之Spark Streaming处理文件系统数据</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

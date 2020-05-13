@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          hue-3.9-cdh-5.7.0安装 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/hue-3.9-cdh-5.7.0安装/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hue" title="Hue">Hue</a>
+                            
+                        </div>
+                        <h1>hue-3.9-cdh-5.7.0安装</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-03-29
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="前置依赖"><a href="#前置依赖" class="headerlink" title="前置依赖"></a>前置依赖</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop etc]<span class="comment"># yum -y install ant asciidoc cyrus-sasl-devel cyrus-sasl-gssapi gcc gcc-c++ krb5-devel libtidy libxml2-devel libxslt-devel openldap-devel python-devel sqlite-devel openssl-devel mysql-devel gmp-devel</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="安装hue"><a href="#安装hue" class="headerlink" title="安装hue"></a>安装hue</h1><p>将准备好的hue tar包解压；进入解压目录编译</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop hue-3.9.0-cdh5.7.0]$ make apps</span><br></pre></td></tr></table></figure>
+
+<p>进入apps目录下；看到编译完成的hue；配置环境变量<br>HUE_HOME=/home/hadoop/app/hue-3.9.0-cdh5.7.0<br>PATH=$HUE_HOME/build/env/lib:$PATH</p>
+<p>进入desktop的conf目录下修改hue.ini配置文件和修改db权限【desktop目录下有配置文件hue.ini；build/env/lib下有启动命令】</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop hue-3.9.0-cdh5.7.0]$ <span class="built_in">cd</span> desktop/conf/</span><br><span class="line">[hadoop@hadoop conf]$ ll</span><br><span class="line">总用量 56</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 49070 3月  24 2016 hue.ini</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop  1843 3月  24 2016 log4j.properties</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop  1721 3月  24 2016 log.conf</span><br><span class="line">[hadoop@hadoop conf]$ <span class="built_in">pwd</span></span><br><span class="line">/home/hadoop/app/hue-3.9.0-cdh5.7.0/desktop/conf</span><br><span class="line">[hadoop@hadoop conf]$ vim hue.ini</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Set this to a random string, the longer the better.</span></span><br><span class="line">  <span class="comment"># This is used for secure hashing in the session store.</span></span><br><span class="line">  secret_key=jFE93j;2[290-eiw.KEiwN2s3[<span class="string">'d;/.q[eIW^y#e=+Iei*@Mn&lt;qW5o</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  # Webserver listens on this address and port</span></span><br><span class="line"><span class="string">  http_host=hadoop</span></span><br><span class="line"><span class="string">  http_port=8888</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  # Time zone name</span></span><br><span class="line"><span class="string">  time_zone=Asia/Shanghai</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  配置hdfs的用户</span></span><br><span class="line"><span class="string">  # This should be the hadoop cluster admin</span></span><br><span class="line"><span class="string">  ## default_hdfs_superuser=hadoop</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">修改desktop的权限</span></span><br><span class="line"><span class="string">[hadoop@hadoop hue-3.9.0-cdh5.7.0]$ cd desktop/</span></span><br><span class="line"><span class="string">[hadoop@hadoop desktop]$ ll</span></span><br><span class="line"><span class="string">总用量 252</span></span><br><span class="line"><span class="string">drwxr-xr-x.  2 hadoop hadoop     81 4月  14 18:20 conf</span></span><br><span class="line"><span class="string">drwxr-xr-x.  5 hadoop hadoop    183 4月  14 18:09 core</span></span><br><span class="line"><span class="string">-rw-r--r--.  1 hadoop hadoop 253952 4月  14 18:14 desktop.db</span></span><br><span class="line"><span class="string">drwxr-xr-x. 15 hadoop hadoop    210 3月  24 2016 libs</span></span><br><span class="line"><span class="string">drwxrwxr-x.  2 hadoop hadoop     78 4月  14 18:13 logs</span></span><br><span class="line"><span class="string">-rw-r--r--.  1 hadoop hadoop   3467 3月  24 2016 Makefile</span></span><br><span class="line"><span class="string">[hadoop@hadoop desktop]$ chmod o+w desktop.db </span></span><br><span class="line"><span class="string">[hadoop@hadoop desktop]$ ll</span></span><br><span class="line"><span class="string">总用量 252</span></span><br><span class="line"><span class="string">drwxr-xr-x.  2 hadoop hadoop     81 4月  14 18:20 conf</span></span><br><span class="line"><span class="string">drwxr-xr-x.  5 hadoop hadoop    183 4月  14 18:09 core</span></span><br><span class="line"><span class="string">-rw-r--rw-.  1 hadoop hadoop 253952 4月  14 18:14 desktop.db</span></span><br><span class="line"><span class="string">drwxr-xr-x. 15 hadoop hadoop    210 3月  24 2016 libs</span></span><br><span class="line"><span class="string">drwxrwxr-x.  2 hadoop hadoop     78 4月  14 18:13 logs</span></span><br><span class="line"><span class="string">-rw-r--r--.  1 hadoop hadoop   3467 3月  24 2016 Makefile</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">启动</span></span><br><span class="line"><span class="string">[hadoop@hadoop bin]$ pwd</span></span><br><span class="line"><span class="string">/home/hadoop/app/hue-3.9.0-cdh5.7.0/build/env/bin</span></span><br><span class="line"><span class="string">[hadoop@hadoop bin]$ ./supervisor</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Hadoop集成环境相关添加"><a href="#Hadoop集成环境相关添加" class="headerlink" title="Hadoop集成环境相关添加"></a>Hadoop集成环境相关添加</h1><h2 id="1、hdfs-site-xml"><a href="#1、hdfs-site-xml" class="headerlink" title="1、hdfs-site.xml"></a><strong>1、hdfs-site.xml</strong></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.webhdfs.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、core-site-xml"><a href="#2、core-site-xml" class="headerlink" title="2、core-site.xml"></a><strong>2、core-site.xml</strong></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.hue.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.hue.groups<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.hadoop.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.proxyuser.hadoop.groups<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3、yarn-site-xml"><a href="#3、yarn-site-xml" class="headerlink" title="3、yarn-site.xml"></a><strong>3、yarn-site.xml</strong></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--打开HDFS上日志记录功能--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log-aggregation-enable<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--在HDFS上聚合的日志最长保留多少秒。3天--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log-aggregation.retain-seconds<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>259200<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4、httpfs-site-xml"><a href="#4、httpfs-site-xml" class="headerlink" title="4、httpfs-site.xml"></a><strong>4、httpfs-site.xml</strong></h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>httpfs.proxyuser.hue.hosts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>httpfs.proxyuser.hue.groups<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5、配置文件同步"><a href="#5、配置文件同步" class="headerlink" title="5、配置文件同步"></a><strong>5、配置文件同步</strong></h2><p>将以上配置文件同步到其他Hadoop主机</p>
+<h2 id="6、集成文件配置hive-Hadoop-MySQL"><a href="#6、集成文件配置hive-Hadoop-MySQL" class="headerlink" title="6、集成文件配置hive Hadoop MySQL"></a><strong>6、集成文件配置hive Hadoop MySQL</strong></h2><p>$HUE_HOME/desktop/conf/hue.ini</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">[hadoop]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Configuration for HDFS NameNode</span></span><br><span class="line">  <span class="comment"># ------------------------------------------------------------------------</span></span><br><span class="line">  [[hdfs_clusters]]</span><br><span class="line">    <span class="comment"># HA support by using HttpFs</span></span><br><span class="line"></span><br><span class="line">配置hdfs</span><br><span class="line">    [[[default]]]</span><br><span class="line">      <span class="comment"># Enter the filesystem uri</span></span><br><span class="line">      fs_defaultfs=hdfs://hadoop:8020</span><br><span class="line"></span><br><span class="line">      <span class="comment"># NameNode logical name.</span></span><br><span class="line">      <span class="comment">## logical_name=</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Use WebHdfs/HttpFs as the communication mechanism.</span></span><br><span class="line">      <span class="comment"># Domain should be the NameNode or HttpFs host.</span></span><br><span class="line">      <span class="comment"># Default port is 14000 for HttpFs.</span></span><br><span class="line">      webhdfs_url=http://hadoop:50070/webhdfs/v1</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Change this if your HDFS cluster is Kerberos-secured</span></span><br><span class="line">      <span class="comment">## security_enabled=false</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># In secure mode (HTTPS), if SSL certificates from YARN Rest APIs</span></span><br><span class="line">      <span class="comment"># have to be verified against certificate authority</span></span><br><span class="line">      <span class="comment">## ssl_cert_ca_verify=True</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Directory of the Hadoop configuration</span></span><br><span class="line">      <span class="comment">## hadoop_conf_dir=$HADOOP_CONF_DIR when set or '/etc/hadoop/conf'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Configuration for YARN (MR2)</span></span><br><span class="line">  <span class="comment"># ------------------------------------------------------------------------</span></span><br><span class="line">[[yarn_clusters]]</span><br><span class="line"></span><br><span class="line">配置yarn</span><br><span class="line">    [[[default]]]</span><br><span class="line">      <span class="comment"># Enter the host on which you are running the ResourceManager</span></span><br><span class="line">      resourcemanager_host=hadoop</span><br><span class="line"></span><br><span class="line">      <span class="comment"># The port where the ResourceManager IPC listens on</span></span><br><span class="line">      resourcemanager_port=8032</span><br><span class="line">	  </span><br><span class="line">      <span class="comment">#参考yarn-site.xml中的yarn.resourcemanager.address.rm1</span></span><br><span class="line">      <span class="comment"># Whether to submit jobs to this cluster</span></span><br><span class="line">      submit_to=True</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Resource Manager logical name (required for HA)</span></span><br><span class="line">      <span class="comment">## logical_name=</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Change this if your YARN cluster is Kerberos-secured</span></span><br><span class="line">      <span class="comment">## security_enabled=false</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># URL of the ResourceManager API</span></span><br><span class="line">      resourcemanager_api_url=http://hadoop:8088</span><br><span class="line"></span><br><span class="line">      <span class="comment"># URL of the ProxyServer API</span></span><br><span class="line">      proxy_api_url=http://hadoop:8088</span><br><span class="line"></span><br><span class="line">      <span class="comment"># URL of the HistoryServer API</span></span><br><span class="line">	  <span class="comment">#参考mapred-site.xml中的mapreduce.jobhistory.webapp.address</span></span><br><span class="line">      history_server_api_url=http://hadoop:19888</span><br><span class="line"></span><br><span class="line">      <span class="comment"># In secure mode (HTTPS), if SSL certificates from YARN Rest APIs</span></span><br><span class="line">      <span class="comment"># have to be verified against certificate authority</span></span><br><span class="line">      <span class="comment">## ssl_cert_ca_verify=True</span></span><br><span class="line"></span><br><span class="line">[beeswax]</span><br><span class="line"></span><br><span class="line">配置hive</span><br><span class="line">  <span class="comment"># Host where HiveServer2 is running.</span></span><br><span class="line">  <span class="comment"># If Kerberos security is enabled, use fully-qualified domain name (FQDN).</span></span><br><span class="line">  hive_server_host=hadoop</span><br><span class="line"></span><br><span class="line">  <span class="comment"># Port where HiveServer2 Thrift server runs on.</span></span><br><span class="line">  hive_server_port=10000</span><br><span class="line"></span><br><span class="line">配置MySQL</span><br><span class="line">    <span class="comment"># mysql, oracle, or postgresql configuration.</span></span><br><span class="line">    <span class="comment">## [[[mysql]]]</span></span><br><span class="line">      <span class="comment"># Name to show in the UI.</span></span><br><span class="line">       nice_name=<span class="string">"My SQL DB"</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># For MySQL and PostgreSQL, name is the name of the database.</span></span><br><span class="line">      <span class="comment"># For Oracle, Name is instance of the Oracle server. For express edition</span></span><br><span class="line">      <span class="comment"># this is 'xe' by default.</span></span><br><span class="line">       name=mysqldb</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Database backend to use. This can be:</span></span><br><span class="line">      <span class="comment"># 1. mysql</span></span><br><span class="line">      <span class="comment"># 2. postgresql</span></span><br><span class="line">      <span class="comment"># 3. oracle</span></span><br><span class="line">       engine=mysql</span><br><span class="line"></span><br><span class="line">      <span class="comment"># IP or hostname of the database to connect to.</span></span><br><span class="line">       host=hadoop</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Port the database server is listening to. Defaults are:</span></span><br><span class="line">      <span class="comment"># 1. MySQL: 3306</span></span><br><span class="line">      <span class="comment"># 2. PostgreSQL: 5432</span></span><br><span class="line">      <span class="comment"># 3. Oracle Express Edition: 1521</span></span><br><span class="line">       port=3306</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Username to authenticate with when connecting to the database.</span></span><br><span class="line">       user=root</span><br><span class="line"></span><br><span class="line">      <span class="comment"># Password matching the username to authenticate with when</span></span><br><span class="line">      <span class="comment"># connecting to the database.</span></span><br><span class="line">       password=root</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、Hive环境变量的添加"><a href="#7、Hive环境变量的添加" class="headerlink" title="7、Hive环境变量的添加"></a>7、Hive环境变量的添加</h2><p>（hiveserver2，使用Mysql作为独立的元数据库）</p>
+<p><strong>hive-site.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hive.metastore.uris<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>thrift://192.168.232.8:9083<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hive.server2.thrift.bind.host<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>192.168.232.8<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>Bind host on which to run the HiveServer2 Thrift service.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="启动hue"><a href="#启动hue" class="headerlink" title="启动hue"></a>启动hue</h1><p><strong>执行以下指令对hue数据库进行初始化</strong></p>
+<p>cd $HUE_HOME/build/env/</p>
+<p> bin/hue syncdb</p>
+<p> bin/hue migrate</p>
+<p><strong>启动顺序</strong></p>
+<p>1、启动Hive metastore<br>nohup hive –service metastore &amp;</p>
+<p>2、启动hiveserver2<br>nohup hive –service hiveserver2 &amp;</p>
+<p>3、启动Hue<br>nohup supervisor &amp;</p>
+<p>执行一个hive的查询：成功；同时可以查看hdfs文件目录；</p>
+<p><img src="1.jpg" alt=""></p>
+<p><img src="2.jpg" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Hadoop]20 Hadoop高级之HDFS&YARN HA部署/" data-toggle="tooltip" data-placement="top" title="[Hadoop]20 Hadoop高级之HDFS&YARN HA部署">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Hadoop]19 Hadoop编译支持5种压缩格式/" data-toggle="tooltip" data-placement="top" title="[Hadoop]19 Hadoop编译支持5种压缩格式">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前置依赖"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前置依赖</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#安装hue"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">安装hue</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop集成环境相关添加"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hadoop集成环境相关添加</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1、hdfs-site-xml"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">1、hdfs-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2、core-site-xml"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">2、core-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3、yarn-site-xml"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">3、yarn-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4、httpfs-site-xml"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">4、httpfs-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5、配置文件同步"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">5、配置文件同步</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6、集成文件配置hive-Hadoop-MySQL"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">6、集成文件配置hive Hadoop MySQL</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#7、Hive环境变量的添加"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">7、Hive环境变量的添加</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#启动hue"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">启动hue</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hue" title="Hue">Hue</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

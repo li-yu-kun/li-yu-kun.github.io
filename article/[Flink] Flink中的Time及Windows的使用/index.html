@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Flink] Flink中的Time及Windows的使用 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Flink] Flink中的Time及Windows的使用/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>[Flink] Flink中的Time及Windows的使用</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2020-04-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Time"><a href="#Time" class="headerlink" title="Time"></a>Time</h1><p><img src="1.png" alt=""></p>
+<ul>
+<li>事件时间 Event time（最准确）：事件时间是每个事件在其生产设备上发生的时间。<ul>
+<li>应用更广泛，为了避免乱序以及延迟数据，flink引入watermark概念</li>
+</ul>
+</li>
+<li>摄取时间 Ingestion time：摄取时间是事件进入Flink的时间。<ul>
+<li>多适用于提供预测的一些结果，相对稳定(只记录一次)</li>
+</ul>
+</li>
+<li>处理时间 Processing time（不准确）：处理时间是指正在执行Flink相应操作的机器的系统时间。<ul>
+<li>不稳定(同一数据在流经不同窗口时可能会存在不同的处理时间戳)</li>
+</ul>
+</li>
+</ul>
+<p>不论流处理还是批处理；都建议以事件时间 Event time为基准来计算。</p>
+<p>设置时间类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">val env = StreamExecutionEnvironment.getExecutionEnvironment</span><br><span class="line"></span><br><span class="line">env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime)</span><br><span class="line"><span class="comment">// alternatively:</span></span><br><span class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);</span></span><br><span class="line"><span class="comment">// env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);</span></span><br></pre></td></tr></table></figure>
+<h1 id="Watermark"><a href="#Watermark" class="headerlink" title="Watermark"></a>Watermark</h1><p>Flink为处理Event time引入的概念，实际上还是时间戳；<br>有两种生成机制：Punctuated(间断性)、Periodic(周期性)<br>当时间达到watermark时，即认为所属限定时间内的数据都到了 - 还会丢失数据<br>watermark(t):断言所有 &lt;= t的event全部达到</p>
+<ul>
+<li><p>Periodic(周期性)：<br>按一定时间间隔或者一定数据量生成watermark<br>生产中[建议]必须结合时间和积累的条数两个维度去生成watermark，否则极端情况<br>会出现很大的延迟性<br>ExecutionConfig.setAutoWatermarkInterval(…) 定义watermark产生的时间</p>
+<pre><code>间隔，单位毫秒</code></pre></li>
+<li><p>Punctuated(间断性)<br>一般根据event自身决定是否产生watermark，<br>生产中[只有实时性要求较高/非常高]才会选择该方式生产watermark</p>
+</li>
+</ul>
+<p>AssignerWithPunctuatedWatermarks</p>
+<p>预定义：<br>                    基于时间升序：Assigners with ascending timestamps<br>                    基于延迟数据：Assigners allowing a fixed amount of lateness</p>
+<pre><code>https://www.ververica.com/blog/watermarks-in-apache-flink-made-easy
+考量点：
+    1.第一个数据4到来之后，是否直接输出
+    2.第一个数据2到来之后，是否继续等待？等待多久？还是直接输出
+    3.如何合理的设定延迟时间(N)
+    4.使用何种方式生产watermark(bounded-out-of-orderness、ProcessFunction )
+
+如何处理：
+    常规数据(watermark时间=event时间)：正常处理
+    延迟数据：窗口[start time, ened time],最大的延迟时间(N)
+          watermark = ent time + N</code></pre><h1 id="Window"><a href="#Window" class="headerlink" title="Window"></a>Window</h1><p>一种带key的是键控流，另一种不带key的是非键控流。</p>
+<p>编写程序之前要指定的第一件事是您的流是否应该设置key。这必须在定义窗口之前完成。使用keyBy(…)会将您的无限流分割成逻辑键流。如果keyBy(…)未调用，则不会为您的流设置key。</p>
+<p>在使用键控流的情况下，传入事件的任何属性都可以用作键（此处有更多详细信息）。拥有键控流将使您的窗口化计算可以由多个任务并行执行，因为每个逻辑键控流都可以独立于其余逻辑流进行处理。引用同一键的所有元素将被发送到同一并行任务。</p>
+<p>对于非键控流，您的原始流将不会拆分为多个逻辑流，并且所有窗口逻辑将由单个任务执行，即并行度为1。</p>
+<p>Window Assigners 窗口分配器：窗口分配器定义了如何将元素分配给窗口；一个窗口分配器负责将每个传入元素分配给一个或多个窗口。Flink带有针对最常见用例的预定义窗口分配器，即滚动窗口tumbling windows， 滑动窗口sliding windows，会话窗口session windows和全局窗口global windows。您还可以通过扩展WindowAssigner类来实现自定义窗口分配器。所有内置窗口分配器（全局窗口除外）均基于时间将元素分配给窗口，时间可以是处理时间，也可以是事件时间。</p>
+<h1 id="滚动窗口tumbling-windows"><a href="#滚动窗口tumbling-windows" class="headerlink" title="滚动窗口tumbling windows"></a>滚动窗口tumbling windows</h1><p>滚动窗口分配器的每个元素分配给指定的窗口的窗口大小。滚动窗口具有固定的大小，并且不重叠。例如，如果您指定大小为5分钟的滚动窗口，则将评估当前窗口，并且每五分钟将启动一个新窗口，如下图所示。<br><img src="2.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.flink.chapter07</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * tumbling windows</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">object WindowWordCount &#123;</span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span>: Unit </span>= &#123;</span><br><span class="line">    val env = StreamExecutionEnvironment.getExecutionEnvironment</span><br><span class="line">    val text = env.socketTextStream(<span class="string">"hadoop"</span>,<span class="number">9999</span>)</span><br><span class="line">    text.flatMap(_.split(<span class="string">","</span>))</span><br><span class="line">      .map((_,<span class="number">1</span>))</span><br><span class="line">      .keyBy(<span class="number">0</span>)</span><br><span class="line">      .timeWindow(Time.seconds(<span class="number">5</span>))</span><br><span class="line">      .sum(<span class="number">1</span>)</span><br><span class="line">      .print()</span><br><span class="line">      .setParallelism(<span class="number">1</span>)</span><br><span class="line">    env.execute(<span class="string">"WindowWordCount"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="滑动窗口-Sliding-Windows"><a href="#滑动窗口-Sliding-Windows" class="headerlink" title="滑动窗口 Sliding Windows"></a>滑动窗口 Sliding Windows</h1><p>滑动窗口分配程序将元素分配给固定长度的窗口。类似于滚动窗口分配程序，窗口的大小由窗口大小参数配置。一个附加的窗口滑动参数控制滑动窗口启动的频率。因此，如果滑动窗口比窗口大小小，则滑动窗口可以重叠。在这种情况下，元素被分配给多个窗口。</p>
+<p>例如，你可以有10分钟大小的窗口，它可以滑动5分钟。这样，你每5分钟就会得到一个包含最近10分钟内到达的事件的窗口，如下图所示。<br><img src="3.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.flink.chapter07</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.scala._</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.streaming.api.windowing.time.Time</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Sliding Windows 每5秒统计前10秒的数据</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">object WindowWordCount &#123;</span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span>: Unit </span>= &#123;</span><br><span class="line">    val env = StreamExecutionEnvironment.getExecutionEnvironment</span><br><span class="line">    val text = env.socketTextStream(<span class="string">"hadoop"</span>,<span class="number">9999</span>)</span><br><span class="line">    text.flatMap(_.split(<span class="string">","</span>))</span><br><span class="line">      .map((_,<span class="number">1</span>))</span><br><span class="line">      .keyBy(<span class="number">0</span>)</span><br><span class="line">      <span class="comment">//窗口大小，滑动大小</span></span><br><span class="line">      .timeWindow(Time.seconds(<span class="number">10</span>),Time.seconds(<span class="number">5</span>))</span><br><span class="line">      .sum(<span class="number">1</span>)</span><br><span class="line">      .print()</span><br><span class="line">      .setParallelism(<span class="number">1</span>)</span><br><span class="line">    env.execute(<span class="string">"WindowWordCount"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="会话窗口-Session-Windows"><a href="#会话窗口-Session-Windows" class="headerlink" title="会话窗口 - Session Windows"></a>会话窗口 - Session Windows</h1><p>会话窗口分配程序根据活动会话对元素进行分组。与翻滚窗口和滑动窗口相比，会话窗口没有重叠，也没有固定的开始和结束时间。相反，当某个会话窗口在一段时间内没有接收到元素时，它就会关闭。当一个不活跃的间隙出现时，会话窗口分配程序可以配置为静态会话间隔，也可以配置为会话间隔提取器函数，该函数定义了不活动期间的长度。当此期间过期时，当前会话将关闭，随后的元素将分配给新会话窗口。</p>
+<p><img src="4.png" alt=""><br>由于会话窗口没有固定的开始和结束，它们的计算方法与滚动和滑动窗口不同。在内部，会话窗口操作符为每个到达的记录创建一个新窗口，如果它们之间的距离比定义的间隔更近，则将它们合并在一起。为了能够合并，会话窗口操作符需要合并触发器和合并窗口函数，例如ReduceFunction、AggregateFunction或ProcessWindowFunction (FoldFunction不能合并)。</p>
+<h1 id="全局窗口-Global-Windows"><a href="#全局窗口-Global-Windows" class="headerlink" title="全局窗口 - Global Windows"></a>全局窗口 - Global Windows</h1><p>全局窗口分配程序将具有相同key的所有元素分配给同一个全局窗口。此窗口模式仅在您还指定自定义触发器时才有用，否则将不执行任何计算，因为全局窗口没有一个可以处理聚合元素的自然末端。<br><img src="5.png" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Flink] Flink的分布式运行原理/" data-toggle="tooltip" data-placement="top" title="[Flink] Flink的分布式运行原理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Flink] Flink Table API & SQL编程/" data-toggle="tooltip" data-placement="top" title="[Flink] Flink Table API & SQL编程">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

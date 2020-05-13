@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Flink] Flink中的处理状态 - Working with State - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Flink] Flink中的处理状态 - Working with State/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>[Flink] Flink中的处理状态 - Working with State</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2020-04-27
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Flink中有两种基本状态：Keyed State和Operator State</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">定义：</span><br><span class="line">	实际上就是指flink计算中间的计算结果或者元数据属性等信息，State会做相应的持久化</span><br><span class="line">	说白了：State就是Flink计算过程中与时间相关的内部数据的快照，用于checkpoints做容错</span><br><span class="line"></span><br><span class="line">为什么需要：</span><br><span class="line">	基于各种原因，导致需要使用checkpoints去从state中做恢复</span><br><span class="line">		</span><br><span class="line">何时启动：</span><br><span class="line">	在使用checkpoint时</span><br></pre></td></tr></table></figure>
+<h1 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h1><h2 id="键控状态-Keyed-State"><a href="#键控状态-Keyed-State" class="headerlink" title="键控状态-Keyed State"></a>键控状态-Keyed State</h2><p><strong>Keyed State 始终与键有关，并且只能在KeyedStream上的函数和运算符中使用。可以将 Keyed State 视为已分区或分片的Operator State 每个键只有一个状态分区</strong>。每个keyed-state在逻辑上绑定到&lt;parallel-operator-instance,key&gt;的唯一组合，由于每个键“belogs”键操作符的一个并行实例，所以我们可以简单地把它看作是&lt;operator,key&gt;</p>
+<p>键控状态(Keyed State)进一步组织成所谓的键组。键组是一个原子单元，通过它Flink可以重新分配键控状态;作为最大并行度的键组是和监控状态的数量是一样多。在执行过程中，每个键操作符的并行实例处理一个或多个键组的键。</p>
+<h2 id="操作符状态-Operator-State"><a href="#操作符状态-Operator-State" class="headerlink" title="操作符状态-Operator State"></a>操作符状态-Operator State</h2><p>使用操作符状态(或非键控状态)，<strong>每个操作符状态都绑定到一个并行操作符实例</strong>。Kafka连接器是在Flink中使用操作符状态的一个很好的例子。Kafka使用者的每个并行实例都维护一个主题分区和偏移量的映射作为其操作符状态。</p>
+<p><strong>当并行度改变时，操作符状态接口支持在并行操作符实例之间重新分配状态</strong>。进行这种重新分配可以有不同的方案。</p>
+<h1 id="呈现形式"><a href="#呈现形式" class="headerlink" title="呈现形式"></a>呈现形式</h1><h2 id="原始和托管状态-Raw-and-Managed-State"><a href="#原始和托管状态-Raw-and-Managed-State" class="headerlink" title="原始和托管状态-Raw and Managed State"></a>原始和托管状态-Raw and Managed State</h2><p><strong>Keyed State and Operator State有两种形式:托管Managed 状态和原始Raw 状态</strong>。</p>
+<p><strong>托管状态由Flink运行时控制的数据结构表示，如内部散列表或RocksDB</strong>。例如“ValueState”、“ListState”等。<strong>Flink在运行时对状态进行编码并将它们写入检查点</strong>。</p>
+<p><strong>原始状态是操作符在其自己的数据结构中保持的状态</strong>。当检查点时，它们只向检查点写入一个字节序列。<strong>Flink对状态的数据结构一无所知，只看到原始字节</strong>。</p>
+<p><strong>所有datastream函数eg：stream.keyby()都可以使用托管状态，但是原始状态接口只能在实现操作符时使用</strong>。<strong>建议使用托管状态(而不是原始状态)</strong>，因为通过托管状态，当并行性发生变化时，Flink能够自动重新分配状态，而且还可以进行更好的内存管理。</p>
+<p><em>注意：如果您的托管状态需要自定义序列化逻辑，请参阅相应的<a href="https://ci.apache.org/projects/flink/flink-docs-release-1.8/dev/stream/state/custom_serialization.html" target="_blank" rel="noopener">指南</a>以确保未来的兼容性。Flink的默认序列化器不需要特殊处理</em>。</p>
+<h3 id="状态生存时间-State-Time-To-Live-TTL"><a href="#状态生存时间-State-Time-To-Live-TTL" class="headerlink" title="状态生存时间-State Time-To-Live (TTL)"></a>状态生存时间-State Time-To-Live (TTL)</h3><p>生存时间(TTL)可以分配给任何类型的键控状态。如果配置了TTL，并且某个状态值已经过期，那么将尽最大努力清理存储值。</p>
+<p>所有状态集合类型都支持每项TTLs。这意味着列表元素和映射项独立过期。</p>
+<p>为了使用状态TTL，必须先构建StateTtlConfig配置对象。然后，可以在任何状态描述符中通过传递配置来启用TTL功能:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.state.StateTtlConfig</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.state.ValueStateDescriptor</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.time.Time</span><br><span class="line"></span><br><span class="line">val ttlConfig = StateTtlConfig</span><br><span class="line">    .newBuilder(Time.seconds(<span class="number">1</span>))</span><br><span class="line">    .setUpdateType(StateTtlConfig.UpdateType.OnCreateAndWrite)</span><br><span class="line">    .setStateVisibility(StateTtlConfig.StateVisibility.NeverReturnExpired)</span><br><span class="line">    .build</span><br><span class="line">    </span><br><span class="line">val stateDescriptor = <span class="keyword">new</span> ValueStateDescriptor[String](<span class="string">"text state"</span>, classOf[String])</span><br><span class="line">stateDescriptor.enableTimeToLive(ttlConfig)</span><br></pre></td></tr></table></figure>
+<p>说明:<br>newBuilder方法的第一个参数是强制性的，它是生存时间值。<br>更新类型在状态TTL刷新时配置(默认情况下为OnCreateAndWrite):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">StateTtlConfig.UpdateType.OnCreateAndWrite - only on creation and write access</span><br><span class="line">StateTtlConfig.UpdateType.OnReadAndWrite - also on read access</span><br></pre></td></tr></table></figure>
+<p>(默认情况下NeverReturnExpired)如果未清除过期值，则状态可见性配置该值是否在读取访问时返回</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">StateTtlConfig.StateVisibility.NeverReturnExpired - expired value is never returned</span><br><span class="line">StateTtlConfig.StateVisibility.ReturnExpiredIfNotCleanedUp - returned <span class="keyword">if</span> still available</span><br></pre></td></tr></table></figure>
+<p>在NeverReturnExpired的情况下，即使它仍然需要被删除，过期状态的行为就好像它不再存在一样。该选项对于在TTL之后数据必须严格不可读和访问的用例非常有用，例如处理隐私敏感数据的应用程序。<br>另一个选项ReturnExpiredIfNotCleanedUp允许在清理之前返回过期状态。</p>
+<ul>
+<li><strong>状态后端存储最后一次修改的时间戳和用户值，这意味着启用该特性会增加状态存储的消耗</strong>。堆状态后端在内存中存储一个附加的Java对象，其中包含对用户状态对象的引用和一个原始长值。RocksDB状态后端为每个存储值、列表条目或映射条目添加8个字节。</li>
+<li><strong>目前只支持涉及处理时间（processing time）的ttl</strong>。</li>
+<li><strong>如果试图使用启用了TTL的描述符或启用了TTL的描述符恢复先前在没有TTL的情况下配置的状态，将导致兼容性失败和statmigration异常</strong>。</li>
+<li><strong>TTL配置不是检查或保存点的一部分，而是Flink在当前运行作业中处理它的一种方式</strong>。</li>
+<li>只有当用户值序列化器能够处理空值时，带有TTL的映射状态当前才支持空用户值。<strong>如果序列化器不支持空值，则可以使用NullableSerializer对其进行包装，代价是序列化形式中多出一个字节</strong>。</li>
+</ul>
+<h4 id="清除过期状态"><a href="#清除过期状态" class="headerlink" title="清除过期状态"></a>清除过期状态</h4><p><strong>默认情况下，过期值只有在显式读出时才会被删除</strong>，例如，通过调用ValueState.value()。<br>这意味着，<strong>默认情况下，如果未读取过期状态，则不会删除它，这可能会导致状态不断增长</strong>。在未来的版本中可能会有所改变。</p>
+<p><strong>全快照中的清理</strong><br>此外，可以在获取完整状态快照时激活清理，这将减少其大小。在当前实现下，本地状态不会被清除，但在从上一个快照恢复时，它将不包括已删除的过期状态。可以在StateTtlConfig中配置:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.state.StateTtlConfig</span><br><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.time.Time</span><br><span class="line"></span><br><span class="line">val ttlConfig = StateTtlConfig</span><br><span class="line">    .newBuilder(Time.seconds(<span class="number">1</span>))</span><br><span class="line">    .cleanupFullSnapshot</span><br><span class="line">    .build</span><br></pre></td></tr></table></figure>
+<p>此选项不适用于RocksDB状态后端的增量检查点。</p>
+<blockquote>
+<p>对于现有的作业，这种清理策略可以在StateTtlConfig中随时激活或停用，例如在从保存点重新启动之后。</p>
+</blockquote>
+<p><strong>后台中清理</strong><br>除了在全快照中清理，你还可以在后台激活清理。如果它被用于后端，下面的选项将激活StateTtlConfig中的默认后台清理:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.flink.api.common.state.StateTtlConfig</span><br><span class="line">val ttlConfig = StateTtlConfig</span><br><span class="line">    .newBuilder(Time.seconds(<span class="number">1</span>))</span><br><span class="line">    .cleanupInBackground</span><br><span class="line">    .build</span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Flink] Flink的部署以及作业提交/" data-toggle="tooltip" data-placement="top" title="[Flink] Flink的部署以及作业提交">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Flink] Flink的分布式运行原理/" data-toggle="tooltip" data-placement="top" title="[Flink] Flink的分布式运行原理">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

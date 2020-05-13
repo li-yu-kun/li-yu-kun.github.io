@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -211,31 +211,27 @@
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]03 HBase进阶 三/">
+    <a href="/article/[Spark]05 从hive到spark SQL/">
         <h2 class="post-title">
                                  
-            [HBase]03 HBASE进阶 三
+            [Spark]05 从hive到spark SQL
         </h2>
         <h3 class="post-subtitle">
-            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+            SQLContext的使用、HiveContext的使用、SparkSession的使用、spark-shell&spark-sql的使用、thriftserver&beeline的使用、jdbc方式编程访问
         </h3>
         <div class="post-content-preview">
-            什么导致hbase性能下降？
-
-jvm内存分配与gc回收策略
-与hbase运行机制相关的部分配置不合理
-表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
-Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
+            SQLContext的使用Spark1.x中Spark SQL的入口点: SQLContext
+12345val sc: SparkContext // An existing SparkContext.val sqlContext = new org.apache.spark.sql.SQLContext(sc)// this is used to implicitly convert a......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-25
+            2019-05-18
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -245,29 +241,33 @@ Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]02 HBase原理与实战 二/">
+    <a href="/article/[Spark]04 Spark SQL/">
         <h2 class="post-title">
                                  
-            [HBase]02 HBase原理与实战 二
+            [Spark]04 Spark SQL
         </h2>
         <h3 class="post-subtitle">
-            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+            Spark SQL前世今生、SQL on Hadoop常用框架、Spark SQL概述、Spark SQL愿景
         </h3>
         <div class="post-content-preview">
-            HBase写流程存储结构介绍
+            Spark SQL前世今生为什么需要SQL
+事实上的标准-关系型数据库已经存在多年，sql的应用对于大数据开发人员很方便
+易学易用-SQL的门槛比较低，几天就可上手
+受众面大
 
-RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
-region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+Shark(Shark已经停止维护；不建议生产使用)
+
+Hive on SparkHive: 类似于sql的Hive QL语言， sql==&gt;mapreduce　特点：mapreduce　改进：hive on ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-18
+            2019-05-13
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -277,27 +277,30 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
+    <a href="/article/[Spark] Spark的job在yarn的资源分配/">
         <h2 class="post-title">
                                  
-            [HBase]01 HBASE简介与环境搭建 一
+            [Spark] Spark的job在yarn的资源分配
         </h2>
         <h3 class="post-subtitle">
-            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
+            
         </h3>
         <div class="post-content-preview">
-            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
-使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
+            资源现在有6台机器 每台机器16个core 64g的内存
+资源分配6Node 16core/台 64g/台
+现可用资源一共96个core 384g ；每台机器预留1core和1g；那么剩下90个core 378g的可用资源
+分配corecore=5 官方定义超过5会对hdfs吞吐量造成影响也就是说每个executor最多可以同时运行5个core
+分配executor用剩余的core除以每个e......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-10
+            2019-05-10
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -307,46 +310,32 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
 
 <div class="post-preview">
 
-    <a href="/article/大数据压缩/">
+    <a href="/article/[Spark]03 Spark工作模式/">
         <h2 class="post-title">
                                  
-            大数据压缩
+            [Spark]03 Spark三种工作模式
         </h2>
         <h3 class="post-subtitle">
-            大数据压缩常用格式
+            Spark本地模式、Standalone模式、[Spark on yarn模式：client运行模式、Cluster运行模式]
         </h3>
         <div class="post-content-preview">
-            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
-好处
-减少存储磁盘空间
-降低IO(网络的IO和磁盘的IO)
-加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
-
-坏处
-由于使用数据时，需要先将数据解压，加重CPU负荷
-
-压缩在Hadoop中的应用
-2. 压缩格式
+            Spark工作流程Spark的三种提交模式是什么？
+本地模式Spark不一定非要跑在hadoop集群，可以在本地，起多个线程的方式来指定。将Spark应用以多线程的方式直接运行在本地，一般都是为了方便调试，本地模式分两类
+local：只启动一个executor
+local[k]:启动k个executor
 
 
-压缩格式
-工具
-算法
-扩展名
-codec类
-多文件
-splitable
-n......
+standalone模式分布式部署集群， 自带完整的服务，资源管理和任务监控是Spa......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-03
+            2019-05-07
         </p>
         <div class="tags">
             
-              <a href="/tags/#大数据" title="大数据">大数据</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -356,27 +345,28 @@ n......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]15 数据仓库Hive 四/">
+    <a href="/article/[Spark]02 Spark VS Hadoop/">
         <h2 class="post-title">
                                  
-            [Hadoop]15 数据仓库Hive 四
+            [Spark]02 Spark VS Hadoop
         </h2>
         <h3 class="post-subtitle">
-            自定义UDF、自定义临时函数和永久函数
+            Spark对比Hadoop、Spark和Hadoop的协作性
         </h3>
         <div class="post-content-preview">
-            UDF: one-to-one row mapping : upper substr【进来一行出去一行】UDAF: Aggregation   Many-to-one row mapping   比如sum/min【进来多行出去一行】UDTF: Table-generating  one-to-many    比如：lateral view explode()【一对多】
-编写测试UDF函数p......
+            Spark对比HadoopHadoop生态系统
+Spark生态系统 BDAS（BDAS:Berkeley Data Analytics Stack）
+Hadoop和Spark生态圈对比：表格解读：|用例  |其他|Spark生态圈||–|–|–||  批处理|Hadoop中的MapRdeuce（Java操作MR,Pig,Hive）  | Spark RDDs（java/scala/pytho......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-28
+            2019-05-03
         </p>
         <div class="tags">
             
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -386,29 +376,29 @@ n......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]14 数据仓库Hive 三/">
+    <a href="/article/[Spark]01 Spark入门/">
         <h2 class="post-title">
                                  
-            [Hadoop]14 数据仓库Hive 三
+            [Spark]01 Spark入门
         </h2>
         <h3 class="post-subtitle">
-            数据类型、基本SQL语法练习
+            Spark概述及特点、Spark产生背景、Spark术语
         </h3>
         <div class="post-content-preview">
-            Hive复杂数据类型arrayarray_contains(column, ‘value’)
-hive_array.txt
-12pk	beijing,shanghai,tianjin,hangzhoujepson	changchu,chengdu,wuhan,beijing
-12345678910111213141516create table hive_array(name string,......
+            Spark概述及特点Apache Spark™是一个统一的分析引擎进行大规模数据处理
+
+快速更快地运行工作负载100倍。Apache Spark使用最先进的DAG调度器、查询优化器和物理执行引擎，实现了批处理和流数据的高性能。
+易用用Java、Scala、Python、R和SQL快速编写应用程序。Spark提供了超过80个高级操作符，使得构建并行应用程序变得容易。可以在Scala、Pytho......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-20
+            2019-04-28
         </p>
         <div class="tags">
             
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#Spark" title="Spark">Spark</a>
             
         </div>
     
@@ -418,27 +408,26 @@ hive_array.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]13 数据仓库Hive 二/">
+    <a href="/article/[Kafka] 为Kafka集群选择合适的TopicsPartitions数量/">
         <h2 class="post-title">
                                  
-            [Hadoop]13 数据仓库Hive 二
+            [Kafka] 为Kafka集群选择合适的Topics/Partitions数量
         </h2>
         <h3 class="post-subtitle">
-            进入hive、数据类型、基本SQL语法使用
+            
         </h3>
         <div class="post-content-preview">
-            进入命令行1、可以直接hive命令进入2、可以通过HS2服务进入
-123456789HiveServer2 = HS2	HS2 ：Server		默认端口号是10000		当然还可以改成10086等其他的		hiveserve2 --hiveconf hive.server2.thrift.port=10086		启动：$HIVE_HOME/bin下的 ./hiveserve2	beelin......
+            越多的分区可以提供更高的吞吐量　　首先我们需要明白以下事实：在kafka中，单个patition是kafka并行操作的最小单元。在producer和broker端，向每一个分区写入数据是可以完全并行化的，此时，可以通过加大硬件资源的利用率来提升系统的吞吐量，例如对数据进行压缩。在consumer段，kafka只允许单个partition的数据被一个consumer线程消费。因此，在consu......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-12
+            2019-04-23
         </p>
         <div class="tags">
             
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -448,37 +437,27 @@ hive_array.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]12 数据仓库Hive 一/">
+    <a href="/article/[Kafka] Kafka Producer是如何动态感知Topic分区数变化/">
         <h2 class="post-title">
                                  
-            [Hadoop]12 数据仓库Hive 一
+            [Kafka] Kafka Producer是如何动态感知Topic分区数变化
         </h2>
         <h3 class="post-subtitle">
-            概述、发展、架构、环境搭建
+            
         </h3>
         <div class="post-content-preview">
-            Hive产生背景及Hive是什么Hive产生的背景
-
-MapReduce编程的不便性
-HDFS上的文件缺少Schema
-
-Hive是什么
-
-由Facebook开源,最初用于解决海量结构化的日志数据统计问题
-构建在Hadoop之上的数据仓库
-Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
-通常用于进行离线数据处理(刚开始采用MapReduce )
-底层支持多种不同的执行......
+            　我们都知道，使用Kafka Producer往Kafka的Broker发送消息的时候，Kafka会根据消息的key计算出这条消息应该发送到哪个分区。默认的分区计算类是HashPartitioner，其实现如下：
+12345class HashPartitioner(props: VerifiableProperties = null) extends Partitioner &#123; ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-07
+            2019-04-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -488,31 +467,26 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]11 分布式资源调度YARN 四/">
+    <a href="/article/Kafka分区分配策略/">
         <h2 class="post-title">
                                  
-            [Hadoop]11 分布式资源调度YARN 四
+            [Kafka] Kafka分区分配策略
         </h2>
         <h3 class="post-subtitle">
-            生产调优、生产调度器等问题
+            
         </h3>
         <div class="post-content-preview">
-            假设我们有一台物理机器 128G内存 16个core
-生产如何调优Container参数？Container：虚拟化的容器   维度 memory+vcore作用是运行task任务
-
-装完CentOS，消耗内存1G
-系统预览15%-20%内存(包含系统1G内存)，以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间
-此时需要预留内存为：128*20%=25.6G == ......
+            用过 Kafka 的同学用过都知道，每个 Topic 一般会有很多个 partitions。为了使得我们能够及时消费消息，我们也可能会启动多个 Consumer 去消费，而每个 Consumer 又会启动一个或多个streams去分别消费 Topic 里面的数据。我们又知道，Kafka 存在 Consumer Group 的概念，也就是 group.id 一样的 Consumer，这些 Co......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-27
+            2019-04-17
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -522,32 +496,27 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]10 分布式处理框架MapReduce 三/">
+    <a href="/article/[Kafka] Kafka新建的分区会在哪个目录下创建/">
         <h2 class="post-title">
                                  
-            [Hadoop]10 分布式处理框架MapReduce 三
+            [Kafka] Kafka新建的分区会在哪个目录下创建
         </h2>
         <h3 class="post-subtitle">
-            参数调优、api编程
+            
         </h3>
         <div class="post-content-preview">
-            参数调优Map Task和Reduce Task数目调整
-Map Task数目
-Map读取文件时，通过InputFormat计算分割文件
-split大小由以下三个参数决定
-dfs.blocksize HDFS Block大小
-mapreduce.input.fileinputformat.split.minsize 划分最小字节数
-mapreduce.input.fileinputforma......
+            我们知道，在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘上用于提高读写性能。当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。
+如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个目录......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-18
+            2019-04-13
         </p>
         <div class="tags">
             
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -600,11 +569,11 @@ mapreduce.input.fileinputforma......
     <div class="tags">
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
@@ -620,15 +589,19 @@ mapreduce.input.fileinputforma......
             
         
             
+            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
+            
+        
+            
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
             
         
             
-            <a href="/tags/#MapReduce" title="MapReduce" rel="3">MapReduce</a>
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="4">Hive</a>
+            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
             
         
             
@@ -640,7 +613,7 @@ mapreduce.input.fileinputforma......
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="5">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="7">Linux</a>
             
         
             
@@ -652,7 +625,15 @@ mapreduce.input.fileinputforma......
             
         
             
-            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            <a href="/tags/#Spark" title="Spark" rel="17">Spark</a>
+            
+        
+            
+            <a href="/tags/#Sqoop" title="Sqoop" rel="1">Sqoop</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
             
@@ -712,23 +693,23 @@ mapreduce.input.fileinputforma......
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%5BSpark%5D%20Spark%E5%AD%A6%E4%B9%A0-shuffle%E5%92%8CRDD/">[Spark] Spark学习-shuffle和RDD</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%5BSpark%5D%20spark%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B(%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90)/">[Spark] spark编程模型(各种算子)</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8A%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4/">[Flink] Flink的部署以及作业提交</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%8A%B6%E6%80%81%20-%20Working%20with%20State/">[Flink] Flink中的处理状态 - Working with State</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">[Flink] Flink的分布式运行原理</a>
         </li>
       
     </ul>
@@ -743,7 +724,7 @@ mapreduce.input.fileinputforma......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

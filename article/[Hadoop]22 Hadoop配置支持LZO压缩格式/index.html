@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Hadoop]22 Hadoop配置支持LZO压缩格式 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop]22 Hadoop配置支持LZO压缩格式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                            
+                        </div>
+                        <h1>[Hadoop]22 Hadoop配置支持LZO压缩格式</h1>
+                        <h2 class="subheading">安装lzop、配置、测试</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-04-15
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>安装lzo<br>lzo并不是linux系统原生支持，所以需要下载安装软件包。这里至少需要安装3个软件包：lzo, lzop, hadoop-gpl-packaging。</p>
+<p>增加索引<br>gpl-packaging的作用主要是对压缩的lzo文件创建索引，否则的话，无论压缩文件是否大于hdfs的block大小，都只会按照默认启动2个map操作。</p>
+<h1 id="安装lzop-native-library"><a href="#安装lzop-native-library" class="headerlink" title="安装lzop native library"></a>安装lzop native library</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">安装相关依赖</span><br><span class="line">[root@hadoop etc]<span class="comment"># yum -y install  lzo-devel  zlib-devel  gcc autoconf automake libtool</span></span><br><span class="line">下载lzo</span><br><span class="line">[hadoop@hadoop software]$ wget http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz</span><br><span class="line">--2019-04-14 16:02:12--  http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz</span><br><span class="line">正在解析主机 www.oberhumer.com (www.oberhumer.com)... 193.170.194.40</span><br><span class="line">正在连接 www.oberhumer.com (www.oberhumer.com)|193.170.194.40|:80... 已连接。</span><br><span class="line">已发出 HTTP 请求，正在等待回应... 200 OK</span><br><span class="line">长度：583045 (569K) [application/x-gzip]</span><br><span class="line">正在保存至: “lzo-2.06.tar.gz”</span><br><span class="line"></span><br><span class="line">100%[============================================================&gt;] 583,045      173KB/s 用时 3.3s   </span><br><span class="line"></span><br><span class="line">2019-04-14 16:02:22 (173 KB/s) - 已保存 “lzo-2.06.tar.gz” [583045/583045])</span><br><span class="line"></span><br><span class="line">[hadoop@hadoop software]$</span><br><span class="line">[hadoop@hadoop software]$ tar -zxvf lzo-2.06.tar.gz -C ../app/</span><br><span class="line">进入安装目录进行编译</span><br><span class="line">[hadoop@hadoop lzo-2.06]$  <span class="built_in">export</span> CFLAGS=-m64</span><br><span class="line">[hadoop@hadoop lzo-2.06]$  ./configure -<span class="built_in">enable</span>-shared -prefix=/home/hadoop/app/lzo/</span><br><span class="line">[hadoop@hadoop lzo-2.06]$  make &amp;&amp; sudo make install</span><br><span class="line">编译完lzo包之后，会在/home/hadoop/app/lzo/生成一些文件。</span><br><span class="line">将/home/hadoop/app/lzo/目录下的所有文件打包，并同步到集群中的所有机器上。</span><br></pre></td></tr></table></figure>
+
+<h1 id="安装hadoop-lzo"><a href="#安装hadoop-lzo" class="headerlink" title="安装hadoop-lzo"></a>安装hadoop-lzo</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">下载hadoop-lzo</span><br><span class="line">[hadoop@hadoop software]$ wget https://github.com/twitter/hadoop-lzo/archive/master.zip</span><br><span class="line">解压</span><br><span class="line">[hadoop@hadoop software]$ unzip master.zip -d ../app/</span><br><span class="line">进入解压目录</span><br><span class="line">[hadoop@hadoop app]$ <span class="built_in">cd</span> hadoop-lzo-master/</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ </span><br><span class="line"></span><br><span class="line">因为hadoop使用的是2.6.0；所以版本修改为2.6.0：</span><br><span class="line"></span><br><span class="line">&lt;properties&gt;</span><br><span class="line">    &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</span><br><span class="line">    &lt;hadoop.current.version&gt;2.6.0&lt;/hadoop.current.version&gt;</span><br><span class="line">    &lt;hadoop.old.version&gt;1.0.4&lt;/hadoop.old.version&gt;</span><br><span class="line">&lt;/properties&gt;</span><br><span class="line"></span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ <span class="built_in">export</span> CFLAGS=-m64</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ <span class="built_in">export</span> CXXFLAGS=-m64</span><br><span class="line"></span><br><span class="line">修改为自己hadoop的实际路径</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ <span class="built_in">export</span> C_INCLUDE_PATH=/home/hadoop/app/hadoop-2.6.0-cdh5.7.0/lzo/include</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ <span class="built_in">export</span> LIBRARY_PATH=/home/hadoop/app/hadoop-2.6.0-cdh5.7.0/lzo/lib</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ </span><br><span class="line">mvn编译</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ mvn clean package -Dmaven.test.skip=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[INFO] Building jar: /home/hadoop/app/hadoop-lzo-master/target/hadoop-lzo-0.4.21-SNAPSHOT-javadoc.jar</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] BUILD SUCCESS</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Total time: 8:43.929s</span><br><span class="line">[INFO] Finished at: Sun Apr 14 16:42:02 CST 2019</span><br><span class="line">[INFO] Final Memory: 25M/61M</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ </span><br><span class="line">进入target文件夹</span><br><span class="line">[hadoop@hadoop hadoop-lzo-master]$ <span class="built_in">cd</span> target/native/Linux-amd64-64/</span><br><span class="line">[hadoop@hadoop Linux-amd64-64]$ <span class="built_in">pwd</span></span><br><span class="line">/home/hadoop/app/hadoop-lzo-master/target/native/Linux-amd64-64</span><br><span class="line">[hadoop@hadoop Linux-amd64-64]$ </span><br><span class="line">[hadoop@hadoop Linux-amd64-64]$ mkdir ~/app/hadoop-lzo-files</span><br><span class="line">[hadoop@hadoop Linux-amd64-64]$ tar -cBf - -C lib . | tar -xBvf - -C ~/app/hadoop-lzo-files</span><br><span class="line">[hadoop@hadoop hadoop-lzo-files]$ cp ~/app/hadoop-lzo-files/libgplcompression* <span class="variable">$HADOOP_HOME</span>/lib/native/</span><br><span class="line">注意！！！上面这一步的cp文件也要同步到集群其他主机的hadoop的对应目录下</span><br><span class="line"></span><br><span class="line">cp  hadoop-lzo的jar包到hadoop目录</span><br><span class="line"></span><br><span class="line">[hadoop@hadoop target]$ <span class="built_in">pwd</span></span><br><span class="line">/home/hadoop/app/hadoop-lzo-master/target</span><br><span class="line">[hadoop@hadoop target]$ cp hadoop-lzo-0.4.21-SNAPSHOT.jar <span class="variable">$HADOOP_HOME</span>/share/hadoop/common/</span><br><span class="line">注意！！！上面这一步的cp文件也要同步到集群其他主机的hadoop的对应目录下</span><br></pre></td></tr></table></figure>
+
+<p><strong>在hadoop的core-site.xml中添加</strong></p>
+<pre><code>vim core-site.xml</code></pre><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>io.compression.codecs<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.io.compress.GzipCodec,  </span><br><span class="line">              org.apache.hadoop.io.compress.DefaultCodec,  </span><br><span class="line">              com.hadoop.compression.lzo.LzoCodec,  </span><br><span class="line">              com.hadoop.compression.lzo.LzopCodec,  </span><br><span class="line">              org.apache.hadoop.io.compress.BZip2Codec  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>io.compression.codec.lzo.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>com.hadoop.compression.lzo.LzoCodec<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>在mapred-site.xml中添加</strong></p>
+<p><strong>vim mapred-site.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">输入阶段的压缩</span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapred.compress.map.output<span class="tag">&lt;/<span class="name">name</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapred.map.output.compression.codec<span class="tag">&lt;/<span class="name">name</span>&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>com.hadoop.compression.lzo.LzoCodec<span class="tag">&lt;/<span class="name">value</span>&gt;</span>    </span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">最终阶段的压缩</span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.output.fileoutputformat.compress<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.output.fileoutputformat.compress.codec<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.io.compress.BZip2Codec<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> <strong>注意：上面修改的core-xite.xml与mapred-site.xml文件也要同步到集群其他主机的hadoop的对应目录下；**</strong>最后重启集群！！！**</p>
+<p><strong>【hadoop fs -du -s -h 文件路径 查看大小】</strong></p>
+<h1 id="检验是否成功"><a href="#检验是否成功" class="headerlink" title="检验是否成功"></a>检验是否成功</h1><h2 id="测试mapreduce-input为lzo和output为bzip2"><a href="#测试mapreduce-input为lzo和output为bzip2" class="headerlink" title="测试mapreduce input为lzo和output为bzip2"></a>测试mapreduce input为lzo和output为bzip2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">清洗数据的mr代码加上输出的压缩格式</span><br><span class="line">FileOutputFormat.setCompressOutput(job, <span class="literal">true</span>);</span><br><span class="line">FileOutputFormat.setOutputCompressorClass(job, BZip2Codec.class);</span><br><span class="line"></span><br><span class="line"> job.setInputFormatClass(LzoTextInputFormat.class);</span><br><span class="line"></span><br><span class="line">同时需要添加maven依赖</span><br><span class="line"></span><br><span class="line">    &lt;!-- https://mvnrepository.com/artifact/com.hadoop.gplcompression/hadoop-lzo --&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;com.hadoop.gplcompression&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;hadoop-lzo&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;cdh4-0.4.15-gplextras&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">打包成hadoop_train-lzo-bzip2.jar</span><br><span class="line"></span><br><span class="line">因为我把block块默认调为了10m；准备一个10以上的压缩数据；</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -du -s -h  /input/lzo/test.log.lzo</span><br><span class="line">32.8 M  32.8 M  /input/lzo/test.log.lzo</span><br><span class="line"></span><br><span class="line">进入lzo包生成index文件</span><br><span class="line">[hadoop@hadoop target]$ hadoop jar hadoop-lzo-0.4.21-SNAPSHOT.jar com.hadoop.compression.lzo.LzoIndexer /input/lzo/test.log.lzo/</span><br><span class="line">19/04/16 17:10:49 INFO lzo.GPLNativeCodeLoader: Loaded native gpl library from the embedded binaries</span><br><span class="line">19/04/16 17:10:49 INFO lzo.LzoCodec: Successfully loaded &amp; initialized native-lzo library [hadoop-lzo rev f1deea9a313f4017dd5323cb8bbb3732c1aaccc5]</span><br><span class="line">19/04/16 17:10:51 INFO lzo.LzoIndexer: [INDEX] LZO Indexing file /input/lzo/test.log.lzo, size 0.03 GB...</span><br><span class="line">19/04/16 17:10:51 INFO Configuration.deprecation: hadoop.native.lib is deprecated. Instead, use io.native.lib.available</span><br><span class="line">19/04/16 17:10:52 INFO lzo.LzoIndexer: Completed LZO Indexing <span class="keyword">in</span> 1.00 seconds (32.97 MB/s).  Index size is 8.84 KB.</span><br><span class="line"></span><br><span class="line">[hadoop@hadoop target]$ <span class="built_in">pwd</span></span><br><span class="line">/home/hadoop/app/hadoop-lzo-master/target</span><br><span class="line">[hadoop@hadoop target]$ </span><br><span class="line"></span><br><span class="line">[hadoop@hadoop target]$ hadoop fs -ls /input/lzo/</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   1 hadoop supergroup   34428125 2019-04-16 16:30 /input/lzo/test.log.lzo</span><br><span class="line">-rw-r--r--   1 hadoop supergroup       9056 2019-04-16 17:10 /input/lzo/test.log.lzo.index</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">执行mapredece程序可以发现number of splits:2</span><br><span class="line">[hadoop@hadoop data]$ hadoop jar hadoop_train-lzo-bzip2.jar com.kun.hadoop.mapreduce.driver.LogETLDriver  /input/lzo/ /output/lzo/ </span><br><span class="line">19/04/16 19:11:44 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032</span><br><span class="line">19/04/16 19:11:46 WARN mapreduce.JobResourceUploader: Hadoop <span class="built_in">command</span>-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.</span><br><span class="line">19/04/16 19:11:46 INFO input.FileInputFormat: Total input paths to process : 2</span><br><span class="line">19/04/16 19:11:46 INFO mapreduce.JobSubmitter: number of splits:4</span><br><span class="line"></span><br><span class="line">Job Counters </span><br><span class="line">		Launched map tasks=4</span><br><span class="line">		Launched reduce tasks=1</span><br><span class="line">		Data-local map tasks=4</span><br><span class="line">		Total time spent by all maps <span class="keyword">in</span> occupied slots (ms)=427208</span><br><span class="line">		Total time spent by all reduces <span class="keyword">in</span> occupied slots (ms)=39870</span><br><span class="line">		Total time spent by all map tasks (ms)=427208</span><br><span class="line">		Total time spent by all reduce tasks (ms)=39870</span><br><span class="line">		Total vcore-seconds taken by all map tasks=427208</span><br><span class="line">		Total vcore-seconds taken by all reduce tasks=39870</span><br><span class="line">		Total megabyte-seconds taken by all map tasks=437460992</span><br><span class="line">		Total megabyte-seconds taken by all reduce tasks=40826880</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">查看输出文件</span><br><span class="line">[hadoop@hadoop target]$ hadoop fs -ls /output/lzo/</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   1 hadoop supergroup          0 2019-04-16 19:14 /output/lzo/_SUCCESS</span><br><span class="line">-rw-r--r--   1 hadoop supergroup    5580934 2019-04-16 19:14 /output/lzo/part-r-00000.bz2</span><br><span class="line"></span><br><span class="line">创建一个测试表</span><br><span class="line">hive&gt; create external table bzip2_test(</span><br><span class="line">    &gt; cdn string,</span><br><span class="line">    &gt; region string,</span><br><span class="line">    &gt; level string,</span><br><span class="line">    &gt; time string,</span><br><span class="line">    &gt; ip string,</span><br><span class="line">    &gt; domain string,</span><br><span class="line">    &gt; url string,</span><br><span class="line">    &gt; traffic bigint</span><br><span class="line">    &gt; ) partitioned by (day string)</span><br><span class="line">    &gt; ROW FORMAT DELIMITED FIELDS TERMINATED BY <span class="string">'\t'</span></span><br><span class="line">    &gt; LOCATION <span class="string">'/home/hadoop/data/clear'</span>;</span><br><span class="line">OK</span><br><span class="line">Time taken: 0.215 seconds</span><br><span class="line">hive&gt; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">移动数据到外部表对应的目录</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -ls /home/hadoop/data/clear</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -mkdir -p /home/hadoop/data/clear/day=20190416</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -mv /output/lzo/part-r-00000.bz2 /home/hadoop/data/clear/day=20190416</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -ls /home/hadoop/data/clear/day=20190416</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   1 hadoop supergroup    5580934 2019-04-16 19:14 /home/hadoop/data/clear/day=20190416/part-r-00000.bz2</span><br><span class="line">[hadoop@hadoop data]$ </span><br><span class="line"></span><br><span class="line">刷数据</span><br><span class="line">hive&gt; alter table bzip2_test add <span class="keyword">if</span> not exists partition(day=<span class="string">'20190416'</span>);</span><br><span class="line">OK</span><br><span class="line">Time taken: 2.956 seconds</span><br><span class="line"></span><br><span class="line">查看</span><br><span class="line">hive&gt; select * from bzip2_test <span class="built_in">limit</span> 1;</span><br><span class="line">OK</span><br><span class="line">yahu	AE	W	20190416111803	63.72.55.168	shabi.com	-	746411	20190416</span><br><span class="line">Time taken: 1.176 seconds, Fetched: 1 row(s)</span><br><span class="line">hive&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到hive可以查到bzip压缩数据</p>
+<p><img src="1.jpg" alt=""></p>
+<h2 id="单测试input为lzo的"><a href="#单测试input为lzo的" class="headerlink" title="单测试input为lzo的"></a>单测试input为lzo的</h2><p>插入知识点：hive的中间数据压缩设置set hive.intermediate.compression.codec=org.apache.hadoop.io.compress.XXX(SnappyCodec);</p>
+<p>更改上一步得代码<br>FileOutputFormat.setOutputCompressorClass(job, BZip2Codec.class);<br>为<br> FileOutputFormat.setOutputCompressorClass(job, LzopCodec.class);</p>
+<p>输出数据作为下面hive得测试数据</p>
+<p>在hive中创建lzo格式的表；刷数据后要进入表数据目录生成index文件；可查看表数据；同时进行聚合操作也支持分割</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">创建外部表</span><br><span class="line">hive&gt; create external table lzo_test (</span><br><span class="line">    &gt; cdn string,</span><br><span class="line">    &gt; region string,</span><br><span class="line">    &gt; level string,</span><br><span class="line">    &gt; time string,</span><br><span class="line">    &gt; ip string,</span><br><span class="line">    &gt; domain string,</span><br><span class="line">    &gt; url string,</span><br><span class="line">    &gt; traffic bigint</span><br><span class="line">    &gt; ) partitioned by (day string)</span><br><span class="line">    &gt; ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'</span><br><span class="line">    &gt; STORED AS INPUTFORMAT 'com.hadoop.mapred.DeprecatedLzoTextInputFormat'</span><br><span class="line">    &gt; OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'</span><br><span class="line">    &gt; LOCATION '/home/hadoop/data/clear' ;</span><br><span class="line">OK</span><br><span class="line">Time taken: 26.37 seconds</span><br><span class="line">hive&gt; </span><br><span class="line"></span><br><span class="line">移动数据到相对应得目录下</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -cp /output/lzo/part-r-00000.lzo /home/hadoop/data/clear/day=20190416</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -ls /home/hadoop/data/clear/day=20190416</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r<span class="comment">--r--   1 hadoop supergroup   16939951 2019-04-16 19:52 /home/hadoop/data/clear/day=20190416/part-r-00000.lzo</span></span><br><span class="line">[hadoop@hadoop data]$ </span><br><span class="line"></span><br><span class="line">进入/home/hadoop/data/clear/day=20190416对lzo文件生成index操作</span><br><span class="line">[hadoop@hadoop data]$ hadoop jar ~/app/hadoop-lzo-master/target/hadoop-lzo-0.4.21-SNAPSHOT.jar com.hadoop.compression.lzo.LzoIndexer /home/hadoop/data/clear/day=20190416/part-r-00000.lzo</span><br><span class="line">19/04/16 20:15:02 INFO lzo.GPLNativeCodeLoader: Loaded native gpl library from the embedded binaries</span><br><span class="line">19/04/16 20:15:02 INFO lzo.LzoCodec: Successfully loaded &amp; initialized native-lzo library [hadoop-lzo rev f1deea9a313f4017dd5323cb8bbb3732c1aaccc5]</span><br><span class="line">19/04/16 20:15:04 INFO lzo.LzoIndexer: [INDEX] LZO Indexing file /home/hadoop/data/clear/day=20190416/part-r-00000.lzo, size 0.02 GB...</span><br><span class="line">19/04/16 20:15:04 INFO Configuration.deprecation: hadoop.native.lib is deprecated. Instead, <span class="keyword">use</span> io.native.lib.available</span><br><span class="line"><span class="number">19</span>/<span class="number">04</span>/<span class="number">16</span> <span class="number">20</span>:<span class="number">15</span>:<span class="number">05</span> INFO lzo.LzoIndexer: Completed LZO <span class="keyword">Indexing</span> <span class="keyword">in</span> <span class="number">1.12</span> <span class="keyword">seconds</span> (<span class="number">14.48</span> MB/s).  <span class="keyword">Index</span> <span class="keyword">size</span> <span class="keyword">is</span> <span class="number">1.78</span> KB.</span><br><span class="line"></span><br><span class="line">[hadoop@hadoop <span class="keyword">data</span>]$  </span><br><span class="line"></span><br><span class="line">刷数据</span><br><span class="line">hive&gt; <span class="keyword">alter</span> <span class="keyword">table</span> lzo_test <span class="keyword">add</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> <span class="keyword">partition</span>(<span class="keyword">day</span>=<span class="string">'20190416'</span>);</span><br><span class="line">OK</span><br><span class="line">Time taken: 11.12 seconds</span><br><span class="line">hive&gt; select * from lzo_test limit 1;</span><br><span class="line">OK</span><br><span class="line">yahu	AE	W	20190416111803	63.72.55.168	shabi.com	-	746411	20190416</span><br><span class="line">Time taken: 6.673 seconds, Fetched: 1 row(s)</span><br><span class="line">hive&gt; </span><br><span class="line"></span><br><span class="line">执行mapreduce</span><br><span class="line">[hadoop@hadoop data]$ hadoop fs -du -s -h /home/hadoop/data/clear/day=20190416/part-r-00000.lzo</span><br><span class="line">16.2 M  16.2 M  /home/hadoop/data/clear/day=20190416/part-r-00000.lzo</span><br><span class="line">[hadoop@hadoop data]$</span><br><span class="line"></span><br><span class="line">可以看到split为2【因为我的block为10M】</span><br><span class="line">hive&gt; select count(1) from lzo_test;</span><br><span class="line">Query ID = hadoop_20190416194747_ab77e496-bd78-4aaa-8a32-6bf34e98a2d1</span><br><span class="line">Total jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks determined at compile time: 1</span><br><span class="line">In order to <span class="keyword">change</span> the average <span class="keyword">load</span> <span class="keyword">for</span> a reducer (<span class="keyword">in</span> <span class="keyword">bytes</span>):</span><br><span class="line">  <span class="keyword">set</span> hive.exec.reducers.bytes.per.reducer=&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"><span class="keyword">In</span> <span class="keyword">order</span> <span class="keyword">to</span> <span class="keyword">limit</span> the maximum <span class="built_in">number</span> <span class="keyword">of</span> reducers:</span><br><span class="line">  <span class="keyword">set</span> hive.exec.reducers.max=&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"><span class="keyword">In</span> <span class="keyword">order</span> <span class="keyword">to</span> <span class="keyword">set</span> a <span class="keyword">constant</span> <span class="built_in">number</span> <span class="keyword">of</span> reducers:</span><br><span class="line">  <span class="keyword">set</span> mapreduce.job.reduces=&lt;<span class="built_in">number</span>&gt;</span><br><span class="line"><span class="keyword">Starting</span> Job = job_1555410311484_0006, <span class="keyword">Tracking</span> <span class="keyword">URL</span> = <span class="keyword">http</span>://hadoop:<span class="number">8088</span>/proxy/application_1555410311484_0006/</span><br><span class="line"><span class="keyword">Kill</span> Command = /home/hadoop/app/hadoop<span class="number">-2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>/<span class="keyword">bin</span>/hadoop job  -<span class="keyword">kill</span> job_1555410311484_0006</span><br><span class="line">Hadoop job information <span class="keyword">for</span> Stage<span class="number">-1</span>: <span class="built_in">number</span> <span class="keyword">of</span> mappers: <span class="number">2</span>; number of reducers: 1</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line">706000</span><br><span class="line">Time taken: 69.802 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Hadoop]23 Hadoop离线项目整体技术/" data-toggle="tooltip" data-placement="top" title="[Hadoop]23 Hadoop离线项目整体技术">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Hadoop]21 Hadoop高级之HDFS&YARN HA架构剖析/" data-toggle="tooltip" data-placement="top" title="[Hadoop]21 Hadoop高级之HDFS&YARN HA架构剖析">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">简介</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#安装lzop-native-library"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">安装lzop native library</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#安装hadoop-lzo"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">安装hadoop-lzo</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#检验是否成功"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">检验是否成功</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#测试mapreduce-input为lzo和output为bzip2"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">测试mapreduce input为lzo和output为bzip2</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#单测试input为lzo的"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">单测试input为lzo的</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

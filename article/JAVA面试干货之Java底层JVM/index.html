@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          JAVA面试干货之Java底层JVM - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/JAVA面试干货之Java底层JVM/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_bg.jpg')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                        </div>
+                        <h1>JAVA面试干货之Java底层JVM</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2020-04-26
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="面试问道：谈谈你对java的理解"><a href="#面试问道：谈谈你对java的理解" class="headerlink" title="面试问道：谈谈你对java的理解"></a>面试问道：谈谈你对java的理解</h1><p>一般我们要简单的从 平台无关性、GC、语言特性、面向对象、类库、异常处理等来简要回答。</p>
+<h1 id="平台无关性如何实现"><a href="#平台无关性如何实现" class="headerlink" title="平台无关性如何实现"></a>平台无关性如何实现</h1><p>Compile Once，Run Anywhere如何实现<br>提供了不同平台的虚拟机，所以可以通过下图可以实现<br><img src="1.png" alt=""><br>Java源码首先被编译成字节码，再由不同平台的JVM进行解析，Java语言在不同平台上运行时是不需要进行重新编译的，Java虚拟机在执行字节码的时候，把字节码转换成具体平台上的机器指令。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ByteCodeSample</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i=<span class="number">1</span>,j=<span class="number">5</span>;</span><br><span class="line">        i++;</span><br><span class="line">        ++j;</span><br><span class="line">        System.out.println(i);</span><br><span class="line">        System.out.println(j);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译时<br>利用命令 <strong>javac</strong> test/java/com/kun/ByteCodeSample.java 进行编译生成字节码.class文件</p>
+<p>运行时<br>利用命令 <strong>java</strong> com/kun/ByteCodeSample 进行运行字节码文件</p>
+<p>反汇编<br>利用命令 <strong>javap -c</strong> com/kun/ByteCodeSample 进行反汇编；这里反汇编编译的时.class字节码文件</p>
+<p><strong>反汇编查看字节码内容</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Compiled from <span class="string">"ByteCodeSample.java"</span> <span class="comment">//从ByteCodeSample.java编译而来</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">kun</span>.<span class="title">ByteCodeSample</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> com.kun.ByteCodeSample(); <span class="comment">//无参构造函数</span></span><br><span class="line">    Code: <span class="comment">//无参构造函数执行内容</span></span><br><span class="line">       <span class="number">0</span>: aload_0</span><br><span class="line">       1: invokespecial #1 //调用父类构造方法 super Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">       <span class="number">4</span>: <span class="keyword">return</span> <span class="comment">//退出方法</span></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(java.lang.String[])</span></span>;</span><br><span class="line">    Code: <span class="comment">//main函数执行内容  这里只有局部变量  涉及到栈操作</span></span><br><span class="line">       <span class="number">0</span>: iconst_1 <span class="comment">//常量1放入栈顶</span></span><br><span class="line">       <span class="number">1</span>: istore_1 <span class="comment">//取出栈顶的值 放入局部变量1中</span></span><br><span class="line">       <span class="number">2</span>: iconst_5 <span class="comment">//常量5放入栈顶</span></span><br><span class="line">       <span class="number">3</span>: istore_2 <span class="comment">//取出栈顶的值 放入局部变量2中</span></span><br><span class="line">       <span class="number">4</span>: iinc          <span class="number">1</span>, <span class="number">1</span> <span class="comment">//调用函数 将变量1加上1</span></span><br><span class="line">       <span class="number">7</span>: iinc          <span class="number">2</span>, <span class="number">1</span> <span class="comment">//调用函数 将变量2加上1</span></span><br><span class="line">      10: getstatic     #2 // 获取PrintStream静态域 Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">      <span class="number">13</span>: iload_1 <span class="comment">//将变量1计算得到的结果值压入栈顶</span></span><br><span class="line">      14: invokevirtual #3 //打印出栈顶的值 Method java/io/PrintStream.println:(I)V</span><br><span class="line">      17: getstatic     #2 // 获取PrintStream静态域 Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">      <span class="number">20</span>: iload_2 <span class="comment">//将变量2计算得到的结果值压入栈顶</span></span><br><span class="line">      21: invokevirtual #3  //打印出栈顶的值 Method java/io/PrintStream.println:(I)V</span><br><span class="line">      <span class="number">24</span>: <span class="keyword">return</span> <span class="comment">//退出方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="为什么JVM不直接将源码解析成机器码去执行"><a href="#为什么JVM不直接将源码解析成机器码去执行" class="headerlink" title="为什么JVM不直接将源码解析成机器码去执行"></a>为什么JVM不直接将源码解析成机器码去执行</h1><p>准备工作：每次执行都需要各种检查（浪费时间，降低效率）<br>兼容性：也可以将别的语言解析成字节码（符合软件的中庸之道，如scala也是字节码转机器码）</p>
+<h1 id="JVM如何加载-class文件"><a href="#JVM如何加载-class文件" class="headerlink" title="JVM如何加载.class文件"></a>JVM如何加载.class文件</h1><p>主要是通过 Class Loader依据特定格式，加载class文件到内存，之后通过Execution Engine对命令进行解析，最后提交给操作系统去执行。</p>
+<p>Java虚拟机<br><img src="2.png" alt=""><br>上图主要分为四部分：Class Loader、Runtime Data Area、Execution Engine、Native Interface</p>
+<ul>
+<li>Class Loader：依据特定格式，加载class文件到内存</li>
+<li>Execution Engine：对命令进行解析</li>
+<li>Native Interface：融合不同开发语言的原生库为Java所用 （比如class.forName的实现就接用了native方法）</li>
+<li>Runtime Data Area：后续有详细介绍</li>
+</ul>
+<p>如果要看native类，请参考<a href="http://hg.openjdk.java.net" target="_blank" rel="noopener">openjdk</a> 中的jdk8里的share里的<a href="http://hg.openjdk.java.net/jdk8u/jdk8u/jdk/file/dd10fb830ea9/src/share/native/java/lang" target="_blank" rel="noopener">java.lang</a></p>
+<h1 id="谈谈反射"><a href="#谈谈反射" class="headerlink" title="谈谈反射"></a>谈谈反射</h1><p>JAVA反射机制是运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。</p>
+<h1 id="列举或写一个反射的例子"><a href="#列举或写一个反射的例子" class="headerlink" title="列举或写一个反射的例子"></a>列举或写一个反射的例子</h1><p>实体类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(String sentence)</span></span>&#123;</span><br><span class="line">        System.out.println(sentence + <span class="string">" "</span> + name);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">throwHello</span><span class="params">(String tag)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span>+ tag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反射拿到调用方法返回结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectSample</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException </span>&#123;</span><br><span class="line">        Class aClass = Class.forName(<span class="string">"com.kun.People"</span>);</span><br><span class="line">        People people = (People) aClass.newInstance();</span><br><span class="line">        System.out.println(<span class="string">"类名: "</span>+ aClass.getName());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//获取私有方法（可以获取除了继承的所有方法）</span></span><br><span class="line">        Method throwHello = aClass.getDeclaredMethod(<span class="string">"throwHello"</span>, String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        throwHello.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object jek = throwHello.invoke(people, <span class="string">"jek"</span>);</span><br><span class="line">        System.out.println(<span class="string">"throwHello返回值 "</span>+ jek);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取公共方法（可以获取除了私有的所有方法包括继承抽象）</span></span><br><span class="line">        Method say = aClass.getMethod(<span class="string">"say"</span>, String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        say.invoke(people, <span class="string">"welcome"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//获取私有变量</span></span><br><span class="line">        Field name = aClass.getDeclaredField(<span class="string">"name"</span>);</span><br><span class="line">        name.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        name.set(people,<span class="string">"Alice"</span>);</span><br><span class="line">        say.invoke(people, <span class="string">"welcome"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">类名: com.kun.People</span><br><span class="line">throwHello返回值 Hello jek</span><br><span class="line">welcome <span class="keyword">null</span></span><br><span class="line">welcome Alice</span><br></pre></td></tr></table></figure>
+<h1 id="类从编译到执行的过程"><a href="#类从编译到执行的过程" class="headerlink" title="类从编译到执行的过程"></a>类从编译到执行的过程</h1><ul>
+<li>编译器将People.java源文件编译为People.class字节码文件</li>
+<li>ClassLoader将字节码转换为JVM中的Class&lt;People&gt;对象</li>
+<li>JVM利用Class&lt;People&gt;对象实例化为People对象<h1 id="谈谈ClassLoader"><a href="#谈谈ClassLoader" class="headerlink" title="谈谈ClassLoader"></a>谈谈ClassLoader</h1>ClassLoader 在Java中有着非常重要的作用，它主要工作在Class装载的加载阶段，其主要作用从系统外部获得Class二进制数据流。它是Java的核心组件，所有的Class都是由ClassLoader进行加载的，ClassLoader负责通过将Class文件里的二进制数据流装载进系统，然后交给Java虚拟机进行连接、初始化等操作。</li>
+</ul>
+<p>它是一个抽象类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoader</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+<p>其中最重要的方法：加载类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Class&lt;?&gt; loadClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">        <span class="keyword">return</span> loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="ClassLoader的种类"><a href="#ClassLoader的种类" class="headerlink" title="ClassLoader的种类"></a>ClassLoader的种类</h1><ul>
+<li>BootStrapClassLoader：C++编写，加载核心类java.*。(parent是null)</li>
+<li>ExtClassLoader：Java编写，加载扩展库javax.*<br>当用到相关类库的时候会自动到指定路径加载class文件<br>String var0 = System.getProperty(“java.ext.dirs”)。（parent是BootStrapClassLoader）</li>
+<li>AppClassLoader：Java编写，加载程序所在目录<br>final String var1 = System.getProperty(“java.class.path”); 我们程序所在路径。（parent是ExtClassLoader）</li>
+<li>自定义ClassLoader ：Java编写，定制化加载 。 （parent是AppClassLoader）<h1 id="自定义ClassLoader的实现"><a href="#自定义ClassLoader的实现" class="headerlink" title="自定义ClassLoader的实现"></a>自定义ClassLoader的实现</h1>关键函数</li>
+</ul>
+<p>findClass 寻找Class文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; findClass(String name) <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ClassNotFoundException(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>defineClass</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">final</span> Class&lt;?&gt; defineClass(<span class="keyword">byte</span>[] b, <span class="keyword">int</span> off, <span class="keyword">int</span> len)</span><br><span class="line">    <span class="keyword">throws</span> ClassFormatError</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> defineClass(<span class="keyword">null</span>, b, off, len, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先在任意地方创建一个类，运行生成class字节码文件<br>这个java文件路径为\Users\K\Desktop\</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Kun</span></span>&#123;</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"Hello Kun"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编写自定义ClassLoader类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.File;</span><br><span class="line"><span class="keyword">import</span> java.io.FileInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClassLoader</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String path;</span><br><span class="line">    <span class="keyword">private</span> String classLoaderName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyClassLoader</span><span class="params">(String path,String classLoaderName)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.path=path;</span><br><span class="line">        <span class="keyword">this</span>.classLoaderName=classLoaderName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于寻找类文件</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">findClass</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">byte</span>[] b = loadClassData(name);</span><br><span class="line">        <span class="keyword">return</span> defineClass(name,b,<span class="number">0</span>,b.length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//用于加载类文件</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span>[] loadClassData(String name) &#123;</span><br><span class="line">        name=path+name+<span class="string">".class"</span>;</span><br><span class="line">        InputStream in = <span class="keyword">null</span>;</span><br><span class="line">        ByteArrayOutputStream out = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            in = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(name));</span><br><span class="line">            out = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span> ;</span><br><span class="line">            <span class="keyword">while</span> ((i=in.read())!=-<span class="number">1</span>)&#123;</span><br><span class="line">                out.write(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                out.close();</span><br><span class="line">                in.close();</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> out.toByteArray();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassLoaderChecker</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException, IllegalAccessException, InstantiationException </span>&#123;</span><br><span class="line">        MyClassLoader myClassLoader = <span class="keyword">new</span> MyClassLoader(<span class="string">"\\Users\\K\\Desktop\\"</span>,<span class="string">"test"</span>);</span><br><span class="line">        Class kun = myClassLoader.loadClass(<span class="string">"Kun"</span>);<span class="comment">//寻找Kun类</span></span><br><span class="line">        System.out.println(kun.getClassLoader());</span><br><span class="line">        kun.newInstance();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//运行结果</span></span><br><span class="line">com.kun.MyClassLoader@<span class="number">14</span>ae5a5</span><br><span class="line">Hello Kun</span><br></pre></td></tr></table></figure>
+<h1 id="谈谈类加载器（ClassLoader）的双亲委派机制"><a href="#谈谈类加载器（ClassLoader）的双亲委派机制" class="headerlink" title="谈谈类加载器（ClassLoader）的双亲委派机制"></a>谈谈类加载器（ClassLoader）的双亲委派机制</h1><p><img src="3.png" alt=""></p>
+<p>核心源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> Class&lt;?&gt; loadClass(String name, <span class="keyword">boolean</span> resolve)</span><br><span class="line">        <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (getClassLoadingLock(name)) &#123;</span><br><span class="line">            <span class="comment">// First, check if the class has already been loaded</span></span><br><span class="line">            Class&lt;?&gt; c = findLoadedClass(name);</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">long</span> t0 = System.nanoTime();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (parent != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        c = parent.loadClass(name, <span class="keyword">false</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        c = findBootstrapClassOrNull(name);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                    <span class="comment">// ClassNotFoundException thrown if class not found</span></span><br><span class="line">                    <span class="comment">// from the non-null parent class loader</span></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (c == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="comment">//自定义找类 If still not found, then invoke findClass in order to find the class.</span></span><br><span class="line">                    <span class="keyword">long</span> t1 = System.nanoTime();</span><br><span class="line">                    c = findClass(name);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// this is the defining class loader; record the stats</span></span><br><span class="line">                    sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);</span><br><span class="line">                    sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);</span><br><span class="line">                    sun.misc.PerfCounter.getFindClasses().increment();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (resolve) &#123;</span><br><span class="line">                resolveClass(c);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> c;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="为什么使用双亲委派机制去加载类"><a href="#为什么使用双亲委派机制去加载类" class="headerlink" title="为什么使用双亲委派机制去加载类"></a>为什么使用双亲委派机制去加载类</h1><ul>
+<li>避免多份同样字节码的加载<h1 id="类的加载方式"><a href="#类的加载方式" class="headerlink" title="类的加载方式"></a>类的加载方式</h1></li>
+<li>隐式加载：new</li>
+<li>显示加载：loadClass、forName等</li>
+</ul>
+<h1 id="loadClass和forName的区别"><a href="#loadClass和forName的区别" class="headerlink" title="loadClass和forName的区别"></a>loadClass和forName的区别</h1><p>类的装载过程</p>
+<ul>
+<li>加载 <ul>
+<li>通过ClassLoader加载class文件字节码，生成class对象</li>
+</ul>
+</li>
+<li>链接 <ul>
+<li>校验：检查加载的class的正确性和安全性</li>
+<li>准备：为类变量分配存储空间并设置类变量初始值</li>
+<li>解析：JVM将常量池内的符号引用转换为直接引用 </li>
+</ul>
+</li>
+<li>初始化<ul>
+<li>执行类变量赋值和静态代码块</li>
+</ul>
+</li>
+</ul>
+<p><strong>区别</strong></p>
+<ul>
+<li>Class.forName得到的class是已经初始化完成的（初始化MySQL数据库连接）</li>
+<li>Classloder.loadClass得到的class是还没有链接的（spring ioc运用到延迟加载）<h1 id="你了解Java的内存模型吗"><a href="#你了解Java的内存模型吗" class="headerlink" title="你了解Java的内存模型吗"></a>你了解Java的内存模型吗</h1></li>
+</ul>
+<p><strong>内存简介</strong><br><img src="4.png" alt=""></p>
+<ul>
+<li>32位处理器：2^32的可寻址范围</li>
+<li>64位处理器：2^64的可寻址范围</li>
+</ul>
+<h2 id="地址空间的划分"><a href="#地址空间的划分" class="headerlink" title="地址空间的划分"></a>地址空间的划分</h2><ul>
+<li>内核空间</li>
+<li>用户空间（java内存）</li>
+</ul>
+<p><img src="5.png" alt=""></p>
+<h2 id="JVM内存模型-JDK8"><a href="#JVM内存模型-JDK8" class="headerlink" title="JVM内存模型 - JDK8"></a>JVM内存模型 - JDK8</h2><p><img src="6.png" alt=""></p>
+<ul>
+<li><strong>线程私有：程序计数器、虚拟机栈、本地方法栈</strong></li>
+<li><strong>线程共享：MetaSpace、Java堆</strong></li>
+</ul>
+<h2 id="程序计数器（Program-Counter-Register）"><a href="#程序计数器（Program-Counter-Register）" class="headerlink" title="程序计数器（Program Counter Register）"></a>程序计数器（Program Counter Register）</h2><ul>
+<li>当前线程所执行的字节码行号指示器（逻辑）</li>
+<li>改变计数器的值来选取下一条需要执行的字节码指令</li>
+<li>和线程是一对一的关系即<strong>线程私有</strong></li>
+<li>对Java方法计数，如果是Native方法则计数器值位Undefined</li>
+<li>不会发生内存泄漏</li>
+</ul>
+<h2 id="Java虚拟机栈-Stack"><a href="#Java虚拟机栈-Stack" class="headerlink" title="Java虚拟机栈(Stack)"></a>Java虚拟机栈(Stack)</h2><ul>
+<li>Java方法执行的内存模型</li>
+<li>包含多个栈帧</li>
+</ul>
+<p><img src="7.png" alt=""><br><strong>局部变量表和操作数栈</strong></p>
+<ul>
+<li>局部变量表：包含方法执行过程中的所有变量</li>
+<li>操作数栈：入栈、出栈、复制、交换、生产消费变量<br><img src="8.png" alt=""></li>
+</ul>
+<p>源代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ByteCodeSample</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> c=<span class="number">0</span>;</span><br><span class="line">        c=a+b;</span><br><span class="line">        <span class="keyword">return</span> c;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>javac反编译后</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\K\Documents\IDEA\java_train\src\test\java&gt;javap -verbose com\kun\ByteCodeSample<span class="class">.<span class="keyword">class</span></span></span><br><span class="line"><span class="class">//文件信息</span></span><br><span class="line">Classfile /C:/Users/K/Documents/IDEA/java_train/src/test/java/com/kun/ByteCodeSample.class</span><br><span class="line">  Last modified <span class="number">2019</span>-<span class="number">11</span>-<span class="number">5</span>; size <span class="number">278</span> bytes</span><br><span class="line">  MD5 checksum <span class="number">27f</span>a20ed9289f599a73ba2cdf75b8036</span><br><span class="line">  Compiled from <span class="string">"ByteCodeSample.java"</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//描述类信息</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">com</span>.<span class="title">kun</span>.<span class="title">ByteCodeSample</span></span></span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: <span class="number">52</span></span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line"></span><br><span class="line"><span class="comment">//常量池信息</span></span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #3.#12         // java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">   #2 = Class              #13            // com/kun/ByteCodeSample</span><br><span class="line">   #3 = Class              #14            // java/lang/Object</span><br><span class="line">   #4 = Utf8               &lt;init&gt;</span><br><span class="line">   #5 = Utf8               ()V</span><br><span class="line">   #6 = Utf8               Code</span><br><span class="line">   #7 = Utf8               LineNumberTable</span><br><span class="line">   #8 = Utf8               add</span><br><span class="line">   #9 = Utf8               (II)I</span><br><span class="line">  #10 = Utf8               SourceFile</span><br><span class="line">  #11 = Utf8               ByteCodeSample.java</span><br><span class="line">  #12 = NameAndType        #4:#5          // "&lt;init&gt;":()V</span><br><span class="line">  #13 = Utf8               com/kun/ByteCodeSample</span><br><span class="line">  #14 = Utf8               java/lang/Object</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//初始化过程</span></span><br><span class="line">  <span class="keyword">public</span> com.kun.ByteCodeSample();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">1</span>, locals=<span class="number">1</span>, args_size=<span class="number">1</span></span><br><span class="line">         <span class="number">0</span>: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object."&lt;init&gt;":()V</span><br><span class="line">         <span class="number">4</span>: <span class="keyword">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">3</span>: <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//自定义方法</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>)</span></span>;</span><br><span class="line">    descriptor: (II)I <span class="comment">//接收了两个int的变量（II）；返回值也是int（I）</span></span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC <span class="comment">//方法信息-public和static</span></span><br><span class="line">    Code:</span><br><span class="line">      stack=<span class="number">2</span>, locals=<span class="number">3</span>, args_size=<span class="number">2</span> <span class="comment">//操作数栈2个，本地变量3个，方法参数2个</span></span><br><span class="line">         <span class="number">0</span>: iconst_0</span><br><span class="line">         <span class="number">1</span>: istore_2</span><br><span class="line">         <span class="number">2</span>: iload_0</span><br><span class="line">         <span class="number">3</span>: iload_1</span><br><span class="line">         <span class="number">4</span>: iadd</span><br><span class="line">         <span class="number">5</span>: istore_2</span><br><span class="line">         <span class="number">6</span>: iload_2</span><br><span class="line">         <span class="number">7</span>: ireturn</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line <span class="number">5</span>: <span class="number">0</span> <span class="comment">//代码的第五行对于字节码的第0行</span></span><br><span class="line">        line <span class="number">6</span>: <span class="number">2</span></span><br><span class="line">        line <span class="number">7</span>: <span class="number">6</span></span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">"ByteCodeSample.java"</span></span><br></pre></td></tr></table></figure>
+<p><strong>执行add（1，2）</strong><br>局部变量表为操作数栈提供一定的数据支撑<br><img src="9.png" alt=""></p>
+<h3 id="递归为什么会引发java-lang-StackOverflowError异常"><a href="#递归为什么会引发java-lang-StackOverflowError异常" class="headerlink" title="递归为什么会引发java.lang.StackOverflowError异常"></a>递归为什么会引发java.lang.StackOverflowError异常</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Fibonacci</span> </span>&#123;</span><br><span class="line">    <span class="comment">//F(0)=0,F(1)=1,当n&gt;=2的时候，F(n) = F(n-1) + F(n-2),</span></span><br><span class="line">    <span class="comment">//F(2)=F(1) + F(0) = 1, F(3) = F(2) + F(1) = 1+1 = 2</span></span><br><span class="line">    <span class="comment">//F(0)-F(N) 依次为 0,1,1,2,3,5,8,13,21,34...</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">fibonacci</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">0</span>) &#123;<span class="keyword">return</span> <span class="number">0</span>;&#125;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) &#123;<span class="keyword">return</span> <span class="number">1</span>;&#125;</span><br><span class="line">        <span class="keyword">return</span> fibonacci(n - <span class="number">1</span>) + fibonacci(n - <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(fibonacci(<span class="number">1000000</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上诉代码就会报错；不停的递归调用一个方法，会使单个线程的栈帧急速增多，操作数栈会不断压栈进入数据，导致StackOverflow。</p>
+<h3 id="虚拟机栈过多会引发java-lang-OutOfMenoryError异常"><a href="#虚拟机栈过多会引发java-lang-OutOfMenoryError异常" class="headerlink" title="虚拟机栈过多会引发java.lang.OutOfMenoryError异常"></a>虚拟机栈过多会引发java.lang.OutOfMenoryError异常</h3><p><img src="10.png" alt=""><br>由于windwos平台虚拟机java平台映射到操作系统的内核线程上；上诉代码会有极大可能导致系统假死，在windows上运行会死机。</p>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><ul>
+<li>与虚拟机栈相似，主要作用于标注了native的方法<h2 id="元空间（MetaSpace）与永久代（PermGen）的区别"><a href="#元空间（MetaSpace）与永久代（PermGen）的区别" class="headerlink" title="元空间（MetaSpace）与永久代（PermGen）的区别"></a>元空间（MetaSpace）与永久代（PermGen）的区别</h2>MetaSpace在1.8及之前是属于永久代的，都是用来存储class的相关信息，包括class的相关对象的method、 field 等；元空间和永久代都是方法区的实现，只不过实现有所不同，方法区只是jvm的一种规范；在1.7及之后方法区的字符串常量池已经被移动到java堆中，并且在1.8及之后使用元空间替代了永久代。</li>
+<li><strong>元空间使用本地内存，而永久代使用的是jvm的内存</strong></li>
+</ul>
+<p>1.8之后java.lang.OutOfMemoryError:PermGen space 错误将不复存在</p>
+<ul>
+<li><strong>MetaSpace相比PermGen的优势</strong><ul>
+<li>字符串常量池存在永久代中，容易出现性能问题和内存溢出</li>
+<li>类和方法的信息大小难以确定，给永久代的大小指定带来困难</li>
+<li>永久代会为GC带来不必要的复杂性</li>
+<li>方便HotSpot与其他JVM如Jrockit的集成</li>
+</ul>
+</li>
+</ul>
+<h2 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h2><ul>
+<li>对象实例的分配区域<br><img src="11.png" alt=""></li>
+<li>GC管理的主要区域<br><img src="12.png" alt=""></li>
+</ul>
+<h1 id="常考面试题"><a href="#常考面试题" class="headerlink" title="常考面试题"></a>常考面试题</h1><h2 id="JVM三大性能调优参数-Xms-Xmx-Xss的含义"><a href="#JVM三大性能调优参数-Xms-Xmx-Xss的含义" class="headerlink" title="JVM三大性能调优参数-Xms -Xmx -Xss的含义"></a>JVM三大性能调优参数-Xms -Xmx -Xss的含义</h2><ul>
+<li>-Xss：规定了每个线程虚拟机栈（堆栈）的大小</li>
+<li>-Xms：堆的初始值</li>
+<li>-Xmx：堆能达到的最大值</li>
+</ul>
+<p>通常情况下-Xms -Xmx会设置成一样的，因为当k不够用自动扩容时会发生内存抖动，影响程序的运行。</p>
+<h2 id="Java内存模型中堆和栈的区别"><a href="#Java内存模型中堆和栈的区别" class="headerlink" title="Java内存模型中堆和栈的区别"></a>Java内存模型中堆和栈的区别</h2><p>先回答 内存分配策略</p>
+<ul>
+<li>静态存储：编译时确定每个数据目标在运行时的存储空间需求<br>不允许有可变数据结构的存在，也不允许有嵌套递归出现；因为这些会导致编译程序无法计算准确的存储空间</li>
+<li>栈式存储：数据区需求在编译时未知，运行时模块入口前确定</li>
+<li>堆式存储：编译时或运行时模块入口都无法确定，动态分配</li>
+</ul>
+<p>Java内存模型中堆和栈的区别</p>
+<ul>
+<li><strong>联系</strong>：引用对象、数组时，栈里定义变量保存堆中目标的首地址<br><img src="13.png" alt=""></li>
+<li><strong>区别</strong><ul>
+<li>管理方式：栈自动释放，堆需要GC</li>
+<li>空间大小：栈比堆小</li>
+<li>碎片相关：栈产生的碎片远小于堆</li>
+<li>分配方式：栈支持静态分配和动态分配，而堆仅支持动态分配</li>
+<li>效率：栈的效率比堆高<h2 id="元空间、堆、线程独占部分间的联系-内存角度"><a href="#元空间、堆、线程独占部分间的联系-内存角度" class="headerlink" title="元空间、堆、线程独占部分间的联系-内存角度"></a>元空间、堆、线程独占部分间的联系-内存角度</h2><img src="14.png" alt=""></li>
+</ul>
+</li>
+<li>元空间<ul>
+<li>Class：HelloWorld - Method：sayHello\setName\main - Field :name</li>
+<li>Class：System</li>
+</ul>
+</li>
+<li>Java堆<ul>
+<li>Object：String（“test”）</li>
+<li>Object：HelloWorld</li>
+</ul>
+</li>
+<li>线程独占<ul>
+<li>Parameter reference：“test” to String object</li>
+<li>Variable reference：“hw” to HelloWorld object</li>
+<li>Local Variables：a with 1，lineNo<h2 id="不同JDK版本之间的intern-方法的区别-JDK6-VS-JDK"><a href="#不同JDK版本之间的intern-方法的区别-JDK6-VS-JDK" class="headerlink" title="不同JDK版本之间的intern()方法的区别-JDK6 VS JDK+"></a>不同JDK版本之间的intern()方法的区别-JDK6 VS JDK+</h2></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="keyword">new</span> String(<span class="string">"a"</span>)</span><br><span class="line">s.intern();</span><br></pre></td></tr></table></figure>
+<p>JDK6 :当调用intern方法时,如果字符串常量池先前已创建出该字符串对象,则返回池中的该字符串的引用。否则,将此字符串对象添加到字符串常量池中,并且返回该字符串对象的引用。</p>
+<p>JDK6+:当调用intern方法时,如果字符串常量池先前已创建出该字符串对象,则返回池中的该字符串的引用。否则,如果该字符串对象已经存在于Java堆中,则将堆中对此对象的引用添加到字符串常量池中,并且返回该引用;如果堆中不存在,则在池中创建该字符串并返回其引用。</p>
+<p>引爆jdk6的常量池的代码 java.lang.OutOfMemoryError:PermGen space<br>jdk6测试报错java.lang.OutOfMemoryError:PermGen space<br>jdk7测试不会报错<br>jdk8测试会报错永久代参数无效 -XX:MaxPermSize=6M -XX:PermSize=6M参数被舍弃</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PermGenErrTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt;= <span class="number">1000</span>; i++)&#123;</span><br><span class="line">            <span class="comment">//将返回的随机字符串添加到字符串常量池中</span></span><br><span class="line">            getRandomString(<span class="number">1000000</span>).intern();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"Mission Complete!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回指定长度的随机字符串</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">getRandomString</span><span class="params">(<span class="keyword">int</span> length)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//字符串源</span></span><br><span class="line">        String str=<span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"</span>;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)&#123;</span><br><span class="line">            <span class="keyword">int</span> number = random.nextInt(<span class="number">62</span>);</span><br><span class="line">            sb.append(str.charAt(number));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在VM options运行参数里填写永久代大小 -XX:MaxPermSize=6M -XX:PermSize=6M</p>
+<p>以下代码1.6的执行结果为false false； 1.6+为false true</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.interview.javabasic.jvm.model;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InternDifference</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String s = <span class="keyword">new</span> String(<span class="string">"a"</span>);</span><br><span class="line">        s.intern();</span><br><span class="line">        String s2 = <span class="string">"a"</span>;</span><br><span class="line">        System.out.println(s == s2);</span><br><span class="line"></span><br><span class="line">        String s3 = <span class="keyword">new</span> String(<span class="string">"a"</span>) + <span class="keyword">new</span> String(<span class="string">"a"</span>);</span><br><span class="line">        s3.intern();</span><br><span class="line">        String s4 = <span class="string">"aa"</span>;</span><br><span class="line">        System.out.println(s3 == s4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>JDK6解释图</strong><br><img src="15.png" alt=""><br><strong>JDK6+解释图</strong><br><img src="16.png" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Flink] 初识flink/" data-toggle="tooltip" data-placement="top" title="[Flink] 初识flink">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/JAVA面试干货之Java底层GC/" data-toggle="tooltip" data-placement="top" title="JAVA面试干货之Java底层GC">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

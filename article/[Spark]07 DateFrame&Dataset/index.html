@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Spark]07 DateFrame&amp;Dataset - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Spark]07 DateFrame&amp;Dataset/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                            
+                        </div>
+                        <h1>[Spark]07 DateFrame&amp;Dataset</h1>
+                        <h2 class="subheading">DataFrame产生背景、DataFrame概述、DataFrame和RDD的对比、DataFrame基本API操作、DataFrame与RDD互操作方式、DataFrame API操作案例实战、DataSet概述及使用</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2019-05-25
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="DataFrame产生背景"><a href="#DataFrame产生背景" class="headerlink" title="DataFrame产生背景"></a>DataFrame产生背景</h2><p>DataFrame它不是Spark SQL提出的，而是早起在R、Pandas语言就已经有了的。</p>
+<ul>
+<li>Spark RDD API <strong>vs</strong> MapReduce API        Threshold<br>使用spark和mr开发需要学习对应语言scala和java等；门槛较高</li>
+<li>R/Pandas            one machine<br>这些语言仅仅支持单机处理</li>
+</ul>
+<p>sparksql里的DataFrame诞生易于R和Pandas的人无缝对接；降低了很多人的门槛</p>
+<h2 id="DataFrame概述"><a href="#DataFrame概述" class="headerlink" title="DataFrame概述"></a>DataFrame概述</h2><ul>
+<li>A distributed collection of rows organized into named columns（将行组织命名为列的分布式集合）(RDD with schema)</li>
+<li>它在概念上等价于关系数据库中的表或R/Python中的data frame，但是具有更丰富的优化</li>
+<li>用于选择、筛选、聚合和绘制结构化数据的抽象</li>
+<li>受到R和panda单机小数据处理应用于分布式大数据的启发</li>
+<li>以前叫做SchemaRDD (Spark &lt; 1.3)</li>
+</ul>
+<p>A Dataset is a distributed collection of data：分布式的数据集</p>
+<p>A DataFrame is a Dataset organized into named columns.<br>以列（列名、列的类型、列值）的形式构成的分布式数据集，按照列赋予不同的名称；比如：</p>
+<p>student<br>id:int<br>name:string<br>city:string<br><img src="1.png" alt=""></p>
+<h2 id="DataFrame和RDD的对比"><a href="#DataFrame和RDD的对比" class="headerlink" title="DataFrame和RDD的对比"></a>DataFrame和RDD的对比</h2><p>RDD是Spark的内核<br>RDD弹性的分布式数据集五大特性</p>
+<ol>
+<li>他有一系列的Partition组成的 </li>
+<li>每一个算子作用在每一个partition上 </li>
+<li>rdd之间是有依赖关系的<br>宽依赖：父RDD的分区被子RDD的多个分区使用   例如 groupByKey、reduceByKey、sortByKey等操作会产生宽依赖，会产生shuffle<br>窄依赖：父RDD的每个分区都只被子RDD的一个分区使用  例如map、filter、union等操作会产生窄依赖<br><img src="2.png" alt=""></li>
+<li>可选项:分区器作用在KV格式的RDD上 (1)分区器是在shuffle阶段起作用(2) GroupByKey, reduceBykey, join, sortByKey等这些算子会产生shuffle(3)这些算子必须作用在KV格式的RDD</li>
+<li>RDD会提供一系列最佳计算位置,说白了就是暴露每一个partitior的位置这是数据本地化的基础<br><img src="3.png" alt=""><br>RDD：<br>java/scala  ==&gt; jvm<br>python ==&gt; python runtime</li>
+</ol>
+<p>DataFrame:<br>    java/scala/python ==&gt; Logic Plan</p>
+<h2 id="DataFrame基本API操作"><a href="#DataFrame基本API操作" class="headerlink" title="DataFrame基本API操作"></a>DataFrame基本API操作</h2><p>Create DataFame<br>printSchema<br>show<br>select<br>filter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.dataframe</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.SparkSession</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DataFrame API基本操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">object DataFrameApp &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    val spark = SparkSession.builder().appName(<span class="string">"DataFrameApp"</span>).master(<span class="string">"local[2]"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将json文件加载成一个dataframe</span></span><br><span class="line">    val peopleDF = spark.read.format(<span class="string">"json"</span>).load(<span class="string">"file:///Users/rocky/data/people.json"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出dataframe对应的schema信息</span></span><br><span class="line">    peopleDF.printSchema()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出数据集的前20条记录</span></span><br><span class="line">    peopleDF.show()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//查询某列所有的数据： select name from table</span></span><br><span class="line">    peopleDF.select(<span class="string">"name"</span>).show()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 查询某几列所有的数据，并对列进行计算： select name, age+10 as age2 from table</span></span><br><span class="line">    peopleDF.select(peopleDF.col(<span class="string">"name"</span>), (peopleDF.col(<span class="string">"age"</span>) + <span class="number">10</span>).as(<span class="string">"age2"</span>)).show()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据某一列的值进行过滤： select * from table where age&gt;19</span></span><br><span class="line">    peopleDF.filter(peopleDF.col(<span class="string">"age"</span>) &gt; <span class="number">19</span>).show()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据某一列进行分组，然后再进行聚合操作： select age,count(1) from table group by age</span></span><br><span class="line">    peopleDF.groupBy(<span class="string">"age"</span>).count().show()</span><br><span class="line"></span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="DataFrame与RDD互操作方式"><a href="#DataFrame与RDD互操作方式" class="headerlink" title="DataFrame与RDD互操作方式"></a>DataFrame与RDD互操作方式</h2><p>Spark SQL支持两种不同的方法将现有的rdd转换为数据集。第一种方法使用反射来推断包含特定类型对象的RDD的模式。这种基于反射的方法可以生成更简洁的代码，并且当您在编写Spark应用程序时已经了解模式时，这种方法可以很好地工作。</p>
+<p>创建数据集的第二种方法是通过编程接口，该接口允许您构建模式，然后将其应用于现有的RDD。虽然这个方法比较冗长，但它允许在直到运行时才知道列及其类型时构造数据集。</p>
+<p>测试文件infos.txt</p>
+<blockquote>
+<p>1,zhangsan,20<br>2,lisi,30<br>3,wangwu,40</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.dataframe</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.types.&#123;StringType, IntegerType, StructField, StructType&#125;</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.&#123;Row, SparkSession&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DataFrame和RDD的互操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">object DataFrameRDDApp &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    val spark = SparkSession.builder().appName(<span class="string">"DataFrameRDDApp"</span>).master(<span class="string">"local[2]"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//inferReflection(spark)</span></span><br><span class="line"></span><br><span class="line">    program(spark)</span><br><span class="line"></span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">program</span><span class="params">(spark: SparkSession)</span>: Unit </span>= &#123;<span class="comment">//通过编程接口</span></span><br><span class="line">    <span class="comment">// RDD ==&gt; DataFrame</span></span><br><span class="line">    val rdd = spark.sparkContext.textFile(<span class="string">"file:///Users/rocky/data/infos.txt"</span>)</span><br><span class="line"></span><br><span class="line">    val infoRDD = rdd.map(_.split(<span class="string">","</span>)).map(line =&gt; Row(line(<span class="number">0</span>).toInt, line(<span class="number">1</span>), line(<span class="number">2</span>).toInt))</span><br><span class="line"></span><br><span class="line">    val structType = StructType(Array(StructField(<span class="string">"id"</span>, IntegerType, <span class="keyword">true</span>),</span><br><span class="line">      StructField(<span class="string">"name"</span>, StringType, <span class="keyword">true</span>),</span><br><span class="line">      StructField(<span class="string">"age"</span>, IntegerType, <span class="keyword">true</span>)))</span><br><span class="line"></span><br><span class="line">    val infoDF = spark.createDataFrame(infoRDD,structType)</span><br><span class="line">    infoDF.printSchema()</span><br><span class="line">    infoDF.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过df的api进行操作</span></span><br><span class="line">    infoDF.filter(infoDF.col(<span class="string">"age"</span>) &gt; <span class="number">30</span>).show</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通过sql的方式进行操作</span></span><br><span class="line">    infoDF.createOrReplaceTempView(<span class="string">"infos"</span>)</span><br><span class="line">    spark.sql(<span class="string">"select * from infos where age &gt; 30"</span>).show()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">inferReflection</span><span class="params">(spark: SparkSession)</span> </span>&#123;<span class="comment">//(第一种方式使用反射)</span></span><br><span class="line">    <span class="comment">// RDD ==&gt; DataFrame</span></span><br><span class="line">    val rdd = spark.sparkContext.textFile(<span class="string">"file:///Users/rocky/data/infos.txt"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意：需要导入隐式转换</span></span><br><span class="line">    <span class="keyword">import</span> spark.implicits._</span><br><span class="line">    val infoDF = rdd.map(_.split(<span class="string">","</span>)).map(line =&gt; Info(line(<span class="number">0</span>).toInt, line(<span class="number">1</span>), line(<span class="number">2</span>).toInt)).toDF()</span><br><span class="line"></span><br><span class="line">    infoDF.show()</span><br><span class="line"></span><br><span class="line">    infoDF.filter(infoDF.col(<span class="string">"age"</span>) &gt; <span class="number">30</span>).show</span><br><span class="line"></span><br><span class="line">    infoDF.createOrReplaceTempView(<span class="string">"infos"</span>)</span><br><span class="line">    spark.sql(<span class="string">"select * from infos where age &gt; 30"</span>).show()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">case</span> class <span class="title">Info</span><span class="params">(id: Int, name: String, age: Int)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>DataFrame和RDD互操作的两种方式：<br>1）反射：case class   前提：事先需要知道你的字段、字段类型<br>2）编程：Row          如果第一种情况不能满足你的要求（事先不知道列）<br>3) 选型：优先考虑第一种</p>
+<h2 id="DataFrame-API操作案例实战"><a href="#DataFrame-API操作案例实战" class="headerlink" title="DataFrame API操作案例实战"></a>DataFrame API操作案例实战</h2><p>student.data文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">1|Burke|1-300-746-8446|ullamcorper.velit.in@ametnullaDonec.co.uk</span><br><span class="line">2|Kamal|1-668-571-5046|pede.Suspendisse@interdumenim.edu</span><br><span class="line">3|Olga|1-956-311-1686|Aenean.eget.metus@dictumcursusNunc.edu</span><br><span class="line">4|Belle|1-246-894-6340|vitae.aliquet.nec@neque.co.uk</span><br><span class="line">5|Trevor|1-300-527-4967|dapibus.id@acturpisegestas.net</span><br><span class="line">6|Laurel|1-691-379-9921|adipiscing@consectetueripsum.edu</span><br><span class="line">7|Sara|1-608-140-1995|Donec.nibh@enimEtiamimperdiet.edu</span><br><span class="line">8|Kaseem|1-881-586-2689|cursus.et.magna@euismod.org</span><br><span class="line">9|Lev|1-916-367-5608|Vivamus.nisi@ipsumdolor.com</span><br><span class="line">10|Maya|1-271-683-2698|accumsan.convallis@ornarelectusjusto.edu</span><br><span class="line">11|Emi|1-467-270-1337|est@nunc.com</span><br><span class="line">12|Caleb|1-683-212-0896|Suspendisse@Quisque.edu</span><br><span class="line">13|Florence|1-603-575-2444|sit.amet.dapibus@lacusAliquamrutrum.ca</span><br><span class="line">14|Anika|1-856-828-7883|euismod@ligulaelit.co.uk</span><br><span class="line">15|Tarik|1-398-171-2268|turpis@felisorci.com</span><br><span class="line">16|Amena|1-878-250-3129|lorem.luctus.ut@scelerisque.com</span><br><span class="line">17|Blossom|1-154-406-9596|Nunc.commodo.auctor@eratSed.co.uk</span><br><span class="line">18|Guy|1-869-521-3230|senectus.et.netus@lectusrutrum.com</span><br><span class="line">19|Malachi|1-608-637-2772|Proin.mi.Aliquam@estarcu.net</span><br><span class="line">20|Edward|1-711-710-6552|lectus@aliquetlibero.co.uk</span><br><span class="line">21||1-711-710-6552|lectus@aliquetlibero.co.uk</span><br><span class="line">22||1-711-710-6552|lectus@aliquetlibero.co.uk</span><br><span class="line">23|NULL|1-711-710-6552|lectus@aliquetlibero.co.uk</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.dataframe</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * DataFrame中的其他操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">object DataFrameCase &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span> </span>&#123;</span><br><span class="line">    val spark = SparkSession.builder().appName(<span class="string">"DataFrameRDDApp"</span>).master(<span class="string">"local[2]"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// RDD ==&gt; DataFrame</span></span><br><span class="line">    val rdd = spark.sparkContext.textFile(<span class="string">"file:///Users/rocky/data/student.data"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意：需要导入隐式转换</span></span><br><span class="line">    <span class="keyword">import</span> spark.implicits._</span><br><span class="line">    val studentDF = rdd.map(_.split(<span class="string">"\\|"</span>)).map(line =&gt; Student(line(<span class="number">0</span>).toInt, line(<span class="number">1</span>), line(<span class="number">2</span>), line(<span class="number">3</span>))).toDF()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//show默认只显示前20条</span></span><br><span class="line">    studentDF.show</span><br><span class="line">    studentDF.show(<span class="number">30</span>)</span><br><span class="line">    studentDF.show(<span class="number">30</span>, <span class="keyword">false</span>)</span><br><span class="line"></span><br><span class="line">    studentDF.take(<span class="number">10</span>)</span><br><span class="line">    studentDF.first()</span><br><span class="line">    studentDF.head(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    studentDF.select(<span class="string">"email"</span>).show(<span class="number">30</span>,<span class="keyword">false</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    studentDF.filter(<span class="string">"name=''"</span>).show</span><br><span class="line">    studentDF.filter(<span class="string">"name='' OR name='NULL'"</span>).show</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//name以M开头的人</span></span><br><span class="line">    studentDF.filter(<span class="string">"SUBSTR(name,0,1)='M'"</span>).show</span><br><span class="line"></span><br><span class="line">    studentDF.sort(studentDF(<span class="string">"name"</span>)).show</span><br><span class="line">    studentDF.sort(studentDF(<span class="string">"name"</span>).desc).show</span><br><span class="line"></span><br><span class="line">    studentDF.sort(<span class="string">"name"</span>,<span class="string">"id"</span>).show</span><br><span class="line">    studentDF.sort(studentDF(<span class="string">"name"</span>).asc, studentDF(<span class="string">"id"</span>).desc).show</span><br><span class="line"></span><br><span class="line">    studentDF.select(studentDF(<span class="string">"name"</span>).as(<span class="string">"student_name"</span>)).show</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    val studentDF2 = rdd.map(_.split(<span class="string">"\\|"</span>)).map(line =&gt; Student(line(<span class="number">0</span>).toInt, line(<span class="number">1</span>), line(<span class="number">2</span>), line(<span class="number">3</span>))).toDF()</span><br><span class="line"></span><br><span class="line">    studentDF.join(studentDF2, studentDF.col(<span class="string">"id"</span>) === studentDF2.col(<span class="string">"id"</span>)).show</span><br><span class="line"></span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">case</span> class <span class="title">Student</span><span class="params">(id: Int, name: String, phone: String, email: String)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>同样可以在spark-shell里测试；速度比idea里要快<br><img src="4.png" alt=""><br>show()<br><img src="5.png" alt=""><br>take取几个<br><img src="6.png" alt=""><br>first取第一个；head取前几个<br><img src="7.png" alt=""><br>查看email 30个<br><img src="8.png" alt=""><br>filter过滤name=“”的<br><img src="9.png" alt=""><br>filter过滤name=“”和name=null的<br><img src="10.png" alt=""><br>filter过滤名字开头为M的<br><img src="11.png" alt=""><br>查看函数：<br><img src="12.png" alt=""><br>filter过滤名字开头为M的<br><img src="13.png" alt=""><br>排序<br><img src="14.png" alt=""><br>降序排<br><img src="15.png" alt=""><br>按照name和id排序<br><img src="16.png" alt=""><br>按照name升序和id降序排序<br><img src="17.png" alt=""><br>更改name为student_name<br><img src="18.png" alt=""><br>进行jion操作注意是三个=号<br><img src="19.png" alt=""><br><img src="20.png" alt=""></p>
+<h2 id="DataSet概述及使用"><a href="#DataSet概述及使用" class="headerlink" title="DataSet概述及使用"></a>DataSet概述及使用</h2><p>DataSet是数据的分布式集合。Dataset是Spark 1.6中添加的一个新接口，它提供了RDDs(强类型、使用强大lambda函数的能力)和Spark SQL优化执行引擎的优点。可以从JVM对象构造数据集，然后使用功能转换(映射、平面映射、筛选器等)操作数据集。数据集API在Scala和Java中可用。Python不支持数据集API。但是由于Python的动态特性，数据集API的许多优点已经可用(例如，您可以通过行名自然地访问行. columnname的字段)。R的情况类似。</p>
+<p>静态类型(Static-typing)和运行时类型安全(runtime type-safety)<br><img src="21.png" alt=""></p>
+<p>DataFrame = Dataset[Row]<br>Dataset：强类型  typed  case class<br>DataFrame：弱类型   Row</p>
+<p>SQL:<br>    seletc name from person;  compile  ok, result no<br>    错误sql语句编译的时候是发现不问题的；ok的；但是执行的时候可以发现是有问题的。</p>
+<p>DF:<br>    df.seletc(“name”)  compile no<br>错误的dateframe方法，编译的时候就有问题的。<br>    df.select(“nname”)  compile ok<br>错误的dateframe列名；编译的时候是发现不了的，执行的时候是有问题的。</p>
+<p>DS:<br>    ds.map(line =&gt; line.itemid)  compile no<br>错误的dateset列名和方法名；编译的时候是可以发现的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.dataframe</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.SparkSession</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Dataset操作</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">object DatasetApp &#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">def <span class="title">main</span><span class="params">(args: Array[String])</span> </span>&#123;</span><br><span class="line">    val spark = SparkSession.builder().appName(<span class="string">"DatasetApp"</span>)</span><br><span class="line">      .master(<span class="string">"local[2]"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意：需要导入隐式转换</span></span><br><span class="line">    <span class="keyword">import</span> spark.implicits._</span><br><span class="line"></span><br><span class="line">    val path = <span class="string">"file:///Users/rocky/data/sales.csv"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//spark如何解析csv文件？</span></span><br><span class="line">    val df = spark.read.option(<span class="string">"header"</span>,<span class="string">"true"</span>).option(<span class="string">"inferSchema"</span>,<span class="string">"true"</span>).csv(path)</span><br><span class="line">    df.show</span><br><span class="line"></span><br><span class="line">	<span class="comment">//dateframe转换为dataset</span></span><br><span class="line">    val ds = df.as[Sales]</span><br><span class="line">    ds.map(line =&gt; line.itemId).show</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    spark.sql(<span class="string">"seletc name from person"</span>).show</span><br><span class="line"></span><br><span class="line">    <span class="comment">//df.seletc("name")</span></span><br><span class="line">    df.select(<span class="string">"nname"</span>)</span><br><span class="line"></span><br><span class="line">    ds.map(line =&gt; line.itemId)</span><br><span class="line"></span><br><span class="line">    spark.stop()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">case</span> class <span class="title">Sales</span><span class="params">(transactionId:Int,customerId:Int,itemId:Int,amountPaid:Double)</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Spark]12 Spark Streaming进阶与案例实战/" data-toggle="tooltip" data-placement="top" title="[Spark]12 Spark Streaming进阶与案例实战">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Spark]06 Spark环境搭建/" data-toggle="tooltip" data-placement="top" title="[Spark]06 Spark环境搭建">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame产生背景"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DataFrame产生背景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame概述"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">DataFrame概述</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame和RDD的对比"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">DataFrame和RDD的对比</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame基本API操作"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">DataFrame基本API操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame与RDD互操作方式"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">DataFrame与RDD互操作方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFrame-API操作案例实战"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">DataFrame API操作案例实战</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataSet概述及使用"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">DataSet概述及使用</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

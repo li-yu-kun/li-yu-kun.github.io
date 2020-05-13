@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/archives/11/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/header_img/home.jpg') 
+            /*config*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>李玉坤</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading">个人博客</span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/article/初识Hadoop/">
+        <h2 class="post-title">
+                                 
+            初识Hadoop
+        </h2>
+        <h3 class="post-subtitle">
+            初识Hadoop
+        </h3>
+        <div class="post-content-preview">
+            学习建议官网地址： https://hadoop.apache.org 
+Hadoop概述Hadoop概述之Hadoop名字的由来；Hadoop项目作者的孩子给一个棕黄色的大象样子的填充玩具的命名看下图：Apache Hadoop软件库是一个框架，它允许使用简单的编程模型在计算机集群之间对大型数据集进行分布式处理。它被设计成从单个服务器扩展到数千台机器，每台机器都提供本地计算和存储。库本身的......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-06-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#大数据" title="大数据">大数据</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/大数据概述/">
+        <h2 class="post-title">
+                                 
+            大数据概述
+        </h2>
+        <h3 class="post-subtitle">
+            大数据概述
+        </h3>
+        <div class="post-content-preview">
+            大数据故事电商把假货卖给了谁，后台通过个人的消费情况来推断每个人的消费额度，来推荐出相对应价格的产品。
+大数据背景当代社会中，科学，金融，零售，物联网，交通，社交网络等数据都是无时无刻在产生越来越大的，所以大数据是无处不在的。
+大数据基本概念大数据定义大数据（big data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-06-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#大数据" title="大数据">大数据</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]04 分布式文件系统HDFS 四/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]04 分布式文件系统HDFS 四
+        </h2>
+        <h3 class="post-subtitle">
+            读写流程详解、错误处理机制、优缺点
+        </h3>
+        <div class="post-content-preview">
+            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
+文件写流程图解往HDFS中写数据的流程如下：
+
+第1幅图：我们跟客户端说，你帮我......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-06-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]03 分布式文件系统HDFS 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]03 分布式文件系统HDFS 三
+        </h2>
+        <h3 class="post-subtitle">
+            shell、Java API
+        </h3>
+        <div class="post-content-preview">
+            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
+12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-06-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]02 分布式文件系统HDFS 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]02 分布式文件系统HDFS 二
+        </h2>
+        <h3 class="post-subtitle">
+            HDFS环境搭建；常见问题，小文件问题、Namenode内存管理、数据迁移、数据平衡；数据压缩；纠删码；
+        </h3>
+        <div class="post-content-preview">
+            HDFS环境搭建官网安装文档Hadoop伪分布式安装步骤http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+下载Hadoop    http://archive.cloudera.com/cdh5/cdh/5/    2.6.0-cdh5.7.0    或则 wge......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-31
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/">
+        <h2 class="post-title">
+                                 
+            [Hadoop]01 分布式文件系统HDFS 一
+        </h2>
+        <h3 class="post-subtitle">
+            HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标；HDFS 构成及工作原理解析，基本构成、数据读写过程；集群架构，datanode、namenode、SecondaryNamenode；HDFS HA简介；HDFS文件类型；HDFS副本机制
+        </h3>
+        <div class="post-content-preview">
+            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
+什么是HDFS
+Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
+源自Google的GFS论文
+发表于2003年，HDFS是GFS的克隆版
+基于JAVA实现的一个分布式文件系统
+基于unix/linux
+是Hadoop最重要的核心......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[MySQL]03 MySQL其他操作/">
+        <h2 class="post-title">
+                                 
+            [MySQL]03 MySQL其他操作
+        </h2>
+        <h3 class="post-subtitle">
+            触发器、函数、存储过程、视图、联接
+        </h3>
+        <div class="post-content-preview">
+            查询数据库中的存储过程和函数123456789101112方法一:select `name` from mysql.proc where db = 'your_db_name' and `type` = 'PROCEDURE'   //存储过程select `name` from mysql.proc where db = 'your_db_name' and `type` = 'FUNCT......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[MySQL]02 MySQL语法/">
+        <h2 class="post-title">
+                                 
+            [MySQL]02 MySQL语法
+        </h2>
+        <h3 class="post-subtitle">
+            MySQL常用操作
+        </h3>
+        <div class="post-content-preview">
+            用户管理：12345678910111213141516　　1、新建用户：　　　　&gt;CREATE USER name IDENTIFIED BY 'ssapdrow';　　2、更改密码：　　　　&gt;SET PASSWORD FOR name=PASSWORD('fdddfd');　　3、权限管理　　　　&gt;SHOW GRANTS FOR name;    //查看name用户权......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[MySQL]04 MySQL常用操作/">
+        <h2 class="post-title">
+                                 
+            [MySQL]04 MySQL常用操作
+        </h2>
+        <h3 class="post-subtitle">
+            MySQL常用操作
+        </h3>
+        <div class="post-content-preview">
+            创建DB user12345create database test01;grant all privileges on *.* to root@'%' identified by 'root';flush privileges;
+
+kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$ mysql -u root......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-29
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[MySQL]01 MySQL5.6.23安装部署/">
+        <h2 class="post-title">
+                                 
+            [MySQL]01 MySQL5.6.23安装部署
+        </h2>
+        <h3 class="post-subtitle">
+            MySQL5.6.23安装部署
+        </h3>
+        <div class="post-content-preview">
+            参考博客https://github.com/Hackeruncle/mysql  
+https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
+首先检查事先有没有安装MySQL 如有安装清除掉旧版本
+123[root@hadoop03 ~]# ps -ef|grep mysqldroot    ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-04-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/archives/10/">&larr; Newer Posts</a>
+        </li>
+    
+    
+        <li class="next">
+            <a href="/archives/12/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+
+                <br>
+
+                <!-- require APlayer -->
+                
+
+                <!-- 如果开启评论功能 -->
+                
+            </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            
+        
+            
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            
+        
+            
+            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
+            
+        
+            
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            
+        
+            
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            
+        
+            
+            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
+            
+        
+            
+            <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
+            
+        
+            
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            
+        
+            
+            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
+            
+        
+            
+            <a href="/tags/#Interview" title="Interview" rel="1">Interview</a>
+            
+        
+            
+            <a href="/tags/#Kettle" title="Kettle" rel="9">Kettle</a>
+            
+        
+            
+            <a href="/tags/#Linux" title="Linux" rel="7">Linux</a>
+            
+        
+            
+            <a href="/tags/#MySQL" title="MySQL" rel="4">MySQL</a>
+            
+        
+            
+            <a href="/tags/#Scala" title="Scala" rel="3">Scala</a>
+            
+        
+            
+            <a href="/tags/#Spark" title="Spark" rel="17">Spark</a>
+            
+        
+            
+            <a href="/tags/#Sqoop" title="Sqoop" rel="1">Sqoop</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            
+        
+            
+            <a href="/tags/#数据仓库" title="数据仓库" rel="3">数据仓库</a>
+            
+        
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        
+            <img id = "avatar_pic" src="/img/avatar/ironman.png" />
+        
+
+        
+            <p>Stay hungry,Stay foolish</p>
+        
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            
+            
+            
+
+            
+
+            
+
+            
+                <li>
+                    <a target="_blank"  href="https://github.com/li-yu-kun">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+            
+            
+            
+        </ul>
+    </div>
+</section>
+
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h3>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/article/%5BSpark%5D%20Spark%E5%AD%A6%E4%B9%A0-shuffle%E5%92%8CRDD/">[Spark] Spark学习-shuffle和RDD</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BSpark%5D%20spark%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B(%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90)/">[Spark] spark编程模型(各种算子)</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8A%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4/">[Flink] Flink的部署以及作业提交</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BFlink%5D%20Flink%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%8A%B6%E6%80%81%20-%20Working%20with%20State/">[Flink] Flink中的处理状态 - Working with State</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">[Flink] Flink的分布式运行原理</a>
+        </li>
+      
+    </ul>
+  </div>
+
+        <hr>
+    
+        <!-- Friends Blog -->
+
+        <hr>
+    
+        
+    <h5>ARCHIVES</h5>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

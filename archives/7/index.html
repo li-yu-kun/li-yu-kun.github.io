@@ -134,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -149,6 +142,13 @@
                         
                         <li>
                             <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -211,33 +211,26 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop]01 分布式文件系统HDFS 一/">
+    <a href="/article/hue-3.9-cdh-5.7.0安装/">
         <h2 class="post-title">
                                  
-            [Hadoop]01 分布式文件系统HDFS 一
+            hue-3.9-cdh-5.7.0安装
         </h2>
         <h3 class="post-subtitle">
-            概述设计、各组件工作原理、副本机制、安全模式
+            
         </h3>
         <div class="post-content-preview">
-            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
-什么是HDFS
-Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
-源自Google的GFS论文
-发表于2003年，HDFS是GFS的克隆版
-基于JAVA实现的一个分布式文件系统
-基于unix/linux
-是Hadoop最重要的核心......
+            前置依赖1[root@hadoop etc]# yum -y install ant asciidoc cyrus-sasl-devel cyrus-sasl-gssapi gcc gcc-c++ krb5-devel libtidy libxml2-devel libxslt-devel openldap-devel python-devel sqlite-devel openssl-de......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-23
+            2018-03-29
         </p>
         <div class="tags">
             
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Hue" title="Hue">Hue</a>
             
         </div>
     
@@ -247,26 +240,29 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/[MySQL]03 MySQL其他操作/">
+    <a href="/article/[Hadoop]19 Hadoop编译支持5种压缩格式/">
         <h2 class="post-title">
                                  
-            [MySQL]03 MySQL其他操作
+            [Hadoop]19 Hadoop编译支持5种压缩格式
         </h2>
         <h3 class="post-subtitle">
-            触发器、函数、存储过程、视图、联接
+            
         </h3>
         <div class="post-content-preview">
-            查询数据库中的存储过程和函数123456789101112方法一:select `name` from mysql.proc where db = 'your_db_name' and `type` = 'PROCEDURE'   //存储过程select `name` from mysql.proc where db = 'your_db_name' and `type` = 'FUNCT......
+            apache版本编译前置环境为：JDK1.8、Maven3.1、Hadoop2.7.3
+1、安装bzip2以及各种依赖[root@hadoop ~]#yum -y install wget gcc gcc-c++ bzip2 bzip2-devel zlib zlib-devel openssl-devel curl curl-devel
+2.安装cmake操作步骤如下：
+①下载cmake安......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-14
+            2018-03-23
         </p>
         <div class="tags">
             
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
             
         </div>
     
@@ -276,26 +272,31 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/[MySQL]02 MySQL语法/">
+    <a href="/article/[Hadoop]18 Hive SQL的执行流程/">
         <h2 class="post-title">
                                  
-            [MySQL]02 MySQL语法
+            [Hadoop]18 Hive SQL的执行流程
         </h2>
         <h3 class="post-subtitle">
-            MySQL常用操作
+            
         </h3>
         <div class="post-content-preview">
-            用户管理：12345678910111213141516　　1、新建用户：　　　　&gt;CREATE USER name IDENTIFIED BY 'ssapdrow';　　2、更改密码：　　　　&gt;SET PASSWORD FOR name=PASSWORD('fdddfd');　　3、权限管理　　　　&gt;SHOW GRANTS FOR name;    //查看name用户权......
+            执行计划执行计划官网介绍
+https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Explain
+
+selectselect a.id, a.city, a.cate from access awhere a.day=’20190414’ and a.cate=’大奔’没有shuffle、仅仅就是过滤而已
+
+group ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-07
+            2018-03-18
         </p>
         <div class="tags">
             
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+              <a href="/tags/#Hive" title="Hive">Hive</a>
             
         </div>
     
@@ -305,28 +306,26 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/[MySQL]04 MySQL常用操作/">
+    <a href="/article/[Hadoop]17 Hive的元数据/">
         <h2 class="post-title">
                                  
-            [MySQL]04 MySQL常用操作
+            [Hadoop]17 Hive的元数据
         </h2>
         <h3 class="post-subtitle">
-            MySQL常用操作
+            VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS
         </h3>
         <div class="post-content-preview">
-            创建DB user12345create database test01;grant all privileges on *.* to root@'%' identified by 'root';flush privileges;
-
-kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$ mysql -u root......
+            1234&lt;property&gt; 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;   	&lt;value&gt;jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-29
+            2018-03-14
         </p>
         <div class="tags">
             
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+              <a href="/tags/#Hive" title="Hive">Hive</a>
             
         </div>
     
@@ -336,29 +335,28 @@ kill sql123456789101112131415161718普通登录方式：[mysqladmin@hadoop03 ~]$
 
 <div class="post-preview">
 
-    <a href="/article/[MySQL]01 MySQL5.6.23安装部署/">
+    <a href="/article/[Hadoop]16 hive中的file_format/">
         <h2 class="post-title">
                                  
-            [MySQL]01 MySQL5.6.23安装部署
+            [Hadoop]16 hive中的file_format
         </h2>
         <h3 class="post-subtitle">
-            MySQL5.6.23安装部署
+            行存储和列存储在hdfs中的区别、hive中的file_format、orc格式、parquet格式
         </h3>
         <div class="post-content-preview">
-            参考博客https://github.com/Hackeruncle/mysql  
-https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
-首先检查事先有没有安装MySQL 如有安装清除掉旧版本
-123[root@hadoop03 ~]# ps -ef|grep mysqldroot    ......
+            行存储和列存储在hdfs中的区别
+hive中的file_format可以使用set hive.default.fileformat来查看和设置格式set hive.default.fileformat默认是TextFile
+file_format:【查看hive官方文档】  : SEQUENCEFILE 【文件比原始文本文件还要大；不适用】  | TEXTFILE    – (Default......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-21
+            2018-03-10
         </p>
         <div class="tags">
             
-              <a href="/tags/#MySQL" title="MySQL">MySQL</a>
+              <a href="/tags/#Hive" title="Hive">Hive</a>
             
         </div>
     
@@ -368,32 +366,29 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]04 大数据常用命令 四/">
+    <a href="/article/[HBase]09 Phoenix二级索引 九/">
         <h2 class="post-title">
                                  
-            [Linux]04 大数据常用命令 四
+            [HBase]09 Phoenix二级索引 九
         </h2>
         <h3 class="post-subtitle">
-            调度|执行|软连接
+            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
         </h3>
         <div class="post-content-preview">
-            调度工具crontab比如一个可执行文件test.sh文件内容
-123#!/bin/bash （解释器）date
-执行这个shell脚本需要x执行权限执行命令
-12./test.shsh ./test.sh
-
-后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
-12[root@hadoop ~]# crontab -l* * * * * /root/te......
+            覆盖索引语法：
+12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
+本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
+好处 ：空间换时......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-16
+            2018-03-06
         </p>
         <div class="tags">
             
-              <a href="/tags/#Linux" title="Linux">Linux</a>
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -403,26 +398,28 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]03 大数据常用命令 三/">
+    <a href="/article/[HBase]08 Phoenix二级索引 八/">
         <h2 class="post-title">
                                  
-            [Linux]03 大数据常用命令 三
+            [HBase]08 Phoenix二级索引 八
         </h2>
         <h3 class="post-subtitle">
-            用户权限以及性能相关命令
+            全局索引、本地索引
         </h3>
         <div class="post-content-preview">
-            /etc/passwd文件123456789101112131415161718[root@hadoop k]# cat /etc/passwd其中有一行：k:x:1001:1002::/home/k:/bin/bash当/bin/bash是/bin/false或者/sbin/nologin[root@hadoop k]# su - k 命令是切换用户切不过去的在安装CDH的时候/etc/p......
+            Phoenix二级索引官网：http://phoenix.apache.org/secondary_indexing.html
+建表和建索引
+12345678910111213141516171819202122232425建表：0: jdbc:phoenix:&gt; select * from my_schema.my_table;+-----+---------------------......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-04-09
+            2018-02-27
         </p>
         <div class="tags">
             
-              <a href="/tags/#Linux" title="Linux">Linux</a>
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -432,26 +429,28 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]02 大数据常用命令 二/">
+    <a href="/article/[HBase]07 Phoenix工具与盐表 七/">
         <h2 class="post-title">
                                  
-            [Linux]02 大数据常用命令 二
+            [HBase]07 Phoenix工具与盐表 七
         </h2>
         <h3 class="post-subtitle">
-            文件、用户组等内容命令
+            Phoenix如何和HBase namespace映射、dbeaver的安装配置、盐表简述
         </h3>
         <div class="post-content-preview">
-            查看文件内容123456789101112131415161718192021222324252627282930313233343536373839404142434445464748cat 文件内容一下子全部显示more 文件内容一页一页的往下翻，按空格键往下，回退不了，按q退出less 文件内容 往下 往上  按上下箭头的按键 按q键退出对于配置文件、内容较少的文件 建议使用 cat ......
+            Phoenix的schema与HBase的namespace官网介绍：http://phoenix.apache.org/namspace_mapping.html
+默认情况下在Phoenix中create schema 默认不会映射到namespace；需要在服务端和客户端都开启phoenix.schema.isNamespaceMappingEnabled
+服务端:hbase-site.......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-31
+            2018-02-19
         </p>
         <div class="tags">
             
-              <a href="/tags/#Linux" title="Linux">Linux</a>
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -461,32 +460,59 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]01 大数据常用命令 一/">
+    <a href="/article/基于docker安装superset/">
         <h2 class="post-title">
                                  
-            [Linux]01 大数据常用命令 一
+            基于docker安装superset
         </h2>
         <h3 class="post-subtitle">
-            基本操作命令
+            
         </h3>
         <div class="post-content-preview">
-            [hadoop@hadoop ~]$12[hadoop@hadoop ~]$ 含义：登录的用户@机器名称 家目录
+            更换yum源将Centos7的yum配置为阿里云的镜像（完美解决yum下载太慢的问题）
+1、备份mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/
 
-
-查看当前光标所在的目录 pwd123[hadoop@hadoop ~]$ pwd/home/hadoop[hadoop@hadoop ~]$
-
-
-切换目录 cd12345678910111213141516171819202122[hadoop@hadoop ~]$ cd /......
+CentOS 5wget -O /etc/yum.rep......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2018-02-11
         </p>
         <div class="tags">
             
-              <a href="/tags/#Linux" title="Linux">Linux</a>
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka]04 Kafka入门 四/">
+        <h2 class="post-title">
+                                 
+            [Kafka]04 Kafka入门 四
+        </h2>
+        <h3 class="post-subtitle">
+            Kafka 原生的 API、Spring Boot 使用 Kafka
+        </h3>
+        <div class="post-content-preview">
+            使用 Kafka 原生的 API①消费者自动提交
+定义自己的生产者：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546import org.apache.kafka.clients.producer.Callback;import org.apache.kafka.clien......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-02-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -504,6 +530,10 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
             <a href="/archives/6/">&larr; Newer Posts</a>
         </li>
     
+    
+        <li class="next">
+            <a href="/archives/8/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -535,11 +565,11 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
     <div class="tags">
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
             
         
             
@@ -555,15 +585,19 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
             
         
             
+            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
+            
+        
+            
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
             
         
             
-            <a href="/tags/#MapReduce" title="MapReduce" rel="3">MapReduce</a>
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="4">Hive</a>
+            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
             
         
             
@@ -575,7 +609,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
             
         
             
-            <a href="/tags/#Linux" title="Linux" rel="5">Linux</a>
+            <a href="/tags/#Linux" title="Linux" rel="7">Linux</a>
             
         
             
@@ -587,7 +621,15 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
             
         
             
-            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            <a href="/tags/#Spark" title="Spark" rel="17">Spark</a>
+            
+        
+            
+            <a href="/tags/#Sqoop" title="Sqoop" rel="1">Sqoop</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
             
@@ -647,23 +689,23 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%5BSpark%5D%20Spark%E5%AD%A6%E4%B9%A0-shuffle%E5%92%8CRDD/">[Spark] Spark学习-shuffle和RDD</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%5BSpark%5D%20spark%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B(%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90)/">[Spark] spark编程模型(各种算子)</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8A%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4/">[Flink] Flink的部署以及作业提交</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%8A%B6%E6%80%81%20-%20Working%20with%20State/">[Flink] Flink中的处理状态 - Working with State</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">[Flink] Flink的分布式运行原理</a>
         </li>
       
     </ul>
@@ -678,7 +720,7 @@ https://github.com/Hackeruncle/MySQL/blob/master/MySQL%205.6.23%20Install.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

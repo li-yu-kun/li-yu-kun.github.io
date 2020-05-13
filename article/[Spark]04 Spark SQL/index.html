@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Spark]04 Spark SQL - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Spark]04 Spark SQL/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                            
+                        </div>
+                        <h1>[Spark]04 Spark SQL</h1>
+                        <h2 class="subheading">Spark SQL前世今生、SQL on Hadoop常用框架、Spark SQL概述、Spark SQL愿景</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2019-05-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Spark-SQL前世今生"><a href="#Spark-SQL前世今生" class="headerlink" title="Spark SQL前世今生"></a>Spark SQL前世今生</h1><h2 id="为什么需要SQL"><a href="#为什么需要SQL" class="headerlink" title="为什么需要SQL"></a>为什么需要SQL</h2><ol>
+<li>事实上的标准-关系型数据库已经存在多年，sql的应用对于大数据开发人员很方便</li>
+<li>易学易用-SQL的门槛比较低，几天就可上手</li>
+<li>受众面大</li>
+</ol>
+<h2 id="Shark"><a href="#Shark" class="headerlink" title="Shark"></a>Shark</h2><p>(Shark已经停止维护；不建议生产使用)</p>
+<ol>
+<li>Hive on Spark<br>Hive: 类似于sql的Hive QL语言， sql==&gt;mapreduce<br>　特点：mapreduce<br>　改进：hive on tez、hive on spark、hive on mapreduce</li>
+<li>Shark特性<br>Spark: hive on spark ==&gt; shark(hive on spark)<br>　shark推出：欢迎， 基于spark、基于内存的列式存储、与hive能够兼容<br>　缺点：hive ql的解析、逻辑执行计划生成、执行计划的优化是依赖于hive的，仅仅只是把物理执行计划从mr作业替换成spark作业</li>
+<li>缺点<br>Shark终止（2014-7）<br><img src="1.png" alt=""><br>Shark终止以后，产生了2个分支：<br>1）hive on spark<br> Hive社区，源码是在Hive中<br>2）Spark SQL<br> Spark社区，源码是在Spark中<br> 支持多种数据源，多种优化技术，扩展性好很多</li>
+</ol>
+<h1 id="SQL-on-Hadoop常用框架"><a href="#SQL-on-Hadoop常用框架" class="headerlink" title="SQL on Hadoop常用框架"></a>SQL on Hadoop常用框架</h1><ol>
+<li>Hive<br> sql ==&gt; mapreduce<br> metastore ： 元数据<br> sql：database、table、view<br> facebook开源</li>
+<li>impala<br> cloudera ： cdh（建议大家在生产上使用的hadoop系列版本）、cm<br> sql：自己的守护进程执行的，非mr<br> 基于内存(metastore)运行</li>
+<li>presto<br> facebook开源<br> 京东<br> sql<br> 基于内存(metastore)运行</li>
+<li>drill<br> sql<br> 直接访问：hdfs、rdbms、json、hbase、mongodb、s3、hive</li>
+<li>Spark SQL<br> sql<br> dataframe/dataset api<br> metastore<br> 访问：hdfs、rdbms、json、hbase、mongodb、s3、hive  ==&gt; 外部数据源</li>
+</ol>
+<h1 id="Spark-SQL概述"><a href="#Spark-SQL概述" class="headerlink" title="Spark SQL概述"></a>Spark SQL概述</h1><p><strong>官网翻译：</strong></p>
+<p>Spark SQL是Apache Spark用于处理结构化数据的模块。</p>
+<ul>
+<li>集成<blockquote>
+<p>results = spark.sql(<br>“SELECT * FROM people”)<br>names = results.map(lambda p: p.name)</p>
+</blockquote>
+</li>
+</ul>
+<p>将SQL查询与Spark程序无缝混合。<br>Spark SQL允许您使用SQL或熟悉的DataFrame API在Spark程序中查询结构化数据。可用于Java、Scala、Python和R。</p>
+<ul>
+<li>统一数据访问</li>
+</ul>
+<blockquote>
+<p>spark.read.json(“s3n://…”)<br>  .registerTempTable(“json”)<br>results = spark.sql(<br>  “””SELECT *<br>     FROM people<br>     JOIN json …”””)</p>
+</blockquote>
+<p>以相同方式连接到任何数据源。<br>DataFrames和SQL提供了访问各种数据源的常用方法，包括Hive，Avro，Parquet，ORC，JSON和JDBC。您甚至可以跨这些来源加入数据。</p>
+<ul>
+<li><p>Hive集成<br><img src="2.png" alt=""><br>在现有仓库上运行SQL或HiveQL查询。<br>Spark SQL支持HiveQL语法以及Hive SerDes和UDF，允许您访问现有的Hive仓库。</p>
+</li>
+<li><p>标准连接<br><img src="3.png" alt=""><br>通过JDBC或ODBC连接。<br>服务器模式为商业智能工具提供行业标准JDBC和ODBC连接。</p>
+</li>
+</ul>
+<p><em>个人总结:</em></p>
+<p>有见到SQL字样吗？<br>Spark SQL它不仅仅有访问或者操作SQL的功能，还提供了其他的非常丰富的操作：外部数据源、优化</p>
+<ol>
+<li><p><strong>Spark1.0(2014年4月)以来的部分核心发行版</strong><br>下图是Spark SQL参与开发（左图）和提交次数统计（右图）<br><img src="4.png" alt=""><br>Spark从1.3从Alpha版本毕业；正式投入生产环境使用<br>（Alpha版本的框架不建议在生产环境使用；因为还未成熟）</p>
+</li>
+<li><p><strong>运行SQL/Hive QL查询，包括UDFs UDAFs和SerDes</strong><br><img src="5.png" alt=""></p>
+</li>
+<li><p><strong>Spark通过JDBC连接现有的BI工具</strong><br><img src="6.png" alt=""></p>
+</li>
+<li><p><strong>支持Python，Scaka，Java，R</strong><br><img src="7.png" alt=""></p>
+</li>
+</ol>
+<p>Spark SQL概述小结：<br>1）Spark SQL的应用并不局限于SQL。<br>2）访问hive、json、parquet等文件的数据。<br>3）SQL只是Spark SQL的一个功能而已；===&gt; Spark SQL这个名字起的并不恰当。<br>4）Spark SQL提供了SQL的api、DataFrame和Dataset的API。</p>
+<h1 id="Spark-SQL架构"><a href="#Spark-SQL架构" class="headerlink" title="Spark SQL架构"></a>Spark SQL架构</h1><p><img src="8.png" alt=""><br>只要是基于SQL，它的大概流程都是上图所示<br>上图翻译：<br>可大致分为三部分： 前端、催化剂（Catalyst）、后端</p>
+<ul>
+<li>前端：可以有不同种的访问方式；典型的Hive，其他的Spark应用程序，流和SQL的综合使用。</li>
+<li>催化剂（Catalyst）：前端的东西过来后并不会直接生成执行计划，和metastore 中的Schema表信息进行整合生成最原始的逻辑执行计划，然后通过各种优化生成优化后的逻辑执行计划。</li>
+<li>后端：进入物理执行计划（Spark作业），然后运行。</li>
+</ul>
+<p><img src="9.png" alt=""></p>
+<h1 id="Spark-SQL愿景"><a href="#Spark-SQL愿景" class="headerlink" title="Spark SQL愿景"></a>Spark SQL愿景</h1><h2 id="写更少的代码"><a href="#写更少的代码" class="headerlink" title="写更少的代码"></a>写更少的代码</h2><h3 id="代码量和可读性"><a href="#代码量和可读性" class="headerlink" title="代码量和可读性"></a>代码量和可读性</h3><p>Hadoop的Mapreduce <strong>VS</strong> spark的RDD<br><img src="10.png" alt=""><br>RDD <strong>VS</strong> DataFrames<br><img src="11.png" alt=""></p>
+<h3 id="统一访问操作接口"><a href="#统一访问操作接口" class="headerlink" title="统一访问操作接口"></a>统一访问操作接口</h3><p>统一接口，以各种格式读写数据<br><img src="12.png" alt=""><br><img src="13.png" alt=""><br><img src="14.png" alt=""><br><strong>Spark ETL使用自定义数据源案例</strong>（加载JIRA数据源）<br><img src="15.png" alt=""></p>
+<h3 id="强有力的API支持"><a href="#强有力的API支持" class="headerlink" title="强有力的API支持"></a>强有力的API支持</h3><p>使用DataFrame函数简洁地解决常见问题:<br>A.选择所需列<br>B.连接不同的数据源<br>C.汇总(计数、总和、平均等)<br>d .过滤<br>E. ……<br>使用API建议到源码中去查询</p>
+<h3 id="Schema推导"><a href="#Schema推导" class="headerlink" title="Schema推导"></a>Schema推导</h3><p>模式推理:<br>A. 大数据往往很脏（需要进行处理；把脏数据剔除）<br>B. 从半结构化数据(即JSON)推断模式<br>C. 合并模式的不同但兼容的版本(例如JSON，Parquet)<br>（json格式对于存储和传输都是有一定的开销的；建议转换为列式存储结构比如Parquet）</p>
+<p><strong>推导示例：</strong><br><img src="16.png" alt=""></p>
+<h3 id="Schema-Merge"><a href="#Schema-Merge" class="headerlink" title="Schema Merge"></a>Schema Merge</h3><p>转向官方链接（因为比较耗性能这个功能是默认关闭的）：<br><a href="http://spark.apache.org/docs/latest/sql-data-sources-parquet.html#schema-merging" target="_blank" rel="noopener">http://spark.apache.org/docs/latest/sql-data-sources-parquet.html#schema-merging</a></p>
+<h3 id="Partition-Discovery"><a href="#Partition-Discovery" class="headerlink" title="Partition Discovery"></a>Partition Discovery</h3><p>自动分区发现(Parquet)<br>A. 发现hive式分区表目录布局<br>B. 从分区目录路径推断分区列类型和值<br>转向官方链接<br><a href="http://spark.apache.org/docs/latest/sql-data-sources-parquet.html#partition-discovery" target="_blank" rel="noopener">http://spark.apache.org/docs/latest/sql-data-sources-parquet.html#partition-discovery</a></p>
+<h3 id="执行速度更快"><a href="#执行速度更快" class="headerlink" title="执行速度更快"></a>执行速度更快</h3><p><img src="17.png" alt=""></p>
+<ul>
+<li>为什么Python RDD慢？<br>因为Python的VM和JVM需要大量数据的跨越进程交换，所以最慢。</li>
+<li>为什么SQL,R,python,Scala的DataFrame操作速度都是一样的？<br>是因为DataFrame仅仅是封装的一个逻辑执行计划，然后这个逻辑执行计划交由SparkSQL的Catalyst来完成做各种优化。</li>
+<li>为什么RDD的API要比DataFrame慢？<br>因为RDD是行数式的，而且它强调性的是不可变性。在大部分情况下它都是创建一个新对象而不是去修改一个老对象，所以就导致Spark应用程序创建很多个对象，GC压力大，性能差。<br>DataFrame的原则是尽可能使用已有对象。虽然打破了不可变性，但是再将数据返回给用户的时候它还会转成不可变的对象。</li>
+</ul>
+<h2 id="SparkSQL愿景之二读取更少的数据"><a href="#SparkSQL愿景之二读取更少的数据" class="headerlink" title="SparkSQL愿景之二读取更少的数据"></a>SparkSQL愿景之二读取更少的数据</h2><p>处理大数据的最快方式就是忽略它;<br>Spark SQL可以帮助您自动读取更少的数据:</p>
+<ol>
+<li>使用columnar formats【列式存储】(比如parquet)-==使用的时候仅仅去扫描需要的列。</li>
+<li>使用partitioning pruning【分区裁剪】(比如/year=2014/month=02/…)仅仅会去查询02月份的数据，忽略不需要的数据。</li>
+<li>底层有最小/最大统计数据的统计，这些存在了一个索引里。当我们发送查询的时候，索引已有结果的查询就会直接给出答案，跳过了数据和查询逻辑。</li>
+<li>将predicates【条件】下压到数据源，从数据源端就过滤掉不需要的数据。（谓词下压）（比如JDBC）</li>
+<li>节省了空间<br>A. 特定类型编码<br>B. 柱状布局压缩效果更好</li>
+<li>使更好的扫描<br>A. 只加载需要访问的列;<br>B. 将IO限制为实际需要的数据</li>
+</ol>
+<p><strong>行式存储与列式存储</strong><br><img src="18.png" alt=""></p>
+<h2 id="SparkSQL愿景之三让查询优化器帮助我们优化执行效率"><a href="#SparkSQL愿景之三让查询优化器帮助我们优化执行效率" class="headerlink" title="SparkSQL愿景之三让查询优化器帮助我们优化执行效率"></a>SparkSQL愿景之三让查询优化器帮助我们优化执行效率</h2><p><strong>让优化器做艰苦的工作</strong></p>
+<p><strong><em>案例一</em></strong><br><img src="19.png" alt=""><br>优化器如何对上图代码进行优化的？<br>见下图所示：<br><img src="20.png" alt=""><br>左图：数据全部加载<br>中图：只加载需要的列，但是所有年份的列都加载了<br>右图：只加载2015的所需要的列</p>
+<p><strong><em>案例二</em></strong><br><img src="21.png" alt=""><br>优化器如何对上图代码进行优化的？<br>见下图所示：<br><img src="22.png" alt=""><br>左图：最原始的逻辑执行计划，数据全部做join<br>中图：将event过滤后再与users进行join操作<br>右图：谓词下压，列裁剪，将条件下压源数据中，读取的时候就已经过滤，然后在进行join操作。</p>
+<p><strong>DataFrame内部</strong><br><img src="23.png" alt=""><br>A. 内部表示为“逻辑计划”<br>B. 执行是惰性的，允许催化剂(Catalyst)对其进行优化<br><strong><em>DataFrames和SQL共享同一个优化/执行管道</em></strong></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>SparkSQL更快地创建和运行Spark程序<br>A.编写更少的代码<br>B.读取更少的数据<br>C.让优化器做艰苦的工作<br>【为了达成这三点1.3提出了DataFrame】</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Spark]05 从hive到spark SQL/" data-toggle="tooltip" data-placement="top" title="[Spark]05 从hive到spark SQL">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Spark] Spark的job在yarn的资源分配/" data-toggle="tooltip" data-placement="top" title="[Spark] Spark的job在yarn的资源分配">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark-SQL前世今生"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Spark SQL前世今生</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么需要SQL"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">为什么需要SQL</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Shark"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Shark</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SQL-on-Hadoop常用框架"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">SQL on Hadoop常用框架</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark-SQL概述"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Spark SQL概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark-SQL架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Spark SQL架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark-SQL愿景"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Spark SQL愿景</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#写更少的代码"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">写更少的代码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#代码量和可读性"><span class="toc-nav-number">5.1.1.</span> <span class="toc-nav-text">代码量和可读性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#统一访问操作接口"><span class="toc-nav-number">5.1.2.</span> <span class="toc-nav-text">统一访问操作接口</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#强有力的API支持"><span class="toc-nav-number">5.1.3.</span> <span class="toc-nav-text">强有力的API支持</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Schema推导"><span class="toc-nav-number">5.1.4.</span> <span class="toc-nav-text">Schema推导</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Schema-Merge"><span class="toc-nav-number">5.1.5.</span> <span class="toc-nav-text">Schema Merge</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Partition-Discovery"><span class="toc-nav-number">5.1.6.</span> <span class="toc-nav-text">Partition Discovery</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#执行速度更快"><span class="toc-nav-number">5.1.7.</span> <span class="toc-nav-text">执行速度更快</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SparkSQL愿景之二读取更少的数据"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">SparkSQL愿景之二读取更少的数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SparkSQL愿景之三让查询优化器帮助我们优化执行效率"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">SparkSQL愿景之三让查询优化器帮助我们优化执行效率</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">总结</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
