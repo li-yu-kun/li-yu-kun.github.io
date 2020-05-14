@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop] 分布式资源调度YARN 一 - 李玉坤 | Blog
+          [Hadoop]07 分布式资源调度YARN 三 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] 分布式资源调度YARN 一/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] 分布式资源调度YARN 三/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#YARN" title="YARN">YARN</a>
                             
                         </div>
-                        <h1>[Hadoop] 分布式资源调度YARN 一</h1>
-                        <h2 class="subheading">YARN产生背景、YARN概述、YARN架构、Yarn 基本思想、Yarn 计算资源抽象</h2>
+                        <h1>[Hadoop]07 分布式资源调度YARN 三</h1>
+                        <h2 class="subheading">YARN单机环境搭建、Yarn常用命令介绍、常见基于Yarn的计算框架(MapReduce On Yarn、Spark)</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-07-08
+                            2017-07-23
                         </span>
                     </div>
                 
@@ -212,140 +212,47 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="YARN产生背景"><a href="#YARN产生背景" class="headerlink" title="YARN产生背景"></a>YARN产生背景</h1><ol>
-<li>MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：</li>
-</ol>
-<ul>
-<li>单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行</li>
-<li>节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展，压力很大<ul>
-<li>每个Slave机器可运行的最大Map tasks数量和Reduce tasks数量固定</li>
-</ul>
+                <h1 id="YARN单机环境搭建"><a href="#YARN单机环境搭建" class="headerlink" title="YARN单机环境搭建"></a>YARN单机环境搭建</h1><ol>
+<li><p>mapred-site.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>yarn-site.xml</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;hadoop:38088&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"># web界面防火墙 38088 50070 开放这两个端口</span><br><span class="line"># yarn.resourcemanager.webapp.address修改8088为38088</span><br></pre></td></tr></table></figure></li>
+<li><p>yarn-env.sh<br>export YARN_PID_DIR=/home/hadoop/tmp</p>
 </li>
-<li>不能够支持除了mapreduce意外的框架：JobTracker承载的任务比较多；整个架构只能支持mapreduce作业，不支持storm，spark作业。<ul>
-<li>难以共享集群资源</li>
-<li>Spark Strom Impala</li>
-</ul>
+<li><p>启动YARN相关的进程<br>sbin/start-yarn.sh</p>
 </li>
-</ul>
-<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>（MapReduce：Master/Slave架构，1个JobTracker带多个TaskTracker）</p>
-<ul>
-<li>JobTracker： 负责资源管理和作业调度，任务分配</li>
-<li>TaskTracker：定期向JT汇报本节点的健康状况、资源使用情况、作业执行情况；接收来自JT的命令：启动任务/杀死任务</li>
-</ul>
-<p>在mapreduce1.X中；资源叫slot；每台节点只有获取到了slot才可以启动多少个map和多少个reduce；不能够指定cpu资源；启动后也不可更改资源。比较粗糙；难以共享集群资源。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
-<p><strong>MapReduce V1 执行job流程</strong><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
-<ol start="3">
-<li>催生了YARN的诞生<br><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>YARN：不同计算框架可以共享同一个HDFS集群上的数据，享受整体的资源调度<br>XXX on YARN的好处：（XXX: Spark/MapReduce/Storm/Flink）<br> 与其他计算框架共享集群资源，按资源需要分配，进而提高集群资源的利用率</li>
-</ol>
-<h1 id="YARN概述"><a href="#YARN概述" class="headerlink" title="YARN概述"></a>YARN概述</h1><ul>
-<li>从Hadoop 2.0开始出现了Yarn</li>
-<li>Yet Another Resource Negotiator （另一个种资源协调者）</li>
-<li>通用的资源管理系统<ul>
-<li>为上层应用提供统一的资源管理和调度 hive spark 等</li>
-</ul>
-</li>
-</ul>
-<p>ResurceManager(RM)：</p>
-<p>RM是一个全局的资源管理器，集群只有一个，负责整个系统的资源管理和分配，包括处理客户端请求、启动/监控Applications master、监控nodemanager、资源的分配与调度。</p>
-<p>它主要由两个组件构成：调度器（Scheduler）和应用程序管理器（Applications Manager，ASM）。</p>
-<ul>
-<li>调度器<ul>
-<li>调度器根据容量、队列等限制条件（如每个队列分配一定的资源，最多执行一定数量的作业等），将系统中的资源分配给各个正在运行的应用程序。需要注意的是，该调度器是一个“纯调度器”，它不再从事任何与具体应用程序相关的工作，比如不负责监控或者跟踪应用的执行状态等，也不负责重新启动因应用执行失败或者硬件故障而产生的失败任务，这些均交由应用程序相关的ApplicationMaster完成。调度器仅根据各个应用程序的资源需求进行资源分配，而资源分配单位用一个抽象概念“资源容器”（Resource Container，简称Container）表示，Container是一个动态资源分配单位，它将内存、CPU、磁盘、网络等资源封装在一起，从而限定每个任务使用的资源量。此外，该调度器是一个可插拔的组件，用户可根据自己的需要设计新的调度器，YARN提供了多种直接可用的调度器，比如Fair Scheduler和Capacity Scheduler等。</li>
-</ul>
-</li>
-<li>应用程序管理器<ul>
-<li>应用程序管理器负责管理整个系统中所有应用程序，包括应用程序提交、与调度器协商资源以启动ApplicationMaster、监控ApplicationMaster运行状态并在失败时重新启动它等。 </li>
-</ul>
-</li>
-</ul>
-<h1 id="YARN架构"><a href="#YARN架构" class="headerlink" title="YARN架构"></a>YARN架构</h1><p><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>YARN架构：</p>
-<ol>
-<li>ResourceManager: RM（通常会另外部署一个standby来解决单点故障）<ul>
-<li>一个集群只有一个，全局的资源管理器</li>
-<li>处理客户端的请求： 提交一个作业、杀死一个作业</li>
-<li>监控Node Manger，汇总上报的资源</li>
-<li>根据请求分配资源</li>
-</ul>
-</li>
-<li>NodeManager: NM<ul>
-<li>每个从属节点一个<ul>
-<li>管理自身所属节点的资源</li>
-<li>监控资源使用情况（cpu, memory, disk,network)并向Resource Manager汇报</li>
-<li>接收并处理来自RM的各种命令：启动Container</li>
-</ul>
-</li>
-<li>处理来自AM的命令</li>
-<li>单个节点的资源管理</li>
-</ul>
-</li>
-<li>ApplicationMaster: AM<ul>
-<li>每个应用程序对应一个：MR、Spark，负责应用程序的管理</li>
-<li>为应用程序向RM申请资源（core、memory），分配给内部task</li>
-<li>需要与NM通信：启动/停止task，task是运行在container里面，AM也是运行在container里面</li>
-</ul>
-</li>
-<li>Container<ul>
-<li>封装了CPU、Memory等资源的一个容器</li>
-<li>是一个任务运行环境的抽象</li>
-</ul>
-</li>
-<li>Client<ul>
-<li>提交作业</li>
-<li>查询作业的运行进度</li>
-<li>杀死作业</li>
-</ul>
+<li><p>验证<br> jps<br> 　ResourceManager<br> 　NodeManager<br> 或者浏览器：<br> 　<a href="http://hadoop000:8088" target="_blank" rel="noopener">http://hadoop000:8088</a></p>
 </li>
 </ol>
-<p>通常NodeManager会和DataNode混合部署，why?<br>可以从内存、cpu、磁盘的使用来讲。<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
-<h1 id="Yarn-基本思想"><a href="#Yarn-基本思想" class="headerlink" title="Yarn 基本思想"></a>Yarn 基本思想</h1><ul>
-<li>在MapReduce V1中<ul>
-<li>JobTracker = 资源管理器 + 任务调度器</li>
+<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>6. 停止YARN相关的进程<br>    sbin/stop-yarn.sh</p>
+<h1 id="Yarn常用命令介绍"><a href="#Yarn常用命令介绍" class="headerlink" title="Yarn常用命令介绍"></a>Yarn常用命令介绍</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">• yarn application</span><br><span class="line">	• 列出所有Application</span><br><span class="line">		yarn application -list</span><br><span class="line">	• 根据Application状态过滤</span><br><span class="line">		yarn application -list -appStatus ACCEPTED</span><br><span class="line">	• Kill掉Application</span><br><span class="line">		yarn application -kill &lt;ApplicationId&gt;</span><br><span class="line">• yarn logs</span><br><span class="line">	• 查询Application日志</span><br><span class="line">		yarn logs -applicationId &lt;ApplicationId&gt;</span><br><span class="line">	• 查询Container日志</span><br><span class="line">		yarn logs -applicationId &lt;ApplicationId&gt; \</span><br><span class="line">			-containerId &lt;ContainerId&gt; \</span><br><span class="line">			-nodeAddress &lt;NodeAddress&gt;</span><br><span class="line">		端口是配置文件中yarn.nodemanager.webapp.address参数指定</span><br><span class="line">• yarn applicationattempt</span><br><span class="line">	• 列出所有Application尝试的列表</span><br><span class="line">		yarn applicationattempt -list &lt;ApplicationId&gt;</span><br><span class="line">	• 打印ApplicationAttemp状态</span><br><span class="line">		yarn applicationattempt -status &lt;ApplicationAttemptId&gt;</span><br><span class="line">• yarn container</span><br><span class="line">	• 列出所有Container</span><br><span class="line">		yarn container -list &lt;ApplicationAttemptId&gt;</span><br><span class="line">	• 打印Container状态</span><br><span class="line">		yarn container -status &lt;ContainerId&gt;</span><br><span class="line">• yarn node</span><br><span class="line">	• 列出所有节点</span><br><span class="line">		yarn node -list -all</span><br><span class="line">• yarn rmadmin</span><br><span class="line">	• 加载队列配置</span><br><span class="line">		yarn rmadmin –refreshQueues</span><br><span class="line">• yarn queue</span><br><span class="line">	• 打印队列信息</span><br><span class="line">		yarn queue -status &lt;QueueName&gt;</span><br><span class="line">• yarn classpath</span><br><span class="line">	• 打印Hadoop Jar包路径</span><br></pre></td></tr></table></figure>
+<h1 id="提交作业到YARN上执行"><a href="#提交作业到YARN上执行" class="headerlink" title="提交作业到YARN上执行"></a>提交作业到YARN上执行</h1><p>提交mr作业到YARN上运行：<br>下列目录是Hadoop源码中的example</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/hadoop/app/hadoop-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//以这个命令进行提交作业</span></span><br><span class="line">hadoop jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//pi 2 3 为参数  </span></span><br><span class="line">hadoop jar hadoop-mapreduce-examples-<span class="number">2.6</span><span class="number">.0</span>-cdh5<span class="number">.7</span><span class="number">.0</span>.jar pi <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>当我们再次执行该作业时，会报错：<br>FileAlreadyExistsException:<br>Output directory hdfs://hadoop001:8020/output/wc already exists</p>
+<h1 id="常见基于Yarn的计算框架"><a href="#常见基于Yarn的计算框架" class="headerlink" title="常见基于Yarn的计算框架"></a>常见基于Yarn的计算框架</h1><h2 id="MapReduce-On-Yarn"><a href="#MapReduce-On-Yarn" class="headerlink" title="MapReduce On Yarn"></a>MapReduce On Yarn</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><ul>
+<li>基于内存的大数据计算引擎</li>
+<li>MapReduce不适合的计算场景：<ul>
+<li>迭代式作业<ul>
+<li>机器学习，图算法需要迭代运行Mapper和Reducer多次</li>
 </ul>
 </li>
-<li>在Yarn中做了切分<ul>
-<li>资源管理<ul>
-<li>让ResourceManager负责</li>
+<li>交互式作业<ul>
+<li>交互式数据分析，尤其是涉及到机器学习算法</li>
 </ul>
 </li>
-<li>任务调度<ul>
-<li>让ApplicationMaster负责<ul>
-<li>每个作业启动一个</li>
-<li>根据作业切分任务tasks</li>
-<li>向Resource Manager申请资源</li>
-<li>与NodeManager协作，将分配申请到的资源给内部任务tasks</li>
-<li>监控tasks运行情况，重启失败的任务</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>JobHistoryServer<ul>
-<li>每个集群每种计算框架一个</li>
-<li>负责搜集归档所有的日志</li>
+<li>流式作业<ul>
+<li>无穷无尽的流式数据，需要不断的对数据进行聚合计算</li>
 </ul>
 </li>
 </ul>
-<h2 id="Yarn-计算资源抽象"><a href="#Yarn-计算资源抽象" class="headerlink" title="Yarn 计算资源抽象"></a>Yarn 计算资源抽象</h2><ul>
-<li>在Yarn中，计算资源被抽象为Container</li>
-<li>每个Container描述：<ul>
-<li>可使用的CPU资源和内存资源</li>
-<li>执行命令</li>
-<li>环境变量</li>
-<li>外部资源</li>
-</ul>
 </li>
-<li>如何获得运行各个任务的Container?<ul>
-<li>由ApplicationMaster向ResourceManager申请</li>
-<li>ApplicationMaster本身也运行在一个Container，这个Container由ResourceManager向自身申请启动</li>
+<li>Spark提供了一种新的数据抽象RDD弹性分布式数据集，可以将数据存储在内存中，而不是存储到HDFS上，使得快速迭代计算成为可能。</li>
 </ul>
-</li>
-<li>如何启动运行？<ul>
-<li>向Container所属的Node Manager发起运行</li>
-</ul>
-</li>
-</ul>
-<p><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>上图中一个core并不代表一个cpu；它是衡量cpu计算能力的一个单位；比如早期的物理机cpu计算能力差就按照1：1来算core，一个cpu相当于一个core；而后期新买的物理机计算能力强1：2来算core，一个cpu相当于两个core。</p>
+<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<h2 id="Spark-On-Yarn"><a href="#Spark-On-Yarn" class="headerlink" title="Spark On Yarn"></a>Spark On Yarn</h2><p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
 
                 
 
@@ -354,12 +261,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop] 分布式资源调度YARN 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]06 分布式资源调度YARN 二">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop] 分布式资源调度YARN 四/" data-toggle="tooltip" data-placement="top" title="[Hadoop]11 分布式资源调度YARN 四">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop] HDFS读写流程详解/" data-toggle="tooltip" data-placement="top" title="[Hadoop] HDFS读写流程详解">Next Post &rarr;</a>
+                            <a href="/article/[Hadoop] 分布式资源调度YARN 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop]06 分布式资源调度YARN 二">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -409,7 +316,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN产生背景"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN产生背景</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN概述"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">YARN概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">YARN架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn-基本思想"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Yarn 基本思想</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn-计算资源抽象"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Yarn 计算资源抽象</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN单机环境搭建"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">YARN单机环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Yarn常用命令介绍"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Yarn常用命令介绍</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#提交作业到YARN上执行"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">提交作业到YARN上执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#常见基于Yarn的计算框架"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">常见基于Yarn的计算框架</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MapReduce-On-Yarn"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">MapReduce On Yarn</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">Spark</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-On-Yarn"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">Spark On Yarn</span></a></li></ol></li></ol>
         
         </div>
       </aside>
