@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -211,33 +211,31 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Spark] Spark学习-shuffle和RDD/">
+    <a href="/article/[Hadoop] 分布式资源调度YARN 一/">
         <h2 class="post-title">
                                  
-            [Spark] Spark学习-shuffle和RDD
+            [Hadoop] 分布式资源调度YARN 一
         </h2>
         <h3 class="post-subtitle">
-            
+            产生背景、架构、思想
         </h3>
         <div class="post-content-preview">
-            @[toc]
-Spark ShuffleSpark Shuffle 两阶段
-Shuffle 是个昂贵的操作
-Shuffle 实现进化历史
-Shuffle 相关组件
-ShuffleManager
-管理与Shuffle相关的组件
-实现
-org.apache.spark.shuffle.hash.HashShuffleManager (1.6) 
-org.apache.spark.shuffle.......
+            YARN产生背景
+MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
+
+
+单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
+节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2020-04-27
+            2017-07-08
         </p>
         <div class="tags">
+            
+              <a href="/tags/#YARN" title="YARN">YARN</a>
             
         </div>
     
@@ -247,40 +245,27 @@ org.apache.spark.shuffle.......
 
 <div class="post-preview">
 
-    <a href="/article/[Spark] spark编程模型(各种算子)/">
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
         <h2 class="post-title">
                                  
-            [Spark] spark编程模型(各种算子)
+            [Hadoop] 分布式文件系统HDFS 三
         </h2>
         <h3 class="post-subtitle">
-            
+            shell、Java API
         </h3>
         <div class="post-content-preview">
-            @[toc]核心思想：
-
-对于RDD有四种类型的算子
-
-Create
-SparkContext.textFile()
-SparkContext.parallelize()
-
-
-Transformation
-作用于一个或者多个RDD，输出转换后的RDD
-例如：map, filter, groupBy
-
-
-Action
-会触发Spark提交作业，并将结果返回Driver Program
-例如：r......
+            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
+12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2020-04-27
+            2017-06-05
         </p>
         <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
             
         </div>
     
@@ -290,29 +275,27 @@ Action
 
 <div class="post-preview">
 
-    <a href="/article/[Flink] Flink的部署以及作业提交/">
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 二/">
         <h2 class="post-title">
                                  
-            [Flink] Flink的部署以及作业提交
+            [Hadoop] 分布式文件系统HDFS 二
         </h2>
         <h3 class="post-subtitle">
-            
+            HDFS环境搭建；常见问题，小文件问题、Namenode内存管理、数据迁移、数据平衡；数据压缩；纠删码；
         </h3>
         <div class="post-content-preview">
-            Flink源码编译下载源码：1、直接下载Flink1.7.2源码2、通过wget命令下载到服务器 
-1wget https://archive.apache.org/dist/flink/flink-1.7.2/flink-1.7.2-src.tgz
-解压
-1tar -zxvf flink-1.7.2-src.tgz -C ../source/
-编译
-1mvn clean install -......
+            HDFS环境搭建官网安装文档Hadoop伪分布式安装步骤http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+下载Hadoop    http://archive.cloudera.com/cdh5/cdh/5/    2.6.0-cdh5.7.0    或则 wge......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2020-04-27
+            2017-05-31
         </p>
         <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
             
         </div>
     
@@ -322,214 +305,33 @@ Action
 
 <div class="post-preview">
 
-    <a href="/article/[Flink] Flink中的处理状态 - Working with State/">
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 一/">
         <h2 class="post-title">
                                  
-            [Flink] Flink中的处理状态 - Working with State
+            [Hadoop] 分布式文件系统HDFS 一
         </h2>
         <h3 class="post-subtitle">
-            
+            HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标；HDFS 构成及工作原理解析，基本构成、数据读写过程；集群架构，datanode、namenode、SecondaryNamenode；HDFS HA简介；HDFS文件类型；HDFS副本机制
         </h3>
         <div class="post-content-preview">
-            Flink中有两种基本状态：Keyed State和Operator State
-123456789定义：	实际上就是指flink计算中间的计算结果或者元数据属性等信息，State会做相应的持久化	说白了：State就是Flink计算过程中与时间相关的内部数据的快照，用于checkpoints做容错为什么需要：	基于各种原因，导致需要使用checkpoints去从state中做恢复		何时启......
+            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
+什么是HDFS
+Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
+源自Google的GFS论文
+发表于2003年，HDFS是GFS的克隆版
+基于JAVA实现的一个分布式文件系统
+基于unix/linux
+是Hadoop最重要的核心......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2020-04-27
+            2017-05-23
         </p>
         <div class="tags">
             
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] Flink的分布式运行原理/">
-        <h2 class="post-title">
-                                 
-            [Flink] Flink的分布式运行原理
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            基本概念
-
-
-名称
-含义
-
-
-
-Flink Application Cluster
-Flink应用程序集群是专用的Flink集群，它仅执行一个Flink作业。Flink集群的生存期与Flink作业的生存期绑定在一起。与Flink Session Cluster比较，在工作模式下，以前的Flink应用程序集群也称为Flink集群 。
-
-
-Flink Cluster
-一个分布式系统，通常由一个F......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] Flink中的Time及Windows的使用/">
-        <h2 class="post-title">
-                                 
-            [Flink] Flink中的Time及Windows的使用
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Time
-
-事件时间 Event time（最准确）：事件时间是每个事件在其生产设备上发生的时间。
-应用更广泛，为了避免乱序以及延迟数据，flink引入watermark概念
-
-
-摄取时间 Ingestion time：摄取时间是事件进入Flink的时间。
-多适用于提供预测的一些结果，相对稳定(只记录一次)
-
-
-处理时间 Processing time（不准确）：处理时间是指正在执行Flin......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] Flink Table API & SQL编程/">
-        <h2 class="post-title">
-                                 
-            [Flink] Flink Table API & SQL编程
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1、Flik关系型api概念最底层的Stateful event driven application是最难以使用的，因为接近底层；中层的DataStream api和DataSet api是对于开发人员来说是可以接受的；最上层的High-level编程格式是对各个程序员来说基本都会使用的，基于SQL的操作，同时也是流处理和批处理的一种统一的高级API。
-注意：（目前博客是1.9版本）Tab......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] DataStream API/">
-        <h2 class="post-title">
-                                 
-            [Flink] DataStream API
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1、编程概述Flink中的DataStream程序是常规程序，可对数据流实施转换（例如，iltering, updating state, defining windows, aggregating）。最初从各种来源（例如，消息队列，套接字流，文件）创建数据流。结果通过接收器返回，接收器可以例如将数据写入文件或标准输出（例如命令行终端）。Flink程序可以在各种上下文中运行，独立运行或嵌入其......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] DataSet API编程/">
-        <h2 class="post-title">
-                                 
-            [Flink] DataSet API编程
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            本博客以scala编程概念为主
-1、概念官网链接Flink中的DataSet程序是常规程序，可对数据集进行转换（filtering, mapping, joining, grouping）。最初从某些来源(sources)（by reading files, or from local collections）创建数据集。结果通过接收器返回，接收器可以例如将数据写入（分布式）文件或标准输出（......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Flink] 编程模型以及核心概念/">
-        <h2 class="post-title">
-                                 
-            [Flink] 编程模型以及核心概念
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            核心概念官网链接
-DataSet and DataStreamFlink具有特殊类DataSet并DataStream在程序中表示数据。您可以将它们视为可以包含重复项的不可变数据集合。在DataSet数据有界的情况下（批处理），对于一个DataStream元素的数量可以是无界的（流处理）。
-这些集合（数据）在某些关键方面与常规Java集合不同。首先，它们是不可变的，这意味着一旦创建它们就无法......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2020-04-27
-        </p>
-        <div class="tags">
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
             
         </div>
     
@@ -543,10 +345,6 @@ DataSet and DataStreamFlink具有特殊类DataSet并DataStream在程序中表示
 
 <ul class="pager">
     
-    
-        <li class="next">
-            <a href="/archives/2/">Older Posts &rarr;</a>
-        </li>
     
 </ul>
 
@@ -578,75 +376,11 @@ DataSet and DataStreamFlink具有特殊类DataSet并DataStream在程序中表示
     <div class="tags">
         
             
-            <a href="/tags/#大数据" title="大数据" rel="6">大数据</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="3">HDFS</a>
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
-            
-        
-            
-            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
-            
-        
-            
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
-            
-        
-            
-            <a href="/tags/#MapReduce" title="MapReduce" rel="5">MapReduce</a>
-            
-        
-            
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
-            
-        
-            
-            <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
-            
-        
-            
-            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
-            
-        
-            
-            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
-            
-        
-            
-            <a href="/tags/#Interview" title="Interview" rel="1">Interview</a>
-            
-        
-            
-            <a href="/tags/#Kettle" title="Kettle" rel="9">Kettle</a>
-            
-        
-            
-            <a href="/tags/#Linux" title="Linux" rel="7">Linux</a>
-            
-        
-            
-            <a href="/tags/#MySQL" title="MySQL" rel="4">MySQL</a>
-            
-        
-            
-            <a href="/tags/#Scala" title="Scala" rel="3">Scala</a>
-            
-        
-            
-            <a href="/tags/#Spark" title="Spark" rel="17">Spark</a>
-            
-        
-            
-            <a href="/tags/#Sqoop" title="Sqoop" rel="1">Sqoop</a>
-            
-        
-            
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
-            
-        
-            
-            <a href="/tags/#数据仓库" title="数据仓库" rel="3">数据仓库</a>
+            <a href="/tags/#YARN" title="YARN" rel="1">YARN</a>
             
         
     </div>
@@ -702,23 +436,19 @@ DataSet and DataStreamFlink具有特殊类DataSet并DataStream在程序中表示
     <ul>
       
         <li>
-          <a href="/article/%5BSpark%5D%20Spark%E5%AD%A6%E4%B9%A0-shuffle%E5%92%8CRDD/">[Spark] Spark学习-shuffle和RDD</a>
+          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6YARN%20%E4%B8%80/">[Hadoop] 分布式资源调度YARN 一</a>
         </li>
       
         <li>
-          <a href="/article/%5BSpark%5D%20spark%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B(%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90)/">[Spark] spark编程模型(各种算子)</a>
+          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS%20%E4%B8%89/">[Hadoop] 分布式文件系统HDFS 三</a>
         </li>
       
         <li>
-          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E9%83%A8%E7%BD%B2%E4%BB%A5%E5%8F%8A%E4%BD%9C%E4%B8%9A%E6%8F%90%E4%BA%A4/">[Flink] Flink的部署以及作业提交</a>
+          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS%20%E4%BA%8C/">[Hadoop] 分布式文件系统HDFS 二</a>
         </li>
       
         <li>
-          <a href="/article/%5BFlink%5D%20Flink%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%8A%B6%E6%80%81%20-%20Working%20with%20State/">[Flink] Flink中的处理状态 - Working with State</a>
-        </li>
-      
-        <li>
-          <a href="/article/%5BFlink%5D%20Flink%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86/">[Flink] Flink的分布式运行原理</a>
+          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9FHDFS%20%E4%B8%80/">[Hadoop] 分布式文件系统HDFS 一</a>
         </li>
       
     </ul>
@@ -733,7 +463,7 @@ DataSet and DataStreamFlink具有特殊类DataSet并DataStream在程序中表示
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
