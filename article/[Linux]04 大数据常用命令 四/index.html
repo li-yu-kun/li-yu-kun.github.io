@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Linux]04 大数据常用命令 四 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Linux]04 大数据常用命令 四/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                            
+                        </div>
+                        <h1>[Linux]04 大数据常用命令 四</h1>
+                        <h2 class="subheading">调度|执行|软连接</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-04-16
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="调度工具crontab"><a href="#调度工具crontab" class="headerlink" title="调度工具crontab"></a>调度工具crontab</h1><p>比如一个可执行文件test.sh<br>文件内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash （解释器）</span></span><br><span class="line"></span><br><span class="line">date</span><br></pre></td></tr></table></figure>
+<p>执行这个shell脚本需要x执行权限<br>执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./test.sh</span><br><span class="line">sh ./test.sh</span><br></pre></td></tr></table></figure>
+
+<p>后缀   <strong>.sh 和 第一行#!/bin/bash  没有</strong>，sh命令去执行也可以执行成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# crontab -l</span><br><span class="line">* * * * * /root/test.sh &gt;&gt; /root/test.log</span><br></pre></td></tr></table></figure>
+<p>每个星号代表的意思：分 小时 日 月 周<br>*/6 代表每隔六[分钟 ]<br>*/1=* 代表每一分钟</p>
+<p><strong>如何按照每10s执行一次？</strong></p>
+<p>可以修改脚本来完成任务，crontab不必改变</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# cat test1.sh </span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">for((i=1;i&lt;=6;i++));</span><br><span class="line">do</span><br><span class="line"></span><br><span class="line">        date</span><br><span class="line">        sleep 10s</span><br><span class="line"></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<h1 id="后台执行"><a href="#后台执行" class="headerlink" title="后台执行"></a>后台执行</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./test.sh &amp;</span><br><span class="line">nohup ./test.sh &amp;  手动启动脚本 看日志 开发维护 测试 直接输出到了nohup.out文件里了</span><br><span class="line">nohup ./test.sh &gt; /root/test.log 2&gt;&amp;1 &amp;  生产上规范化输出文件名</span><br></pre></td></tr></table></figure>
+<h1 id="软连接"><a href="#软连接" class="headerlink" title="软连接"></a>软连接</h1><p>假设公司有两个版本的MySQL，有两个版本的文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# ll</span><br><span class="line">总用量 32</span><br><span class="line">-rw-------. 1 root root  1520 4月  14 2019 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 2 root root     6 12月 14 10:37 mysql5.6</span><br><span class="line">drwxr-xr-x. 2 root root     6 12月 14 10:37 mysql5.7</span><br></pre></td></tr></table></figure>
+<p>一开始肯定使用的低版本，如果要升级到高版本怎么方便？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop ~]# ln -s /root/mysql5.6 /root/mysql</span><br><span class="line">[root@hadoop ~]# ll</span><br><span class="line">总用量 32</span><br><span class="line">-rw-------. 1 root root  1520 4月  14 2019 anaconda-ks.cfg</span><br><span class="line">lrwxrwxrwx. 1 root root    14 12月 14 10:40 mysql -&gt; /root/mysql5.6</span><br><span class="line">drwxr-xr-x. 2 root root     6 12月 14 10:37 mysql5.6</span><br><span class="line">drwxr-xr-x. 2 root root     6 12月 14 10:37 mysql5.7</span><br></pre></td></tr></table></figure>
+<p>在使用软连接后我们所有的MySQL相关路径只要配置/root/mysql软连接的目标path即可。</p>
+<p><strong>创建软连接方式</strong>：ln -s 原path 目标path</p>
+<p>a.CDH升级 原文件不见了  光标会跳动进行提示: </p>
+<p>两种方法<br> 1、找原文件文件夹；<br> 2、 删除快捷键文件文件夹（rm -rf /root/mysql）–》重新做新的软连接 (升级高版本操作也是这个操作：删除、重做)</p>
+<p> b.个人建议 绝对路径</p>
+<p> c.系统盘 / 50G<br>  数据盘 /data01 1T SSD</p>
+<p>  大数据的默认日志都是在/var/log里<br>  比如</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CDH log(默认保留10份) ：</span><br><span class="line">/var/log/hbase/xxx.log 1G</span><br><span class="line"> /var/log/hbase/xxx.log1 1G</span><br><span class="line"> ...</span><br><span class="line"> /var/log/hbase/xxx.log10 1G</span><br><span class="line"> ----  11G</span><br></pre></td></tr></table></figure>
+
+<p>改动之前停服务，然后进行以下操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /data01/log/</span><br><span class="line">mv  /var/log/hbase /data01/log/</span><br><span class="line">ln -s /data01/log/hbase /var/log/hbase</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 权限问题chmod chown，因为移动的时候会发生权限变更（软连接文件夹和源文件夹都要进行修改）</p>
+<p>1、如果不记得移动后的权限，可以参考另一台节点的相对目录来设置权限<br>2、实在懒得比对就全改为777</p>
+<h1 id="修改机器名称"><a href="#修改机器名称" class="headerlink" title="修改机器名称"></a>修改机器名称</h1><pre><code class="shell">centos7.x
+[root@JD ~]# hostnamectl
+   Static hostname: JD
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: 983e7d6ed0624a2499003862230af382
+           Boot ID: c78cf2bffbea43d8a88110b3b8fa0c5f
+    Virtualization: kvm
+  Operating System: CentOS Linux 7 (Core)
+       CPE OS Name: cpe:/o:centos:centos:7
+            Kernel: Linux 3.10.0-327.el7.x86_64
+      Architecture: x86-64
+[root@JD ~]# hostnamectl --help
+hostnamectl [OPTIONS...] COMMAND ...
+
+Query or change system hostname.
+
+  -h --help              Show this help
+     --version           Show package version
+     --no-ask-password   Do not prompt for password
+  -H --host=[USER@]HOST  Operate on remote host
+  -M --machine=CONTAINER Operate on local container
+     --transient         Only set transient hostname
+     --static            Only set static hostname
+     --pretty            Only set pretty hostname
+
+Commands:
+  status                 Show current hostname settings
+  set-hostname NAME      Set system hostname
+  set-icon-name NAME     Set icon name for host
+  set-chassis NAME       Set chassis type for host
+  set-deployment NAME    Set deployment environment for host
+  set-location NAME      Set location for host
+
+[root@JD ~]# hostnamectl set-hostname hadoop001
+
+[root@hadoop001 ~]# cat /etc/hostname 
+hadoop001
+
+[root@hadoop001 ~]# vi /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+192.168.0.3 hadoop001</code></pre>
+<h1 id="jps真正使用"><a href="#jps真正使用" class="headerlink" title="jps真正使用"></a>jps真正使用</h1><h2 id="位置在哪"><a href="#位置在哪" class="headerlink" title="位置在哪"></a>位置在哪</h2><pre><code class="bash">[hadoop@hadoop001 ~]$ <span class="built_in">which</span> jps
+/usr/java/jdk1.8.0_45/bin/jps
+[hadoop@hadoop001 ~]$ 
+
+[hadoop@hadoop001 ~]$ jps
+2594 NameNode
+2724 DataNode
+3061 ResourceManager
+3173 NodeManager
+3526 Jps
+2879 SecondaryNameNode
+[hadoop@hadoop001 ~]$ jps --<span class="built_in">help</span>
+illegal argument: --<span class="built_in">help</span>
+usage: jps [-<span class="built_in">help</span>]
+       jps [-q] [-mlvV] [&lt;hostid&gt;]
+
+Definitions:
+    &lt;hostid&gt;:      &lt;hostname&gt;[:&lt;port&gt;]
+[hadoop@hadoop001 ~]$ jps -l
+2594 org.apache.hadoop.hdfs.server.namenode.NameNode
+2724 org.apache.hadoop.hdfs.server.datanode.DataNode
+3061 org.apache.hadoop.yarn.server.resourcemanager.ResourceManager
+3173 org.apache.hadoop.yarn.server.nodemanager.NodeManager
+3610 sun.tools.jps.Jps
+2879 org.apache.hadoop.hdfs.server.namenode.SecondaryNameNode
+[hadoop@hadoop001 ~]$ </code></pre>
+<h2 id="对应的进程的标识文件在哪？"><a href="#对应的进程的标识文件在哪？" class="headerlink" title="对应的进程的标识文件在哪？"></a>对应的进程的标识文件在哪？</h2><pre><code class="bash"><span class="comment"># 可以进入这个文件夹查看jps得出的进程号对应的详情文件</span>
+[root@hadoop001 tmp]<span class="comment"># ll</span>
+drwxr-xr-x 2 hadoop  hadoop  61 Nov 30 21:23 hsperfdata_hadoop
+
+进程是 hadoop启动的 默认存储在 /tmp/hsperfdata_username</code></pre>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>查询 pid 进程名称</p>
+<h2 id="process-information-unavailable-CDH"><a href="#process-information-unavailable-CDH" class="headerlink" title="process information unavailable  CDH"></a>process information unavailable  CDH</h2><p>进程所属的用户 去执行 jps命令，只显示自己的相关的进程信息</p>
+<p>root用户 看所有的，但是显示不可用：process information unavailable</p>
+<p>真假判断 : </p>
+<pre><code class="bash"><span class="comment"># 判断显示为process information unavailable 是否真的不可用</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 31488 </span>
+root       5291   3912  0 21:32 pts/1    00:00:00 grep --color=auto 31488
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># </span>
+
+<span class="comment">#自己过滤自己 count为0</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 31488 | grep -v grep | wc -l</span>
+0
+<span class="comment">#查看一个可用的进程，自己过滤自己 count为1</span>
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># ps -ef|grep 2594 | grep -v grep | wc -l</span>
+1
+[root@hadoop001 hsperfdata_hadoop]<span class="comment"># </span></code></pre>
+<h2 id="jps查看文件-不影响-进程的启动和停止"><a href="#jps查看文件-不影响-进程的启动和停止" class="headerlink" title="jps查看文件 不影响 进程的启动和停止"></a>jps查看文件 不影响 进程的启动和停止</h2><p>jps看的就是文件的记录，如果讲文件mv移走，jps是看不出来进程是否有问题（实际mv走文件，进程本身无问题）</p>
+<p>建议使用ps来查看进程，特别是脚本中。</p>
+<h2 id="Linux机制-oom-kill机制"><a href="#Linux机制-oom-kill机制" class="headerlink" title="Linux机制 oom-kill机制"></a>Linux机制 oom-kill机制</h2><p>free -m 查看机器的内存情况</p>
+<p>某个进程 memory 使用过高，机器为了保护自己，放置夯住，去杀死内存使用最多的进程。<br>比如 5806   kill</p>
+<p>kill log info 断了  cat log找error是找不到的<br>VM 2G CDH mysql+server ok 挂了 </p>
+<p>意识到:<br>以后进程挂了–》log位置–》error:<br>cat /var/log/messages | grep oom</p>
+<p>有error具体分析；<br>没 想到oom机制；</p>
+<h2 id="Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件"><a href="#Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件" class="headerlink" title="Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件"></a>Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件</h2><pre><code class="bash">[root@hadoop001 tmp]<span class="comment"># cat yarn-hadoop-nodemanager.pid</span>
+7855
+[root@hadoop001 tmp]<span class="comment"># </span>
+
+<span class="comment">#建议调整sh执行文件下的PID目录，不要把大数据任何目录放入tmp</span>
+[hadoop@hadoop001 hadoop]$ vi hadoop-env.sh
+<span class="built_in">export</span> HADOOP_PID_DIR=/home/hadoop/tmp
+
+[hadoop@hadoop001 hadoop]$ cat yarn-env.sh
+<span class="built_in">export</span> YARN_PID_DIR=/home/hadoop/tmp
+
+[hadoop@hadoop001 ~]$ <span class="built_in">cd</span> tmp
+[hadoop@hadoop001 tmp]$ ll
+total 20
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-datanode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-namenode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:05 hadoop-hadoop-secondarynamenode.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:03 yarn-hadoop-nodemanager.pid
+-rw-rw-r-- 1 hadoop hadoop 6 Nov 30 22:02 yarn-hadoop-resourcemanager.pid
+[hadoop@hadoop001 tmp]$ </code></pre>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Linux]05 shell 脚本语法/" data-toggle="tooltip" data-placement="top" title="[Linux]05 shell 脚本语法">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Linux]03 大数据常用命令 三/" data-toggle="tooltip" data-placement="top" title="[Linux]03 大数据常用命令 三">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度工具crontab"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">调度工具crontab</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#后台执行"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">后台执行</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#软连接"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">软连接</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#修改机器名称"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">修改机器名称</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#jps真正使用"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">jps真正使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#位置在哪"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">位置在哪</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对应的进程的标识文件在哪？"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">对应的进程的标识文件在哪？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#作用"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">作用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#process-information-unavailable-CDH"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">process information unavailable  CDH</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#jps查看文件-不影响-进程的启动和停止"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">jps查看文件 不影响 进程的启动和停止</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Linux机制-oom-kill机制"><span class="toc-nav-number">5.6.</span> <span class="toc-nav-text">Linux机制 oom-kill机制</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Linux机制-tmp默认存储周期-1个月-会自动清空不在规则以内的文件"><span class="toc-nav-number">5.7.</span> <span class="toc-nav-text">Linux机制 /tmp默认存储周期 1个月 会自动清空不在规则以内的文件</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

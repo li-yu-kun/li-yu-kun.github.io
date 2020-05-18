@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [HBase]04 深入了解HBase架构 四 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]04 深入了解HBase架构 四/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                            
+                        </div>
+                        <h1>[HBase]04 深入了解HBase架构 四</h1>
+                        <h2 class="subheading">Hbase架构大全，包含组件、读写、底层原理</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-11-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="HBase体系结构组件"><a href="#HBase体系结构组件" class="headerlink" title="HBase体系结构组件"></a>HBase体系结构组件</h1><p>在物理上，HBase由三种服务器组成，属于主从架构。regionserver为读写提供数据。在访问数据时，客户端直接与HBase regionserver通信。region分配、DDL(创建、删除表)操作由HBase主进程处理。Zookeeper是HDFS的一部分，它的作用是维护集群的状态。</p>
+<p>Hadoop DataNode存储Region Server的数据。所有HBase数据都存储在HDFS文件中。Region Server与HDFS datanode并置，后者为regionserver提供的数据启用数据位置(将数据放在需要的位置附近)。当HBase数据被写入时，它是本地的，但是当一个Region被移动时，在 compaction 之前它不是本地的。</p>
+<p>NameNode维护组成文件的所有物理数据块的元数据信息。</p>
+<p><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h2 id="Regions"><a href="#Regions" class="headerlink" title="Regions"></a>Regions</h2><p>HBase表按行键范围水平划分为“Regions”。“一个region包含表中该region的开始键和结束键之间的所有行。Region被分配给集群中的节点，称为“Region Servers”，它们为读写数据提供服务。一个region server可以服务大约1000个regions。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""></p>
+<h2 id="HBase-HMaster"><a href="#HBase-HMaster" class="headerlink" title="HBase HMaster"></a>HBase HMaster</h2><p>Region分配、DDL(创建、删除表)操作由HBase Master处理。</p>
+<p>master 负责:</p>
+<ul>
+<li>协调 Region Servers<ul>
+<li>在启动时分配Regions，为恢复或负载平衡重新分配Regions</li>
+<li>监控集群中的所有RegionServer实例(监听来自zookeeper的通知)</li>
+</ul>
+</li>
+<li>admin functions<ul>
+<li>用于创建、删除和更新表的接口</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h2 id="ZooKeeper-协调器"><a href="#ZooKeeper-协调器" class="headerlink" title="ZooKeeper: 协调器"></a>ZooKeeper: 协调器</h2><p>HBase使用ZooKeeper作为分布式协调服务来维护集群中的服务器状态。Zookeeper维护哪些服务器是存活的和可用的，并提供服务器故障通知。Zookeeper使用协商一致来保证共享状态。注意，应该有三到五台机器来达成共识。</p>
+<p><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
+<h1 id="How-the-Components-Work-Together"><a href="#How-the-Components-Work-Together" class="headerlink" title="How the Components Work Together"></a>How the Components Work Together</h1><p>Zookeeper用于协调分布式系统成员的共享状态信息。RegionServer和存活的HMaster通过与ZooKeeper的会话连接。ZooKeeper通过心跳为存活会话维护临时节点。</p>
+<p><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
+<p>每个RegionServer创建一个临时节点。HMaster监视这些节点以发现可用的RegionServer，它还监视这些节点以防止服务器故障。HMasters争着创建一个临时节点。Zookeeper确定第一个master并使用它来确保只有一个master是活动的。活动的HMaster将心跳发送给Zookeeper，而不活动的HMaster侦听活动HMaster失败的通知。</p>
+<p>如果RegionServer或活动HMaster未能发送心跳信号，会话将过期，相应的临时节点将被删除。更新监听器将收到删除节点的通知。活动HMaster侦听RegionServer，并在出现故障时恢复RegionServer。不活动的HMaster侦听活动的HMaster失败，如果活动的HMaster失败，则不活动的HMaster变为活动的HMaster。</p>
+<h1 id="HBase-First-Read-or-Write"><a href="#HBase-First-Read-or-Write" class="headerlink" title="HBase First Read or Write"></a>HBase First Read or Write</h1><p>有一个称为META表的特殊HBase编目表，它保存集群中region的位置。ZooKeeper存储META表的位置。</p>
+<p>客户端第一次读写HBase时发生的情况:</p>
+<ul>
+<li>客户端从ZooKeeper的承载META表获取RegionServer。</li>
+<li>客户机将查询. meta。服务器获取与它想要访问的行键对应的RegionServer。客户端缓存此信息和meta表位置。</li>
+<li>它将从相应的RegionServer获取行。</li>
+</ul>
+<p>对于以后的读取，客户端使用缓存来检索meta位置和之前读取的行键。随着时间的推移，它不需要查询meta表，除非一个Region已经移动或者丢失，然后它将重新查询和更新缓存</p>
+<p><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
+<h1 id="HBase-Meta-Table"><a href="#HBase-Meta-Table" class="headerlink" title="HBase Meta Table"></a>HBase Meta Table</h1><ul>
+<li>这个Meta表是一个HBase表，它保存了系统中所有Region的列表。</li>
+<li>.META就像一棵b树。</li>
+<li>.META表结构如下:<ul>
+<li>key:Region start key，region id</li>
+<li>values:RegionServer</li>
+</ul>
+</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8707.png" alt=""></p>
+<h1 id="Region-Server-Components"><a href="#Region-Server-Components" class="headerlink" title="Region Server Components"></a>Region Server Components</h1><p>Region Server 运行在HDFS数据节点上，具有以下组件:</p>
+<ul>
+<li>WAL: Write Ahead Log 是分布式文件系统中的一个文件。WAL用于存储尚未持久存储的新数据;它用于故障情况下的恢复。</li>
+<li>BlockCache:是读缓存。它将频繁读取的数据存储在内存中。最近最少使用的数据在满时被清除。</li>
+<li>MemStore:是写缓存。它存储尚未写入磁盘的新数据。在写入磁盘之前对其进行排序。每个Region每个列族有一个MemStore。</li>
+<li>Hfiles将行存储为磁盘上已排序的键值。</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8708.png" alt=""></p>
+<h1 id="HBase-Write-Steps-1"><a href="#HBase-Write-Steps-1" class="headerlink" title="HBase Write Steps (1)"></a>HBase Write Steps (1)</h1><p>当客户端发出一个Put请求时，第一步是将数据写入write-ahead日志，即WAL:</p>
+<ul>
+<li>编辑被附加到存储在磁盘上的WAL文件的末尾。</li>
+<li>WAL用于在服务器崩溃时恢复尚未持久的数据。</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
+<h1 id="HBase-Write-Steps-2"><a href="#HBase-Write-Steps-2" class="headerlink" title="HBase Write Steps (2)"></a>HBase Write Steps (2)</h1><p>一旦数据被写到WAL中，它就会被放到MemStore中。然后，put请求确认返回给客户机。<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
+<h1 id="HBase-MemStore"><a href="#HBase-MemStore" class="headerlink" title="HBase MemStore"></a>HBase MemStore</h1><p>MemStore将更新作为已排序的键值存储在内存中，与存储在HFile中相同。每个列族有一个MemStore。更新按列族排序。<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<h1 id="HBase-Region-Flush"><a href="#HBase-Region-Flush" class="headerlink" title="HBase Region Flush"></a>HBase Region Flush</h1><p>当MemStore积累了足够的数据时，整个已排序的集合被写入HDFS中的新HFile。HBase为每个列族使用多个hfile，其中包含实际的单元格或键值实例。随着时间的推移，这些文件被创建为MemStores中排序的键值编辑，并作为文件刷新到磁盘。</p>
+<p>注意，这是HBase中限制列族数量的原因之一：每个CF有一个MemStore，当一个memstore满了，所有的memstore都会发生flush。它还保存最后写入的序列号，以便系统知道到目前为止保存的是什么。</p>
+<p>最高的序列号作为元字段存储在每个HFile中，以反映持久化的结束和继续的位置。在Region启动时，将读取序列号，并将最高的序列号用作新编辑的序列号。<br><img src="%E5%9B%BE%E7%89%8712.png" alt=""></p>
+<h1 id="HBase-HFile"><a href="#HBase-HFile" class="headerlink" title="HBase HFile"></a>HBase HFile</h1><p>数据存储在一个HFile中，其中包含已排序的键/值。当MemStore积累了足够的数据时，整个排序的键值集被写入HDFS中的新HFile。这是一个顺序写。它非常快，因为它避免移动磁盘驱动器头。</p>
+<p><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
+<h1 id="HBase-HFile-Structure"><a href="#HBase-HFile-Structure" class="headerlink" title="HBase HFile Structure"></a>HBase HFile Structure</h1><p>HFile包含一个多层索引，允许HBase在不必读取整个文件的情况下查找数据。多层次的索引就像一个b+树:</p>
+<ul>
+<li>键值对按递增顺序存储</li>
+<li>索引按行键指向64KB“块”中的键值数据</li>
+<li>每个块都有自己的leaf-index</li>
+<li>每个块的最后一个键放在intermediate index中</li>
+<li>root index指向intermediate index</li>
+</ul>
+<p>trailer指向meta块，并在将数据持久化到文件的最后写入。trailer也有像Bloom过滤器和时间范围的信息。Bloom过滤器帮助跳过不包含特定行键的文件。如果文件不在读取所查找的时间范围内，则时间范围信息对于跳过该文件非常有用。</p>
+<p><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+<h1 id="HFile-Index"><a href="#HFile-Index" class="headerlink" title="HFile Index"></a>HFile Index</h1><p>刚刚讨论过的索引是在打开HFile并将其保存在内存中时加载的。这允许在单个磁盘查找时执行查找。</p>
+<p><img src="%E5%9B%BE%E7%89%8715.png" alt=""></p>
+<h1 id="HBase-Read-Merge"><a href="#HBase-Read-Merge" class="headerlink" title="HBase Read Merge"></a>HBase Read Merge</h1><p>已经看到，与一行对应的KeyValue单元格可以位于多个位置，已经持久化的行单元格位于hfile中，最近更新的单元格位于MemStore中，最近读取的单元格位于 block cache中。因此，当您读取一行时，系统如何使相应的单元格返回?读合并键值从 block cache，MemStore，和HFiles在以下步骤:</p>
+<p>首先，扫描器在Block cache(读缓存)中查找行单元格。最近读取的键值被缓存在这里，最近少使用的键值在需要内存时被清除。<br>接下来，扫描器查看MemStore，即内存中的写缓存，其中包含最近的写操作。<br>如果扫描程序没有找到MemStore和Block cache中的所需单元格，那么HBase将使用Block cache索引和bloom过滤器将hfile加载到内存中，内存中可能包含目标行单元格。</p>
+<p><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
+<h1 id="HBase-Read-Merge-1"><a href="#HBase-Read-Merge-1" class="headerlink" title="HBase Read Merge"></a>HBase Read Merge</h1><p>如前所述，每个MemStore可能有多个hfile，这意味着在读取时可能要检查多个文件，这可能会影响性能。这叫做读放大。</p>
+<p><img src="%E5%9B%BE%E7%89%8717.png" alt=""></p>
+<h2 id="HBase-Minor-Compaction"><a href="#HBase-Minor-Compaction" class="headerlink" title="HBase Minor Compaction"></a>HBase Minor Compaction</h2><p>HBase将自动选择一些较小的hfile，并将它们重写为较大的hfile。这个过程称为小型压缩。通过将较小的文件重写为压缩后的较大的文件，执行合并排序，次要的压缩减少了存储文件的数量。<br><img src="%E5%9B%BE%E7%89%8718.png" alt=""></p>
+<h2 id="HBase-Major-Compaction"><a href="#HBase-Major-Compaction" class="headerlink" title="HBase Major Compaction"></a>HBase Major Compaction</h2><p>Major Compaction合并和重写一个Region中的所有HFile到每个列族的一个HFile中，并在此过程中删除已经被标记删除或过期的单元格。这提高了读取性能;但是，由于Major Compaction会重写所有的文件，因此在这个过程中可能会出现大量的磁盘I/O和网络流量。这叫做写放大。</p>
+<p>可以计划自动运行Major Compaction。由于写放大，Major Compaction通常安排在周末或晚上。注意，MapR数据库已经做了改进，不需要进行压缩。Major Compaction还能够将在服务器故障或负载平衡而影响下的任何远程数据文件成为region server的本地文件。<br><img src="%E5%9B%BE%E7%89%8719.png" alt=""><br>回顾region:</p>
+<ul>
+<li>一个表可以水平划分为一个或多个regions。region包含开始键和结束键之间的连续、排序的行范围</li>
+<li>每个region的大小为1GB(默认)</li>
+<li>表的一个region由一个RegionServer提供给客户端</li>
+<li>一个RegionServer可以服务大约1000个Region(这些Region可能属于同一个表或不同的表)</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8720.png" alt=""></p>
+<h1 id="Region-Split"><a href="#Region-Split" class="headerlink" title="Region Split"></a>Region Split</h1><p>最初每个表有一个Region。当一个Region变得太大时，它会分裂成两个子Region。表示原始Region的一半的两个子Region在同一RegionServer上并行打开，然后将分割报告给HMaster。出于负载平衡的原因，HMaster可能会安排将新Region转移到其他服务器。</p>
+<p><img src="%E5%9B%BE%E7%89%8721.png" alt=""></p>
+<h1 id="Read-Load-Balancing"><a href="#Read-Load-Balancing" class="headerlink" title="Read Load Balancing"></a>Read Load Balancing</h1><p>Splitting 最初发生在同一 RegionServer 上，但是出于负载平衡的原因，HMaster可能会安排将新Region移到其他服务器上。这将导致新的RegionServer为来自远程HDFS节点的数据提供服务，直到主要的compaction将数据文件移动到RegionServer的本地节点。当HBase数据被写入时，它是本地的，但是当一个Region被移动时(为了负载平衡或恢复)，它在major compaction之前都不是本地的。<br><img src="%E5%9B%BE%E7%89%8722.png" alt=""></p>
+<h1 id="HDFS-Data-Replication"><a href="#HDFS-Data-Replication" class="headerlink" title="HDFS Data Replication"></a>HDFS Data Replication</h1><p>所有的写和读都是从主节点进行的。HDFS复制WAL和HFile块。HFile块复制自动发生。HBase依赖于HDFS在存储文件时提供数据安全性。在HDFS中写入数据时，在本地写入一个副本，然后将其复制到辅助节点，然后将第三个副本写入第三个节点。<br><img src="%E5%9B%BE%E7%89%8723.png" alt=""></p>
+<h1 id="HDFS-Data-Replication-2"><a href="#HDFS-Data-Replication-2" class="headerlink" title="HDFS Data Replication (2)"></a>HDFS Data Replication (2)</h1><p>WAL文件和Hfiles保存在磁盘上并被复制，那么HBase如何将不保存到Hfiles的MemStore更新恢复到Hfiles呢?有关答案，请参见下一节。<br><img src="%E5%9B%BE%E7%89%8724.png" alt=""></p>
+<h1 id="HBase-Crash-Recovery"><a href="#HBase-Crash-Recovery" class="headerlink" title="HBase Crash Recovery"></a>HBase Crash Recovery</h1><p>当一个RegionServer失败时，崩溃的Region在检测和恢复步骤发生之前不可用。当失去RegionServer心跳时，Zookeeper将确定节点故障。然后，HMaster将收到RegionServer的通知。</p>
+<p>当HMaster检测到一个RegionServer崩溃时，HMaster将这些Region从崩溃的服务器重新分配到活动的RegionServer。为了恢复崩溃RegionServer的未刷新到磁盘的memstore编辑。HMaster将属于崩溃RegionServer的WAL分割成单独的文件，并将这些文件存储在新RegionServer的数据节点中。然后，每个RegionServer从各自的分割的WAL中回放WAL，以重新构建该Region的memstore。<br><img src="%E5%9B%BE%E7%89%8725.png" alt=""></p>
+<h1 id="Data-Recovery"><a href="#Data-Recovery" class="headerlink" title="Data Recovery"></a>Data Recovery</h1><p>WAL文件包含编辑列表，其中一个编辑表示单个put或delete。编辑是按时间顺序写的，因此，为了保持持久性，添加的内容被附加到存储在磁盘上的WAL文件的末尾。</p>
+<p>如果数据仍然在内存中，而没有持久化到HFile中，那么会发生什么情况呢?WAL被重放。通过读取WAL，将包含的编辑添加到当前的MemStore并进行排序，可以完成WAL的重放。最后，MemStore被刷新写入HFile。</p>
+<p><img src="%E5%9B%BE%E7%89%8726.png" alt=""></p>
+<h1 id="Apache-HBase-Architecture-Benefits"><a href="#Apache-HBase-Architecture-Benefits" class="headerlink" title="Apache HBase Architecture Benefits"></a>Apache HBase Architecture Benefits</h1><ul>
+<li>Strong consistency model<ul>
+<li>When a write returns, all readers will see same value</li>
+</ul>
+</li>
+<li>Scales automatically<ul>
+<li>Regions split when data grows too large</li>
+<li>Uses HDFS to spread and replicate data</li>
+</ul>
+</li>
+<li>Built-in recovery<ul>
+<li>Using Write Ahead Log (similar to journaling on file system)</li>
+</ul>
+</li>
+<li>Integrated with Hadoop<ul>
+<li>MapReduce on HBase is straightforward</li>
+</ul>
+</li>
+</ul>
+<h1 id="HBase-调优点"><a href="#HBase-调优点" class="headerlink" title="HBase 调优点"></a>HBase 调优点</h1><pre><code>- WAL关闭
+- flush
+- block cache: 
+- memstore: size
+- compact: 阀值
+- split: 阀值
+- balancing 
+- RK：
+    - 长度不建议过长
+    - RK设计
+        - 加timestamp
+        - reverse
+        - hash/md5
+        - salting
+        - pre-split
+        ...
+    - 二级索引
+        Phoenix Solr ES
+- TTL
+- version
+- compression(snappy)
+- API
+    put/list&lt;put&gt;/bulkload
+    scan/get(batch/only one)
+- conf
+    - zk
+    - retry
+    - timeout
+    - flush
+    - compact
+        - 资源消耗过大/多
+            - IO资源 带宽
+            Minor Compact：建议 5-6 文件
+            Major Compact: 手动处理
+    - split
+- JVM
+    - gc
+    - hdfs
+    - zk
+- HFile 大小
+    - 问题：HFile大小和HDFS block size什么关系？？
+    - HFile文件是否过大
+        hbase.hstore.compaction.max.size = RegionSize /hbase.hstore.compactionThreshold</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[HBase]05 HBase容灾与监控 五/" data-toggle="tooltip" data-placement="top" title="[HBase]05 HBase容灾与监控 五">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[HBase]03 HBase进阶 三/" data-toggle="tooltip" data-placement="top" title="[HBase]03 HBASE进阶 三">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase体系结构组件"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HBase体系结构组件</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Regions"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Regions</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-HMaster"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">HBase HMaster</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ZooKeeper-协调器"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">ZooKeeper: 协调器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#How-the-Components-Work-Together"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">How the Components Work Together</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-First-Read-or-Write"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">HBase First Read or Write</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Meta-Table"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">HBase Meta Table</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Server-Components"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Region Server Components</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-1"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">HBase Write Steps (1)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Write-Steps-2"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">HBase Write Steps (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-MemStore"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">HBase MemStore</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Region-Flush"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">HBase Region Flush</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">HBase HFile</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-HFile-Structure"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">HBase HFile Structure</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HFile-Index"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">HFile Index</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">HBase Read Merge</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Read-Merge-1"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">HBase Read Merge</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Minor-Compaction"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">HBase Minor Compaction</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HBase-Major-Compaction"><span class="toc-nav-number">14.2.</span> <span class="toc-nav-text">HBase Major Compaction</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Region-Split"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">Region Split</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Read-Load-Balancing"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">Read Load Balancing</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication"><span class="toc-nav-number">17.</span> <span class="toc-nav-text">HDFS Data Replication</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-Data-Replication-2"><span class="toc-nav-number">18.</span> <span class="toc-nav-text">HDFS Data Replication (2)</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-Crash-Recovery"><span class="toc-nav-number">19.</span> <span class="toc-nav-text">HBase Crash Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Data-Recovery"><span class="toc-nav-number">20.</span> <span class="toc-nav-text">Data Recovery</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Apache-HBase-Architecture-Benefits"><span class="toc-nav-number">21.</span> <span class="toc-nav-text">Apache HBase Architecture Benefits</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HBase-调优点"><span class="toc-nav-number">22.</span> <span class="toc-nav-text">HBase 调优点</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -211,31 +211,34 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式资源调度YARN 四/">
+    <a href="/article/[Kettle]09 九、kettle统计-映射-脚本控件/">
         <h2 class="post-title">
                                  
-            [Hadoop]11 分布式资源调度YARN 四
+            [Kettle]09 九、kettle统计-映射-脚本控件
         </h2>
         <h3 class="post-subtitle">
-            生产如何调优Container参数(container内存、container虚拟核、官方建议、综合memory+vcore、默认规则、假如该节点还有组件)、Yarn调度器和调度算法(FIFO调度器、Capacity Scheduler资源调度器、Fair Scheduler资源调度器)
+            kettle统计-映射-脚本控件
         </h3>
         <div class="post-content-preview">
-            假设我们有一台物理机器 128G内存 16个core
-生产如何调优Container参数？Container：虚拟化的容器   维度 memory+vcore作用是运行task任务
+            统计控件统计是转换里面的第十三个分类。
+统计是提供数据的采样和统计功能。
+分组分组是按照某一个或某几个进行分组，同时可以将其余字段按照某种规则进行合并。
+注意：分组之前数据应该进行排序！
+从Excel读取数据，按照group进行分组统计，把结果保存到Excel
+输入：Excel输入统计：分组输出：Microsoft Excel输出
 
-装完CentOS，消耗内存1G
-系统预览15%-20%内存(包含系统1G内存)，以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间
-此时需要预留内存为：128*20%=25.6G == ......
+映射控件映射是转换里面的第十八个分类。
+映射是用来定义子转......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-27
+            2019-11-26
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -245,30 +248,31 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式资源调度YARN 三/">
+    <a href="/article/[Kettle]08 八、kettle连接控件/">
         <h2 class="post-title">
                                  
-            [Hadoop]07 分布式资源调度YARN 三
+            [Kettle]08 八、kettle连接控件
         </h2>
         <h3 class="post-subtitle">
-            YARN单机环境搭建、Yarn常用命令介绍、常见基于Yarn的计算框架(MapReduce On Yarn、Spark)
+            kettle连接控件
         </h3>
         <div class="post-content-preview">
-            YARN单机环境搭建
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;property&gt; ......
+            连接是转换里面的第八个分类。连接是结果集通过关键字进行连接。
+合并记录合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。
+需要设置的参数：旧数据来源：旧数据来源的步骤新数据来源：新数据来源的步骤
+标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。
+
+“identical” – 旧数......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-07-23
+            2019-11-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -278,32 +282,30 @@ yarn-site.xml
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式资源调度YARN 二/">
+    <a href="/article/[Kettle]07 七、kettle查询控件/">
         <h2 class="post-title">
                                  
-            [Hadoop]06 分布式资源调度YARN 二
+            [Kettle]07 七、kettle查询控件
         </h2>
         <h3 class="post-subtitle">
-            YARN资源调度流程(分步流程图、Yarn各个组件之间的心跳信号、Yarn资源隔离策略)、Yarn容错处理
+            kettle查询控件
         </h3>
         <div class="post-content-preview">
-            YARN资源调度流程
-
-用户向yarn提交一个作业
-RM为该作业分配第一个container(AM)
-RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
-AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RM进行申请，申请到后返回给AM
-AM申请......
+            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
+HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
+自定义常量数据自定义常量数据是用来生成一些不变的数据。
+实例
+从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-07-15
+            2019-11-11
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -313,31 +315,31 @@ AM申请......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式资源调度YARN 一/">
+    <a href="/article/[Kettle]06 六、kettle流程控件/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式资源调度YARN 一
+            [Kettle]06 六、kettle流程控件
         </h2>
         <h3 class="post-subtitle">
-            YARN产生背景、YARN概述、YARN架构、Yarn 基本思想、Yarn 计算资源抽象
+            kettle流程控件
         </h3>
         <div class="post-content-preview">
-            YARN产生背景
-MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
-
-
-单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
-节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
+            流程是转换里面的第六个分类。流程主要用来控制数据流程和数据流向。
+Switch-caseSwitch/case让数据流从一路到多路。
+实例从Excel输入读取数据，按sex进行数据分类，把女性、男性、保密分别保存不同的Excel文件里面。
+1表示男性0表示女性2表示保密
+分析输入：Excel输入流程：Switch/case输出：Microsoft Excel输出
+过滤记录过滤记录让数据流从一......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-07-08
+            2019-11-06
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -347,29 +349,33 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] HDFS读写流程详解/">
+    <a href="/article/[Kettle]05 五、kettle应用控件/">
         <h2 class="post-title">
                                  
-            [Hadoop] HDFS读写流程详解
+            [Kettle]05 五、kettle应用控件
         </h2>
         <h3 class="post-subtitle">
-            读写流程详解、错误处理机制、优缺点
+            kettle应用控件
         </h3>
         <div class="post-content-preview">
-            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
-文件写流程图解往HDFS中写数据的流程如下：
-
-第1幅图：我们跟客户端说，你帮我......
+            应用是转换里面的第五个分类。
+应用都是一些工具类。
+替换NULL值替换NULL值就是把null转换为其它的值。
+NULL值不好进行数据分析
+写日志写日志主要是在调试的时候使用，把日志信息打印到日志窗口。
+发送邮件发送邮件就是执行成功、失败、其它某种情景给相关人员发送邮件。
+注意：只有企业邮箱才可以！个人邮箱不行！并且需要在邮件设置中开通客户端授权码！
+...
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-06-14
+            2019-10-27
         </p>
         <div class="tags">
             
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -379,27 +385,31 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
+    <a href="/article/[Kettle]04 四、kettle转换控件/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式文件系统HDFS 三
+            [Kettle]04 四、kettle转换控件
         </h2>
         <h3 class="post-subtitle">
-            shell、Java API
+            kettle转换控件
         </h3>
         <div class="post-content-preview">
-            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
-12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
+            转换是转换里面的第四个分类。
+转换属于ETL的T，T就是Transform清洗、转换。
+ETL三个部分中，T花费时间最长,是“一般情况下这部分工作量是整个ETL的2/3。
+Concat fieldsConcat fields就是多个字段连接起来形成一个新的字段。
+值映射值映射就是把字段的一个值映射成其他的值。
+在数据质量规范上使用非常多，比如很多系统对应性别gender字段的定义不同。系统1......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-06-05
+            2019-10-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -409,27 +419,33 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式文件系统HDFS 二/">
+    <a href="/article/[Kettle]03 三、输出控件/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式文件系统HDFS 二
+            [Kettle]03 三、输出控件
         </h2>
         <h3 class="post-subtitle">
-            HDFS环境搭建、常见问题(小文件问题、Namenode内存管理、数据迁移、数据平衡)、数据压缩、纠删码
+            Kettle输出控件
         </h3>
         <div class="post-content-preview">
-            HDFS环境搭建官网安装文档Hadoop伪分布式安装步骤http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
-下载Hadoop    http://archive.cloudera.com/cdh5/cdh/5/    2.6.0-cdh5.7.0    或则 wge......
+            输出属于ETL的L，L就是Load加载。
+Excel输出输出是转换里面的第二个分类。
+文本文件输出数据操作常见的格式是：TXT和CSV。
+SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
+表输出表输出就是把数据写入到指定的表！
+更新更新就是把数据库已经存在的记录与数据流里面的记录进行比对，如果不同就进行更新。
+注意：如果记录不存在，则会出现错误！
+插入更新插入更新就是把数据库已经存......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-31
+            2019-10-13
         </p>
         <div class="tags">
             
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -439,33 +455,90 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式文件系统HDFS 一/">
+    <a href="/article/[Kettle]02 二、输入控件/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式文件系统HDFS 一
+            [Kettle]02 二、输入控件
         </h2>
         <h3 class="post-subtitle">
-            HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标(HDFS 构成及工作原理解析，基本构成)、数据读写过程、集群架构(datanode、namenode、SecondaryNamenode)、HDFS HA简介、HDFS文件类型、HDFS副本机制
+            Kettle输入控件
         </h3>
         <div class="post-content-preview">
-            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
-什么是HDFS
-Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
-源自Google的GFS论文
-发表于2003年，HDFS是GFS的克隆版
-基于JAVA实现的一个分布式文件系统
-基于unix/linux
-是Hadoop最重要的核心......
+            
+CSV文件输入CSV文件是一种带有固定格式的文本文件。
+文本文件输入提取日志信息的数据是开发常见的操作，日志信息基本都是文本类型。tomcat访问日志
+Excel输入微软的Excel目前有两种后缀名的文件分别为：xls和xlsx。xls:2007年之前xlsx:2007年之后
+多文件合并数据往往也是以多个文件的形式出现，有的数据还会分散在多个子文件夹。所以合并数据也是开发中非常常见的操作。......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-05-23
+            2019-10-07
         </p>
         <div class="tags">
             
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kettle]01 一、入门/">
+        <h2 class="post-title">
+                                 
+            [Kettle]01 一、入门
+        </h2>
+        <h3 class="post-subtitle">
+            Kettle入门
+        </h3>
+        <div class="post-content-preview">
+            Kettle简介企业数据仓库模型
+ETL简介ETL（Extract-Transform-Load的缩写，即数据抽取、转换、装载的过程），对于企业或行业应用来说，我们经常会遇到各种数据的处理，转换，迁移，所以了解并掌握一种etl工具的使用，必不可少，这里我要学习的ETL工具是Kettle！
+Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在Window、Linux、......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-10-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka的副本机制/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka的副本机制
+        </h2>
+        <h3 class="post-subtitle">
+            Kafka 复制机制
+        </h3>
+        <div class="post-content-preview">
+            Kafka 复制机制Kafka 主题中的每个分区都有一个预写日志（write-ahead log），我们写入 Kafka 的消息就存储在这里面。这里面的每条消息都有一个唯一的偏移量，用于标识它在当前分区日志中的位置。如下图所示：Kafka 中的每个主题分区都被复制了 n 次，其中的 n 是主题的复制因子（replication factor）。这允许 Kafka 在集群服务器发生故障时自动切......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2019-09-19
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -479,6 +552,10 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <ul class="pager">
     
+    
+        <li class="next">
+            <a href="/archives/2/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -510,11 +587,51 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
     <div class="tags">
         
             
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            
+        
+            
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            
+        
+            
+            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
+            
+        
+            
+            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
+            
+        
+            
             <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
+            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
+            
+        
+            
+            <a href="/tags/#MapReduce" title="MapReduce" rel="4">MapReduce</a>
+            
+        
+            
+            <a href="/tags/#Hive" title="Hive" rel="6">Hive</a>
+            
+        
+            
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
+            
+        
+            
+            <a href="/tags/#Kettle" title="Kettle" rel="9">Kettle</a>
+            
+        
+            
+            <a href="/tags/#Linux" title="Linux" rel="6">Linux</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
     </div>
@@ -570,23 +687,23 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
     <ul>
       
         <li>
-          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6YARN%20%E5%9B%9B/">[Hadoop]11 分布式资源调度YARN 四</a>
+          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6YARN%20%E4%B8%89/">[Hadoop]07 分布式资源调度YARN 三</a>
+          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6YARN%20%E4%BA%8C/">[Hadoop]06 分布式资源调度YARN 二</a>
+          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BHadoop%5D%20%E5%88%86%E5%B8%83%E5%BC%8F%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6YARN%20%E4%B8%80/">[Hadoop] 分布式资源调度YARN 一</a>
+          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
         </li>
       
         <li>
-          <a href="/article/%5BHadoop%5D%20HDFS%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B%E8%AF%A6%E8%A7%A3/">[Hadoop] HDFS读写流程详解</a>
+          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
         </li>
       
     </ul>
@@ -601,7 +718,7 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

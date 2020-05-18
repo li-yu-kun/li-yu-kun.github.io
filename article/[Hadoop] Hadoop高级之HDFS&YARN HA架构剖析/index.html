@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Hadoop] Hadoop高级之HDFS&amp;YARN HA架构剖析 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] Hadoop高级之HDFS&amp;YARN HA架构剖析/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                            
+                        </div>
+                        <h1>[Hadoop] Hadoop高级之HDFS&amp;YARN HA架构剖析</h1>
+                        <h2 class="subheading">HDFS HA、YARN HA</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-04-10
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="HDFS-HA"><a href="#HDFS-HA" class="headerlink" title="HDFS HA"></a>HDFS HA</h1><p>1、为什么要用集群<br>学习过程中我们只需要单点就够了</p>
+<p>我们在企业中大数据几乎所有组建都是主从架构  master-slave<br>比如hdfs读写请求都是先NN节点；<br>但是:hbase 读写请求不是经过老大master</p>
+<p>企业里面，伪分布式 每一个角色都是1个进程<br>HDFS:<br>NN  老大 master 【假如master挂了，所有与nn交互的任务都会中断】<br>SNN 1h checkpoint  secondary【只能恢复checkpoint内的数据；如果一个小时一个checkpoint，那么就会有丢掉一小时的数据的风险】<br>DN</p>
+<p>出现NN节点挂了，就不能提供对外服务<br>企业里面一般都是两个NN节点(实时的,任何时刻只有1台active对外，另外一台是standby 实时备份【随时准备着】，随时准备着从standby切换active状态，对外服务) </p>
+<p>NN1 active   11:00挂了   hdfs://ip1:9000/ 代码 shell脚本<br>NN2 standby  active      hdfs://ip2:9000/</p>
+<p>我们在项目中不可能关注代码和脚本来切换ip1和ip2，是在命名空间中来做的，这对我们来说是无感知的<br>无感知的：两个NN可以来回切换，我们不必关注谁是active谁是standby<br>命名空间： nameservice1  CDH里默认的nameservice1<br>                生产上面叫做dw【数仓】</p>
+<p><strong>命名空间图</strong><br>在执行操作【命令】的时候会从配置参数中随机找到一个NN来判断这个NN是否为active，是则继续执行命令，否则切换为另一个NN。<br><img src="1.jpg" alt=""></p>
+<p>NN: fsimage editlog 读写请求记录 </p>
+<p><strong>HA进程: 3台机器</strong><br>hadoop001:ZK    NN     ZKFC  JN    DN</p>
+<p>hadoop002:ZK    NN     ZKFC  JN    DN</p>
+<p>hadoop003:ZK                         JN    DN</p>
+<p>journalNode: 主要考虑HDFS请求量 及数据量来部署具体多少台【主要记录editlog】<br>如果小文件BT级别的数据那么JN就要多一点；如果hdfs很悠闲那就少一点可以跟ZK保持一致</p>
+<p>zookeeper.apache.org<br>ZK集群 2n+1 奇数 选举 谁做active standby<br><strong>生产中的ZK部署</strong>：<br>20台节点: 5台<br>20~100台节点: 7/9/11台  </p>
+<blockquote>
+<p>100台节点: 11台<br>但是: 不是说zk节点越多越好，因为如果在切换某个组件active的时候，选举的时候投票数越多，时间越长，对服务造成影响</p>
+</blockquote>
+<p>对越几百台节点的集群，zk部署的机器就它一个进程，防止其他进程抢占zk进程资源，造成选举延迟或失败。</p>
+<p><strong>hdfs-HA架构图</strong></p>
+<p><img src="2.jpg" alt=""></p>
+<p><strong>—————–图解——————–</strong><br>HA是为了解决单点问题<br>通过JN集群共享状态<br>通过ZKFC选举active<br>监控NN状态，自动备援。<br><strong>DN:</strong> 同时向NN1 NN2发送心跳和块报告。<br>【dfs.heartbeat.interval：DN的心跳检测时间间隔，默认3秒】hdfs-site.xml<br>【dfs.blockreport.intervalMsec：控制DN定期将当前该结点上所有的BLOCK信息报告给NN的时间间隔，默认21600000ms = 6小时】hdfs-site.xml</p>
+<p><strong>ACTIVE NN:</strong> 操作记录写到自己的editlog<br>                    同时将editlog写入JN集群<br>                    接收DN的心跳和块报告</p>
+<p><strong>STANDBY NN:</strong> 同时接收JN集群的日志，显示读取执行log操作(重演)，<br>                         使得自己的元数据和active nn节点保持一致。<br>                         接收DN的心跳和块报告</p>
+<p><strong>JounalNode:</strong> 用于active standby nn节点的同步数据【standby会重演active的状态（操作记录editlog ）】<br>                       一般部署2n+1【官方建议】至少写n/2+1成功才算成功<br>                       2n+1台: 【默认是每台运行的节点都会写入】<br>                                7台 写: n/2+1  写4台算成功 允许3台宕机<br>                                3台 写: n/2+1  写2台算成功 允许1台宕机<br>                        standby NN读取的时候是随机选择写入成功一台来读取active NN的状态进行重演</p>
+<p><strong>ZKFC:</strong> 单独的进程<br>           监控NN监控健康状态<br>           向zk集群定期发送心跳，使得自己可以被选举；<br>           当自己被zk选举为active的时候，zkfc进程通过RPC协议调用使NN节点的状态变为active，<br>           对外提供实时服务，是无感知的。</p>
+<p>ZKFC: zookeeperfailovercontrol【这里的zkfc是进程】；yarn里的zkfc是一个线程<br>进程: ps -ef<br>线程是由1个以上的线程组成</p>
+<h1 id="YARN-HA"><a href="#YARN-HA" class="headerlink" title="YARN HA"></a>YARN HA</h1><p>YARN HA<br>hadoop001：zk  rm(zkfc)  nm<br>hadoop002：zk  rm(zkfc)  nm<br>hadoop003：zk                 nm</p>
+<p><img src="3.jpg" alt=""></p>
+<p><strong>—————-图解————-</strong><br><strong>ZKFC:</strong> 线程<br>只作为RM进程的一个线程而非独立的进程存在</p>
+<p>为什么和hdfs的ZKFC不同呢？因为mr只是作业；挂了重新启动构建资源就可以；而HDFS会丢数据。所以zkfc在yarn里是线程，在hdfs是独立进程。<br>图里的nm只和active的RM通信而不会和standby的rm通信；这里的原因也是作业挂了重新启动构建资源即可而不会像hdfs里的DN时刻和两个NN通信。</p>
+<p>*<em>RMStateStore: *</em>存储在zk的/rmstore目录下。【/rmstore为默认值可通过yran.resourcemanager.zk-state-store.parent-path配置】<br>1.activeRM会向这个目录写APP信息<br>2.当activeRM挂了，另外一个standby RM通过ZKFC选举成功为active，会从/rmstore读取相应的作业信息。<br>重新构建作业的内存信息，启动内部的服务，开始接收NM的心跳，构建集群的资源信息，并且接收客户端的作业提交请求。</p>
+<p><strong>RM:</strong><br>1.启动时候会向ZK的/rmstore目录写lock文件，写成功就为active，否则standby.<br>rm节点zkfc会一直监控这个lock文件是否存在，假如不存在，写一个lock文件，宣布自己是active，否则为standby.<br>2.接收client的请求，接收和监控NM的资源状况的汇报，负载资源的分配和调度。<br>3.启动和监控APPMASTER on NM节点的container。<br>applicationsmanager 运行在RM节点<br>applicationmaster   运行在NM节点 container容器里  作业的主程序</p>
+<p><strong>NM:</strong><br>节点资源的管理  启动容器运行task计算  上报资源</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Hadoop] Hadoop配置支持LZO压缩格式/" data-toggle="tooltip" data-placement="top" title="[Hadoop] Hadoop配置支持LZO压缩格式">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Hadoop] Hadoop高级之HDFS&YARN HA部署/" data-toggle="tooltip" data-placement="top" title="[Hadoop] Hadoop高级之HDFS&YARN HA部署">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#HDFS-HA"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">HDFS HA</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#YARN-HA"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">YARN HA</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

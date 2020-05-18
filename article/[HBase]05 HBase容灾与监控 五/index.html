@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [HBase]05 HBase容灾与监控 五 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[HBase]05 HBase容灾与监控 五/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                            
+                        </div>
+                        <h1>[HBase]05 HBase容灾与监控 五</h1>
+                        <h2 class="subheading">Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-12-01
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Hbase备份与恢复"><a href="#Hbase备份与恢复" class="headerlink" title="Hbase备份与恢复"></a>Hbase备份与恢复</h1><p>四种方案：<br><strong>◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot</strong></p>
+<h2 id="CopyTable"><a href="#CopyTable" class="headerlink" title="CopyTable"></a>CopyTable</h2><ul>
+<li>支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,</li>
+<li>CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读写</li>
+<li>在线，前提在目标集群中先建立好同名表</li>
+</ul>
+<p>可以在本集群中拷贝一张表，也可以将表拷贝到其他的集群中。</p>
+<p>1、利用CoprocessorTest来测试本集群中拷贝一张表<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""><br>2、先创建一个表<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>3、执行CopyTable 操作<br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br>4、查看此时两表相同<br><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>5、如果是跨集群迁移</p>
+<p>命令： ./hbase org.apache.hadoop.hbase.mapreduce.CopyTable –peer.adr=dest_cluster:2181:/hbase1</p>
+<p>说明：<br>1)拷贝完成，不需要重启机器，在 new cluster 中就可以看到该表;<br>2)稳定性还需要考虑，测试过程中遇到一个问题，拷贝过程中始终都停留在这里<br>Lookedup root region location, 查看日志没有什么错误和相关的信息。</p>
+<h2 id="Export-Import"><a href="#Export-Import" class="headerlink" title="Export/Import"></a>Export/Import</h2><ul>
+<li>Export可导出数据到目标集群, 然后可在目标集群Import导入数据, Export支持指定开始时间和结束时间, 因此可以做增量备份. </li>
+<li>Export导出工具与CopyTable一样是依赖hbase的scan读取数据</li>
+<li>(在线，前提在目标集群中比较建立好同名表)</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8705.png" alt=""><br>1、执行Export<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""><br>查看hdfs目录是否有这个文件<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br>2、执行Import<br>清空表<br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br><img src="%E5%9B%BE%E7%89%8709.png" alt=""><br>数据恢复<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
+<p>简要步骤：<br>1)在 old cluster 上执行：./hbase org.apache.hadoop.hbase.mapreduce.Export test hdfs://new cluster ip:9000/ test<br>2)在 new cluster 上执行：./hbase org.apache.hadoop.hbase.mapreduce.Import test hdfs://new cluster ip:9000/ test</p>
+<p>说明：<br>1)一定要写全路径，不能写相对路劲;<br>2)在 import 前，需要将表事先在 new cluster 中创建好</p>
+<h2 id="Snapshot"><a href="#Snapshot" class="headerlink" title="Snapshot"></a>Snapshot</h2><ul>
+<li>Snapshot即快照的意思, 作用于表上；通过配置hbase-site.xml开启该功能</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
+<ul>
+<li>可以快速的恢复表至快照指定的状态从而迅速的修复数据 (会丢失快照之后的数据)</li>
+</ul>
+<p>对于快照操作的shell命令 进入hbase shell<br><img src="%E5%9B%BE%E7%89%8712.png" alt=""><br>测试列出快照；其他操作略<br><img src="%E5%9B%BE%E7%89%8713.png" alt=""><br>恢复数据<br><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+<p>跨集群操作<br>1)生成快照:<br> $ ./bin/hbase shell<br> hbase&gt; snapshot ‘myTable’, ‘myTableSnapshot-122112’<br>2)用快照克隆表(这个克隆操作不涉及数据拷贝，在新集群中操作):<br> $ hbase shell<br> hbase&gt; clone_snapshot ‘myTableSnapshot-122112’, ‘myNewTestTable’<br>3)导出到另一集群:<br> 要拷贝一张叫 MySnapshot 的快照到HBase集群srv2(hdfs://dest_cluester:8020/hbase)下，使用16个maptask<br> $ sudo -u hbase hbase org.apache.hadoop.hbase.snapshot.ExportSnapshot -snapshot MySnapshot -copy-to hdfs://dest_cluester:8020/hbase -mappers 16</p>
+<p>说明：这个 ExportSnapshot 工具拷贝了整个快照相关的所有的数据到另一个集群上</p>
+<h2 id="Replication"><a href="#Replication" class="headerlink" title="Replication"></a>Replication</h2><ul>
+<li>可以通过replication机制实现hbase集群的主从模式</li>
+<li>Replication是依赖wal日志进行的同步(Replication必须开启WAL，修改hbase-site.xml)</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8715.png" alt=""><br><img src="%E5%9B%BE%E7%89%8716.png" alt=""></p>
+<p>简要步骤：</p>
+<p>1)在 old cluster 将需要迁移的表属性进行修改：<br> disable ‘your_table’<br> alter ‘your_table’, {NAME =&gt; ‘family_name’, REPLICATION_SCOPE =&gt; ‘1’}<br> enable ‘your_table’</p>
+<p>2)打开 new cluster 集群的 replication，修改 hbase-site.xml</p>
+<p>3)添加 peer(主节点里添加要复制的从节点的)，在 new cluster 的 hbase shell 中执行：add_peer ‘1’,’old cluster ip:2181:/hbase’，启动 replication，执行 start_replication</p>
+<p>说明：需要两个集群的 hadoop 版本一致，否则出现读写错误</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>CopyTable喝Export/Import这两种方式是基于MapReduce性能不是太高；</li>
+<li>Replication是一种比较常见的方式；本质上利用了endpoint协处理器对WAL日志进行顺序读取来达到备份的目的；</li>
+<li>Snapshot是作用于表上，实际上针对元数据的快照，并不直接备份HFile，所以说它可以快速的将表恢复的快照的状态，从而迅速的进行数据的修复；</li>
+</ul>
+<h2 id="DistCp-迁移-需要停掉集群"><a href="#DistCp-迁移-需要停掉集群" class="headerlink" title="DistCp 迁移(需要停掉集群)"></a>DistCp 迁移(需要停掉集群)</h2><p>1)旧的集群上先 disable alltable：<br>disable tablename(单张表 disable)<br>disable_all (整个 hbase 所有表 disable)<br>同理 enable tablename 以及 enable_all</p>
+<p>2)hadoop distcp -Ddfs.checksum.type=CRC32 -skipcrccheck -i -update<br>hdfs://src_cluster:9000/hbase/tablename<br>hdfs://dest_cluester:8020/hbase/data/default/tablename<br>或者使用<br>hadoop distcp -Ddfs.checksum.type=CRC32 -skipcrccheck -i -update<br>h<a href="ftp://src_cluster:50070/hbase/tablename" target="_blank" rel="noopener">ftp://src_cluster:50070/hbase/tablename</a><br>webhdfs://dest_cluester:50070/hbase/data/default/tablename<br>或者使用<br>hadoop distcp -Ddfs.checksum.type=CRC32 -skipcrccheck -i -update<br>h<a href="ftp://src_cluster:50070/hbase/tablename" target="_blank" rel="noopener">ftp://src_cluster:50070/hbase/tablename</a><br>h<a href="ftp://dest_cluester:50070/hbase/data/default/tablename" target="_blank" rel="noopener">ftp://dest_cluester:50070/hbase/data/default/tablename</a><br>使用脚本进行迁移<br>将所有表名放在一个文件中进行读取:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">cat &apos;xx.txt&apos; | while read line</span><br><span class="line">do</span><br><span class="line">hadoop distcp -Ddfs.checksum.type=CRC32 -skipcrccheck -i -update hftp://src_cluster:50070/hbase/$line webhdfs://dest_cluester:50070/hbase/data/default/$line sleep 5m(针对不同表的数据量，进行相应的睡眠等待上一张迁移成功再进行下一张的迁移，睡眠时间自行选择，看表的数据量自行定义)</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>注：具体细节需要各自实践进行调整</p>
+<p>Kill 所有 DistCp 进程：<br>jps | grep DistCp | awk ‘{print $1}’ | xargs kill -9</p>
+<p>DSTools 修复表操作(针对某平台环境，提供了修复工具)：<br>sh runDSTools.sh tablename (单张表修复)<br>sh runDSTools.sh 1&gt;&amp;2 2&gt; /tmp/xx.log.1(不加表名即表示整个集群修复，此处为脚本工具，可以参考 hbase 官网数据修复.MATE 修复部分)</p>
+<p>DSTools 修复 Hfile 命令(针对某平台环境，提供了修复工具)：<br>sh runHFileCheck.sh tablename 1&gt;&amp;2 2&gt; /tmp/hfilecheck.log.1<br>sh runHFileCheck.sh -fixReferenceFiles -sidelineCorruptHFiles tablename 1&gt;&amp;2 2&gt; /tmp/hfilecheck.log.2<br>sh runHFileCheck.sh tablename 1&gt;&amp;2 2&gt; /tmp/hfilecheck.log.3</p>
+<p>数据表修复时出现 regionserver 时常死亡时，请修改以下参数(可进行适当的调整)</p>
+<p>1)hbase-site.xml 里，配置 hbase.ipc.server.max.callqueue.length 为 10。<br> <property><br> <name>hbase.ipc.server.max.callqueue.length</name><br> <value>10</value><br> </property></p>
+<p>2)hbase-env.sh 里，修改配置：<br> -XX:CMSInitiatingOccupancyFraction=80 ==&gt; -XX:CMSInitiatingOccupancyFraction=70<br> -XX:NewRatio=3 ==&gt; -XX:NewRatio=4</p>
+<p>3)hbase-env.sh 里，regionserver 的 heap size 只允许两种配置：<br> -Xms24000m -Xmx24000m 或者 -Xms30000m -Xmx30000m<br> 如果机器内存比较充足，可以选后者，否则选前者。<br>批量删除 hbase 表命令：</p>
+<p>1)先将所有 hbase 表的表名列出存在文件 hbase-tmp1 中<br> for i in <code>echo &#39;list&#39; | hbase shell</code>;do echo $i &gt;&gt; /tmp/hbase-tmp1;done</p>
+<p>2)打开这个文件删除不相干的信息，只保留表名信息</p>
+<p>3)执行批量删除操作<br> for i in <code>cat /tmp/hbase-tmp1</code>;do <code>echo &quot;delete_table &#39;$i&#39;&quot; | hbase shell</code>;done<br> 使用 delete_table 可以直接删除表，不要事先 disable，单张表删除可以使用<br>delete_table 直接删除或者先 disable tablename 再 drop</p>
+<h2 id="将-HDFS-中-hbase-表文件落地再迁移-集群不通"><a href="#将-HDFS-中-hbase-表文件落地再迁移-集群不通" class="headerlink" title="将 HDFS 中 hbase 表文件落地再迁移(集群不通)"></a>将 HDFS 中 hbase 表文件落地再迁移(集群不通)</h2><p>把某个表(table1)从集群 1 迁移到集群 2（两个集群互相看不见），步骤如下</p>
+<p>1)拷贝集群 1 的表文件到本地磁盘 :<br> /app/cloud/Hadoop/bin/hadoop fs -copyToLocal /hbase/table1 /data0/hbase-backup/table1 </p>
+<p>2)对于文件操作，很简单吧，随便你怎么去拷贝来拷贝去</p>
+<p>3)如果集群 2 中也有对应的表文件，那么删除掉，然后拷贝<br> /app/cloud/hadoop/bin/hadoop fs -rmr /hbase/tablename<br> /app/cloud/hadoop/bin/hadoop fs -copyFromLocal /data0/hbase-backup/tablename /hbase/tablename</p>
+<p>4)重置该表在.META.表中的分区信息<br> bin/hbase org.jruby.Main bin/add_table.rb /hbase/tablename</p>
+<p>另外：<br>1)如果表的数据量过大呢？ 那么按照该表在 HDFS 中的文件夹数据，分批拷<br>贝。<br>2)如果两个集群可以互相通信呢？采用DistCp方案即可</p>
+<h1 id="Hbase监控简介"><a href="#Hbase监控简介" class="headerlink" title="Hbase监控简介"></a>Hbase监控简介</h1><h2 id="为什么需要监控"><a href="#为什么需要监控" class="headerlink" title="为什么需要监控"></a>为什么需要监控</h2><ul>
+<li>为了保证系统的稳定性, 可靠性, 可运维性</li>
+<li>了解集群的性能表现, 及时做出针对性调整</li>
+<li>集群出现问题及时报警, 帮助运维快速定位与解决问题</li>
+</ul>
+<h2 id="如何监控HBase集群"><a href="#如何监控HBase集群" class="headerlink" title="如何监控HBase集群"></a>如何监控HBase集群</h2><ul>
+<li>利用Hadoop生态圈开源的专业监控工具(Ambari)</li>
+<li>自己调用Hadoop和HBase的JMX接口获取监测数据</li>
+</ul>
+<h2 id="顶级项目-Ambari"><a href="#顶级项目-Ambari" class="headerlink" title="顶级项目: Ambari"></a>顶级项目: Ambari</h2><ul>
+<li>Ambari跟Hadoop等开源软件一样, 是Apache基金会的顶级项目</li>
+<li>创建 、 管理 、 监视Hadoop的集群 (Hadoop生态圈)</li>
+<li>Ambari就是为了让Hadoop以及相关的大数据软件更容易使用的一个工具</li>
+</ul>
+<p><img src="%E5%9B%BE%E7%89%8717.png" alt=""><br><img src="%E5%9B%BE%E7%89%8718.png" alt=""></p>
+<h1 id="Hadoop-JMX监控实战"><a href="#Hadoop-JMX监控实战" class="headerlink" title="Hadoop JMX监控实战"></a>Hadoop JMX监控实战</h1><p><img src="%E5%9B%BE%E7%89%8719.png" alt=""></p>
+<p>代码太多已打包上传到资源：<a href="https://download.csdn.net/download/bingdianone/10848206" target="_blank" rel="noopener">https://download.csdn.net/download/bingdianone/10848206</a><br><strong>实体类</strong><br>DataNodeInfo ：datanode的一些属性<br>HdfsSummary ：hdfs的属性</p>
+<p><strong>工具类</strong><br>JsonUtil :将json格式转化为某个类</p>
+<p>StatefulHttpClient ：访问http的客户端</p>
+<p>MonitorMetrics：返回的是图中beans里的东西</p>
+<p>HadoopUtil：获取Hadoop的一些属性以及打印出来</p>
+<h2 id="Hbase-JMX监控实战"><a href="#Hbase-JMX监控实战" class="headerlink" title="Hbase JMX监控实战"></a>Hbase JMX监控实战</h2><p>代码太多已打包上传到资源：<a href="https://download.csdn.net/download/bingdianone/10848206" target="_blank" rel="noopener">https://download.csdn.net/download/bingdianone/10848206</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[HBase]06 Phoenix入门 六/" data-toggle="tooltip" data-placement="top" title="[HBase]06 Phoenix入门 六">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[HBase]04 深入了解HBase架构 四/" data-toggle="tooltip" data-placement="top" title="[HBase]04 深入了解HBase架构 四">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase备份与恢复"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hbase备份与恢复</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#CopyTable"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">CopyTable</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Export-Import"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Export/Import</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Snapshot"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Snapshot</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Replication"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Replication</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DistCp-迁移-需要停掉集群"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">DistCp 迁移(需要停掉集群)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#将-HDFS-中-hbase-表文件落地再迁移-集群不通"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">将 HDFS 中 hbase 表文件落地再迁移(集群不通)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hbase监控简介"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hbase监控简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么需要监控"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">为什么需要监控</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何监控HBase集群"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">如何监控HBase集群</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#顶级项目-Ambari"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">顶级项目: Ambari</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hadoop-JMX监控实战"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hadoop JMX监控实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hbase-JMX监控实战"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Hbase JMX监控实战</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#HBASE" title="HBASE">HBASE</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
