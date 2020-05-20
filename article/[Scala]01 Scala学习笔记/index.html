@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Scala]01 Scala学习笔记 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Scala]01 Scala学习笔记/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                            
+                        </div>
+                        <h1>[Scala]01 Scala学习笔记</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2017-03-23
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="scala-的下载安装"><a href="#scala-的下载安装" class="headerlink" title="scala 的下载安装"></a>scala 的下载安装</h1><p><strong>前置条件需要安装JDK8</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop app]$ java -version</span><br><span class="line">java version &quot;1.8.0_231&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_231-b11)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.231-b11, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<p>官网下载：<a href="https://downloads.lightbend.com/scala/2.12.11/scala-2.12.11.tgz" target="_blank" rel="noopener">https://downloads.lightbend.com/scala/2.12.11/scala-2.12.11.tgz</a></p>
+<p>1、解压： tar -zxvf scala-2.12.11.tgz -C ../app/<br>2、加上软连接：ln -s scala-2.12.11/ scala<br>3、配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">进入环境变量</span><br><span class="line">vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line">添加</span><br><span class="line">export SCALA_HOME=/home/hadoop/app/scala</span><br><span class="line">export PATH=$SCALA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">刷新环境变量</span><br><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<h1 id="scala初体验"><a href="#scala初体验" class="headerlink" title="scala初体验"></a>scala初体验</h1><h2 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; 1+2</span><br><span class="line">res0: Int = 3</span><br><span class="line"></span><br><span class="line">scala&gt; res0 * 3</span><br><span class="line">res1: Int = 9</span><br><span class="line"></span><br><span class="line">scala&gt; res0 * res1</span><br><span class="line">res2: Int = 27</span><br><span class="line"></span><br><span class="line">scala&gt; println(&quot;Hello World&quot;)</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure>
+<h2 id="编译运行"><a href="#编译运行" class="headerlink" title="编译运行"></a>编译运行</h2><p>vim HelloWorld.scala</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">object HelloWorld&#123;</span><br><span class="line">	def main(args: Array[String])&#123;</span><br><span class="line">		println(&quot;Hello World...&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译：scalac HelloWorld.scala<br>运行：scala HelloWorld<br>结果：Hello World…</p>
+<h1 id="Scala入门"><a href="#Scala入门" class="headerlink" title="Scala入门"></a>Scala入门</h1><h2 id="val-vs-var"><a href="#val-vs-var" class="headerlink" title="val vs var"></a>val vs var</h2><p>val：值<br>    final<br>    val 值名称：类型 = XXX<br>var：变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; val money = 100</span><br><span class="line">money: Int = 100</span><br><span class="line"></span><br><span class="line">scala&gt; money = 200</span><br><span class="line">&lt;console&gt;:12: error: reassignment to val</span><br><span class="line">       money = 200</span><br><span class="line">             ^</span><br><span class="line">scala&gt; val age:Int = 20</span><br><span class="line">age: Int = 20</span><br><span class="line"></span><br><span class="line">scala&gt; var name:String = &quot;zs&quot;</span><br><span class="line">name: String = zs</span><br><span class="line"></span><br><span class="line">scala&gt; name = &quot;ls&quot;</span><br><span class="line">name: String = ls</span><br></pre></td></tr></table></figure>
+
+<p><strong>建议：优先使用val</strong></p>
+<h2 id="Scala-数据类型"><a href="#Scala-数据类型" class="headerlink" title="Scala 数据类型"></a>Scala 数据类型</h2><pre><code>Byte/Char
+Short/Int/Long/Float/Double
+Boolean</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; val a:Int = 10</span><br><span class="line">a: Int = 10</span><br><span class="line"></span><br><span class="line">scala&gt; val b:Boolean = true</span><br><span class="line">b: Boolean = true</span><br><span class="line"></span><br><span class="line">scala&gt; val c = false</span><br><span class="line">c: Boolean = false</span><br><span class="line"></span><br><span class="line">scala&gt; val d = 1.1 </span><br><span class="line">d: Double = 1.1</span><br><span class="line"></span><br><span class="line">scala&gt; val e:Float = 1.1 </span><br><span class="line">&lt;console&gt;:11: error: type mismatch;</span><br><span class="line"> found   : Double(1.1)</span><br><span class="line"> required: Float</span><br><span class="line">       val e:Float = 1.1</span><br><span class="line">                     ^</span><br><span class="line"></span><br><span class="line">scala&gt; val e:Float = 1.1f </span><br><span class="line">e: Float = 1.1</span><br><span class="line"></span><br><span class="line">scala&gt; val d = 1.1f </span><br><span class="line">d: Float = 1.1</span><br><span class="line"></span><br><span class="line">scala&gt; val f = 10</span><br><span class="line">f: Int = 10</span><br><span class="line"></span><br><span class="line">类型转换</span><br><span class="line">scala&gt; val g = 10.asInstanceOf[Double] </span><br><span class="line">g: Double = 10.0</span><br><span class="line"></span><br><span class="line">类型判断</span><br><span class="line">scala&gt; val h = 10.isInstanceOf[Int]</span><br><span class="line">h: Boolean = true</span><br></pre></td></tr></table></figure>
+
+<h2 id="lazy在Scala中的使用"><a href="#lazy在Scala中的使用" class="headerlink" title="lazy在Scala中的使用"></a>lazy在Scala中的使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; lazy val a = 1</span><br><span class="line">a: Int = &lt;lazy&gt;</span><br><span class="line"></span><br><span class="line">scala&gt; a</span><br><span class="line">res0: Int = 1</span><br></pre></td></tr></table></figure>
+
+<p>比如当读取一个文件a的时候，讲文件赋值给lazy 变量a，只有当调用的时候才会返回文件内容</p>
+<h1 id="函数的定义和使用-条件表达式、循环表达式"><a href="#函数的定义和使用-条件表达式、循环表达式" class="headerlink" title="函数的定义和使用[条件表达式、循环表达式]"></a>函数的定义和使用[条件表达式、循环表达式]</h1><p><img src="1.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def 方法名(参数名:参数类型): 返回值类型 = &#123;</span><br><span class="line">	// 括号内的叫做方法体</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	// 方法体内的最后一行为返回值，不需要使用return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">object FunctionApp &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//    println(add(2, 3))</span><br><span class="line">//</span><br><span class="line">//    println(three())</span><br><span class="line">//    println(three) // 没有入参的函数，调用时括号是可以省略的</span><br><span class="line"></span><br><span class="line">无参与有参调用</span><br><span class="line">//    sayHello()</span><br><span class="line">//    sayHello</span><br><span class="line">//    sayHello(&quot;zhangsan&quot;)</span><br><span class="line"></span><br><span class="line">默认参数的调用</span><br><span class="line">//    sayName() //默认参数的调用</span><br><span class="line">//    sayName(&quot;zhangsan&quot;)</span><br><span class="line">//</span><br><span class="line">//    loadConf()</span><br><span class="line">//    loadConf(&quot;spark-production.conf&quot;) //默认参数的调用</span><br><span class="line"></span><br><span class="line">命名参数调用</span><br><span class="line">//    println(speed(100, 10)) //顺序传参</span><br><span class="line">//    println(speed(distance = 100, time = 10))</span><br><span class="line">//    println(speed(time = 10, distance = 100)) //无顺序传参</span><br><span class="line"></span><br><span class="line">可变参数的调用</span><br><span class="line">//    println(sum(1,3,5))</span><br><span class="line">//    println(sum2(1,2)) //不确定传参个数</span><br><span class="line">//    println(sum2(1,2,3))</span><br><span class="line">//    println(sum2(1,2,3,4))</span><br><span class="line"></span><br><span class="line">条件表达式</span><br><span class="line">//    val x = 1</span><br><span class="line">//    if(x &gt; 0) &#123;</span><br><span class="line">//      true</span><br><span class="line">//    &#125; else &#123;</span><br><span class="line">//      false</span><br><span class="line">//    &#125;</span><br><span class="line"></span><br><span class="line">循环表达式to</span><br><span class="line">//    1 to 10 左闭右闭</span><br><span class="line">//    1.to(10) 左闭右闭</span><br><span class="line">//    Range(1,10,4)  //1 5 9</span><br><span class="line">//    1.until(10) 左闭右开</span><br><span class="line"></span><br><span class="line">循环表达式for</span><br><span class="line">//    for(i &lt;- 1 to 10 if i % 2 == 0) &#123;</span><br><span class="line">//      println(i)</span><br><span class="line">//    &#125;</span><br><span class="line"></span><br><span class="line">循环表达式for</span><br><span class="line">//    val courses = Array(&quot;Hadoop&quot;,&quot;Spark SQL&quot;, &quot;Spark Streaming&quot;,&quot;Storm&quot;,&quot;Scala&quot;)</span><br><span class="line">//    for(course &lt;- courses) &#123;</span><br><span class="line">//      println(course)</span><br><span class="line">//    &#125;</span><br><span class="line"></span><br><span class="line">    // course 其实就是courses里面的每个元素</span><br><span class="line">    // ==&gt;  就是将左边的course作用上一个函数，变成另外一个结果</span><br><span class="line">    // println 就是作用到course上的一个函数</span><br><span class="line">//    courses.foreach(course =&gt; println(course))</span><br><span class="line"></span><br><span class="line">循环表达式while</span><br><span class="line">    var (num, sum) = (100, 0)</span><br><span class="line">    while(num &gt; 0) &#123;  // 出口</span><br><span class="line">      sum = sum + num</span><br><span class="line">      num = num - 1  // 步长</span><br><span class="line">    &#125;</span><br><span class="line">    println(sum)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  def add(x:Int, y:Int):Int = &#123;</span><br><span class="line">    x + y  // 最后一行就是返回值，不需要return</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def three() = 1 + 2</span><br><span class="line"></span><br><span class="line">  def sayHello(): Unit = &#123;</span><br><span class="line">    println(&quot;Say hello....&quot;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def sayHello(name:String): Unit = &#123;</span><br><span class="line">    println(&quot;Say hello: &quot; + name)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def sayName(name:String = &quot;lisi&quot;): Unit = &#123;</span><br><span class="line">    println(name)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def loadConf(conf:String = &quot;spark-defaults.conf&quot;): Unit = &#123;</span><br><span class="line">    println(conf)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def speed(distance:Float, time:Float):Float = &#123;</span><br><span class="line">    distance/time</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  def sum(a:Int, b:Int) = &#123;</span><br><span class="line">    a + b</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def sum(a:Int, b:Int, c:Int) = &#123;</span><br><span class="line">    a + b + c</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def sum2(numbers:Int*) = &#123;</span><br><span class="line"></span><br><span class="line">    var result = 0</span><br><span class="line">    for(number &lt;- numbers) &#123;</span><br><span class="line">      result += number</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    result</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Scala对象"><a href="#Scala对象" class="headerlink" title="Scala对象"></a>Scala对象</h1><h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>Java/Scala OO<br>    封装：属性、方法封装到类中<br>        Person:<br>            private int id, String name, Date birthday…..  getter/setter<br>            eat、sleep….<br>    继承：父类和子类之间的关系<br>        User extends Person<br>            exam…..<br>    多态：***** 父类引用指向子类对象    精髓所在    开发框架的基石<br>        Person person = new Person();<br>        User user = new User();<br>        Person person = new User();</p>
+<h2 id="类的定义和使用"><a href="#类的定义和使用" class="headerlink" title="类的定义和使用"></a>类的定义和使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">object SimpleObjectApp &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val person = new People()</span><br><span class="line">    person.name = &quot;Messi&quot;</span><br><span class="line">//    person.age = 30  val不可改变</span><br><span class="line">    println(person.name + &quot; .. &quot; + person.age)</span><br><span class="line"></span><br><span class="line">    println(&quot;invoke eat method: &quot; + person.eat)</span><br><span class="line"></span><br><span class="line">    person.watchFootball(&quot;Barcelona&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    person.printInfo()</span><br><span class="line">//    println(person.gender) 不可以直接访问类里的this修饰属性</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//People类</span><br><span class="line">class People &#123;</span><br><span class="line"></span><br><span class="line">  // 定义属性</span><br><span class="line">  var name:String = _ //占位符</span><br><span class="line">  val age = 10</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  private [this] val gender = &quot;male&quot;</span><br><span class="line"></span><br><span class="line">  def printInfo(): Unit =&#123;</span><br><span class="line">    println(&quot;gender: &quot; + gender)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 定义方法</span><br><span class="line">  def eat():String = &#123;</span><br><span class="line">    name + &quot; eat....&quot;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  def watchFootball(teamName: String): Unit = &#123;</span><br><span class="line">    println(name + &quot; is watching match of &quot; + teamName)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="主构造器和附属构造器以及继承"><a href="#主构造器和附属构造器以及继承" class="headerlink" title="主构造器和附属构造器以及继承"></a>主构造器和附属构造器以及继承</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">object ConstructorApp &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line"></span><br><span class="line">//    val person = new Person(&quot;zhangsan&quot;, 30)</span><br><span class="line">//    println(person.name + &quot; : &quot; + person.age + &quot; : &quot; + person.school)</span><br><span class="line">//</span><br><span class="line">//</span><br><span class="line">//    val person2 = new Person(&quot;PK&quot;, 18, &quot;M&quot;)</span><br><span class="line">//    println(person2.name + &quot; : &quot;</span><br><span class="line">//      + person2.age + &quot; : &quot;</span><br><span class="line">//      + person2.school + &quot; :&quot;</span><br><span class="line">//      + person2.gender</span><br><span class="line">//    )</span><br><span class="line"></span><br><span class="line">    val student = new Student(&quot;PK&quot;, 18, &quot;Math&quot;)</span><br><span class="line">    println(student.name + &quot; : &quot; + student.major)</span><br><span class="line"></span><br><span class="line">    println(student)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 主构造器</span><br><span class="line">class Person(val name:String, val age:Int) &#123;</span><br><span class="line">  println(&quot;Person Constructor enter....&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  val school = &quot;ustc&quot;</span><br><span class="line">  var gender:String = _</span><br><span class="line"></span><br><span class="line">  // 附属构造器</span><br><span class="line">  def this(name:String, age:Int, gender:String) &#123;</span><br><span class="line">    this(name, age) // 附属构造器的第一行代码必须要调用主构造器或者其他附属构造器</span><br><span class="line">    this.gender = gender</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  println(&quot;Person Constructor leave....&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 继承</span><br><span class="line">class Student(name:String, age:Int, var major:String) extends Person(name, age) &#123;</span><br><span class="line">  println(&quot;Person Student enter....&quot;)</span><br><span class="line"></span><br><span class="line">//重写</span><br><span class="line">  override val school = &quot;peking&quot;</span><br><span class="line">//重写</span><br><span class="line">  override def toString: String = &quot;Person: override def toString :&quot; + school</span><br><span class="line"></span><br><span class="line">  println(&quot;Person Student leave....&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h2><p><img src="2.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">object AbstractApp &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    val student = new Student2()</span><br><span class="line">    println(student.name)</span><br><span class="line">    student.speak</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">  * 类的一个或者多个方法没有完整的实现（只有定义，没有实现）</span><br><span class="line">  */</span><br><span class="line">abstract class Person2 &#123;</span><br><span class="line"></span><br><span class="line">  def speak</span><br><span class="line"></span><br><span class="line">  val name:String</span><br><span class="line">  val age:Int</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class Student2 extends Person2 &#123;</span><br><span class="line">  override def speak: Unit = &#123;</span><br><span class="line">    println(&quot;speak&quot;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  override val name: String = &quot;zhangsan&quot;</span><br><span class="line">  override val age: Int = 18</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="伴生类和伴生对象"><a href="#伴生类和伴生对象" class="headerlink" title="伴生类和伴生对象"></a>伴生类和伴生对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">object ApplyApp &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">//    for(i &lt;- 1 to 10) &#123;</span><br><span class="line">//      ApplyTest.incr</span><br><span class="line">//    &#125;</span><br><span class="line">//</span><br><span class="line">//    println(ApplyTest.count) // 10  说明object本身就是一个单例对象</span><br><span class="line"></span><br><span class="line">    val b = ApplyTest() // ==&gt; 调用的是Object.apply</span><br><span class="line"></span><br><span class="line">    println(&quot;~~~~~~~~~~~&quot;)</span><br><span class="line">    val c = new ApplyTest() // 调用的是class.apply</span><br><span class="line">    println(c) // 调用的是class.apply</span><br><span class="line">    c() // 调用的是class.apply</span><br><span class="line"></span><br><span class="line">    // 类名() ==&gt; 调用 Object.apply</span><br><span class="line">    // 对象() ==&gt; 调用 Class.apply</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">  * 伴生类和伴生对象</span><br><span class="line">  * 如果有一个class，还有一个与class同名的object</span><br><span class="line">  * 那么就称这个object是class的伴生对象，class是object的伴生类</span><br><span class="line">  */</span><br><span class="line"></span><br><span class="line">class ApplyTest&#123;</span><br><span class="line">  def apply() = &#123;</span><br><span class="line">    println(&quot;class ApplyTest apply....&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">object ApplyTest&#123;</span><br><span class="line"></span><br><span class="line">  println(&quot;Object ApplyTest enter....&quot;)</span><br><span class="line"></span><br><span class="line">  var count = 0</span><br><span class="line"></span><br><span class="line">  def incr = &#123;</span><br><span class="line">    count = count + 1</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  // 最佳实践：在Object的apply方法中去new Class</span><br><span class="line">  def apply():ApplyTest = &#123;</span><br><span class="line">    println(&quot;Object ApplyTest apply....&quot;)</span><br><span class="line"></span><br><span class="line">    // 在object中的apply中new class</span><br><span class="line">    new ApplyTest</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  println(&quot;Object ApplyTest leave....&quot;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="cass-class"><a href="#cass-class" class="headerlink" title="cass class"></a>cass class</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 通常用在模式匹配</span><br><span class="line">object CaseClassApp &#123;</span><br><span class="line"></span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    println(Dog(&quot;wangcai&quot;).name)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// case class不用new</span><br><span class="line">case class Dog(name:String)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Trait"><a href="#Trait" class="headerlink" title="Trait"></a>Trait</h2><p>多继承</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Trait   xxx extends ATrait with BTrait</span><br><span class="line">class SparkConf(loadDefaults: Boolean) </span><br><span class="line">	extends Cloneable </span><br><span class="line">	with Logging </span><br><span class="line">	with Serializable</span><br><span class="line">	...</span><br><span class="line">	....</span><br><span class="line">traint Cloneable [extends XXX] &#123;&#125;</span><br><span class="line">traint Logging &#123;&#125;</span><br><span class="line">traint Serializable &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Scala-集合"><a href="#Scala-集合" class="headerlink" title="Scala 集合"></a>Scala 集合</h1><p>immutable 不可变<br>mutable 可变</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">object ArrayApp extends App&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  val a = new Array[String](5) 长度为5的空数组</span><br><span class="line">//  a.length</span><br><span class="line">//  a(1) = &quot;hello&quot; 给a[1]赋值</span><br><span class="line">//  a(1) 取值</span><br><span class="line">//</span><br><span class="line">//  val b = Array(&quot;hadoop&quot;, &quot;spark&quot;, &quot;storm&quot;) </span><br><span class="line">//</span><br><span class="line">//  val c = Array(2,3,4,5,6,7,8,9)</span><br><span class="line">//  c.sum</span><br><span class="line">//  c.min</span><br><span class="line">//  c.max</span><br><span class="line">//</span><br><span class="line">//  c.mkString(&quot;,&quot;) 去掉分隔符 转换为了string类型</span><br><span class="line">c.mkString(&quot;and&quot;) // 2and3and4and5and6and7and8and9</span><br><span class="line">c.mkString(&quot;&lt;&quot;,&quot;,&quot;,&quot;&gt;&quot;) // &lt;2,3,4,5,6,7,8,9&gt;</span><br><span class="line"></span><br><span class="line">//可变数组</span><br><span class="line">  val c = scala.collection.mutable.ArrayBuffer[Int]() </span><br><span class="line"></span><br><span class="line">  c += 1</span><br><span class="line">  c += 2</span><br><span class="line">  c += (3,4,5)</span><br><span class="line">  c ++= Array(6,7,8)</span><br><span class="line">  c.insert(0,0) //在0位置添加0</span><br><span class="line">  c.remove(1)</span><br><span class="line">  c.remove(0,3)</span><br><span class="line">  c.trimEnd(2) //从尾巴开始删除</span><br><span class="line">  c.toArray 可变数组变为不可变数组</span><br><span class="line"></span><br><span class="line">  数组取数</span><br><span class="line">//  for(i &lt;- 0 until c.length) &#123;</span><br><span class="line">//    println(c(i))</span><br><span class="line">//  &#125;</span><br><span class="line"></span><br><span class="line">数组取数</span><br><span class="line">//  for(ele &lt;- c) &#123;</span><br><span class="line">//    println(ele)</span><br><span class="line">//  &#125;</span><br><span class="line"></span><br><span class="line">数组反向取数</span><br><span class="line">    for(i &lt;- (0 until c.length).reverse) &#123;</span><br><span class="line">      println(c(i))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  println(c.toArray.mkString)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p>面试点：Nil 空的集合<br>scala&gt; Nil<br>res1: scala.collection.immutable.Nil.type = List()<br>scala&gt; val l = List(1,2,3,4,5)<br>l: List[Int] = List(1, 2, 3, 4, 5)</p>
+<p>scala&gt; l.head<br>res2: Int = 1</p>
+<p>scala&gt; l.tail<br>res3: List[Int] = List(2, 3, 4, 5)</p>
+<p>scala&gt; val l2 = 1 :: Nil<br>l2: List[Int] = List(1)</p>
+<p>scala&gt; val l3 = 2 :: l2<br>l3: List[Int] = List(2, 1)</p>
+<p>scala&gt; val l4 = 1 :: 2 :: 3 :: Nil<br>l4: List[Int] = List(1, 2, 3)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">object ListApp extends App&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//  val l = List(1,2,3,4,5)</span><br><span class="line">//</span><br><span class="line">//</span><br><span class="line">//  val l5 = scala.collection.mutable.ListBuffer[Int]() 变长List</span><br><span class="line"></span><br><span class="line">添加数值</span><br><span class="line">//  l5 += 2</span><br><span class="line">//  l5 += (3,4,5)</span><br><span class="line">//  l5 ++= List(6,7,8,9)</span><br><span class="line">//</span><br><span class="line">删除数值</span><br><span class="line">//  l5 -= 2</span><br><span class="line">//  l5 -= 3</span><br><span class="line">//  l5 -= (1, 4)</span><br><span class="line">//  l5 --= List(5,6,7,8)</span><br><span class="line">//</span><br><span class="line">//  println(l5)</span><br><span class="line">//</span><br><span class="line">//</span><br><span class="line">//  l5.isEmpty 判断是否为空</span><br><span class="line">//  l5.head 取第一个</span><br><span class="line">//  l.tail 取除了第一个的值  2,3,4,5</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  def sum(nums:Int*):Int = &#123;</span><br><span class="line">    if(nums.length == 0) &#123;</span><br><span class="line">      0</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      nums.head + sum(nums.tail:_*)  //:_*将seq转为一个可变参数</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  println(sum())</span><br><span class="line">  println(sum(1,2,3,4))</span><br><span class="line"></span><br><span class="line">无序不可重复</span><br><span class="line">//  val set = scala.collection.mutable.Set[Int]()</span><br><span class="line">//  set += 1</span><br><span class="line">//  set += (1,1)</span><br><span class="line">scala&gt; val set = scala.collection.mutable.Set[Int]()</span><br><span class="line">set: scala.collection.mutable.Set[Int] = Set()</span><br><span class="line"></span><br><span class="line">scala&gt; set += 1</span><br><span class="line">res6: set.type = Set(1)</span><br><span class="line"></span><br><span class="line">scala&gt; set += (1,1)</span><br><span class="line">res7: set.type = Set(1)</span><br><span class="line"></span><br><span class="line">scala&gt; set += (2,1)</span><br><span class="line">res8: set.type = Set(1, 2)</span><br><span class="line"></span><br><span class="line">scala&gt; set += (1,1)</span><br><span class="line">res9: set.type = Set(1, 2)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import scala.collection.mutable</span><br><span class="line">import scala.collection.mutable._</span><br><span class="line">object MapApp extends App&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  val a = Map(&quot;lisi&quot; -&gt; 18, &quot;zhangsan&quot; -&gt; 30)</span><br><span class="line"></span><br><span class="line">  val b = Map(&quot;lisi&quot; -&gt; 18, &quot;zhangsan&quot; -&gt; 30)</span><br><span class="line"></span><br><span class="line">//  val c = mutable.HashMap[String,Int]()</span><br><span class="line">//  b.getOrElse(&quot;lisi&quot;, 9) 取lisi的value 没有就输出9</span><br><span class="line"></span><br><span class="line">循环遍历map</span><br><span class="line">//  for((key,value) &lt;- b) &#123;</span><br><span class="line">//    println(key + &quot; : &quot; + value )</span><br><span class="line">//  &#125;</span><br><span class="line"></span><br><span class="line">循环遍历map</span><br><span class="line">//  for(key &lt;- b.keySet) &#123;</span><br><span class="line">//    println(key + &quot; : &quot; + b.getOrElse(key, 9))</span><br><span class="line">//  &#125;</span><br><span class="line"></span><br><span class="line">循环遍历map中的value</span><br><span class="line">//  for(value &lt;- b.values) &#123;</span><br><span class="line">//    println(value)</span><br><span class="line">//  &#125;</span><br><span class="line"></span><br><span class="line">循环遍历map</span><br><span class="line">    for((key,_) &lt;- b) &#123;</span><br><span class="line">      println(key + &quot; : &quot; + b.getOrElse(key, 9) )</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Option-amp-Some-amp-None"><a href="#Option-amp-Some-amp-None" class="headerlink" title="Option&amp;Some&amp;None"></a>Option&amp;Some&amp;None</h2><p><img src="3.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; val a = Map(&quot;lisi&quot; -&gt; 18, &quot;zhangsan&quot; -&gt; 30)</span><br><span class="line">a: scala.collection.immutable.Map[String,Int] = Map(lisi -&gt; 18, zhangsan -&gt; 30)</span><br><span class="line"></span><br><span class="line">scala&gt; a.get(&quot;lisi&quot;)</span><br><span class="line">res10: Option[Int] = Some(18)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">object OptionApp extends App &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  val m = Map(1 -&gt; 2)</span><br><span class="line">//  println(m(1))</span><br><span class="line">//  println(m(2))</span><br><span class="line"></span><br><span class="line">//  println(m.get(1).get)</span><br><span class="line"></span><br><span class="line">  println(m.getOrElse(2, &quot;None&quot;))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">  * case object None extends Option[Nothing] &#123;</span><br><span class="line">      def isEmpty = true</span><br><span class="line">      def get = throw new NoSuchElementException(&quot;None.get&quot;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final case class Some[+A](x: A) extends Option[A] &#123;</span><br><span class="line">      def isEmpty = false</span><br><span class="line">      def get = x</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  */</span><br></pre></td></tr></table></figure>
+<h2 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package com.imooc.scala.course05</span><br><span class="line"></span><br><span class="line">// 元组：(.......)</span><br><span class="line">object TupleApp extends App&#123;</span><br><span class="line"></span><br><span class="line">  val a = (1,2,3,4,5)</span><br><span class="line"></span><br><span class="line">遍历元组</span><br><span class="line">  for(i &lt;- 0 until(a.productArity)) &#123;</span><br><span class="line">    println(a.productElement(i))</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  val hostPort = (&quot;localhost&quot;,8080)</span><br><span class="line">  hostPort._1</span><br><span class="line">  hostPort._2</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Scala] Scala项目实战/" data-toggle="tooltip" data-placement="top" title="[Scala] Scala项目实战">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Scala]03 Scala学习笔记/" data-toggle="tooltip" data-placement="top" title="[Scala]03 Scala学习笔记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#scala-的下载安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">scala 的下载安装</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#scala初体验"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">scala初体验</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#小试牛刀"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">小试牛刀</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#编译运行"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">编译运行</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Scala入门"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Scala入门</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#val-vs-var"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">val vs var</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Scala-数据类型"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Scala 数据类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#lazy在Scala中的使用"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">lazy在Scala中的使用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#函数的定义和使用-条件表达式、循环表达式"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">函数的定义和使用[条件表达式、循环表达式]</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Scala对象"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Scala对象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#面向对象"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">面向对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类的定义和使用"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">类的定义和使用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#主构造器和附属构造器以及继承"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">主构造器和附属构造器以及继承</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#抽象类"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">抽象类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#伴生类和伴生对象"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">伴生类和伴生对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#cass-class"><span class="toc-nav-number">5.6.</span> <span class="toc-nav-text">cass class</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Trait"><span class="toc-nav-number">5.7.</span> <span class="toc-nav-text">Trait</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Scala-集合"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Scala 集合</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数组"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">数组</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#List"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">List</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Map"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">Map</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Option-amp-Some-amp-None"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">Option&amp;Some&amp;None</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Tuple"><span class="toc-nav-number">6.5.</span> <span class="toc-nav-text">Tuple</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Linux" title="Linux">Linux</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
