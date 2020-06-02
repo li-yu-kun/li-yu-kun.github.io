@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -198,11 +198,11 @@
             <!-- 标签云 -->
             <div id='tag_cloud' class="tags">
                 
+                    <a href="#computer language" title="computer language" rel="1">computer language</a>
+                
                     <a href="#大数据" title="大数据" rel="3">大数据</a>
                 
                     <a href="#Kafka" title="Kafka" rel="12">Kafka</a>
-                
-                    <a href="#computer language" title="computer language" rel="1">computer language</a>
                 
                     <a href="#HBASE" title="HBASE" rel="6">HBASE</a>
                 
@@ -224,16 +224,38 @@
                 
                     <a href="#Scala" title="Scala" rel="3">Scala</a>
                 
-                    <a href="#数据仓库 H" title="数据仓库 H" rel="1">数据仓库 H</a>
+                    <a href="#数据仓库" title="数据仓库" rel="1">数据仓库</a>
                 
                     <a href="#Hue" title="Hue" rel="1">Hue</a>
                 
-                    <a href="#数据仓库" title="数据仓库" rel="1">数据仓库</a>
+                    <a href="#数据仓库,H" title="数据仓库,H" rel="1">数据仓库,H</a>
                 
             </div>
 
             <!-- 标签列表 -->
 
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="computer language">
+                    <span class="tag-text">computer language</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Computer language comparison/">
+                        <h2 class="post-title">
+                            Computer language comparison
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
             
             <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="大数据">
@@ -264,25 +286,6 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/浅谈大数据平台建设/">
-                        <h2 class="post-title">
-                            浅谈大数据平台建设
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                选择机器、如何采购服务器、确定服务器、确定供应商、确定IDC机房、云专线、案例、网络拓扑图
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
                      <a href="/article/大数据压缩/">
                         <h2 class="post-title">
                             大数据压缩
@@ -297,12 +300,46 @@
                 </div>
                 <hr>
                 
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/浅谈大数据平台建设/">
+                        <h2 class="post-title">
+                            浅谈大数据平台建设
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                选择机器、如何采购服务器、确定服务器、确定供应商、确定IDC机房、云专线、案例、网络拓扑图
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
             </div>
             
             <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="Kafka">
                     <span class="tag-text">Kafka</span>
                 </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Kafka分区分配策略/">
+                        <h2 class="post-title">
+                            [Kafka] Kafka分区分配策略
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -328,9 +365,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/Kafka分区分配策略/">
+                     <a href="/article/[Kafka] Kafka Producer是如何动态感知Topic分区数变化/">
                         <h2 class="post-title">
-                            [Kafka] Kafka分区分配策略
+                            [Kafka] Kafka Producer是如何动态感知Topic分区数变化
                         </h2>
                         
                     </a>
@@ -346,36 +383,6 @@
                      <a href="/article/[Kafka] Kafka新建的分区会在哪个目录下创建/">
                         <h2 class="post-title">
                             [Kafka] Kafka新建的分区会在哪个目录下创建
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
-                        <h2 class="post-title">
-                            [Kafka] Kafka如何将分区放置到不同的Broker中
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/[Kafka] Kafka Producer是如何动态感知Topic分区数变化/">
-                        <h2 class="post-title">
-                            [Kafka] Kafka Producer是如何动态感知Topic分区数变化
                         </h2>
                         
                     </a>
@@ -426,25 +433,6 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Kafka]01 Kafka入门 一/">
-                        <h2 class="post-title">
-                            [Kafka]01 Kafka入门 一
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Kafka 官网、设计目标、架构体系图、应用场景、高吞吐率原因、Kafka的优点、Kafka 于其他 MQ 对比、特性、Kafka的几种重要角色
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
                      <a href="/article/[Kafka] 为Kafka集群选择合适的TopicsPartitions数量/">
                         <h2 class="post-title">
                             [Kafka] 为Kafka集群选择合适的Topics/Partitions数量
@@ -460,13 +448,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Kafka]02 Kafka入门 二/">
+                     <a href="/article/[Kafka]01 Kafka入门 一/">
                         <h2 class="post-title">
-                            [Kafka]02 Kafka入门 二
+                            [Kafka]01 Kafka入门 一
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                关键术语、工作原理和过程
+                                Kafka 官网、设计目标、架构体系图、应用场景、高吞吐率原因、Kafka的优点、Kafka 于其他 MQ 对比、特性、Kafka的几种重要角色
                             </h3>
                         
                     </a>
@@ -498,6 +486,40 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
+                     <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
+                        <h2 class="post-title">
+                            [Kafka] Kafka如何将分区放置到不同的Broker中
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/[Kafka]02 Kafka入门 二/">
+                        <h2 class="post-title">
+                            [Kafka]02 Kafka入门 二
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                关键术语、工作原理和过程
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
                      <a href="/article/[Kafka]04 Kafka入门 四/">
                         <h2 class="post-title">
                             [Kafka]04 Kafka入门 四
@@ -515,8 +537,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="computer language">
-                    <span class="tag-text">computer language</span>
+                <span class="fa fa-tag listing-seperator" id="HBASE">
+                    <span class="tag-text">HBASE</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -524,22 +546,38 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/Computer language comparison/">
+                     <a href="/article/[HBase]03 HBase进阶 三/">
                         <h2 class="post-title">
-                            Computer language comparison
+                            [HBase]03 HBASE进阶 三
                         </h2>
+                        
+                            <h3 class="post-subtitle">
+                                Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
                 </div>
                 <hr>
                 
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="HBASE">
-                    <span class="tag-text">HBASE</span>
-                </span>
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/[HBase]02 HBase原理与实战 二/">
+                        <h2 class="post-title">
+                            [HBase]02 HBase原理与实战 二
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
                 
                   <!-- <li class="listing-item">
                   <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -584,32 +622,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[HBase]02 HBase原理与实战 二/">
+                     <a href="/article/[HBase]06 Phoenix入门 六/">
                         <h2 class="post-title">
-                            [HBase]02 HBase原理与实战 二
+                            [HBase]06 Phoenix入门 六
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/[HBase]03 HBase进阶 三/">
-                        <h2 class="post-title">
-                            [HBase]03 HBASE进阶 三
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+                                Phoenix简介、Phoenix安装、Phoenix使用
                             </h3>
                         
                     </a>
@@ -629,25 +648,6 @@
                         
                             <h3 class="post-subtitle">
                                 Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/[HBase]06 Phoenix入门 六/">
-                        <h2 class="post-title">
-                            [HBase]06 Phoenix入门 六
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Phoenix简介、Phoenix安装、Phoenix使用
                             </h3>
                         
                     </a>
@@ -731,6 +731,21 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
+                     <a href="/article/[Hadoop] Hadoop编译支持5种压缩格式/">
+                        <h2 class="post-title">
+                            [Hadoop] Hadoop编译支持5种压缩格式
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
                      <a href="/article/[Hadoop] Hadoop离线项目之数据清洗/">
                         <h2 class="post-title">
                             [Hadoop] Hadoop离线项目之数据清洗
@@ -769,10 +784,14 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Hadoop] Hadoop编译支持5种压缩格式/">
+                     <a href="/article/[Hadoop] Hadoop配置支持LZO压缩格式/">
                         <h2 class="post-title">
-                            [Hadoop] Hadoop编译支持5种压缩格式
+                            [Hadoop] Hadoop配置支持LZO压缩格式
                         </h2>
+                        
+                            <h3 class="post-subtitle">
+                                安装lzop、配置、测试
+                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
@@ -803,13 +822,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Hadoop] Hadoop配置支持LZO压缩格式/">
+                     <a href="/article/[Hadoop] Hadoop高级之HDFS&YARN HA部署/">
                         <h2 class="post-title">
-                            [Hadoop] Hadoop配置支持LZO压缩格式
+                            [Hadoop] Hadoop高级之HDFS&YARN HA部署
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                安装lzop、配置、测试
+                                Hadoop HA搭建、问题总结
                             </h3>
                         
                     </a>
@@ -826,25 +845,6 @@
                         <h2 class="post-title">
                             [Hadoop] number of splits 划分的条件
                         </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/[Hadoop] Hadoop高级之HDFS&YARN HA部署/">
-                        <h2 class="post-title">
-                            [Hadoop] Hadoop高级之HDFS&YARN HA部署
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Hadoop HA搭建、问题总结
-                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
@@ -897,13 +897,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Hadoop] 分布式文件系统HDFS 一/">
+                     <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
                         <h2 class="post-title">
-                            [Hadoop] 分布式文件系统HDFS 一
+                            [Hadoop] 分布式文件系统HDFS 三
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标(HDFS 构成及工作原理解析，基本构成)、数据读写过程、集群架构(datanode、namenode、SecondaryNamenode)、HDFS HA简介、HDFS文件类型、HDFS副本机制
+                                shell、Java API
                             </h3>
                         
                     </a>
@@ -916,13 +916,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
+                     <a href="/article/[Hadoop] 分布式文件系统HDFS 一/">
                         <h2 class="post-title">
-                            [Hadoop] 分布式文件系统HDFS 三
+                            [Hadoop] 分布式文件系统HDFS 一
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                shell、Java API
+                                HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标(HDFS 构成及工作原理解析，基本构成)、数据读写过程、集群架构(datanode、namenode、SecondaryNamenode)、HDFS HA简介、HDFS文件类型、HDFS副本机制
                             </h3>
                         
                     </a>
@@ -1248,25 +1248,6 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Kettle]03 三、输出控件/">
-                        <h2 class="post-title">
-                            [Kettle]03 三、输出控件
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                Kettle输出控件
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
                      <a href="/article/[Kettle]01 一、入门/">
                         <h2 class="post-title">
                             [Kettle]01 一、入门
@@ -1305,13 +1286,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Kettle]05 五、kettle应用控件/">
+                     <a href="/article/[Kettle]03 三、输出控件/">
                         <h2 class="post-title">
-                            [Kettle]05 五、kettle应用控件
+                            [Kettle]03 三、输出控件
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                kettle应用控件
+                                Kettle输出控件
                             </h3>
                         
                     </a>
@@ -1343,13 +1324,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Kettle]06 六、kettle流程控件/">
+                     <a href="/article/[Kettle]05 五、kettle应用控件/">
                         <h2 class="post-title">
-                            [Kettle]06 六、kettle流程控件
+                            [Kettle]05 五、kettle应用控件
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                kettle流程控件
+                                kettle应用控件
                             </h3>
                         
                     </a>
@@ -1369,6 +1350,25 @@
                         
                             <h3 class="post-subtitle">
                                 kettle查询控件
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/[Kettle]06 六、kettle流程控件/">
+                        <h2 class="post-title">
+                            [Kettle]06 六、kettle流程控件
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                kettle流程控件
                             </h3>
                         
                     </a>
@@ -1426,25 +1426,6 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Linux]01 大数据常用命令 一/">
-                        <h2 class="post-title">
-                            [Linux]01 大数据常用命令 一
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                基本操作命令
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
                      <a href="/article/[Linux]02 大数据常用命令 二/">
                         <h2 class="post-title">
                             [Linux]02 大数据常用命令 二
@@ -1464,13 +1445,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Linux]03 大数据常用命令 三/">
+                     <a href="/article/[Linux]01 大数据常用命令 一/">
                         <h2 class="post-title">
-                            [Linux]03 大数据常用命令 三
+                            [Linux]01 大数据常用命令 一
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                用户权限以及性能相关命令
+                                基本操作命令
                             </h3>
                         
                     </a>
@@ -1502,13 +1483,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Linux]06 使用shell脚本发送邮件 四/">
+                     <a href="/article/[Linux]03 大数据常用命令 三/">
                         <h2 class="post-title">
-                            [Linux]04 使用shell脚本发送邮件 四
+                            [Linux]03 大数据常用命令 三
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                前置条件、使用脚本发送普通邮件、带表格告警的邮件
+                                用户权限以及性能相关命令
                             </h3>
                         
                     </a>
@@ -1528,6 +1509,25 @@
                         
                             <h3 class="post-subtitle">
                                 调度|执行|软连接
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/[Linux]06 使用shell脚本发送邮件 四/">
+                        <h2 class="post-title">
+                            [Linux]04 使用shell脚本发送邮件 四
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                前置条件、使用脚本发送普通邮件、带表格告警的邮件
                             </h3>
                         
                     </a>
@@ -1577,21 +1577,6 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[Scala]03 Scala学习笔记/">
-                        <h2 class="post-title">
-                            [Scala]03 Scala学习笔记
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
                      <a href="/article/[Scala]02 Scala学习笔记/">
                         <h2 class="post-title">
                             [Scala]02 Scala学习笔记
@@ -1602,11 +1587,26 @@
                 </div>
                 <hr>
                 
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/[Scala]03 Scala学习笔记/">
+                        <h2 class="post-title">
+                            [Scala]03 Scala学习笔记
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="数据仓库 H">
-                    <span class="tag-text">数据仓库 H</span>
+                <span class="fa fa-tag listing-seperator" id="数据仓库">
+                    <span class="tag-text">数据仓库</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -1614,10 +1614,14 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[数据仓库]02 数据仓库之离线-Hive是什么 二/">
+                     <a href="/article/[数据仓库]01 数据仓库之离线 一/">
                         <h2 class="post-title">
-                            [数据仓库]02 数据仓库之离线-Hive是什么 二
+                            [数据仓库]01 数据仓库之离线 一
                         </h2>
+                        
+                            <h3 class="post-subtitle">
+                                数据仓库VS数据库[OLTP vs OLAP、数据仓库数据流程图、为什么建设数据仓库、数据仓库建设目标、如何实现]、数据分层建设[数仓建设背景、为什么进行数仓分层、STG层、ODS层、DWD层、DWS层、DIM层、DM层]
+                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
@@ -1649,8 +1653,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="数据仓库">
-                    <span class="tag-text">数据仓库</span>
+                <span class="fa fa-tag listing-seperator" id="数据仓库,H">
+                    <span class="tag-text">数据仓库,H</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -1658,14 +1662,10 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/[数据仓库]01 数据仓库之离线 一/">
+                     <a href="/article/[数据仓库]02 数据仓库之离线-Hive是什么 二/">
                         <h2 class="post-title">
-                            [数据仓库]01 数据仓库之离线 一
+                            [数据仓库]02 数据仓库之离线-Hive是什么 二
                         </h2>
-                        
-                            <h3 class="post-subtitle">
-                                数据仓库VS数据库[OLTP vs OLAP、数据仓库数据流程图、为什么建设数据仓库、数据仓库建设目标、如何实现]、数据分层建设[数仓建设背景、为什么进行数仓分层、STG层、ODS层、DWD层、DWS层、DIM层、DM层]
-                            </h3>
                         
                     </a>
                     <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
