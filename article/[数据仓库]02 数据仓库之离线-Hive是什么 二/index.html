@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kafka]03 Kafka入门 三 - 李玉坤 | Blog
+          [数据仓库]02 数据仓库之离线-Hive是什么 二 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kafka]03 Kafka入门 三/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]02 数据仓库之离线-Hive是什么 二/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
+                              <a class="tag" href="/tags/#数据仓库 H" title="数据仓库 H">数据仓库 H</a>
                             
                         </div>
-                        <h1>[Kafka]03 Kafka入门 三</h1>
-                        <h2 class="subheading">集群搭建、Kafka 的操作、Kafka 的日志</h2>
+                        <h1>[数据仓库]02 数据仓库之离线-Hive是什么 二</h1>
+                        <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-01-28
+                            2017-03-23
                         </span>
                     </div>
                 
@@ -212,82 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>我们在工作中，为了保证环境的高可用，防止单点，Kafka 都是以集群的方式出现的，下面就带领大家一起搭建一套 Kafka 集群环境。</p>
-<p>我们在官网下载 Kafka，下载地址为：<a href="http://kafka.apache.org/downloads，下载我们需要的版本，推荐使用稳定的版本。" target="_blank" rel="noopener">http://kafka.apache.org/downloads，下载我们需要的版本，推荐使用稳定的版本。</a></p>
-<h1 id="搭建集群"><a href="#搭建集群" class="headerlink" title="搭建集群"></a>搭建集群</h1><p>①下载并解压</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/src</span><br><span class="line">wget http://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.4.0/kafka_2.11-2.4.0.tgz</span><br><span class="line">mkdir /data/servers</span><br><span class="line">tar xzvf kafka_2.11-2.4.0.tgz -C /data/servers/</span><br><span class="line">cd /data/servers/kafka_2.11-2.4.0</span><br></pre></td></tr></table></figure>
-<p>②修改配置文件</p>
-<p>Kafka 的配置文件 $KAFKA_HOME/config/server.properties，主要修改一下下面几项：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">确保每个机器上的id不一样</span><br><span class="line"> broker.id=0</span><br><span class="line">  配置服务端的监控地址</span><br><span class="line"> listeners=PLAINTEXT://192.168.51.128:9092</span><br><span class="line">  kafka 日志目录</span><br><span class="line"> log.dirs=/data/servers/kafka_2.11-2.4.0/logs</span><br><span class="line"> #kafka设置的partitons的个数</span><br><span class="line"> num.partitions=1</span><br><span class="line"></span><br><span class="line">  zookeeper的连接地址, 如果有自己的zookeeper集群, 请直接使用自己搭建的zookeeper集群</span><br><span class="line"> zookeeper.connect=192.168.51.128:2181</span><br></pre></td></tr></table></figure>
-
-<p>因为我自己是本机做实验，所有使用的是一个主机的不同端口，在线上，就是不同的机器，大家参考即可。</p>
-<p>我们这里使用 Kafka 的 Zookeeper，只启动一个节点，但是正真的生产过程中，是需要 Zookeeper 集群，自己搭建就好，后期我们也会出 Zookeeper 的教程，大家请关注就好了。</p>
-<p>③拷贝 3 份配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#创建对应的日志目录</span><br><span class="line">mkdir -p /data/servers/kafka_2.11-2.4.0/logs/9092</span><br><span class="line">mkdir -p /data/servers/kafka_2.11-2.4.0/logs/9093</span><br><span class="line">mkdir -p /data/servers/kafka_2.11-2.4.0/logs/9094</span><br><span class="line"></span><br><span class="line">#拷贝三份配置文件</span><br><span class="line">cp server.properties server_9092.properties </span><br><span class="line">cp server.properties server_9093.properties </span><br><span class="line">cp server.properties server_9094.properties</span><br></pre></td></tr></table></figure>
-
-<p>④修改不同端口对应的文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#9092的id为0, 9093的id为1, 9094的id为2</span><br><span class="line"> broker.id=0</span><br><span class="line"> # 配置服务端的监控地址, 分别在不通的配置文件中写入不同的端口</span><br><span class="line"> listeners=PLAINTEXT://192.168.51.128:9092</span><br><span class="line"> # kafka 日志目录, 目录也是对应不同的端口</span><br><span class="line"> log.dirs=/data/servers/kafka_2.11-2.4.0/logs/9092</span><br><span class="line"> # kafka设置的partitons的个数</span><br><span class="line"> num.partitions=1</span><br><span class="line"> # zookeeper的连接地址, 如果有自己的zookeeper集群, 请直接使用自己搭建的zookeeper集群</span><br><span class="line"> zookeeper.connect=192.168.51.128:2181</span><br></pre></td></tr></table></figure>
-
-<p>修改 Zookeeper 的配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dataDir=/data/servers/zookeeper</span><br><span class="line">server.1=192.168.51.128:2888:3888</span><br></pre></td></tr></table></figure>
-<p>然后创建 Zookeeper 的 myid 文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;1&quot;&gt; /data/servers/zookeeper/myid</span><br></pre></td></tr></table></figure>
-<p>⑤启动 Zookeeper</p>
-<p>使用 Kafka 内置的 Zookeeper：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /data/servers/kafka_2.11-2.4.0/bin</span><br><span class="line">zookeeper-server-start.sh -daemon ../config/zookeeper.properties </span><br><span class="line">netstat -anp |grep 2181</span><br></pre></td></tr></table></figure>
-<p>启动 Kafka：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./kafka-server-start.sh -daemon ../config/server_9092.properties   </span><br><span class="line">./kafka-server-start.sh -daemon ../config/server_9093.properties   </span><br><span class="line">./kafka-server-start.sh -daemon ../config/server_9094.properties</span><br></pre></td></tr></table></figure>
-
-<h1 id="Kafka-的操作"><a href="#Kafka-的操作" class="headerlink" title="Kafka 的操作"></a>Kafka 的操作</h1><p>①Topic</p>
-<p>创建 Topic 常用的参数：</p>
-<ul>
-<li>create：创建 topic</li>
-<li>delete：删除 topic</li>
-<li>alter：修改 topic 的名字或者 partition 个数</li>
-<li>list：查看 topic</li>
-<li>describe：查看 topic 的详细信息</li>
-<li>topic &lt;String: topic&gt;：指定 topic 的名字</li>
-<li>zookeeper &lt;String: hosts&gt;：指定 Zookeeper 的连接地址参数提示并不赞成这样使用（DEPRECATED, The connection string for the zookeeper connection in the form  host:port. Multiple hosts can be given to allow fail-over.）</li>
-<li>bootstrap-server &lt;String: server to connect to&gt;：指定 Kafka 的连接地址，推荐使用这个，参数的提示信息显示（REQUIRED: The Kafka server to connect to. In case of providing this, a direct Zookeeper connection won’t be required.）。</li>
-<li>replication-factor &lt;Integer: replication factor&gt; : 对于每个 Partiton 的备份个数。（The replication factor for each partition in the topic being created. If not supplied, defaults to the cluster default.）</li>
-<li>partitions &lt;Integer: # of partitions&gt;：指定该 topic 的分区的个数。</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd /data/servers/kafka_2.11-2.4.0/bin</span><br><span class="line"># 创建topic  test1</span><br><span class="line">kafka-topics.sh --create --bootstrap-server=192.168.51.128:9092,10.231.128.96:9093,192.168.51.128:9094 --replication-factor 1 --partitions 1 --topic test1</span><br><span class="line"># 创建topic test2</span><br><span class="line">kafka-topics.sh --create --bootstrap-server=192.168.51.128:9092,10.231.128.96:9093,192.168.51.128:9094 --replication-factor 1 --partitions 1 --topic test2</span><br><span class="line"># 查看topic</span><br><span class="line">kafka-topics.sh --list --bootstrap-server=192.168.51.128:9092,10.231.128.96:9093,192.168.51.128:9094</span><br></pre></td></tr></table></figure>
-<p>②自动创建 Topic</p>
-<p>我们在工作中，如果我们不想去管理 Topic，可以通过 Kafka 的配置文件来管理。</p>
-<p>我们可以让 Kafka 自动创建 Topic，需要在我们的 Kafka 配置文件中加入如下配置文件：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto.create.topics.enable=true</span><br></pre></td></tr></table></figure>
-<p>如果删除 Topic 想达到物理删除的目的，也是需要配置的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete.topic.enable=true</span><br></pre></td></tr></table></figure>
-<p>③发送消息</p>
-<p>他们可以通过客户端的命令生产消息，先来看看 kafka-console-producer.sh 常用的几个参数吧：</p>
-<ul>
-<li>topic &lt;String: topic&gt;：指定 topic</li>
-<li>timeout &lt;Integer: timeout_ms&gt;：超时时间</li>
-<li>sync：异步发送消息</li>
-<li>broker-list &lt;String: broker-list&gt;：官网提示: REQUIRED: The broker list string in the form HOST1:PORT1,HOST2:PORT2.</li>
-</ul>
-<p>这个参数是必须的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-producer.sh --broker-list 192.168.51.128:9092,192.168.51.128:9093,192.168.51.128:9094 --topic test1</span><br></pre></td></tr></table></figure>
-<p>④消费消息</p>
-<p>我们也还是先来看看 kafka-console-consumer.sh 的参数吧：</p>
-<ul>
-<li>topic &lt;String: topic&gt;：指定 topic</li>
-<li>group &lt;String: consumer group id&gt;：指定消费者组</li>
-<li>from-beginning：指定从开始进行消费, 如果不指定, 就从当前进行消费</li>
-<li>bootstrap-server：Kafka 的连接地址</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server 192.168.51.128:9092,192.168.51.128:9093,192.168.51.128:9094 --topic test1 ---beginning</span><br></pre></td></tr></table></figure>
-<p><img src="%E5%9B%BE%E7%89%8701.jpg" alt=""></p>
-<h1 id="Kafka-的日志"><a href="#Kafka-的日志" class="headerlink" title="Kafka 的日志"></a>Kafka 的日志</h1><p>Kafka 的日志分两种:</p>
-<ul>
-<li>第一种日志是我们的 Kafka 的启动日志，就是我们排查问题，查看报错信息的日志。</li>
-<li>第二种日志就是我们的数据日志，Kafka 是我们的数据是以日志的形式存在存盘中的，我们第二种所说的日志就是我们的 Partiton 与 Segment。</li>
-</ul>
-<p>那我们就来说说备份和分区吧：我们创建一个分区，一个备份，那么 test 就应该在三台机器上或者三个数据目录只有一个 test-0。（分区的下标是从 0 开始的）</p>
-<p>如果我们创建 N 个分区，我们就会在三个服务器上发现，test_0-n，如果我们创建 M 个备份，我们就会在发现，test_0 到 test_n 每一个都是 M 个。</p>
-
+                
                 
 
                 <hr>
@@ -295,12 +220,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kafka]04 Kafka入门 四/" data-toggle="tooltip" data-placement="top" title="[Kafka]04 Kafka入门 四">&larr; Previous Post</a>
+                            <a href="/article/[Scala]02 Scala学习笔记/" data-toggle="tooltip" data-placement="top" title="[Scala]02 Scala学习笔记">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kafka]02 Kafka入门 二/" data-toggle="tooltip" data-placement="top" title="[Kafka]02 Kafka入门 二">Next Post &rarr;</a>
+                            <a href="/article/[数据仓库]01 数据仓库之离线 一/" data-toggle="tooltip" data-placement="top" title="[数据仓库]01 数据仓库之离线 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -350,7 +275,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#搭建集群"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">搭建集群</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的操作"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Kafka 的操作</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka-的日志"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Kafka 的日志</span></a></li></ol>
+          <ol class="nav">none</ol>
         
         </div>
       </aside>
@@ -370,7 +295,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kafka" title="Kafka">Kafka</a>
+                          <a class="tag" href="/tags/#数据仓库 H" title="数据仓库 H">数据仓库 H</a>
                         
                     </div>
                 </section>
