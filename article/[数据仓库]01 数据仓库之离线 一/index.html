@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Kettle]03 三、输出控件 - 李玉坤 | Blog
+          [数据仓库]01 数据仓库之离线 一 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Kettle]03 三、输出控件/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]01 数据仓库之离线 一/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                             
                         </div>
-                        <h1>[Kettle]03 三、输出控件</h1>
-                        <h2 class="subheading">Kettle输出控件</h2>
+                        <h1>[数据仓库]01 数据仓库之离线 一</h1>
+                        <h2 class="subheading">基本操作命令</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2019-10-13
+                            2017-03-23
                         </span>
                     </div>
                 
@@ -212,18 +212,28 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>输出属于<strong>ETL</strong>的<strong>L</strong>，L就是Load加载。<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
-<h1 id="Excel输出"><a href="#Excel输出" class="headerlink" title="Excel输出"></a>Excel输出</h1><p><strong>输出</strong>是<strong>转换</strong>里面的第二个分类。<br><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br><img src="%E5%9B%BE%E7%89%8703.png" alt=""><br><img src="%E5%9B%BE%E7%89%8704.png" alt=""></p>
-<h1 id="文本文件输出"><a href="#文本文件输出" class="headerlink" title="文本文件输出"></a>文本文件输出</h1><p><strong>数据操作常见的格式是：TXT和CSV。</strong><br><img src="%E5%9B%BE%E7%89%8705.png" alt=""></p>
-<h1 id="SQL文件输出"><a href="#SQL文件输出" class="headerlink" title="SQL文件输出"></a>SQL文件输出</h1><p>SQL文件输出可以<strong>导出</strong>数据库<strong>表</strong>的<strong>结构</strong>和<strong>数据</strong>。<br><img src="%E5%9B%BE%E7%89%8706.png" alt=""></p>
-<h1 id="表输出"><a href="#表输出" class="headerlink" title="表输出"></a>表输出</h1><p><strong>表输出</strong>就是把<strong>数据写入到指定的表</strong>！<br><img src="%E5%9B%BE%E7%89%8707.png" alt=""><br><img src="%E5%9B%BE%E7%89%8708.png" alt=""><br><img src="%E5%9B%BE%E7%89%8709.png" alt=""></p>
-<h1 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h1><p><strong>更新</strong>就是把<strong>数据库</strong>已经<strong>存在</strong>的记录与<strong>数据</strong>流里面的<strong>记录</strong>进行比对，如果<strong>不同</strong>就进行<strong>更新</strong>。</p>
-<p>注意：如果记录<strong>不存在</strong>，则会<strong>出现错误</strong>！<br><img src="%E5%9B%BE%E7%89%8710.png" alt=""></p>
-<h1 id="插入更新"><a href="#插入更新" class="headerlink" title="插入更新"></a>插入更新</h1><p><strong>插入更新</strong>就是把<strong>数据库</strong>已经<strong>存在</strong>的记录与<strong>数据流</strong>里面的<strong>记录</strong>进行比对，如果<strong>不同</strong>就进行<strong>更新</strong>。</p>
-<p>如果记录<strong>不存在</strong>，则会<strong>插入数据</strong>！<br><img src="%E5%9B%BE%E7%89%8711.png" alt=""></p>
-<h1 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h1><p><strong>自定义常量数据</strong>就是生成<strong>key-value</strong>形式的常量数据。</p>
-<h2 id="自定义常量数据"><a href="#自定义常量数据" class="headerlink" title="自定义常量数据"></a>自定义常量数据</h2><p><img src="%E5%9B%BE%E7%89%8712.png" alt=""><br><img src="%E5%9B%BE%E7%89%8713.png" alt=""></p>
-<h2 id="删除-1"><a href="#删除-1" class="headerlink" title="删除"></a>删除</h2><p>删除就是<strong>删除数据库表</strong>中指定条件的数据。<br><img src="%E5%9B%BE%E7%89%8714.png" alt=""></p>
+                <h1 id="数据仓库VS数据库"><a href="#数据仓库VS数据库" class="headerlink" title="数据仓库VS数据库"></a>数据仓库VS数据库</h1><p>数据仓库概念：数据仓库是将<strong>多个数据源</strong>的数据经过ETL处理之后，按照一定的<strong>主题集成</strong>起来提供<strong>决策支持</strong>和<strong>联机分析</strong>应用的结构化数据环节。</p>
+<p>ETL：Extract（抽取）、Transfrom（转换）、Load（加载）</p>
+<p>1、数据库是面向事务的设计，数据仓库是面向主题的设计的。<br>2、数据库一般存储在线交易数据，数据仓库存储的一般是历史数据。<br>3、数据库设计是避免冗余，采用三范式的规则来设计，数据仓库在设计是有意引入冗余，采用反范式的方式来设计。</p>
+<h2 id="OLTP-vs-OLAP"><a href="#OLTP-vs-OLAP" class="headerlink" title="OLTP vs OLAP"></a>OLTP vs OLAP</h2><p>联机事务处理OLTP是传统的关系型数据库的主要，主要是基本的、日常的事务处理，例如银行交易。</p>
+<p>联机分析处理OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
+<h2 id="数据仓库数据流程图"><a href="#数据仓库数据流程图" class="headerlink" title="数据仓库数据流程图"></a>数据仓库数据流程图</h2><p><img src="1.png" alt=""></p>
+<p>名词解释：<br>Operational dbs：内部数据库<br>External sources：外部数据源<br>Extract Transform Load Refresh：ETL 转换<br>Data Warehouse：数据仓库<br>Monitoring &amp; Administration ：监控 权限<br>Metadata Repository：元数据存储库<br>Data Marts：数据集市（主题分类）<br>OLAP Servers：联机分析服务<br>Analysis：分析<br>Query/Reporting：查询/报表<br>Data Mining：数据挖掘</p>
+<h2 id="为什么建设数据仓库"><a href="#为什么建设数据仓库" class="headerlink" title="为什么建设数据仓库"></a>为什么建设数据仓库</h2><p>1、各个业务数据存在不一致，数据关系混乱。<br>2、业务系统一般针对于OLTP，而数据仓库可以实现OLAP分析。<br>3、数据仓库是多源的复杂环境，可以对多个业务的数据进行统一分析。</p>
+<h2 id="数据仓库建设目标"><a href="#数据仓库建设目标" class="headerlink" title="数据仓库建设目标"></a>数据仓库建设目标</h2><p>1、集成多源数据，数据来源和去向可追溯，梳理血缘关系。<br>2、减少重复开发，保存通用型中间数据，避免重复。<br>3、屏蔽底层业务逻辑，对外提供一致的、结构清晰的数据。</p>
+<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><p>1、实现通用型数据ETL工具<br>2、根据业务建立合理的数据分层模型</p>
+<h1 id="数据库分层建设"><a href="#数据库分层建设" class="headerlink" title="数据库分层建设"></a>数据库分层建设</h1><h2 id="数仓建设背景"><a href="#数仓建设背景" class="headerlink" title="数仓建设背景"></a>数仓建设背景</h2><p>数据建设刚起步，大部分数据经过粗暴的数据接入后直接对接业务。</p>
+<p>数据建设发展到一定阶段，发现数据的使用杂乱无章，各种业务都是从原始数据直接计算而得。</p>
+<p>各种重复计算，严重浪费了计算资源，需要优化性能。</p>
+<h2 id="为什么进行数仓分层"><a href="#为什么进行数仓分层" class="headerlink" title="为什么进行数仓分层"></a>为什么进行数仓分层</h2><p>1、清晰数据结构：每个数据分层都有对应的作用域。<br>2、数据血缘追踪：对各层之间的数据表转换进行跟踪，建立血缘关系<br>3、减少重复开发：规范数据分层，开发通用的中间层数据。<br>4、屏蔽原始数据的异常：通过数据分层管控数据质量。<br>5、屏蔽业务的影响：不必改一次业务就需要重新接入数据。<br>6、复杂问题简单化：将复杂的数仓架构分解成多个数据层来完成。</p>
+<p><img src="2.png" alt=""></p>
+<h2 id="STG层"><a href="#STG层" class="headerlink" title="STG层"></a>STG层</h2><p>原始数据层：存储原始数据，数据结构与采集数据一致。<br>存储周期：保存全部数据。<br>表命名规范：stg_主题_表内容_分表规则。</p>
+<h2 id="ODS层"><a href="#ODS层" class="headerlink" title="ODS层"></a>ODS层</h2><p>数据操作层：对STG层数据进行初步处理，如去除脏数据，去除无用字段。<br>存储周期：默认保留近30天数据。<br>表命名规范：ods_主题_表内容_分表规则。</p>
+<h2 id="DWD层"><a href="#DWD层" class="headerlink" title="DWD层"></a>DWD层</h2><p>数据明细层：数据处理后的宽表，目标为满足80%的业务需求。<br>存储周期：保留历史至今所有的数据。<br>表命名规范：dwd_业务描述_时间粒度。</p>
+<h2 id="DWS层"><a href="#DWS层" class="headerlink" title="DWS层"></a>DWS层</h2><p>数据汇总层：汇总数据，解决数据汇总计算和数据完整度问题。<br>存储周期：保留历史至今所有的数据。<br>表明名规范：dws_业务描述_时间粒度_sum</p>
+<h2 id="DIM层"><a href="#DIM层" class="headerlink" title="DIM层"></a>DIM层</h2><p>公共维度层：存储公共的信息数据，用于DWD、DWS的数据关联。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表命名规范：dim_维度描述。</p>
+<h2 id="DM层"><a href="#DM层" class="headerlink" title="DM层"></a>DM层</h2><p>数据集市层：用于BI、多维分析、标签、数据挖掘等。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表明名规范：dm_主题_表内容_分表规则。</p>
+<p>TMP是计算中的中间表存储位置。<br><img src="3.png" alt=""></p>
 
                 
 
@@ -232,12 +242,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Kettle]04 四、kettle转换控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]04 四、kettle转换控件">&larr; Previous Post</a>
+                            <a href="/article/[Scala]03 Scala学习笔记/" data-toggle="tooltip" data-placement="top" title="[Scala]03 Scala学习笔记">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Kettle]02 二、输入控件/" data-toggle="tooltip" data-placement="top" title="[Kettle]02 二、输入控件">Next Post &rarr;</a>
+                            <a href="/article/[Scala]02 Scala学习笔记/" data-toggle="tooltip" data-placement="top" title="[Scala]02 Scala学习笔记">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -287,7 +297,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Excel输出"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Excel输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#文本文件输出"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">文本文件输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SQL文件输出"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">SQL文件输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#表输出"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">表输出</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#更新"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">更新</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#插入更新"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">插入更新</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#删除"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">删除</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#自定义常量数据"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">自定义常量数据</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#删除-1"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">删除</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据仓库VS数据库"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据仓库VS数据库</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#OLTP-vs-OLAP"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">OLTP vs OLAP</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库数据流程图"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">数据仓库数据流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么建设数据仓库"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">为什么建设数据仓库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库建设目标"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">数据仓库建设目标</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何实现"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">如何实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据库分层建设"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">数据库分层建设</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数仓建设背景"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">数仓建设背景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么进行数仓分层"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">为什么进行数仓分层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#STG层"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">STG层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ODS层"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">ODS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWD层"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">DWD层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWS层"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">DWS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DIM层"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">DIM层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DM层"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">DM层</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -307,7 +317,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Kettle" title="Kettle">Kettle</a>
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                         
                     </div>
                 </section>
