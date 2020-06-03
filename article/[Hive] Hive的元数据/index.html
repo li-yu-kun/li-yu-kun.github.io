@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop] hive中的file_format - 李玉坤 | Blog
+          [Hive] Hive的元数据 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] hive中的file_format/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hive] Hive的元数据/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                             
                         </div>
-                        <h1>[Hadoop] hive中的file_format</h1>
-                        <h2 class="subheading">行存储和列存储在hdfs中的区别、hive中的file_format、orc格式、parquet格式</h2>
+                        <h1>[Hive] Hive的元数据</h1>
+                        <h2 class="subheading">VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-03-10
+                            2018-03-14
                         </span>
                     </div>
                 
@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -212,44 +212,30 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="行存储和列存储在hdfs中的区别"><a href="#行存储和列存储在hdfs中的区别" class="headerlink" title="行存储和列存储在hdfs中的区别"></a>行存储和列存储在hdfs中的区别</h1><p><img src="1.jpg" alt=""></p>
-<h1 id="hive中的file-format"><a href="#hive中的file-format" class="headerlink" title="hive中的file_format"></a>hive中的file_format</h1><p>可以使用set hive.default.fileformat来查看和设置格式<br>set hive.default.fileformat<br>默认是TextFile</p>
-<p>file_format:【查看hive官方文档】<br>  : SEQUENCEFILE 【文件比原始文本文件还要大；不适用】<br>  | TEXTFILE    – (Default, depending on hive.default.fileformat configuration)<br>  | RCFILE      – (Note: Available in Hive 0.6.0 and later)【性能也比较低；减少百分之10空间】<br>  | ORC         – (Note: Available in Hive 0.11.0 and later)<br>  | PARQUET     – (Note: Available in Hive 0.13.0 and later)</p>
-<p>准备测试数据</p>
-<p><img src="2.jpg" alt=""></p>
-<p>创建表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> page_views(</span><br><span class="line">track_time <span class="keyword">string</span>,</span><br><span class="line"><span class="keyword">url</span> <span class="keyword">string</span>,</span><br><span class="line">session_id <span class="keyword">string</span>,</span><br><span class="line">referer <span class="keyword">string</span>,</span><br><span class="line">ip <span class="keyword">string</span>,</span><br><span class="line">end_user_id <span class="keyword">string</span>,</span><br><span class="line">city_id <span class="keyword">string</span></span><br><span class="line">) <span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">'\t'</span>;</span><br></pre></td></tr></table></figure>
+                <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">name</span>&gt;</span>javax.jdo.option.ConnectionURL<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   	<span class="tag">&lt;<span class="name">value</span>&gt;</span>jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp;useSSL=false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>加载数据</p>
-<p>load data inpath ‘/input/hive_test/page_views.dat’ into table page_views;</p>
-<blockquote>
-<p>插入知识点：hive的四种导入方式</p>
-<p>本地导入：load data local inpath ‘本地路径’ into table 表名;<br>hdfs导入：load data inpath ‘hdfs路径’ into table 表名;<br>直接导入：[表已存在]从别的表中查询出相应的数据并导入到Hive表中<br>创建导入：【表未存在】在创建表的时候通过从别的表中查询出相应的记录并插入到所创建的表中</p>
-</blockquote>
-<p><img src="3.jpg" alt=""></p>
-<p>SET hive.exec.compress.output=true;【设置输出压缩为true】<br>set mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.Bzip2Codec;【map的xml已经配置；这里无需指定】<br>create table page_views_bzip2<br>as select * from page_views;</p>
-<p><img src="4.jpg" alt=""></p>
-<p>即可完成page_views_bzip2表的创建；同时查看此表的文件是bzip压缩格式</p>
-<p>源文件</p>
-<p><img src="5.jpg" alt=""></p>
-<p><strong>下列语句是测试hive的file_format</strong></p>
-<p>create table page_views_sequencefile(<br>track_time string,<br>url string,<br>session_id string,<br>referer string,<br>ip string,<br>end_user_id string,<br>city_id string<br>) row format delimited fields terminated by ‘\t’<br>stored as sequencefile</p>
-<p>不能用load直接导入数据<br>需要select * from其他的表数据导入本表<br>sequencefile一般不会用；因为它比原始数据还要大</p>
-<p><strong>orc格式 默认</strong>ZLIB<strong>压缩</strong></p>
-<p>create table page_views_orc(<br>track_time string,<br>url string,<br>session_id string,<br>referer string,<br>ip string,<br>end_user_id string,<br>city_id string<br>) row format delimited fields terminated by ‘\t’<br>stored as orc【指定格式 比如sequencefile，orc等等】 ;</p>
-<p><img src="6.jpg" alt=""><br><img src="7.jpg" alt=""></p>
-<p><strong>orc不采用压缩</strong></p>
-<p>hive orc官网：<a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+ORC" target="_blank" rel="noopener">https://cwiki.apache.org/confluence/display/Hive/LanguageManual+ORC</a></p>
-<p><strong>【默认情况下</strong>“orc.compress”=”ZLIB”<strong>】</strong></p>
-<p>create table page_views_orc_none<br>stored as orc tblproperties (“orc.compress”=”NONE”) 【不采用默认压缩】<br>as select * from page_views;</p>
-<p><img src="8.jpg" alt=""></p>
-<p><strong>parquet不使用压缩</strong></p>
-<p>官网：<a href="https://github.com/apache/parquet-mr" target="_blank" rel="noopener">https://github.com/apache/parquet-mr</a></p>
-<p> create table page_views_parquet<br> stored as parquet<br> as select * from page_views;</p>
-<p><img src="9.jpg" alt=""></p>
-<p><strong>parquet使用gzip压缩</strong></p>
-<p>set parquet.compression=gzip;<br> create table page_views_parquet_gzip<br> stored as parquet<br> as select * from page_views;</p>
-<p><img src="10.jpg" alt=""></p>
+<h1 id="VERSION"><a href="#VERSION" class="headerlink" title="VERSION"></a>VERSION</h1><p>根据上诉配置可以查看元数据【非一条不可启动hive】</p>
+<p>mysql&gt; select * from VERSION;<br>+——–+—————-+—————————————+<br>| VER_ID | SCHEMA_VERSION | VERSION_COMMENT                       |<br>+——–+—————-+—————————————+<br>|      1 | 1.1.0          | Set by MetaStore <a href="mailto:hadoop@192.168.232.8" target="_blank" rel="noopener">hadoop@192.168.232.8</a> |<br>+——–+—————-+—————————————+<br>1 row in set (0.00 sec)  </p>
+<h1 id="DBS"><a href="#DBS" class="headerlink" title="DBS"></a>DBS</h1><p>数据库的信息</p>
+<p>mysql&gt; mysql&gt; select * from DBS;<br>+——-+———————–+—————————————-+———+————+————+<br>| DB_ID | DESC                  | DB_LOCATION_URI                        | NAME    | OWNER_NAME | OWNER_TYPE |<br>+——-+———————–+—————————————-+———+————+————+<br>|     1 | Default Hive database | hdfs://hadoop:8020/user/hive/warehouse | default | public     | ROLE       |<br>+——-+———————–+—————————————-+———+————+————+<br>1 row in set (0.00 sec)</p>
+<p>mysql&gt; select * from DBS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>          DB_ID: 1<br>           DESC: Default Hive database<br>DB_LOCATION_URI: hdfs://hadoop:8020/user/hive/warehouse 【数据库路径】<br>           NAME: default【数据库名字】<br>     OWNER_NAME: public<br>     OWNER_TYPE: ROLE<br>1 row in set (0.00 sec)</p>
+<h1 id="TBLS"><a href="#TBLS" class="headerlink" title="TBLS"></a>TBLS</h1><p>表的信息</p>
+<p>mysql&gt; select * from TBLS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>            TBL_ID: 11<br>       CREATE_TIME: 1555234071【创建表的时间】<br>             DB_ID: 1【表的归属库名字的id】<br>  LAST_ACCESS_TIME: 0<br>             OWNER: hadoop<br>         RETENTION: 0<br>             SD_ID: 11【对应下列的SDS表的SD_ID】<br>          TBL_NAME: hive_wordcount 【我们自己创建的表名】<br>          TBL_TYPE: MANAGED_TABLE【表类型（内部表外部表）】<br>VIEW_EXPANDED_TEXT: NULL<br>VIEW_ORIGINAL_TEXT: NULL</p>
+<h1 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h1><p>表的存储类型信息</p>
+<p>*************************** 13. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>                    SD_ID: 45<br>                    CD_ID: 40【对应CDS表的CD_ID】<br>             INPUT_FORMAT: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat【我们设置的input存储类型】<br>            IS_COMPRESSED:<br>IS_STOREDASSUBDIRECTORIES:<br>                 LOCATION: hdfs://hadoop:8020/user/hive/warehouse/page_views_parquet_gzip<br>              NUM_BUCKETS: -1<br>            OUTPUT_FORMAT: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat【我们设置的output存储类型】<br>                 SERDE_ID: 45<br>13 rows in set (0.01 sec)</p>
+<p>ERROR:<br>No query specified</p>
+<p>mysql&gt; select * from SDS \G;</p>
+<h1 id="CDS"><a href="#CDS" class="headerlink" title="CDS"></a>CDS</h1><h1 id="COLUMNS-V2"><a href="#COLUMNS-V2" class="headerlink" title="COLUMNS_V2"></a>COLUMNS_V2</h1><p>列的信息表</p>
+<p>*************************** 61. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>      CD_ID: 40【对应CDS表的CD_ID】<br>    COMMENT: NULL<br>COLUMN_NAME: url【列名】<br>  TYPE_NAME: string<br>INTEGER_IDX: 1【列的index】<br>61 rows in set (0.00 sec)</p>
+<p>ERROR:<br>No query specified</p>
+<p>mysql&gt; select * from COLUMNS_V2 \G;</p>
+<h1 id="PARTITIONS"><a href="#PARTITIONS" class="headerlink" title="PARTITIONS"></a>PARTITIONS</h1><p>分区信息表</p>
+<p>mysql&gt; select * from PARTITIONS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>         PART_ID: 2<br>     CREATE_TIME: 1555406840<br>LAST_ACCESS_TIME: 0<br>       PART_NAME: day=20190416【分区的名字】<br>           SD_ID: 26<br>          TBL_ID: 24</p>
+<h1 id="PARTITIONS-KEY"><a href="#PARTITIONS-KEY" class="headerlink" title="PARTITIONS_KEY"></a>PARTITIONS_KEY</h1><p>分区key的信息表</p>
+<p>mysql&gt; select * from PARTITION_KEYS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>      TBL_ID: 24<br>PKEY_COMMENT: NULL<br>   PKEY_NAME: day<br>   PKEY_TYPE: string<br> INTEGER_IDX: 0</p>
+<h1 id="PARTITION-KEY-VALS"><a href="#PARTITION-KEY-VALS" class="headerlink" title="PARTITION_KEY_VALS"></a>PARTITION_KEY_VALS</h1><p>分区key的值的信息表</p>
+<p>mysql&gt; select * from PARTITION_KEY_VALS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>     PART_ID: 2<br>PART_KEY_VAL: 20190416<br> INTEGER_IDX: 0</p>
+<h1 id="场景应用"><a href="#场景应用" class="headerlink" title="场景应用"></a>场景应用</h1><p>当Hadoop的hdfs与spark依赖的hdfs版本发生冲突的时候；删除hive里的表会发生元数据识别问题；这个时候的问题解决就是<br>更新hive表的元数据，从mysql手动删除元数据。</p>
 
                 
 
@@ -258,12 +244,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop] Hive的元数据/" data-toggle="tooltip" data-placement="top" title="[Hadoop] Hive的元数据">&larr; Previous Post</a>
+                            <a href="/article/[Hadoop] Hadoop编译支持5种压缩格式/" data-toggle="tooltip" data-placement="top" title="[Hadoop] Hadoop编译支持5种压缩格式">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[HBase]09 Phoenix二级索引 九/" data-toggle="tooltip" data-placement="top" title="[HBase]09 Phoenix二级索引 九">Next Post &rarr;</a>
+                            <a href="/article/[Hive] hive中的file_format/" data-toggle="tooltip" data-placement="top" title="[Hive] hive中的file_format">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -313,7 +299,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#行存储和列存储在hdfs中的区别"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">行存储和列存储在hdfs中的区别</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hive中的file-format"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">hive中的file_format</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#VERSION"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">VERSION</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#DBS"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">DBS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#TBLS"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">TBLS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SDS"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">SDS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CDS"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">CDS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#COLUMNS-V2"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">COLUMNS_V2</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITIONS"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">PARTITIONS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITIONS-KEY"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">PARTITIONS_KEY</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITION-KEY-VALS"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">PARTITION_KEY_VALS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#场景应用"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">场景应用</span></a></li></ol>
         
         </div>
       </aside>

@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop] Hive的元数据 - 李玉坤 | Blog
+          [Hive] Hive面试题总结 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] Hive的元数据/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hive] Hive面试题总结/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -90,12 +90,14 @@
                             
                               <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                             
+                              <a class="tag" href="/tags/#面试题" title="面试题">面试题</a>
+                            
                         </div>
-                        <h1>[Hadoop] Hive的元数据</h1>
-                        <h2 class="subheading">VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS</h2>
+                        <h1>[Hive] Hive面试题总结</h1>
+                        <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-03-14
+                            2017-03-23
                         </span>
                     </div>
                 
@@ -142,14 +144,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -212,30 +214,34 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">name</span>&gt;</span>javax.jdo.option.ConnectionURL<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   	<span class="tag">&lt;<span class="name">value</span>&gt;</span>jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp;useSSL=false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="VERSION"><a href="#VERSION" class="headerlink" title="VERSION"></a>VERSION</h1><p>根据上诉配置可以查看元数据【非一条不可启动hive】</p>
-<p>mysql&gt; select * from VERSION;<br>+——–+—————-+—————————————+<br>| VER_ID | SCHEMA_VERSION | VERSION_COMMENT                       |<br>+——–+—————-+—————————————+<br>|      1 | 1.1.0          | Set by MetaStore <a href="mailto:hadoop@192.168.232.8" target="_blank" rel="noopener">hadoop@192.168.232.8</a> |<br>+——–+—————-+—————————————+<br>1 row in set (0.00 sec)  </p>
-<h1 id="DBS"><a href="#DBS" class="headerlink" title="DBS"></a>DBS</h1><p>数据库的信息</p>
-<p>mysql&gt; mysql&gt; select * from DBS;<br>+——-+———————–+—————————————-+———+————+————+<br>| DB_ID | DESC                  | DB_LOCATION_URI                        | NAME    | OWNER_NAME | OWNER_TYPE |<br>+——-+———————–+—————————————-+———+————+————+<br>|     1 | Default Hive database | hdfs://hadoop:8020/user/hive/warehouse | default | public     | ROLE       |<br>+——-+———————–+—————————————-+———+————+————+<br>1 row in set (0.00 sec)</p>
-<p>mysql&gt; select * from DBS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>          DB_ID: 1<br>           DESC: Default Hive database<br>DB_LOCATION_URI: hdfs://hadoop:8020/user/hive/warehouse 【数据库路径】<br>           NAME: default【数据库名字】<br>     OWNER_NAME: public<br>     OWNER_TYPE: ROLE<br>1 row in set (0.00 sec)</p>
-<h1 id="TBLS"><a href="#TBLS" class="headerlink" title="TBLS"></a>TBLS</h1><p>表的信息</p>
-<p>mysql&gt; select * from TBLS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>            TBL_ID: 11<br>       CREATE_TIME: 1555234071【创建表的时间】<br>             DB_ID: 1【表的归属库名字的id】<br>  LAST_ACCESS_TIME: 0<br>             OWNER: hadoop<br>         RETENTION: 0<br>             SD_ID: 11【对应下列的SDS表的SD_ID】<br>          TBL_NAME: hive_wordcount 【我们自己创建的表名】<br>          TBL_TYPE: MANAGED_TABLE【表类型（内部表外部表）】<br>VIEW_EXPANDED_TEXT: NULL<br>VIEW_ORIGINAL_TEXT: NULL</p>
-<h1 id="SDS"><a href="#SDS" class="headerlink" title="SDS"></a>SDS</h1><p>表的存储类型信息</p>
-<p>*************************** 13. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>                    SD_ID: 45<br>                    CD_ID: 40【对应CDS表的CD_ID】<br>             INPUT_FORMAT: org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat【我们设置的input存储类型】<br>            IS_COMPRESSED:<br>IS_STOREDASSUBDIRECTORIES:<br>                 LOCATION: hdfs://hadoop:8020/user/hive/warehouse/page_views_parquet_gzip<br>              NUM_BUCKETS: -1<br>            OUTPUT_FORMAT: org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat【我们设置的output存储类型】<br>                 SERDE_ID: 45<br>13 rows in set (0.01 sec)</p>
-<p>ERROR:<br>No query specified</p>
-<p>mysql&gt; select * from SDS \G;</p>
-<h1 id="CDS"><a href="#CDS" class="headerlink" title="CDS"></a>CDS</h1><h1 id="COLUMNS-V2"><a href="#COLUMNS-V2" class="headerlink" title="COLUMNS_V2"></a>COLUMNS_V2</h1><p>列的信息表</p>
-<p>*************************** 61. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>      CD_ID: 40【对应CDS表的CD_ID】<br>    COMMENT: NULL<br>COLUMN_NAME: url【列名】<br>  TYPE_NAME: string<br>INTEGER_IDX: 1【列的index】<br>61 rows in set (0.00 sec)</p>
-<p>ERROR:<br>No query specified</p>
-<p>mysql&gt; select * from COLUMNS_V2 \G;</p>
-<h1 id="PARTITIONS"><a href="#PARTITIONS" class="headerlink" title="PARTITIONS"></a>PARTITIONS</h1><p>分区信息表</p>
-<p>mysql&gt; select * from PARTITIONS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>         PART_ID: 2<br>     CREATE_TIME: 1555406840<br>LAST_ACCESS_TIME: 0<br>       PART_NAME: day=20190416【分区的名字】<br>           SD_ID: 26<br>          TBL_ID: 24</p>
-<h1 id="PARTITIONS-KEY"><a href="#PARTITIONS-KEY" class="headerlink" title="PARTITIONS_KEY"></a>PARTITIONS_KEY</h1><p>分区key的信息表</p>
-<p>mysql&gt; select * from PARTITION_KEYS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>      TBL_ID: 24<br>PKEY_COMMENT: NULL<br>   PKEY_NAME: day<br>   PKEY_TYPE: string<br> INTEGER_IDX: 0</p>
-<h1 id="PARTITION-KEY-VALS"><a href="#PARTITION-KEY-VALS" class="headerlink" title="PARTITION_KEY_VALS"></a>PARTITION_KEY_VALS</h1><p>分区key的值的信息表</p>
-<p>mysql&gt; select * from PARTITION_KEY_VALS \G;<br>*************************** 1. row <strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong><br>     PART_ID: 2<br>PART_KEY_VAL: 20190416<br> INTEGER_IDX: 0</p>
-<h1 id="场景应用"><a href="#场景应用" class="headerlink" title="场景应用"></a>场景应用</h1><p>当Hadoop的hdfs与spark依赖的hdfs版本发生冲突的时候；删除hive里的表会发生元数据识别问题；这个时候的问题解决就是<br>更新hive表的元数据，从mysql手动删除元数据。</p>
+                <h1 id="一句话描述Hive"><a href="#一句话描述Hive" class="headerlink" title="一句话描述Hive"></a>一句话描述Hive</h1><p>Hive是一个构建在Hadoop之上的数据仓库软件,它可以使已经存储的数据结构化，它提供类似sql的查询语句HiveQL对数据进行分析处理。</p>
+<h1 id="Hive将HQL转换为MapReduce的流程"><a href="#Hive将HQL转换为MapReduce的流程" class="headerlink" title="Hive将HQL转换为MapReduce的流程"></a>Hive将HQL转换为MapReduce的流程</h1><p>1、Antlr定义SQL的语法规则，完成SQL词法，语法解析，将SQL转化为抽象语法树AST Tree<br>2、遍历AST Tree，抽象出查询的基本组成单元QueryBlock<br>3、遍历QueryBlock，翻译为执行操作树OperatorTree<br>4、逻辑层优化器进行OperatorTree变换，合并不必要的ReduceSinkOperator，减少shuffle数据量<br>5、遍历OperatorTree，翻译为MapReduce任务<br>6、物理层优化器进行MapReduce任务的变换，生成最终的执行计划</p>
+<h1 id="Hive与关系数据库Mysql的区别"><a href="#Hive与关系数据库Mysql的区别" class="headerlink" title="Hive与关系数据库Mysql的区别"></a>Hive与关系数据库Mysql的区别</h1><p>1、产品定位<br>Hive是数据仓库，是为海量数据的离线分析设计的，不支持OLTP(联机事务处理)所需的关键功能ACID，而更接近于OLAP(联机分析技术)，适合离线处理大数据集；<br>而MySQL是关系型数据库，是为实时业务设计的。<br>2、可扩展性<br>Hive中的数据存储在HDFS(Hadoop的分布式文件系统)，metastore元数据一般存储在独立的关系型数据库中，而MySQL则是服务器本地的文件系统；因此Hive具有良好的可扩展性，数据库由于ACID语义的严格限制，扩展性十分有限。<br>3、读写模式<br>Hive为读时模式，数据的验证则是在查询时进行的，这有利于大数据集的导入，读时模式使数据的加载非常迅速，数据的加载仅是文件复制或移动。MySQL为写时模式，数据在写入数据库时对照模式检查。写时模式有利于提升查询性能，因为数据库可以对列进行索引。<br>4、数据更新<br>Hive是针对数据仓库应用设计的，而数仓的内容是读多写少的，Hive中不支持对数据进行改写，所有数据都是在加载的时候确定好的；而数据库中的数据通常是需要经常进行修改的。<br>5、索引<br>Hive支持索引，但是Hive的索引与关系型数据库中的索引并不相同，比如，Hive不支持主键或者外键。Hive提供了有限的索引功能，可以为一些字段建立索引，一张表的索引数据存储在另外一张表中。由于数据的访问延迟较高，Hive不适合在线数据查询；数据库在少量的特定条件的数据访问中，索引可以提供较低的延迟。<br>6、计算模型<br>Hive使用的模型是MapReduce(也可以 on spark)，而MySQL使用的是自己设计的Executor计算模</p>
+<h1 id="Hive的数据有哪几种存储格式"><a href="#Hive的数据有哪几种存储格式" class="headerlink" title="Hive的数据有哪几种存储格式"></a>Hive的数据有哪几种存储格式</h1><p>Hive中的数据存储格式分为TextFile、SequenceFile和RCFile三种，其中TextFile是默认的存储格式，通过简单的分隔符可以对csv等类型的文件进行解析。而ORCFile是我们常用的一种存储格式，因为ORCFile是列式存储格式，更加适合大数据查询的场景。</p>
+<h1 id="Hive的表存储模型有哪些，谈谈分区分桶的作用"><a href="#Hive的表存储模型有哪些，谈谈分区分桶的作用" class="headerlink" title="Hive的表存储模型有哪些，谈谈分区分桶的作用"></a>Hive的表存储模型有哪些，谈谈分区分桶的作用</h1><p>Hive几种基本表类型：内部表、外部表、分区表、分桶表。</p>
+<p>内部表：内部表的数据，会存放在 HDFS 中的特定的位置中，我们在安装Hive的配置中是在/hive/warehouse。；当删除表时，数据文件也会一并删除；适用于临时创建的中间表</p>
+<p>外部表：适用于想要在 Hive 之外使用表的数据的情况．当你删除 External Table 时，只是删除了表的元数据，它的数据并没有被删除。适用于数据多部门共享。建表时使用create external table。 指定external关键字即可。</p>
+<p>分区表：分区表创建表的时候需要指定分区字段，分区字段与普通字段的区别：分区字段会在HDFS表目录下生成一个分区字段名称的目录，而普通字段则不会，查询的时候可以当成普通字段来使用，一般不直接和业务直接相关。</p>
+<p>分桶表：将内部表，外部表和分区表进一步组织成桶表，可以将表的列通过Hash算法进一步分解成不同的文件存储。</p>
+<p>对于内部表和外部表的概念和使用我们很容易理解，我们需要重点关注一下分区表和分桶表。我们为什么要建立分区表和分桶表呢？HQL通过where字句来限制条件提取数据，那么遍历一张大表，不如将这张大表拆分成多个小表，并通过合适的索引来扫描表中的一小部分，分区和分桶都是采用了这种理念。</p>
+<p>分区会创建物理目录，并且可以具有子目录(通常会按照时间、地区分区)，目录名以=创建，分区名会作为表中的伪列，这样通过where字句中加入分区的限制可以在仅扫描对应子目录下的数据。通过partitioned by(field1 type,…)</p>
+<p>分桶可以继续在分区的基础上再划分小表，分桶根据哈希值来确定数据的分布(即MapReducer中的分区！)，比如分区下的一部分数据可以根据分桶再分为多个桶，这样在查询时先计算对应列的哈希值并计算桶号，只需要扫描对应桶中的数据即可。通过 clustered by( field ) into n buckets</p>
+<p>分区和分桶都是为了提高查询效率。</p>
+<h1 id="Hive有哪几类自定义函数"><a href="#Hive有哪几类自定义函数" class="headerlink" title="Hive有哪几类自定义函数"></a>Hive有哪几类自定义函数</h1><p>UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等<br>UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。<br>UDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并产生多行输出（即一个表），不是特别常用</p>
+<h1 id="提交一条SQL到Hive后，Hive的执行流程是怎样的？"><a href="#提交一条SQL到Hive后，Hive的执行流程是怎样的？" class="headerlink" title="提交一条SQL到Hive后，Hive的执行流程是怎样的？"></a>提交一条SQL到Hive后，Hive的执行流程是怎样的？</h1><p><img src="1.png" alt=""><br>SQL Statement：SQL语句<br>Parser：解析器<br>Relational Expression：关系表达式<br>Optimizer：优化器<br>Metadata：元数据<br>Statistics：统计<br>Execution Plan：执行计划<br>Execution Engine：执行引擎<br>Query Result：查询结果</p>
+<p>1、将SQL提交给了解析器。<br>2、解析器根据SQL生产抽象语法树，同时与元数据进行交互生成逻辑执行计划。<br>3、优化器对逻辑执行计划进行优化，最终生成物理执行计划交给执行引擎进行执行。</p>
+<p>延申：一条具体的SQL执行计划<br><img src="2.png" alt=""></p>
+<p>解析器会把这个SQL解析成一个个operator(hive解析后的最小单元、一个operator对应一个MR的执行任务)，Hive实现了优化器对这些operator的顺序进行优化，提高查询效率。</p>
+<h1 id="优化器总类"><a href="#优化器总类" class="headerlink" title="优化器总类"></a>优化器总类</h1><ul>
+<li>RBO(Rule-Based Optimizer)：基于规则的优化器<br>根据已经制定好的优化规则对关系表达式进行转换，最终生成一个最优的执行计划。</li>
+<li>CBO(Cost-Based Optimizer)：基于代价的优化器<br>根据优化规则对表达式进行转换，生成多个执行计划，根据我们的查询信息和代价模型，从中挑选一个代价最小的执行计划作为最优执行计划。<br>动态CBO：在执行计划生成的过程中动态优化的方式【Hive优化器方式】</li>
+</ul>
+<h1 id="数据倾斜调参"><a href="#数据倾斜调参" class="headerlink" title="数据倾斜调参"></a>数据倾斜调参</h1><p>hive.map.aggr<br>hive.groupby.skewindata</p>
+<p>Join方式、空值、大小表Join(小表放左边)</p>
+<h1 id="Hive的存储格式"><a href="#Hive的存储格式" class="headerlink" title="Hive的存储格式"></a>Hive的存储格式</h1><p><img src="3.png" alt=""></p>
+<p>OrcFile存储格式详解<br><img src="4.png" alt=""><br>Orc VS Parquet</p>
+<p>1、OrcFile和Parquet都是Apache的顶级项目。<br>2、Parquet不支持ACID、不支持更新，Orc支持有限的ACID和更新。<br>3、Parquet的压缩能力较高，Orc的查询效率较高。</p>
+<h1 id="Hive查询时有哪些优化项，列举一下"><a href="#Hive查询时有哪些优化项，列举一下" class="headerlink" title="Hive查询时有哪些优化项，列举一下"></a>Hive查询时有哪些优化项，列举一下</h1><p>SQL：<br>-指定查询列，少用select *<br>-善于用分区键进行检索<br>-小表join大表 减少shuffle操作<br>-小文件合并</p>
 
                 
 
@@ -244,12 +250,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop] Hadoop编译支持5种压缩格式/" data-toggle="tooltip" data-placement="top" title="[Hadoop] Hadoop编译支持5种压缩格式">&larr; Previous Post</a>
+                            <a href="/article/Computer language comparison/" data-toggle="tooltip" data-placement="top" title="Computer language comparison">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop] hive中的file_format/" data-toggle="tooltip" data-placement="top" title="[Hadoop] hive中的file_format">Next Post &rarr;</a>
+                            <a href="/article/[Linux]01 大数据常用命令 一/" data-toggle="tooltip" data-placement="top" title="[Linux]01 大数据常用命令 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -299,7 +305,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#VERSION"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">VERSION</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#DBS"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">DBS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#TBLS"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">TBLS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SDS"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">SDS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CDS"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">CDS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#COLUMNS-V2"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">COLUMNS_V2</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITIONS"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">PARTITIONS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITIONS-KEY"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">PARTITIONS_KEY</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#PARTITION-KEY-VALS"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">PARTITION_KEY_VALS</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#场景应用"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">场景应用</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#一句话描述Hive"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">一句话描述Hive</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive将HQL转换为MapReduce的流程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Hive将HQL转换为MapReduce的流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive与关系数据库Mysql的区别"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive与关系数据库Mysql的区别</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive的数据有哪几种存储格式"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive的数据有哪几种存储格式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive的表存储模型有哪些，谈谈分区分桶的作用"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Hive的表存储模型有哪些，谈谈分区分桶的作用</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive有哪几类自定义函数"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Hive有哪几类自定义函数</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#提交一条SQL到Hive后，Hive的执行流程是怎样的？"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">提交一条SQL到Hive后，Hive的执行流程是怎样的？</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#优化器总类"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">优化器总类</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据倾斜调参"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">数据倾斜调参</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive的存储格式"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Hive的存储格式</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive查询时有哪些优化项，列举一下"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">Hive查询时有哪些优化项，列举一下</span></a></li></ol>
         
         </div>
       </aside>
@@ -320,6 +326,8 @@
                     <div class="tags">
                        
                           <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                        
+                          <a class="tag" href="/tags/#面试题" title="面试题">面试题</a>
                         
                     </div>
                 </section>

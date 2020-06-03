@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop] 数据仓库Hive之UDF函数 - 李玉坤 | Blog
+          [Hive] Hive之UDF函数 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] 数据仓库Hive之UDF函数/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hive] Hive之UDF函数/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,7 +91,7 @@
                               <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                             
                         </div>
-                        <h1>[Hadoop] 数据仓库Hive之UDF函数</h1>
+                        <h1>[Hive] Hive之UDF函数</h1>
                         <h2 class="subheading">自定义UDF、自定义临时函数和永久函数</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -212,11 +212,14 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>UDF: one-to-one row mapping : upper substr【进来一行出去一行】<br>UDAF: Aggregation   Many-to-one row mapping   比如sum/min【进来多行出去一行】<br>UDTF: Table-generating  one-to-many    比如：lateral view explode()【一对多】</p>
+                <p>UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。<br>UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/min<br>UDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并产生多行输出（即一个表），不是特别常用。比如：lateral view explode()</p>
 <h1 id="编写测试UDF函数"><a href="#编写测试UDF函数" class="headerlink" title="编写测试UDF函数"></a>编写测试UDF函数</h1><p>pom文件添加</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">hive.version</span>&gt;</span>1.1.0-cdh5.7.0<span class="tag">&lt;/<span class="name">hive.version</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hive<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hive-exec<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;hive.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>UDF函数开发</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.kun.hive;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hive.ql.exec.UDF;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloUDF</span> <span class="keyword">extends</span> <span class="title">UDF</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">evaluate</span><span class="params">(String input)</span></span>&#123;</span><br><span class="line">        <span class="comment">//<span class="doctag">TODO:</span>工作中的详细业务功能</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello："</span>+input;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">evaluate</span><span class="params">(String input1,String input2)</span></span>&#123;</span><br><span class="line">        <span class="comment">//<span class="doctag">TODO:</span>工作中的详细业务功能</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello："</span>+input1+<span class="string">"=&gt;"</span>+input2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UDF 数据拼接函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.hive.ql.exec.UDF;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloUDF</span> <span class="keyword">extends</span> <span class="title">UDF</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">evaluate</span><span class="params">(String input)</span></span>&#123;</span><br><span class="line">        <span class="comment">//<span class="doctag">TODO:</span>工作中的详细业务功能</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello："</span>+input;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">evaluate</span><span class="params">(String input1,String input2)</span></span>&#123;</span><br><span class="line">        <span class="comment">//<span class="doctag">TODO:</span>工作中的详细业务功能</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello："</span>+input1+<span class="string">"=&gt;"</span>+input2;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>AVG udf函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.hadoop.hive.ql.exec.UDFArgumentException;</span><br><span class="line">import org.apache.hadoop.hive.ql.metadata.HiveException;</span><br><span class="line">import org.apache.hadoop.hive.ql.udf.generic.GenericUDF;</span><br><span class="line">import org.apache.hadoop.hive.serde2.objectinspector.MapObjectInspector;</span><br><span class="line">import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;</span><br><span class="line">import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;</span><br><span class="line"></span><br><span class="line">import java.text.DecimalFormat;</span><br><span class="line"></span><br><span class="line">public class AvgScore extends GenericUDF &#123;</span><br><span class="line">    private static final String FUNC_NAME=&quot;AVG_SCORE&quot;;</span><br><span class="line">    private transient MapObjectInspector mapOi;</span><br><span class="line"></span><br><span class="line">    DecimalFormat df = new DecimalFormat(&quot;#.##&quot;);</span><br><span class="line">    @Override</span><br><span class="line">    public ObjectInspector initialize(ObjectInspector[] objectInspectors) throws UDFArgumentException &#123;</span><br><span class="line">        //检测函数参数个数</span><br><span class="line">        //检测函数参数类型</span><br><span class="line">        mapOi = (MapObjectInspector) objectInspectors[0];</span><br><span class="line">        return PrimitiveObjectInspectorFactory.javaDoubleObjectInspector;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Object evaluate(DeferredObject[] deferredObjects) throws HiveException &#123;</span><br><span class="line"></span><br><span class="line">        Object o = deferredObjects[0].get();</span><br><span class="line">        double v = mapOi.getMap(o).values().stream().mapToDouble(a -&gt; Double.parseDouble(a.toString())).average().orElse(0.0);</span><br><span class="line">        return Double.parseDouble(df.format(v));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String getDisplayString(String[] strings) &#123;</span><br><span class="line">        return &quot;func(map)&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>打包上传到服务器  </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop hive]$ <span class="built_in">pwd</span></span><br><span class="line">/home/hadoop/data/hive</span><br><span class="line">[hadoop@hadoop hive]$ ll</span><br><span class="line">总用量 8</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 7483 4月  18 10:39 hive_UDF.jar</span><br></pre></td></tr></table></figure>
@@ -286,7 +289,7 @@
                     
                     
                         <li class="next">
-                            <a href="/article/[Hadoop] 数据仓库Hive之复杂类型/" data-toggle="tooltip" data-placement="top" title="[Hadoop] 数据仓库Hive之复杂类型">Next Post &rarr;</a>
+                            <a href="/article/[数据仓库] 离线数仓VS实时数仓/" data-toggle="tooltip" data-placement="top" title="[数据仓库] 离线数仓VS实时数仓">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

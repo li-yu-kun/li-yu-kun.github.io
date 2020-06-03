@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -233,7 +233,7 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
             
         </div>
     
@@ -263,7 +263,7 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
             
         </div>
     
@@ -297,7 +297,7 @@ Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
             
         </div>
     
@@ -329,7 +329,7 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
             
         </div>
     
@@ -359,7 +359,7 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBASE" title="HBASE">HBASE</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
             
         </div>
     
@@ -418,17 +418,16 @@ n......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 数据仓库Hive之UDF函数/">
+    <a href="/article/[Hive] Hive之UDF函数/">
         <h2 class="post-title">
                                  
-            [Hadoop] 数据仓库Hive之UDF函数
+            [Hive] Hive之UDF函数
         </h2>
         <h3 class="post-subtitle">
             自定义UDF、自定义临时函数和永久函数
         </h3>
         <div class="post-content-preview">
-            UDF: one-to-one row mapping : upper substr【进来一行出去一行】UDAF: Aggregation   Many-to-one row mapping   比如sum/min【进来多行出去一行】UDTF: Table-generating  one-to-many    比如：lateral view explode()【一对多】
-编写测试UDF函数p......
+            UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/minUDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并......
         </div>
     </a>
     
@@ -448,10 +447,46 @@ n......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 数据仓库Hive之复杂类型/">
+    <a href="/article/[数据仓库] 离线数仓VS实时数仓/">
         <h2 class="post-title">
                                  
-            [Hadoop] 数据仓库Hive之复杂类型
+            [数据仓库] 离线数仓VS实时数仓
+        </h2>
+        <h3 class="post-subtitle">
+            离线数仓、离线数仓架构、实时数仓、实时数仓架构、数仓架构发展、Lambda架构、Kappa架构、Kappa架构的不足、Lambda架构的不足、大公司实时数仓架构
+        </h3>
+        <div class="post-content-preview">
+            离线数仓离线数据仓库主要基于Hive等技术来构建T+1的离线数据。
+通过定时任务每天拉取增量数据导入到Hive表中。
+创建各个业务相关的主题维度数据，对外提供T+1的数据查询接口。
+离线数仓架构数据源通过离线的方式导入到离线数仓中。
+数据分层架构：ODS、DWD、DM等。
+下游应用根据业务需求选择直接读取DM。
+实时数仓实时数仓基于数据采集工具，将原始数据写入到Kafka等数据通道。
+数据最......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hive] Hive之复杂类型/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive之复杂类型
         </h2>
         <h3 class="post-subtitle">
             Hive复杂数据类型(array<T>、MAP、struct)、练习
@@ -480,10 +515,10 @@ hive_array.txt
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 数据仓库Hive 二/">
+    <a href="/article/[数据仓库]03 数据仓库之离线-Hive 三/">
         <h2 class="post-title">
                                  
-            [Hadoop] 数据仓库Hive 二
+            [数据仓库]03 数据仓库之离线-Hive 三
         </h2>
         <h3 class="post-subtitle">
             进入命令行、常用基本命令、DDL、DML、常用函数
@@ -502,45 +537,7 @@ hive_array.txt
             
               <a href="/tags/#Hive" title="Hive">Hive</a>
             
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 数据仓库Hive 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 数据仓库Hive 一
-        </h2>
-        <h3 class="post-subtitle">
-            Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和RDBMS的对比、Hive单机环境搭建
-        </h3>
-        <div class="post-content-preview">
-            Hive产生背景及Hive是什么Hive产生的背景
-
-MapReduce编程的不便性
-HDFS上的文件缺少Schema
-
-Hive是什么
-
-由Facebook开源,最初用于解决海量结构化的日志数据统计问题
-构建在Hadoop之上的数据仓库
-Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
-通常用于进行离线数据处理(刚开始采用MapReduce )
-底层支持多种不同的执行......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-09-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
             
         </div>
     
@@ -593,11 +590,15 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
     <div class="tags">
         
             
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            
+        
+            
             <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#HBase" title="HBase" rel="9">HBase</a>
             
         
             
@@ -605,15 +606,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
-            
-        
-            
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
-            
-        
-            
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="4">Phoenix</a>
             
         
             
@@ -621,7 +614,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="6">Hive</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
@@ -630,6 +623,14 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
         
             
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
+            
+        
+            
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
             
         
             
@@ -645,15 +646,11 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="2">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
             
         
             
             <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
-            
-        
-            
-            <a href="/tags/#H" title="H" rel="1">H</a>
             
         
     </div>
@@ -740,7 +737,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>

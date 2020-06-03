@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Hadoop] 数据仓库Hive 一 - 李玉坤 | Blog
+          [数据仓库]02 数据仓库之离线-Hive 二 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hadoop] 数据仓库Hive 一/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]02 数据仓库之离线-Hive 二/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -90,12 +90,14 @@
                             
                               <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
                             
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                            
                         </div>
-                        <h1>[Hadoop] 数据仓库Hive 一</h1>
-                        <h2 class="subheading">Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和RDBMS的对比、Hive单机环境搭建</h2>
+                        <h1>[数据仓库]02 数据仓库之离线-Hive 二</h1>
+                        <h2 class="subheading">Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和Hadoop对比、Hive体系架构以及部署架构、Hive和RDBMS的对比、Hive单机环境搭建、Hive执行方式</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-09-07
+                            2017-03-23
                         </span>
                     </div>
                 
@@ -142,14 +144,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -225,6 +227,7 @@
 <li>通常用于进行离线数据处理(刚开始采用MapReduce )</li>
 <li>底层支持多种不同的执行引擎；<br>【Hive底层的执行引擎有：MapReduce、Tez、Spark】<br>【Hive on MapReduce，Hive on Tez，Hive on Spark】</li>
 <li>支持多种不同的压缩格式、存储格式以及自定义函数<br>【压缩：GZIP、LZO、Snappy、BZIP2..】<br>【存储：TextFile、SequenceFile、RCFile、ORC、Parquet】<br>【UDF：自定义函数】</li>
+<li>Hive是将数据映射成数据库和一张张的表，库和表的元数据信息一般存在关系型数据库。</li>
 </ul>
 <h1 id="为什么要使用Hive及Hive发展历程"><a href="#为什么要使用Hive及Hive发展历程" class="headerlink" title="为什么要使用Hive及Hive发展历程"></a>为什么要使用Hive及Hive发展历程</h1><p><strong>为什么要使用Hive</strong></p>
 <ul>
@@ -234,18 +237,15 @@
 </ul>
 <p><strong>Hive发展历程</strong><br>官方版本更新详细目录<br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a></p>
 <p><strong>Hive在Hadoop生态系统的位置</strong><br>在HDFS和Yarn之上的<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h1 id="Hive-VS-Hadoop"><a href="#Hive-VS-Hadoop" class="headerlink" title="Hive VS Hadoop"></a>Hive VS Hadoop</h1><p>Hive数据存储：Hive的数据是存储在HDFS上的，Hive的表是对HDFS上数据的映射。</p>
+<p>Hive元数据存储：元数据存储一般在外部关系库（Mysql），与Presto Impala等共享。</p>
+<p>Hive语句的执行过程：将HQL转换为MapReduce任务运行。</p>
+<h1 id="Hive-VS-数据库"><a href="#Hive-VS-数据库" class="headerlink" title="Hive VS 数据库"></a>Hive VS 数据库</h1><p><img src="2.png" alt=""></p>
+<h1 id="hive执行流程"><a href="#hive执行流程" class="headerlink" title="hive执行流程"></a>hive执行流程</h1><p><img src="1.png" alt=""></p>
 <h1 id="Hive体系架构及部署架构"><a href="#Hive体系架构及部署架构" class="headerlink" title="Hive体系架构及部署架构"></a>Hive体系架构及部署架构</h1><h2 id="Hive体系架构"><a href="#Hive体系架构" class="headerlink" title="Hive体系架构"></a>Hive体系架构</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>第一行：hive访问方式shell以及Thrift/JDBC<br>第二行：元数据管理（Metastore）；<br>Drive中首先解析SQL（SQL Parser）生成逻辑执行计划，然后对逻辑执行计划进行优化（Query Optimizer），最后生成物理执行计划（Physical Plan其中包括序列化反序列化和UDF函数（SerDes和UDFs）），生成最终的执行引擎（Execution）提交到MapReduce<br>第三行：元数据存放的位置（MySQL）；<br>提交到计算引擎（MapReduce）的输入输出-HDFS、HBase等</p>
 <h2 id="部署架构–测试环境"><a href="#部署架构–测试环境" class="headerlink" title="部署架构–测试环境"></a>部署架构–测试环境</h2><p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
 <h2 id="部署架构–生产环境"><a href="#部署架构–生产环境" class="headerlink" title="部署架构–生产环境"></a>部署架构–生产环境</h2><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>其中MySQL、ResourceManage、NameNode都要主从设备；<br>Hive只需要在集群中装一个或者两个作为客户端使用即可</p>
-<h1 id="Hive和RDBMS的对比"><a href="#Hive和RDBMS的对比" class="headerlink" title="Hive和RDBMS的对比"></a>Hive和RDBMS的对比</h1><pre><code>相同点
-    SQL
-    事务
-    insert/update/delete   Hive-0.14才支持
-        针对Hive数据仓库，写比较少的，批次加载数据到Hive然后进行统计分析
-
-不同点
-    体量/集群规模
-    延迟/时性</code></pre><h1 id="Hive单机环境搭建"><a href="#Hive单机环境搭建" class="headerlink" title="Hive单机环境搭建"></a>Hive单机环境搭建</h1><ol>
+<h1 id="Hive单机环境搭建"><a href="#Hive单机环境搭建" class="headerlink" title="Hive单机环境搭建"></a>Hive单机环境搭建</h1><ol>
 <li><p>Hive下载：<a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a><br> wget <a href="http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz</a></p>
 </li>
 <li><p>解压<br> tar -zxvf hive-1.1.0-cdh5.7.0.tar.gz -C ~/app/</p>
@@ -257,7 +257,7 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Set HADOOP_HOME to point to a specific hadoop install directory</span><br><span class="line"> HADOOP_HOME=/home/hadoop/app/hadoop</span><br><span class="line"></span><br><span class="line"># Hive Configuration Directory can be controlled by:</span><br><span class="line"> export HIVE_CONF_DIR=/home/hadoop/app/hive</span><br></pre></td></tr></table></figure>
 
 <p> 在conf下新建hive-site.xml配置 <strong>hive-site.xml</strong></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">   &lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>拷贝mysql驱动到$HIVE_HOME/lib/<br>初始化数据库 schematool -initSchema -dbType mysql</p>
 </li>
@@ -266,6 +266,9 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
 </ol>
 <p>【注意】Hive启动时报错“which: no hbase in ”</p>
 <p>在Hive的所在的机器上添加Hbase的环境变量即可<br>1、编辑<br>export HBASE_HOME=/opt/module/hbase-2.2.1<br>export PATH=$PATH:$HBASE_HOME/bin<br>2、环境变量生效<br>source ~/.bahs_profile</p>
+<h1 id="Hive执行方式"><a href="#Hive执行方式" class="headerlink" title="Hive执行方式"></a>Hive执行方式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">直接执行：</span><br><span class="line">hive -f test.sql</span><br><span class="line">hive -e &quot;sql语句&quot;</span><br><span class="line"></span><br><span class="line">进入客户端：</span><br><span class="line">hive</span><br><span class="line"></span><br><span class="line">通过jdbc客户端访问：</span><br><span class="line">beeline</span><br></pre></td></tr></table></figure>
+
+
 
                 
 
@@ -274,13 +277,9 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[Hadoop] 数据仓库Hive 二/" data-toggle="tooltip" data-placement="top" title="[Hadoop] 数据仓库Hive 二">&larr; Previous Post</a>
+                            <a href="/article/[Scala]03 Scala学习笔记/" data-toggle="tooltip" data-placement="top" title="[Scala]03 Scala学习笔记">&larr; Previous Post</a>
                         </li>
                     
-                    
-                        <li class="next">
-                            <a href="/article/[Hadoop] 分布式资源调度YARN 四/" data-toggle="tooltip" data-placement="top" title="[Hadoop] 分布式资源调度YARN 四">Next Post &rarr;</a>
-                        </li>
                     
                 </ul>
 
@@ -329,7 +328,7 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive和RDBMS的对比"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive和RDBMS的对比</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive单机环境搭建"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Hive单机环境搭建</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive-VS-Hadoop"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive VS Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive-VS-数据库"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive VS 数据库</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hive执行流程"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">hive执行流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive单机环境搭建"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Hive单机环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive执行方式"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Hive执行方式</span></a></li></ol>
         
         </div>
       </aside>
@@ -350,6 +349,8 @@ export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql
                     <div class="tags">
                        
                           <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                        
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                         
                     </div>
                 </section>

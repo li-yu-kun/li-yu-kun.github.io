@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -241,16 +241,18 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]03 Scala学习笔记/">
+    <a href="/article/[Scala]02 Scala学习笔记/">
         <h2 class="post-title">
                                  
-            [Scala]03 Scala学习笔记
+            [Scala]02 Scala学习笔记
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Scala 操作外部数据Scala 读取文件及网络数据123456789101112131415161718192021222324252627282930313233343536373839import scala.io.Sourceobject FileApp &#123;  def main(args: Array[String]): Unit = &#123;    val file......
+            Scala模式匹配模式匹配    Java： 对一个值进行条件判断，返回针对不同的条件进行不同的处理
+Scala：比java的功能强很多变量 match {    case value1 =&gt; 代码1    case value2 =&gt; 代码2    …..    case _ =&gt; 代码N}
+最基础的模式匹配12345678910111213141516171819202......
         </div>
     </a>
     
@@ -301,16 +303,16 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库]02 数据仓库之离线-Hive是什么 二/">
+    <a href="/article/[Scala]03 Scala学习笔记/">
         <h2 class="post-title">
                                  
-            [数据仓库]02 数据仓库之离线-Hive是什么 二
+            [Scala]03 Scala学习笔记
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            ...
+            Scala 操作外部数据Scala 读取文件及网络数据123456789101112131415161718192021222324252627282930313233343536373839import scala.io.Sourceobject FileApp &#123;  def main(args: Array[String]): Unit = &#123;    val file......
         </div>
     </a>
     
@@ -320,9 +322,49 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#Scala" title="Scala">Scala</a>
             
-              <a href="/tags/#H" title="H">H</a>
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[数据仓库]02 数据仓库之离线-Hive 二/">
+        <h2 class="post-title">
+                                 
+            [数据仓库]02 数据仓库之离线-Hive 二
+        </h2>
+        <h3 class="post-subtitle">
+            Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和Hadoop对比、Hive体系架构以及部署架构、Hive和RDBMS的对比、Hive单机环境搭建、Hive执行方式
+        </h3>
+        <div class="post-content-preview">
+            Hive产生背景及Hive是什么Hive产生的背景
+
+MapReduce编程的不便性
+HDFS上的文件缺少Schema
+
+Hive是什么
+
+由Facebook开源,最初用于解决海量结构化的日志数据统计问题
+构建在Hadoop之上的数据仓库
+Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
+通常用于进行离线数据处理(刚开始采用MapReduce )
+底层支持多种不同的执行......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-03-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
             
         </div>
     
@@ -371,11 +413,15 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
     <div class="tags">
         
             
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            
+        
+            
             <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#HBase" title="HBase" rel="9">HBase</a>
             
         
             
@@ -383,15 +429,7 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
             
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
-            
-        
-            
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
-            
-        
-            
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="4">Phoenix</a>
             
         
             
@@ -399,7 +437,7 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="6">Hive</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
@@ -408,6 +446,14 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
         
             
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
+            
+        
+            
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
             
         
             
@@ -423,15 +469,11 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="2">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
             
         
             
             <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
-            
-        
-            
-            <a href="/tags/#H" title="H" rel="1">H</a>
             
         
     </div>
@@ -518,7 +560,7 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>

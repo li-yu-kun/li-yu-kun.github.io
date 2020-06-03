@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [数据仓库]02 数据仓库之离线-Hive是什么 二 - 李玉坤 | Blog
+          [数据仓库] 离线数仓VS实时数仓 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]02 数据仓库之离线-Hive是什么 二/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库] 离线数仓VS实时数仓/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -90,14 +90,12 @@
                             
                               <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                             
-                              <a class="tag" href="/tags/#H" title="H">H</a>
-                            
                         </div>
-                        <h1>[数据仓库]02 数据仓库之离线-Hive是什么 二</h1>
-                        <h2 class="subheading"></h2>
+                        <h1>[数据仓库] 离线数仓VS实时数仓</h1>
+                        <h2 class="subheading">离线数仓、离线数仓架构、实时数仓、实时数仓架构、数仓架构发展、Lambda架构、Kappa架构、Kappa架构的不足、Lambda架构的不足、大公司实时数仓架构</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2017-03-23
+                            2017-09-28
                         </span>
                     </div>
                 
@@ -144,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -214,7 +212,40 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                
+                <h1 id="离线数仓"><a href="#离线数仓" class="headerlink" title="离线数仓"></a>离线数仓</h1><p>离线数据仓库主要基于Hive等技术来构建T+1的离线数据。</p>
+<p>通过定时任务每天拉取增量数据导入到Hive表中。</p>
+<p>创建各个业务相关的主题维度数据，对外提供T+1的数据查询接口。</p>
+<h1 id="离线数仓架构"><a href="#离线数仓架构" class="headerlink" title="离线数仓架构"></a>离线数仓架构</h1><p>数据源通过离线的方式导入到离线数仓中。</p>
+<p>数据分层架构：ODS、DWD、DM等。</p>
+<p>下游应用根据业务需求选择直接读取DM。</p>
+<h1 id="实时数仓"><a href="#实时数仓" class="headerlink" title="实时数仓"></a>实时数仓</h1><p>实时数仓基于数据采集工具，将原始数据写入到Kafka等数据通道。</p>
+<p>数据最终写入到类似于Hbase这样支持快速读写的存储系统。</p>
+<p>对外提供分钟界别、甚至秒级别的查询方案。</p>
+<h1 id="实时数仓架构"><a href="#实时数仓架构" class="headerlink" title="实时数仓架构"></a>实时数仓架构</h1><p>业务实时性要求的不断提高，实时处理从次要部分变为了主要部分。</p>
+<p>Lambda架构：在离线大数据架构基础上加了一个加速层，使用流处理技术完成实时性较高的指标计算。</p>
+<p>Kappa架构：以实时事件处理为核心，统一数据处理。<br><img src="1.png" alt=""></p>
+<h1 id="数仓架构发展"><a href="#数仓架构发展" class="headerlink" title="数仓架构发展"></a>数仓架构发展</h1><p><img src="2.png" alt=""></p>
+<h1 id="Lambda架构"><a href="#Lambda架构" class="headerlink" title="Lambda架构"></a>Lambda架构</h1><p><img src="3.png" alt=""><br>批处理层（Batch Layer）:存储管理主数据集（不可变的数据集）和预先批处理计算好的视图。</p>
+<p>速度处理层（Speed Layer）：实时处理新来的数据，降低批处理层的处理延时。</p>
+<p>响应查询的服务层（Serving Layer）：返回预先计算数据视图和速度层处理构建好的数据视图的合并结果来响应查询。</p>
+<h1 id="Lambda架构的不足"><a href="#Lambda架构的不足" class="headerlink" title="Lambda架构的不足"></a>Lambda架构的不足</h1><p>同样的需求需要开发两套一样的代码。</p>
+<p>同样的逻辑计算两次，整体资源占用会增多。</p>
+<h1 id="Kappa架构"><a href="#Kappa架构" class="headerlink" title="Kappa架构"></a>Kappa架构</h1><p>与Lambda架构不同的是，Kappa架构去掉了批处理层这一体系结构。</p>
+<p>统一了数据的处理方式，不再维护离线和实时两套代码逻辑。<br><img src="4.png" alt=""><br>选择一个具有重放功能的、能够保存历史数据并支持多消费的消息队列。</p>
+<p>当某个或某些指标有重新处理的需求时，从上游消息队列的最开始重新消费。</p>
+<p>当新作业赶上进度后，切换业务数据源，删除老作业。</p>
+<h1 id="Kappa架构的不足"><a href="#Kappa架构的不足" class="headerlink" title="Kappa架构的不足"></a>Kappa架构的不足</h1><p>需求修改或历史数据重新处理都要通过上游重放完成。</p>
+<p>重新处理历史的吞吐能力会低于批处理。</p>
+<p>并不适用于批处理和流处理代码逻辑不一致的场景。</p>
+<h1 id="Lambda-VS-Kappa"><a href="#Lambda-VS-Kappa" class="headerlink" title="Lambda VS Kappa"></a>Lambda VS Kappa</h1><p><img src="5.png" alt=""></p>
+<h1 id="大公司实时数仓架构"><a href="#大公司实时数仓架构" class="headerlink" title="大公司实时数仓架构"></a>大公司实时数仓架构</h1><p><img src="6.png" alt=""><br><img src="7.png" alt=""><br><img src="8.png" alt=""></p>
+<h1 id="实时数仓建设"><a href="#实时数仓建设" class="headerlink" title="实时数仓建设"></a>实时数仓建设</h1><p>整体架构设计通过分层设计为OLAP查询分担压力。</p>
+<p>复杂的计算统一在实时计算层做，避免给OLAP查询带来过大的压力。</p>
+<p>汇总计算通过OLAP数据查询引擎进行。</p>
+<p>整个架构中实时计算一般是Spark+Flink配合。</p>
+<p>消息队列Kafka一家独大，配合HBase、ES、MySQL进行数据落盘。</p>
+<p>OLAP领域Presto、Druid、Clickhouse、Greenplum等</p>
+
                 
 
                 <hr>
@@ -222,9 +253,13 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[数据仓库]01 数据仓库之离线 一/" data-toggle="tooltip" data-placement="top" title="[数据仓库]01 数据仓库之离线 一">&larr; Previous Post</a>
+                            <a href="/article/[Hive] Hive之UDF函数/" data-toggle="tooltip" data-placement="top" title="[Hive] Hive之UDF函数">&larr; Previous Post</a>
                         </li>
                     
+                    
+                        <li class="next">
+                            <a href="/article/[Hive] Hive之复杂类型/" data-toggle="tooltip" data-placement="top" title="[Hive] Hive之复杂类型">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -273,7 +308,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#离线数仓"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">离线数仓</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#离线数仓架构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">离线数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">实时数仓</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">实时数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数仓架构发展"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">数仓架构发展</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda架构"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Lambda架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda架构的不足"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Lambda架构的不足</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kappa架构"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Kappa架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kappa架构的不足"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">Kappa架构的不足</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda-VS-Kappa"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Lambda VS Kappa</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大公司实时数仓架构"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">大公司实时数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓建设"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">实时数仓建设</span></a></li></ol>
         
         </div>
       </aside>
@@ -294,8 +329,6 @@
                     <div class="tags">
                        
                           <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
-                        
-                          <a class="tag" href="/tags/#H" title="H">H</a>
                         
                     </div>
                 </section>

@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -277,21 +277,22 @@ Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]05 shell 脚本语法/">
+    <a href="/article/[Linux]04 大数据常用命令 四/">
         <h2 class="post-title">
                                  
-            [Linux]05 shell 脚本语法
+            [Linux]04 大数据常用命令 四
         </h2>
         <h3 class="post-subtitle">
             调度|执行|软连接
         </h3>
         <div class="post-content-preview">
-            入门
-shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
-而且脚本需要有执行权限+x
-我们也可以通过sh [文件名] 来执行本文件；也是用sh命令来执行这个脚本
+            调度工具crontab比如一个可执行文件test.sh文件内容
+123#!/bin/bash （解释器）date
+执行这个shell脚本需要x执行权限执行命令
+12./test.shsh ./test.sh
 
-123456789101112131415161718192021222324252627[hadoop@hadoop data]$ sh --helpGNU bash, version 4.2.46(2)-releas......
+后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
+12[root@hadoop ~]# crontab -l* * * * * /root/te......
         </div>
     </a>
     
@@ -311,22 +312,21 @@ shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
 
 <div class="post-preview">
 
-    <a href="/article/[Linux]04 大数据常用命令 四/">
+    <a href="/article/[Linux]05 shell 脚本语法/">
         <h2 class="post-title">
                                  
-            [Linux]04 大数据常用命令 四
+            [Linux]05 shell 脚本语法
         </h2>
         <h3 class="post-subtitle">
             调度|执行|软连接
         </h3>
         <div class="post-content-preview">
-            调度工具crontab比如一个可执行文件test.sh文件内容
-123#!/bin/bash （解释器）date
-执行这个shell脚本需要x执行权限执行命令
-12./test.shsh ./test.sh
+            入门
+shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
+而且脚本需要有执行权限+x
+我们也可以通过sh [文件名] 来执行本文件；也是用sh命令来执行这个脚本
 
-后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
-12[root@hadoop ~]# crontab -l* * * * * /root/te......
+123456789101112131415161718192021222324252627[hadoop@hadoop data]$ sh --helpGNU bash, version 4.2.46(2)-releas......
         </div>
     </a>
     
@@ -433,6 +433,38 @@ shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
 
 <div class="post-preview">
 
+    <a href="/article/[Hive] Hive面试题总结/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive面试题总结
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一句话描述HiveHive是一个构建在Hadoop之上的数据仓库软件,它可以使已经存储的数据结构化，它提供类似sql的查询语句HiveQL对数据进行分析处理。
+Hive将HQL转换为MapReduce的流程1、Antlr定义SQL的语法规则，完成SQL词法，语法解析，将SQL转化为抽象语法树AST Tree2、遍历AST Tree，抽象出查询的基本组成单元QueryBlock3、遍历Quer......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-03-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Linux]01 大数据常用命令 一/">
         <h2 class="post-title">
                                  
@@ -459,37 +491,6 @@ shell脚本默认的【大家约定的并不是百分百】是.sh结尾的
         <div class="tags">
             
               <a href="/tags/#Linux" title="Linux">Linux</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Scala]02 Scala学习笔记/">
-        <h2 class="post-title">
-                                 
-            [Scala]02 Scala学习笔记
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Scala模式匹配模式匹配    Java： 对一个值进行条件判断，返回针对不同的条件进行不同的处理
-Scala：比java的功能强很多变量 match {    case value1 =&gt; 代码1    case value2 =&gt; 代码2    …..    case _ =&gt; 代码N}
-最基础的模式匹配12345678910111213141516171819202......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-03-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Scala" title="Scala">Scala</a>
             
         </div>
     
@@ -580,11 +581,15 @@ java语言来实现
     <div class="tags">
         
             
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            
+        
+            
             <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#HBase" title="HBase" rel="9">HBase</a>
             
         
             
@@ -592,15 +597,7 @@ java语言来实现
             
         
             
-            <a href="/tags/#HBASE" title="HBASE" rel="6">HBASE</a>
-            
-        
-            
-            <a href="/tags/#Phoenix" title="Phoenix" rel="3">Phoenix</a>
-            
-        
-            
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Phoenix" title="Phoenix" rel="4">Phoenix</a>
             
         
             
@@ -608,7 +605,7 @@ java语言来实现
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="6">Hive</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
@@ -617,6 +614,14 @@ java语言来实现
         
             
             <a href="/tags/#YARN" title="YARN" rel="4">YARN</a>
+            
+        
+            
+            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
             
         
             
@@ -632,15 +637,11 @@ java语言来实现
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="2">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
             
         
             
             <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
-            
-        
-            
-            <a href="/tags/#H" title="H" rel="1">H</a>
             
         
     </div>
@@ -727,7 +728,7 @@ java语言来实现
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">9</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>
