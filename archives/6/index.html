@@ -211,31 +211,30 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式资源调度YARN 四/">
+    <a href="/article/[HBase]08 Phoenix二级索引 八/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式资源调度YARN 四
+            [HBase]08 Phoenix二级索引 八
         </h2>
         <h3 class="post-subtitle">
-            生产如何调优Container参数(container内存、container虚拟核、官方建议、综合memory+vcore、默认规则、假如该节点还有组件)、Yarn调度器和调度算法(FIFO调度器、Capacity Scheduler资源调度器、Fair Scheduler资源调度器)
+            全局索引、本地索引
         </h3>
         <div class="post-content-preview">
-            假设我们有一台物理机器 128G内存 16个core
-生产如何调优Container参数？Container：虚拟化的容器   维度 memory+vcore作用是运行task任务
-
-装完CentOS，消耗内存1G
-系统预览15%-20%内存(包含系统1G内存)，以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间
-此时需要预留内存为：128*20%=25.6G == ......
+            Phoenix二级索引官网：http://phoenix.apache.org/secondary_indexing.html
+建表和建索引
+12345678910111213141516171819202122232425建表：0: jdbc:phoenix:&gt; select * from my_schema.my_table;+-----+---------------------......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-27
+            2017-10-15
         </p>
         <div class="tags">
             
-              <a href="/tags/#YARN" title="YARN">YARN</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -245,32 +244,30 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce 三/">
+    <a href="/article/[HBase]07 Phoenix工具与盐表 七/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式处理框架MapReduce 三
+            [HBase]07 Phoenix工具与盐表 七
         </h2>
         <h3 class="post-subtitle">
-            参数调优(Map Task和Reduce Task数目调整)、MapReduce优点和缺点、MapReduce编程(WordCount案例开发Java版本、Combiner、Partitoner)、jobhistory开启
+            Phoenix如何和HBase namespace映射、dbeaver的安装配置、盐表简述
         </h3>
         <div class="post-content-preview">
-            参数调优Map Task和Reduce Task数目调整
-Map Task数目
-Map读取文件时，通过InputFormat计算分割文件
-split大小由以下三个参数决定
-dfs.blocksize HDFS Block大小
-mapreduce.input.fileinputformat.split.minsize 划分最小字节数
-mapreduce.input.fileinputforma......
+            Phoenix的schema与HBase的namespace官网介绍：http://phoenix.apache.org/namspace_mapping.html
+默认情况下在Phoenix中create schema 默认不会映射到namespace；需要在服务端和客户端都开启phoenix.schema.isNamespaceMappingEnabled
+服务端:hbase-site.......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-18
+            2017-10-08
         </p>
         <div class="tags">
             
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -280,26 +277,34 @@ mapreduce.input.fileinputforma......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce 二/">
+    <a href="/article/[HBase]06 Phoenix入门 六/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式处理框架MapReduce 二
+            [HBase]06 Phoenix入门 六
         </h2>
         <h3 class="post-subtitle">
-            MapReduce 源代码解析(Hadoop Mapper 定义、Hadoop Reducer 定义、Hadoop Partitioner 定义和默认实现)、MapReduce执行机制、MapReduce 容错性、数据本地性问题、参数调优
+            Phoenix简介、Phoenix安装、Phoenix使用
         </h3>
         <div class="post-content-preview">
-            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
+            Phoenix简介
+构建在Apache HBase之上的一个SQL中间层
+可以在Apache HBase上执行SQL查询,性能强劲
+较完善的查询支持,支持二级索引,查询效率较高
+OLTP and operational analytics for Apache Hadoop
+
+小知识插入：OLTP 联机事务处理  比如关系型数据库 Oracle MySQLOLAP 联机分析处理  比如hiv......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-08-08
+            2017-10-05
         </p>
         <div class="tags">
             
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -309,30 +314,185 @@ mapreduce.input.fileinputforma......
 
 <div class="post-preview">
 
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce 一/">
+    <a href="/article/[HBase]05 HBase容灾与监控 五/">
         <h2 class="post-title">
                                  
-            [Hadoop] 分布式处理框架MapReduce 一
+            [HBase]05 HBase容灾与监控 五
         </h2>
         <h3 class="post-subtitle">
-            MapReduce概述、MapReduce计算场景、MapReduce编程模型(MapReduce编程模型之通过wordcount词频统计分析案例入门)、MapReduce Java API(MapReduce-Map、MapReduce-Reduce)、MapReduce执行步骤(整体 Example 图、Word Count Example 图、Map 数据输入、Reduce 数据输入、Word Count中的shuffle图、Shuffle、Shuffle Map端、Shuffle Reduce端、Combiner、Combiner Example图、核心概念)、MapReduce架构(1.X、2.X)
+            Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
         </h3>
         <div class="post-content-preview">
-            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
-
-源自于Google的MapReduce论文,论文发表于2004年22月
-Hadoop MapReduce是Google MapReduce的克隆版
-MapReduce优点:海量数量离线处理&amp;易开发&am......
+            Hbase备份与恢复四种方案：◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot
+CopyTable
+支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,
+CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-07-30
+            2017-10-02
         </p>
         <div class="tags">
             
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]04 深入了解HBase架构 四/">
+        <h2 class="post-title">
+                                 
+            [HBase]04 深入了解HBase架构 四
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase架构大全，包含组件、读写、底层原理
+        </h3>
+        <div class="post-content-preview">
+            HBase体系结构组件在物理上，HBase由三种服务器组成，属于主从架构。regionserver为读写提供数据。在访问数据时，客户端直接与HBase regionserver通信。region分配、DDL(创建、删除表)操作由HBase主进程处理。Zookeeper是HDFS的一部分，它的作用是维护集群的状态。
+Hadoop DataNode存储Region Server的数据。所有HBa......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]03 HBase进阶 三/">
+        <h2 class="post-title">
+                                 
+            [HBase]03 HBASE进阶 三
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+        </h3>
+        <div class="post-content-preview">
+            什么导致hbase性能下降？
+
+jvm内存分配与gc回收策略
+与hbase运行机制相关的部分配置不合理
+表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
+Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]02 HBase原理与实战 二/">
+        <h2 class="post-title">
+                                 
+            [HBase]02 HBase原理与实战 二
+        </h2>
+        <h3 class="post-subtitle">
+            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+        </h3>
+        <div class="post-content-preview">
+            HBase写流程存储结构介绍
+
+RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
+region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
+        <h2 class="post-title">
+                                 
+            [HBase]01 HBASE简介与环境搭建 一
+        </h2>
+        <h3 class="post-subtitle">
+            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
+        </h3>
+        <div class="post-content-preview">
+            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
+使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 如何确定block损坏的位置和修复/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 如何确定block损坏的位置和修复
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            hdfs fsck命令查看HDFS文件对应的文件块信息(Block)和位置信息在HDFS中，提供了fsck命令，用于检查HDFS上文件和目录的健康状态、获取文件的block信息和位置信息等。fsck命令必须由HDFS超级用户来执行，普通用户无权限。
+1234567891011121314151617181920212223242526272829303132[hadoop@hadoop ~]......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
             
         </div>
     
@@ -358,175 +518,11 @@ MapReduce优点:海量数量离线处理&amp;易开发&am......
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-07-30
+            2017-09-02
         </p>
         <div class="tags">
             
               <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式资源调度YARN 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式资源调度YARN 三
-        </h2>
-        <h3 class="post-subtitle">
-            YARN单机环境搭建、Yarn常用命令介绍、常见基于Yarn的计算框架(MapReduce On Yarn、Spark)
-        </h3>
-        <div class="post-content-preview">
-            YARN单机环境搭建
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;property&gt; ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式资源调度YARN 二/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式资源调度YARN 二
-        </h2>
-        <h3 class="post-subtitle">
-            YARN资源调度流程(分步流程图、Yarn各个组件之间的心跳信号、Yarn资源隔离策略)、Yarn容错处理
-        </h3>
-        <div class="post-content-preview">
-            YARN资源调度流程
-
-用户向yarn提交一个作业
-RM为该作业分配第一个container(AM)
-RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
-AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RM进行申请，申请到后返回给AM
-AM申请......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-15
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式资源调度YARN 一/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式资源调度YARN 一
-        </h2>
-        <h3 class="post-subtitle">
-            YARN产生背景、YARN概述、YARN架构、Yarn 基本思想、Yarn 计算资源抽象
-        </h3>
-        <div class="post-content-preview">
-            YARN产生背景
-MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
-
-
-单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
-节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] HDFS读写流程详解/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] HDFS读写流程详解
-        </h2>
-        <h3 class="post-subtitle">
-            读写流程详解、错误处理机制、优缺点
-        </h3>
-        <div class="post-content-preview">
-            HDFS文件读写流程详解首先看看出场的角色，第一个是client客户端，用来发起读写请求，读取HDFS上的文件或往HDFS中写文件；第二个是Namenode，唯一的一个，会协调所有客户端发起的请求；第三个是DataNode，负责数据存储，跟Namenode不一样，DataNode有很多个，有时候能达到数以千计。
-文件写流程图解往HDFS中写数据的流程如下：
-
-第1幅图：我们跟客户端说，你帮我......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-06-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式文件系统HDFS 三
-        </h2>
-        <h3 class="post-subtitle">
-            shell、Java API
-        </h3>
-        <div class="post-content-preview">
-            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
-12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-06-05
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
             
         </div>
     
@@ -579,7 +575,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -587,7 +583,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -615,11 +611,15 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
             
         
             
             <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
+            
+        
+            
+            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
             
         
             
@@ -635,7 +635,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
@@ -695,23 +695,23 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
         </li>
       
     </ul>
@@ -726,7 +726,7 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

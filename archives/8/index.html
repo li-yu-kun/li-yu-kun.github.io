@@ -211,35 +211,32 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Scala] Scala项目实战/">
+    <a href="/article/[Hadoop] 分布式资源调度YARN 二/">
         <h2 class="post-title">
                                  
-            [Scala] Scala项目实战
+            [Hadoop] 分布式资源调度YARN 二
         </h2>
         <h3 class="post-subtitle">
-            项目技术概述、项目需求分析、环境搭建、代码部分
+            YARN资源调度流程(分步流程图、Yarn各个组件之间的心跳信号、Yarn资源隔离策略)、Yarn容错处理
         </h3>
         <div class="post-content-preview">
-            项目技术概述Java: Spring Boot + Spring Data JPA + JavaScala: Spring Boot + Spring Data JPA + Scala + Java 混编
-项目需求分析构建大数据统一元数据管理
+            YARN资源调度流程
 
-数据库管理：default、XXX
-id：数据库编号
-name：数据库名称
-location：数据库存放在分布式系统上的目录
-java语言来实现
-
-......
+用户向yarn提交一个作业
+RM为该作业分配第一个container(AM)
+RM会与对应的NM通信，要求NM在这个container上启动应用程序的AM
+AM首先向RM注册，然后AM将为各个任务申请资源，并监控运行情况；AM采用轮训的方式通过RPC协议向RM申请和领取资源；AM所需要的资源有多少个core有多个memory到RM进行申请，申请到后返回给AM
+AM申请......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2017-07-05
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#YARN" title="YARN">YARN</a>
             
         </div>
     
@@ -249,27 +246,31 @@ java语言来实现
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]01 Scala学习笔记/">
+    <a href="/article/[Hadoop] 分布式资源调度YARN 一/">
         <h2 class="post-title">
                                  
-            [Scala]01 Scala学习笔记
+            [Hadoop] 分布式资源调度YARN 一
         </h2>
         <h3 class="post-subtitle">
-            scala 的下载安装、scala初体验[编译运行]、Scala入门[Scala 数据类型、lazy在Scala中的使用]、函数的定义和使用[条件表达式、循环表达式]、Scala对象[类的定义和使用、主构造器和附属构造器以及继承、抽象类、伴生类和伴生对象、cass class、Trait]、Scala 集合[数组、List、Map、Option&Some&None、Tuple]
+            YARN产生背景、YARN概述、YARN架构、Yarn 基本思想、Yarn 计算资源抽象
         </h3>
         <div class="post-content-preview">
-            scala 的下载安装前置条件需要安装JDK8
-1234[hadoop@hadoop app]$ java -versionjava version &quot;1.8.0_231&quot;Java(TM) SE Runtime Environment (build 1.8.0_231-b11)Java HotSpot(TM) 64-Bit Server VM (build 25.231-......
+            YARN产生背景
+MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如下图：
+
+
+单点故障：整个集群里只有一个JobTracker，一旦挂掉，整个架构就无法完成作业运行
+节点压力大不易扩展：JobTracker要来自TaskTracker的rpc请求（心跳）和client的提交查询请求；随着集群的扩展，当集群越来越大的时候TaskTracker就会成为一个瓶颈不易扩展......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2017-06-28
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#YARN" title="YARN">YARN</a>
             
         </div>
     
@@ -279,28 +280,32 @@ java语言来实现
 
 <div class="post-preview">
 
-    <a href="/article/[Scala]02 Scala学习笔记/">
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce 三/">
         <h2 class="post-title">
                                  
-            [Scala]02 Scala学习笔记
+            [Hadoop] 分布式处理框架MapReduce 三
         </h2>
         <h3 class="post-subtitle">
-            Scala模式匹配[最基础的模式匹配、加条件进行匹配、Array 模式匹配、List 模式匹配、类型匹配、异常处理、case class模式匹配、Some None模式匹配]、Scala函数高级操作[匿名函数与currying函数、高阶函数、偏函数]、隐式转换[隐式转换实战、隐式转换切面封装、隐式参数、隐式类]
+            参数调优(Map Task和Reduce Task数目调整)、MapReduce优点和缺点、MapReduce编程(WordCount案例开发Java版本、Combiner、Partitoner)、jobhistory开启
         </h3>
         <div class="post-content-preview">
-            Scala模式匹配模式匹配    Java： 对一个值进行条件判断，返回针对不同的条件进行不同的处理
-Scala：比java的功能强很多变量 match {    case value1 =&gt; 代码1    case value2 =&gt; 代码2    …..    case _ =&gt; 代码N}
-最基础的模式匹配12345678910111213141516171819202......
+            参数调优Map Task和Reduce Task数目调整
+Map Task数目
+Map读取文件时，通过InputFormat计算分割文件
+split大小由以下三个参数决定
+dfs.blocksize HDFS Block大小
+mapreduce.input.fileinputformat.split.minsize 划分最小字节数
+mapreduce.input.fileinputforma......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2017-06-23
         </p>
         <div class="tags">
             
-              <a href="/tags/#Scala" title="Scala">Scala</a>
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
             
         </div>
     
@@ -310,28 +315,26 @@ Scala：比java的功能强很多变量 match {    case value1 =&gt; 代码1    
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库]01 数据仓库之离线 一/">
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce 二/">
         <h2 class="post-title">
                                  
-            [数据仓库]01 数据仓库之离线 一
+            [Hadoop] 分布式处理框架MapReduce 二
         </h2>
         <h3 class="post-subtitle">
-            数据仓库VS数据库[OLTP vs OLAP、数据仓库数据流程图、为什么建设数据仓库、数据仓库建设目标、如何实现]、数据分层建设[数仓建设背景、为什么进行数仓分层、STG层、ODS层、DWD层、DWS层、DIM层、DM层]
+            MapReduce 源代码解析(Hadoop Mapper 定义、Hadoop Reducer 定义、Hadoop Partitioner 定义和默认实现)、MapReduce执行机制、MapReduce 容错性、数据本地性问题、参数调优
         </h3>
         <div class="post-content-preview">
-            数据仓库VS数据库数据仓库概念：数据仓库是将多个数据源的数据经过ETL处理之后，按照一定的主题集成起来提供决策支持和联机分析应用的结构化数据环节。
-ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
-1、数据库是面向事务的设计，数据仓库是面向主题的设计的。2、数据库一般存储在线交易数据，数据仓库存储的一般是历史数据。3、数据库设计是避免冗余，采用三范式的规则来设计，......
+            MapReduce 源代码解析Hadoop Mapper 定义123456789101112131415161718192021222324public class Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt; &#123;public abstract class Contextimplements MapContext&lt;KEYIN,V......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2017-06-17
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
             
         </div>
     
@@ -341,39 +344,126 @@ ETL：Extract（抽取）、Transfrom（转换）、Load（加载）
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库]02 数据仓库之离线-Hive 二/">
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce 一/">
         <h2 class="post-title">
                                  
-            [数据仓库]02 数据仓库之离线-Hive 二
+            [Hadoop] 分布式处理框架MapReduce 一
         </h2>
         <h3 class="post-subtitle">
-            Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和Hadoop对比、Hive体系架构以及部署架构、Hive和RDBMS的对比、Hive单机环境搭建、Hive执行方式
+            MapReduce概述、MapReduce计算场景、MapReduce编程模型(MapReduce编程模型之通过wordcount词频统计分析案例入门)、MapReduce Java API(MapReduce-Map、MapReduce-Reduce)、MapReduce执行步骤(整体 Example 图、Word Count Example 图、Map 数据输入、Reduce 数据输入、Word Count中的shuffle图、Shuffle、Shuffle Map端、Shuffle Reduce端、Combiner、Combiner Example图、核心概念)、MapReduce架构(1.X、2.X)
         </h3>
         <div class="post-content-preview">
-            Hive产生背景及Hive是什么Hive产生的背景
+            MapReduce概述MapReduce是一个易于编写应用程序的软件框架，该应用程序以一种可靠的、容错的方式，在大型的商品硬件集群(数千个节点)上并行处理大量数据(多tb数据集)。
 
-MapReduce编程的不便性
-HDFS上的文件缺少Schema
-
-Hive是什么
-
-由Facebook开源,最初用于解决海量结构化的日志数据统计问题
-构建在Hadoop之上的数据仓库
-Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
-通常用于进行离线数据处理(刚开始采用MapReduce )
-底层支持多种不同的执行......
+源自于Google的MapReduce论文,论文发表于2004年22月
+Hadoop MapReduce是Google MapReduce的克隆版
+MapReduce优点:海量数量离线处理&amp;易开发&am......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-03-23
+            2017-06-12
         </p>
         <div class="tags">
             
-              <a href="/tags/#Hive" title="Hive">Hive</a>
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 三/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 分布式文件系统HDFS 三
+        </h2>
+        <h3 class="post-subtitle">
+            shell、Java API
+        </h3>
+        <div class="post-content-preview">
+            HDFS shellHDFS shell常用命令的使用官网文档参考http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html#dfshdfs dfs等于hadoop fs
+12345678910111213hadoop fs==&gt; hdfs dfs [-cat [-igno......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-06-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 二/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 分布式文件系统HDFS 二
+        </h2>
+        <h3 class="post-subtitle">
+            HDFS环境搭建、常见问题(小文件问题、Namenode内存管理、数据迁移、数据平衡)、数据压缩、纠删码
+        </h3>
+        <div class="post-content-preview">
+            HDFS环境搭建官网安装文档Hadoop伪分布式安装步骤http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html
+下载Hadoop    http://archive.cloudera.com/cdh5/cdh/5/    2.6.0-cdh5.7.0    或则 wge......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-31
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 分布式文件系统HDFS 一/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 分布式文件系统HDFS 一
+        </h2>
+        <h3 class="post-subtitle">
+            HDFS概述及设计目，什么是HDFS、HDFS前提和设计目标(HDFS 构成及工作原理解析，基本构成)、数据读写过程、集群架构(datanode、namenode、SecondaryNamenode)、HDFS HA简介、HDFS文件类型、HDFS副本机制
+        </h3>
+        <div class="post-content-preview">
+            HDFS概述及设计目标如果让我们自己来设计一个分布式文件系统，咋办？下图是普通分布式文件系统
+什么是HDFS
+Hadoop实现了一个分布式文件系统( Hadoop Distributed File System) ,简称HDFS
+源自Google的GFS论文
+发表于2003年，HDFS是GFS的克隆版
+基于JAVA实现的一个分布式文件系统
+基于unix/linux
+是Hadoop最重要的核心......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-05-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HDFS" title="HDFS">HDFS</a>
             
         </div>
     
@@ -422,7 +512,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -430,7 +520,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -458,11 +548,15 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
             
         
             
             <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
+            
+        
+            
+            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
             
         
             
@@ -478,7 +572,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
@@ -538,23 +632,23 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
         </li>
       
     </ul>
@@ -569,7 +663,7 @@ Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

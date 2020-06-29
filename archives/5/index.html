@@ -211,29 +211,28 @@
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]05 HBase容灾与监控 五/">
+    <a href="/article/[Kafka]04 Kafka入门 四/">
         <h2 class="post-title">
                                  
-            [HBase]05 HBase容灾与监控 五
+            [Kafka]04 Kafka入门 四
         </h2>
         <h3 class="post-subtitle">
-            Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
+            Kafka 原生的 API、Spring Boot 使用 Kafka
         </h3>
         <div class="post-content-preview">
-            Hbase备份与恢复四种方案：◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot
-CopyTable
-支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,
-CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读......
+            使用 Kafka 原生的 API①消费者自动提交
+定义自己的生产者：
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546import org.apache.kafka.clients.producer.Callback;import org.apache.kafka.clien......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-12-01
+            2017-11-24
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBase" title="HBase">HBase</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -243,27 +242,29 @@ CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是�
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]04 深入了解HBase架构 四/">
+    <a href="/article/[Kafka]03 Kafka入门 三/">
         <h2 class="post-title">
                                  
-            [HBase]04 深入了解HBase架构 四
+            [Kafka]03 Kafka入门 三
         </h2>
         <h3 class="post-subtitle">
-            Hbase架构大全，包含组件、读写、底层原理
+            集群搭建、Kafka 的操作、Kafka 的日志
         </h3>
         <div class="post-content-preview">
-            HBase体系结构组件在物理上，HBase由三种服务器组成，属于主从架构。regionserver为读写提供数据。在访问数据时，客户端直接与HBase regionserver通信。region分配、DDL(创建、删除表)操作由HBase主进程处理。Zookeeper是HDFS的一部分，它的作用是维护集群的状态。
-Hadoop DataNode存储Region Server的数据。所有HBa......
+            我们在工作中，为了保证环境的高可用，防止单点，Kafka 都是以集群的方式出现的，下面就带领大家一起搭建一套 Kafka 集群环境。
+我们在官网下载 Kafka，下载地址为：http://kafka.apache.org/downloads，下载我们需要的版本，推荐使用稳定的版本。
+搭建集群①下载并解压
+12345cd /usr/local/srcwget http://mirrors.tu......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-11-01
+            2017-11-19
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBase" title="HBase">HBase</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -273,31 +274,28 @@ Hadoop DataNode存储Region Server的数据。所有HBa......
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]03 HBase进阶 三/">
+    <a href="/article/[Kafka]02 Kafka入门 二/">
         <h2 class="post-title">
                                  
-            [HBase]03 HBASE进阶 三
+            [Kafka]02 Kafka入门 二
         </h2>
         <h3 class="post-subtitle">
-            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+            关键术语、工作原理和过程
         </h3>
         <div class="post-content-preview">
-            什么导致hbase性能下降？
-
-jvm内存分配与gc回收策略
-与hbase运行机制相关的部分配置不合理
-表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
-Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
+            Kafka 中的关键术语Topic：主题。在 Kafka 中，使用一个类别属性来划分消息的所属类，划分消息的这个类称为 Topic。Topic 相当于消息的分类标签，是一个逻辑概念。
+物理上不同 Topic 的消息分开存储，逻辑上一个 Topic 的消息虽然保存于一个或多个 Broker 上但用户只需指定消息的 Topic 即可生产或消费数据而不必关心数据存于何处。
+Partition：分区......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-25
+            2017-11-14
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBase" title="HBase">HBase</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -307,29 +305,30 @@ Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]02 HBase原理与实战 二/">
+    <a href="/article/[Kafka]01 Kafka入门 一/">
         <h2 class="post-title">
                                  
-            [HBase]02 HBase原理与实战 二
+            [Kafka]01 Kafka入门 一
         </h2>
         <h3 class="post-subtitle">
-            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+            Kafka 官网、设计目标、架构体系图、应用场景、高吞吐率原因、Kafka的优点、Kafka 于其他 MQ 对比、特性、Kafka的几种重要角色
         </h3>
         <div class="post-content-preview">
-            HBase写流程存储结构介绍
-
-RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
-region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+            较之传统的消息中间件（例如 ActiveMQ、RabbitMQ），Kafka 具有高吞吐量、内置分区、支持消息副本和高容错的特性，非常适合大规模消息处理应用程序。
+Kafka 官网：http://kafka.apache.org/
+Kafka 主要设计目标
+以时间复杂度为 O(1) 的方式提供消息持久化能力，即使对 TB 级以上数据也能保证常数时间的访问性能。
+高吞吐率。即使在非常廉价的商用......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-18
+            2017-11-10
         </p>
         <div class="tags">
             
-              <a href="/tags/#HBase" title="HBase">HBase</a>
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
             
         </div>
     
@@ -339,101 +338,24 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
 
 <div class="post-preview">
 
-    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
+    <a href="/article/[Hive] hive中的file_format/">
         <h2 class="post-title">
                                  
-            [HBase]01 HBASE简介与环境搭建 一
+            [Hive] hive中的file_format
         </h2>
         <h3 class="post-subtitle">
-            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
+            行存储和列存储在hdfs中的区别、hive中的file_format、orc格式、parquet格式
         </h3>
         <div class="post-content-preview">
-            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
-使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
+            行存储和列存储在hdfs中的区别
+hive中的file_format可以使用set hive.default.fileformat来查看和设置格式set hive.default.fileformat默认是TextFile
+file_format:【查看hive官方文档】  : SEQUENCEFILE 【文件比原始文本文件还要大；不适用】  | TEXTFILE    – (Default......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-10-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBase" title="HBase">HBase</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/大数据压缩/">
-        <h2 class="post-title">
-                                 
-            大数据压缩
-        </h2>
-        <h3 class="post-subtitle">
-            大数据压缩常用格式
-        </h3>
-        <div class="post-content-preview">
-            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
-好处
-减少存储磁盘空间
-降低IO(网络的IO和磁盘的IO)
-加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
-
-坏处
-由于使用数据时，需要先将数据解压，加重CPU负荷
-
-压缩在Hadoop中的应用
-2. 压缩格式
-
-
-压缩格式
-工具
-算法
-扩展名
-codec类
-多文件
-splitable
-n......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#大数据" title="大数据">大数据</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] Hive之UDF函数/">
-        <h2 class="post-title">
-                                 
-            [Hive] Hive之UDF函数
-        </h2>
-        <h3 class="post-subtitle">
-            自定义UDF、自定义临时函数和永久函数
-        </h3>
-        <div class="post-content-preview">
-            UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/minUDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-09-28
+            2017-11-03
         </p>
         <div class="tags">
             
@@ -447,33 +369,29 @@ n......
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库] 离线数仓VS实时数仓/">
+    <a href="/article/[Hive] Hive面试题总结/">
         <h2 class="post-title">
                                  
-            [数据仓库] 离线数仓VS实时数仓
+            [Hive] Hive面试题总结
         </h2>
         <h3 class="post-subtitle">
-            离线数仓、离线数仓架构、实时数仓、实时数仓架构、数仓架构发展、Lambda架构、Kappa架构、Kappa架构的不足、Lambda架构的不足、大公司实时数仓架构
+            
         </h3>
         <div class="post-content-preview">
-            离线数仓离线数据仓库主要基于Hive等技术来构建T+1的离线数据。
-通过定时任务每天拉取增量数据导入到Hive表中。
-创建各个业务相关的主题维度数据，对外提供T+1的数据查询接口。
-离线数仓架构数据源通过离线的方式导入到离线数仓中。
-数据分层架构：ODS、DWD、DM等。
-下游应用根据业务需求选择直接读取DM。
-实时数仓实时数仓基于数据采集工具，将原始数据写入到Kafka等数据通道。
-数据最......
+            一句话描述HiveHive是一个构建在Hadoop之上的数据仓库软件,它可以使已经存储的数据结构化，它提供类似sql的查询语句HiveQL对数据进行分析处理。
+Hive将HQL转换为MapReduce的流程1、Antlr定义SQL的语法规则，完成SQL词法，语法解析，将SQL转化为抽象语法树AST Tree2、遍历AST Tree，抽象出查询的基本组成单元QueryBlock3、遍历Quer......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-28
+            2017-10-30
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
             
         </div>
     
@@ -501,7 +419,7 @@ hive_array.txt
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-20
+            2017-10-24
         </p>
         <div class="tags">
             
@@ -515,29 +433,89 @@ hive_array.txt
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库]03 数据仓库之离线-Hive 三/">
+    <a href="/article/[Hive] Hive之UDF函数/">
         <h2 class="post-title">
                                  
-            [数据仓库]03 数据仓库之离线-Hive 三
+            [Hive] Hive之UDF函数
         </h2>
         <h3 class="post-subtitle">
-            进入命令行、常用基本命令、DDL、DML、常用函数
+            自定义UDF、自定义临时函数和永久函数
         </h3>
         <div class="post-content-preview">
-            进入命令行1、可以直接hive命令进入2、可以通过HS2服务进入
-123456789HiveServer2 = HS2	HS2 ：Server		默认端口号是10000		当然还可以改成10086等其他的		hiveserve2 --hiveconf hive.server2.thrift.port=10086		启动：$HIVE_HOME/bin下的 ./hiveserve2	beelin......
+            UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/minUDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2017-09-12
+            2017-10-23
         </p>
         <div class="tags">
             
               <a href="/tags/#Hive" title="Hive">Hive</a>
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hive] Hive的元数据/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive的元数据
+        </h2>
+        <h3 class="post-subtitle">
+            VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS
+        </h3>
+        <div class="post-content-preview">
+            1234&lt;property&gt; 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;   	&lt;value&gt;jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]09 Phoenix二级索引 九/">
+        <h2 class="post-title">
+                                 
+            [HBase]09 Phoenix二级索引 九
+        </h2>
+        <h3 class="post-subtitle">
+            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
+        </h3>
+        <div class="post-content-preview">
+            覆盖索引语法：
+12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
+本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
+好处 ：空间换时......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
             
         </div>
     
@@ -590,7 +568,7 @@ hive_array.txt
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -598,7 +576,7 @@ hive_array.txt
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -626,11 +604,15 @@ hive_array.txt
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
             
         
             
             <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
+            
+        
+            
+            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
             
         
             
@@ -646,7 +628,7 @@ hive_array.txt
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
@@ -706,23 +688,23 @@ hive_array.txt
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
         </li>
       
     </ul>
@@ -737,7 +719,7 @@ hive_array.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

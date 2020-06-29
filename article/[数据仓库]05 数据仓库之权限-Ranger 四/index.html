@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [数据仓库]05 数据仓库之权限-Ranger 一 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]05 数据仓库之权限-Ranger 四/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                            
+                              <a class="tag" href="/tags/#Ranger" title="Ranger">Ranger</a>
+                            
+                        </div>
+                        <h1>[数据仓库]05 数据仓库之权限-Ranger 一</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-04-22
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Apache-Ranger简介"><a href="#Apache-Ranger简介" class="headerlink" title="Apache Ranger简介"></a>Apache Ranger简介</h1><p>Apache Ranger提供一个集中式安全管理框架, 并解决授权和审计。它可以对Hadoop生态的组件如HDFS、Yarn、Hive、Hbase等进行细粒度的数据访问控制。通过操作Ranger控制台,管理员可以轻松的通过配置策略来控制用户访问权限。</p>
+<ul>
+<li>丰富的组件支持(HDFS,HBASE, HIVE, YARN, KAFKA,STORM)</li>
+<li>提供了细粒度级权限控制( hive列级别)</li>
+<li>权限控制插件式,统一方便的策略管理</li>
+<li>支持审计日志,记录各种操作的日志,提供统一的查询接口和界面</li>
+<li>支持和kerberos的集成</li>
+<li>提供了Rest接口供二次开发</li>
+</ul>
+<h2 id="为什么选择Ranger"><a href="#为什么选择Ranger" class="headerlink" title="为什么选择Ranger"></a>为什么选择Ranger</h2><p>多组件支持,基本覆盖我们现有技术栈的组件</p>
+<p>支持审计日志,可以查找到用户操作明细,方便问题排查反馈</p>
+<p>拥有自己的用户体系,方便和其他系统集成,提供接口调用</p>
+<h2 id="Ranger的基本架构"><a href="#Ranger的基本架构" class="headerlink" title="Ranger的基本架构"></a>Ranger的基本架构</h2><p><img src="1.png" alt=""><br>RangerAdmin</p>
+<ul>
+<li>对于各服务策略进行规划,分配相应的资源给相应的用户或组</li>
+<li>以RESTFUL形式提供策略的增删改查接口</li>
+<li>统一查询和管理页面</li>
+</ul>
+<p>Service Plugin</p>
+<ul>
+<li>嵌入到各系统执行流程中,定期从RangerAdmin拉取策略</li>
+<li>根据策略执行访问决策树</li>
+<li>记录访问审计</li>
+</ul>
+<h2 id="Ranger的权限模型"><a href="#Ranger的权限模型" class="headerlink" title="Ranger的权限模型"></a>Ranger的权限模型</h2><p>用户:由User或Group来表达</p>
+<p>资源:不同组件有不同的资源,如HDFS的Path, Hive的DB\TABLE</p>
+<p>策略: Service可以有多条Policy,组件不同, Policy授权模型不同</p>
+<h2 id="HDFS例子"><a href="#HDFS例子" class="headerlink" title="HDFS例子"></a>HDFS例子</h2><p><img src="2.png" alt=""></p>
+<ul>
+<li>HDFS启动时加载Ranger插件,并从Admin拉取权限策略</li>
+<li>用户访问请求到达NameNode,进行权限验证</li>
+<li>验证后处理访问请求,并记录审计日志</li>
+</ul>
+<h2 id="Hive例子"><a href="#Hive例子" class="headerlink" title="Hive例子"></a>Hive例子</h2><p><img src="3.png" alt=""></p>
+<ul>
+<li>HiveServer2启动时加载Ranger插件,并从Admin拉取权限策略</li>
+<li>用户SQL查询请求到达HiveServer2,在Compile阶段进行权限验证</li>
+<li>验证后处理访问请求,并记录审计日志</li>
+</ul>
+<h2 id="Yarn例子"><a href="#Yarn例子" class="headerlink" title="Yarn例子"></a>Yarn例子</h2><p><img src="4.png" alt=""></p>
+<ul>
+<li>ResourceManger启动时加载Ranger插件,从Admin拉取权限策略</li>
+<li>用户提交任务到ResourceManager,在解析任务阶段进行权限验证</li>
+<li>验证后提交任务,并记录审计日志</li>
+</ul>
+<h1 id="Apache-Ranger安装"><a href="#Apache-Ranger安装" class="headerlink" title="Apache Ranger安装"></a>Apache Ranger安装</h1><p>1、下载 <a href="http://ranger.apache.org/download.html" target="_blank" rel="noopener">http://ranger.apache.org/download.html</a><br>同时也可以在githup上搜索Ranger 下载源码</p>
+<p>2、前置环境</p>
+<ul>
+<li>JDK 运行RangerAdmin RangerKMS</li>
+<li>RDBMS 1.存储授权策略 2.存储Ranger 用户/组 3.存储审核日志</li>
+<li>Solr(可选) 存储审核日志</li>
+<li>HDFS(可选) 存储审核日志</li>
+<li>Kerberos(可选) 确保所有请求都被认证</li>
+</ul>
+<p>3、Apache Ranger安装部署</p>
+<ol>
+<li><p>下载Apache Ranger源码，进行编译<br>大家可以访问Ranger官网下载对应版本的Ranger安装包，本课程使用的是Ranger-1.2.0版本，当前最新版本为2.0.0。<br>下载mysql的java驱动包mysql-connector-java</p>
+</li>
+<li><p>编译打包<br>下载完成之后，解压缩，对源码进行编译打包，生成安装包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf apache-ranger-1.2.0.tar.gz</span><br><span class="line">cd apache-ranger-1.2.0</span><br><span class="line">mvn -DskipTests=true clean compile package install assembly:assembly</span><br><span class="line"></span><br><span class="line">#编译完成后可在target下看到一系列的安装包，</span><br><span class="line">ls target</span><br></pre></td></tr></table></figure></li>
+<li><p>部署到指定位置<br>编译完成之后，对安装包进行解压，并且移动到指定安装目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf ranger-1.2.0-admin.tar.gz -C ../app</span><br><span class="line">ln -s ranger-1.2.0-admin ranger</span><br><span class="line"># 移动mysql驱动包到ranger目录 也可以不移动，下面配置中直接指定路径</span><br><span class="line">cp mysql-connector-java-5.1.38.jar ../app/ranger/</span><br></pre></td></tr></table></figure></li>
+<li><p>配置install.properties，执行安装操作<br>Ranger的安装非常简单，我们只需要配置它自带的install.properties文件即可，配置完成之后执行安装命令会自动进行安装，无需其他配置。我们安装的为简单版本的ranger，没有开启其他功能，比如Kerberos、审计日志等等。我们来看一下install.properties需要关注的内容：<br>install.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"># 指定Ranger使用的数据库类型，我们这里使用mysql</span><br><span class="line">DB_FLAVOR=MYSQL</span><br><span class="line"># 指定数据库driver的path</span><br><span class="line">SQL_CONNECTOR_JAR=/soft/home/ranger-1.2.0-admin/mysql-connector-java-5.1.22-bin.jar</span><br><span class="line"># 指定数据库root用户链接信息</span><br><span class="line">db_root_user=root</span><br><span class="line">db_root_password=root</span><br><span class="line"># select user from mysql.user where user=&apos;root&apos; and host=&apos;localhost&apos;必须可以查询到结果</span><br><span class="line">db_host=localhost</span><br><span class="line"># 指定Ranger数据库名称及用户信息</span><br><span class="line">db_name=ranger</span><br><span class="line">db_user=root</span><br><span class="line">db_password=root</span><br><span class="line"># 设置一下相关秘钥，后续登录会使用到</span><br><span class="line">#PLEASE NOTE :: Password should be minimum 8 characters with min one alphabet and one numeric.</span><br><span class="line"># 密码至少8个字符，至少一个字母和一个数字</span><br><span class="line">rangerAdmin_password=root@123</span><br><span class="line">rangerTagsync_password=root@123</span><br><span class="line">rangerUsersync_password=root@123</span><br><span class="line">keyadmin_password=root@123</span><br><span class="line"># 审计日志配置成数据库</span><br><span class="line">audit_store=db</span><br><span class="line">audit_db_user=root</span><br><span class="line">audit_db_name=ranger</span><br><span class="line">audit_db_password=root</span><br><span class="line"># 策略管理使用默认配置即可</span><br><span class="line">policymgr_external_url=http://localhost:6080</span><br><span class="line">policymgr_http_enabled=true</span><br><span class="line">policymgr_https_keystore_file=</span><br><span class="line">policymgr_https_keystore_keyalias=rangeradmin</span><br><span class="line">policymgr_https_keystore_password=</span><br><span class="line"># unix用户及用户组使用默认配置即可</span><br><span class="line">unix_user=ranger</span><br><span class="line">unix_user_pwd=ranger</span><br><span class="line">unix_group=ranger</span><br></pre></td></tr></table></figure>
+<p>使用root来执行setup命令<br>配置完成之后，执行./setup.sh进行安装。</p>
+</li>
+<li><p>启动服务<br>我们启动Ranger-Admin服务，启动完成之后可以通过界面进行登录访问。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ranger-admin start</span><br><span class="line"></span><br><span class="line">#查看服务是否启动</span><br><span class="line">jps -m</span><br><span class="line"></span><br><span class="line">18472 Jps -m</span><br><span class="line">18394 EmbeddedServer</span><br></pre></td></tr></table></figure></li>
+<li><p>验证服务状态<br>我们访问<a href="http://ranger_host:6080端口，可以看到我们ranger的登录界面，登录的用户名密码为admin/root@123(我们前面配置文件中配置的密码)。" target="_blank" rel="noopener">http://ranger_host:6080端口，可以看到我们ranger的登录界面，登录的用户名密码为admin/root@123(我们前面配置文件中配置的密码)。</a></p>
+</li>
+</ol>
+<p><img src="6.png" alt=""></p>
+<h1 id="Ranger-HDFS-Plugin安装"><a href="#Ranger-HDFS-Plugin安装" class="headerlink" title="Ranger-HDFS-Plugin安装"></a>Ranger-HDFS-Plugin安装</h1><ol>
+<li>解压缩安装包，并移动到指定目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf ranger-1.2.0-hdfs-plugin.tar.gz -C ../app/</span><br><span class="line">ln -s ranger-1.2.0-hdfs-plugin ranger-hdfs</span><br></pre></td></tr></table></figure></li>
+<li>配置install.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Ranger Admin地址</span><br><span class="line">POLICY_MGR_URL=http://localhost:6080</span><br><span class="line"># 服务名词 很重要，后面在ranger-admin添加时需要保持一致</span><br><span class="line">REPOSITORY_NAME=kun_hdfs</span><br><span class="line"># 安装目录，指定hadoop home</span><br><span class="line">COMPONENT_INSTALL_DIR_NAME=/home/hadoop/app/hadoop</span><br><span class="line"># 用户和用户组，我的环境默认使用hadoop用户启动相关服务</span><br><span class="line">CUSTOM_USER=hadoop</span><br><span class="line">CUSTOM_GROUP=hadoop</span><br><span class="line">#其他功能不开启，保持默认即可 hdfs默认端口是8020，如果更改需要做相应的</span><br><span class="line">端口调整</span><br></pre></td></tr></table></figure></li>
+<li>执行安装命令<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root用户执行</span><br><span class="line"></span><br><span class="line">./enable-hdfs-plugin.sh</span><br></pre></td></tr></table></figure></li>
+<li>重启一下hdfs集群</li>
+<li>Ranger-Admin界面添加Services<br>登录Ranger Admin，添加HDFS Service</li>
+</ol>
+<p><img src="7.png" alt=""><br>6. 验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# hdfs dfs -put anaconda-ks.cfg /my_test</span><br><span class="line">[root@hadoop001 ~]# sudo su - hadoop</span><br><span class="line">[hadoop@hadoop001 ~]$ vim ~/.bash_profile </span><br><span class="line">[hadoop@hadoop001 ~]$ source ~/.bash_profile</span><br><span class="line">[hadoop@hadoop001 ~]$ hdfs dfs -rm /my_test/anaconda-ks.cfg</span><br><span class="line">rm: Permission denied: user=hadoop, access=WRITE, inode=&quot;/my_test&quot;:root:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure>
+<h1 id="Ranger-Hive-Plugin安装"><a href="#Ranger-Hive-Plugin安装" class="headerlink" title="Ranger-Hive-Plugin安装"></a>Ranger-Hive-Plugin安装</h1><ol>
+<li><p>解压缩安装包，并移动到指定目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf ranger-1.2.0-hive-plugin.tar.gz</span><br><span class="line">mv ranger-1.2.0-hive-plugin /soft/</span><br></pre></td></tr></table></figure></li>
+<li><p>配置install.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Ranger Admin地址</span><br><span class="line">POLICY_MGR_URL=http://localhost:6080</span><br><span class="line"># 服务名词 很重要，后面在ranger-admin添加时需要保持一致</span><br><span class="line">REPOSITORY_NAME=kun_hive</span><br><span class="line"># 安装目录，指定hive home</span><br><span class="line">COMPONENT_INSTALL_DIR_NAME=/root/app/hive</span><br><span class="line"># 用户和用户组，我的环境默认使用hadoop用户启动相关服务</span><br><span class="line">CUSTOM_USER=hadoop</span><br><span class="line">CUSTOM_GROUP=hadoop</span><br><span class="line">#其他功能不开启，保持默认即可</span><br><span class="line">执行安装命令</span><br><span class="line">./enable-hive-plugin.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>重启hiveserver2 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive --service hiveserver2 &amp;</span><br></pre></td></tr></table></figure></li>
+<li><p>Ranger-Admin界面添加Services<br><img src="8.png" alt=""></p>
+</li>
+<li><p>验证<br>利用hadoop用户来登录查询发现无权限<br><img src="9.png" alt=""></p>
+</li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/" data-toggle="tooltip" data-placement="top" title="Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[数据仓库]04 数据仓库之权限 三/" data-toggle="tooltip" data-placement="top" title="[数据仓库]04 数据仓库之权限 三">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Apache-Ranger简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Apache Ranger简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么选择Ranger"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">为什么选择Ranger</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Ranger的基本架构"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Ranger的基本架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Ranger的权限模型"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">Ranger的权限模型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#HDFS例子"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">HDFS例子</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive例子"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">Hive例子</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Yarn例子"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">Yarn例子</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Apache-Ranger安装"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Apache Ranger安装</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Ranger-HDFS-Plugin安装"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Ranger-HDFS-Plugin安装</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Ranger-Hive-Plugin安装"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Ranger-Hive-Plugin安装</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                        
+                          <a class="tag" href="/tags/#Ranger" title="Ranger">Ranger</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

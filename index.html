@@ -211,34 +211,33 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]09 九、kettle统计-映射-脚本控件/">
+    <a href="/article/浅谈大数据平台建设/">
         <h2 class="post-title">
                                  
-            [Kettle]09 九、kettle统计-映射-脚本控件
+            浅谈大数据平台建设
         </h2>
         <h3 class="post-subtitle">
-            kettle统计-映射-脚本控件
+            选择机器、如何采购服务器、确定服务器、确定供应商、确定IDC机房、云专线、案例、网络拓扑图
         </h3>
         <div class="post-content-preview">
-            统计控件统计是转换里面的第十三个分类。
-统计是提供数据的采样和统计功能。
-分组分组是按照某一个或某几个进行分组，同时可以将其余字段按照某种规则进行合并。
-注意：分组之前数据应该进行排序！
-从Excel读取数据，按照group进行分组统计，把结果保存到Excel
-输入：Excel输入统计：分组输出：Microsoft Excel输出
+            一个公司大数据团队刚开始如何选择大数据平台落地方案
+选择机器云机器云上（一般是阿里云） IDC机房 公司内部机器
+云上: 
 
-映射控件映射是转换里面的第十八个分类。
-映射是用来定义子转......
+优点：节省运维成本  对运维的要求很低  快速扩容 缩减
+缺点：云上服务器都是虚拟化的，性能降低 20%，云上服务器不算公司资产【小公司，不care】【公司上市，或者经投资ABCD轮，都要算公司资产】
+
+点评: 前期的支付费用缓慢型 刚开始做可以使用云机器  但是如果......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-11-26
+            2018-05-30
         </p>
         <div class="tags">
             
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
+              <a href="/tags/#大数据" title="大数据">大数据</a>
             
         </div>
     
@@ -248,31 +247,28 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]08 八、kettle连接控件/">
+    <a href="/article/基于docker安装superset/">
         <h2 class="post-title">
                                  
-            [Kettle]08 八、kettle连接控件
+            基于docker安装superset
         </h2>
         <h3 class="post-subtitle">
-            kettle连接控件
+            
         </h3>
         <div class="post-content-preview">
-            连接是转换里面的第八个分类。连接是结果集通过关键字进行连接。
-合并记录合并记录是用于将两个不同来源的数据合并，这两个来源的数据分别为旧数据和新数据，该步骤将旧数据和新数据按照指定的关键字匹配、比较、合并。
-需要设置的参数：旧数据来源：旧数据来源的步骤新数据来源：新数据来源的步骤
-标志字段：设置标志字段的名称，标志字段用于保存比较的结果，比较结果有下列几种。
+            更换yum源将Centos7的yum配置为阿里云的镜像（完美解决yum下载太慢的问题）
+1、备份mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+2、下载新的CentOS-Base.repo 到/etc/yum.repos.d/
 
-“identical” – 旧数......
+CentOS 5wget -O /etc/yum.rep......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-11-20
+            2018-05-24
         </p>
         <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
             
         </div>
     
@@ -282,30 +278,46 @@
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]07 七、kettle查询控件/">
+    <a href="/article/大数据压缩/">
         <h2 class="post-title">
                                  
-            [Kettle]07 七、kettle查询控件
+            大数据压缩
         </h2>
         <h3 class="post-subtitle">
-            kettle查询控件
+            大数据压缩常用格式
         </h3>
         <div class="post-content-preview">
-            查询是转换里面的第七个分类。查询是用来查询数据源里的数据并合并到主数据流中。
-HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面内容。
-自定义常量数据自定义常量数据是用来生成一些不变的数据。
-实例
-从网络上获取xml，解析出ProductID、ProductName、SupplierID、CategoryID，保存到Excel中地址：http://serv......
+            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
+好处
+减少存储磁盘空间
+降低IO(网络的IO和磁盘的IO)
+加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
+
+坏处
+由于使用数据时，需要先将数据解压，加重CPU负荷
+
+压缩在Hadoop中的应用
+2. 压缩格式
+
+
+压缩格式
+工具
+算法
+扩展名
+codec类
+多文件
+splitable
+n......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-11-11
+            2018-05-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
+              <a href="/tags/#大数据" title="大数据">大数据</a>
             
         </div>
     
@@ -315,230 +327,214 @@ HTTP clientHTTP client是使用GET的方式提交请求，获取返回的页面�
 
 <div class="post-preview">
 
-    <a href="/article/[Kettle]06 六、kettle流程控件/">
+    <a href="/article/Kafka分区分配策略/">
         <h2 class="post-title">
                                  
-            [Kettle]06 六、kettle流程控件
+            [Kafka] Kafka分区分配策略
         </h2>
         <h3 class="post-subtitle">
-            kettle流程控件
+            
         </h3>
         <div class="post-content-preview">
-            流程是转换里面的第六个分类。流程主要用来控制数据流程和数据流向。
-Switch-caseSwitch/case让数据流从一路到多路。
-实例从Excel输入读取数据，按sex进行数据分类，把女性、男性、保密分别保存不同的Excel文件里面。
-1表示男性0表示女性2表示保密
-分析输入：Excel输入流程：Switch/case输出：Microsoft Excel输出
-过滤记录过滤记录让数据流从一......
+            用过 Kafka 的同学用过都知道，每个 Topic 一般会有很多个 partitions。为了使得我们能够及时消费消息，我们也可能会启动多个 Consumer 去消费，而每个 Consumer 又会启动一个或多个streams去分别消费 Topic 里面的数据。我们又知道，Kafka 存在 Consumer Group 的概念，也就是 group.id 一样的 Consumer，这些 Co......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by 李玉坤 on
-            2019-11-06
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]05 五、kettle应用控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]05 五、kettle应用控件
-        </h2>
-        <h3 class="post-subtitle">
-            kettle应用控件
-        </h3>
-        <div class="post-content-preview">
-            应用是转换里面的第五个分类。
-应用都是一些工具类。
-替换NULL值替换NULL值就是把null转换为其它的值。
-NULL值不好进行数据分析
-写日志写日志主要是在调试的时候使用，把日志信息打印到日志窗口。
-发送邮件发送邮件就是执行成功、失败、其它某种情景给相关人员发送邮件。
-注意：只有企业邮箱才可以！个人邮箱不行！并且需要在邮件设置中开通客户端授权码！
-...
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-10-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]04 四、kettle转换控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]04 四、kettle转换控件
-        </h2>
-        <h3 class="post-subtitle">
-            kettle转换控件
-        </h3>
-        <div class="post-content-preview">
-            转换是转换里面的第四个分类。
-转换属于ETL的T，T就是Transform清洗、转换。
-ETL三个部分中，T花费时间最长,是“一般情况下这部分工作量是整个ETL的2/3。
-Concat fieldsConcat fields就是多个字段连接起来形成一个新的字段。
-值映射值映射就是把字段的一个值映射成其他的值。
-在数据质量规范上使用非常多，比如很多系统对应性别gender字段的定义不同。系统1......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-10-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]03 三、输出控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]03 三、输出控件
-        </h2>
-        <h3 class="post-subtitle">
-            Kettle输出控件
-        </h3>
-        <div class="post-content-preview">
-            输出属于ETL的L，L就是Load加载。
-Excel输出输出是转换里面的第二个分类。
-文本文件输出数据操作常见的格式是：TXT和CSV。
-SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
-表输出表输出就是把数据写入到指定的表！
-更新更新就是把数据库已经存在的记录与数据流里面的记录进行比对，如果不同就进行更新。
-注意：如果记录不存在，则会出现错误！
-插入更新插入更新就是把数据库已经存......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-10-13
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]02 二、输入控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]02 二、输入控件
-        </h2>
-        <h3 class="post-subtitle">
-            Kettle输入控件
-        </h3>
-        <div class="post-content-preview">
-            
-CSV文件输入CSV文件是一种带有固定格式的文本文件。
-文本文件输入提取日志信息的数据是开发常见的操作，日志信息基本都是文本类型。tomcat访问日志
-Excel输入微软的Excel目前有两种后缀名的文件分别为：xls和xlsx。xls:2007年之前xlsx:2007年之后
-多文件合并数据往往也是以多个文件的形式出现，有的数据还会分散在多个子文件夹。所以合并数据也是开发中非常常见的操作。......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-10-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kettle]01 一、入门/">
-        <h2 class="post-title">
-                                 
-            [Kettle]01 一、入门
-        </h2>
-        <h3 class="post-subtitle">
-            Kettle入门
-        </h3>
-        <div class="post-content-preview">
-            Kettle简介企业数据仓库模型
-ETL简介ETL（Extract-Transform-Load的缩写，即数据抽取、转换、装载的过程），对于企业或行业应用来说，我们经常会遇到各种数据的处理，转换，迁移，所以了解并掌握一种etl工具的使用，必不可少，这里我要学习的ETL工具是Kettle！
-Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在Window、Linux、......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-10-02
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Kafka] Kafka的副本机制/">
-        <h2 class="post-title">
-                                 
-            [Kafka] Kafka的副本机制
-        </h2>
-        <h3 class="post-subtitle">
-            Kafka 复制机制
-        </h3>
-        <div class="post-content-preview">
-            Kafka 复制机制Kafka 主题中的每个分区都有一个预写日志（write-ahead log），我们写入 Kafka 的消息就存储在这里面。这里面的每条消息都有一个唯一的偏移量，用于标识它在当前分区日志中的位置。如下图所示：Kafka 中的每个主题分区都被复制了 n 次，其中的 n 是主题的复制因子（replication factor）。这允许 Kafka 在集群服务器发生故障时自动切......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2019-09-19
+            2018-05-14
         </p>
         <div class="tags">
             
               <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Kafka 是如何保证数据可靠性和一致性/">
+        <h2 class="post-title">
+                                 
+            Kafka 是如何保证数据可靠性和一致性
+        </h2>
+        <h3 class="post-subtitle">
+            数据可靠性、数据一致性
+        </h3>
+        <div class="post-content-preview">
+            数据可靠性Kafka 作为一个商业级消息中间件，消息可靠性的重要性可想而知。本文从 Producter 往 Broker 发送消息、Topic 分区副本以及 Leader 选举几个角度介绍数据的可靠性。
+Topic 分区副本在 Kafka 0.8.0 之前，Kafka 是没有副本的概念的，那时候人们只会用 Kafka 存储一些不重要的数据，因为没有副本，数据很可能会丢失。但是随着业务的发展，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-05-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/hue-3.9-cdh-5.7.0安装/">
+        <h2 class="post-title">
+                                 
+            hue-3.9-cdh-5.7.0安装
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            前置依赖1[root@hadoop etc]# yum -y install ant asciidoc cyrus-sasl-devel cyrus-sasl-gssapi gcc gcc-c++ krb5-devel libtidy libxml2-devel libxslt-devel openldap-devel python-devel sqlite-devel openssl-de......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-05-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hue" title="Hue">Hue</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Computer language comparison/">
+        <h2 class="post-title">
+                                 
+            Computer language comparison
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Scala vs Java HelloWorld123456789101112public class HelloWorld&#123;	public static void main(String[] args)&#123;		System.out.println(&quot;Hello World...&quot;);	&#125;&#125;Scala每行代码并不强求使用;结束，jav......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-05-01
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#computer language" title="computer language">computer language</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/">
+        <h2 class="post-title">
+                                 
+            Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的
+        </h2>
+        <h3 class="post-subtitle">
+            Airbnb 日志事件获取、Spark 的并行度由 Kafka 分区数量决定、事件的倾斜和大小不一、近实时摄取数据、解决方案
+        </h3>
+        <div class="post-content-preview">
+            Airbnb 日志事件获取日志事件从客户端（例如移动应用程序和 Web 浏览器）和在线服务发出，其中包含行为或操作的关键信息。每个事件都有一个特定的信息。例如，当客人在 Airbnb.com 上搜索马里布的海滨别墅时，将生成包含位置，登记和结账日期等的搜索事件。
+在 Airbnb，事件记录对于我们理解客人和房东，然后为他们提供更好的体验至关重要。它为业务决策提供信息，并推动工程功能（如搜索，......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-04-26
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#大数据" title="大数据">大数据</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[数据仓库]05 数据仓库之权限-Ranger 四/">
+        <h2 class="post-title">
+                                 
+            [数据仓库]05 数据仓库之权限-Ranger 一
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Apache Ranger简介Apache Ranger提供一个集中式安全管理框架, 并解决授权和审计。它可以对Hadoop生态的组件如HDFS、Yarn、Hive、Hbase等进行细粒度的数据访问控制。通过操作Ranger控制台,管理员可以轻松的通过配置策略来控制用户访问权限。
+
+丰富的组件支持(HDFS,HBASE, HIVE, YARN, KAFKA,STORM)
+提供了细粒度级权限控......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-04-22
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+            
+              <a href="/tags/#Ranger" title="Ranger">Ranger</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[数据仓库]04 数据仓库之权限 三/">
+        <h2 class="post-title">
+                                 
+            [数据仓库]04 数据仓库之权限 三
+        </h2>
+        <h3 class="post-subtitle">
+            Hadoop/Hive自带权限控制[现有方案、Hadoop权限、Hive权限]、实操Hive的权限操作
+        </h3>
+        <div class="post-content-preview">
+            Hadoop/Hive自带权限控制集群安全下的要求支持多组件,最好能支持当前大数据技术栈的主要组件, HDFS、HBASE、HIVE、YARN、КАFКА等。
+支持细粒度的权限控制,可以达到HIVE列, HDFS目录, HBASE列,YARN队列。
+开源,社区活跃,按照现有的集群情况改动尽可能的小,而且要符合业界t趋势。
+现有方案
+Hadoop、Hive本身的权限控制
+Kerberos安全认......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-04-18
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
             
         </div>
     
@@ -587,7 +583,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -595,7 +591,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -623,11 +619,15 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="7">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
             
         
             
             <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
+            
+        
+            
+            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
             
         
             
@@ -643,7 +643,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="4">数据仓库</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
@@ -703,23 +703,23 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
     <ul>
       
         <li>
-          <a href="/article/%5BKettle%5D09%20%E4%B9%9D%E3%80%81kettle%E7%BB%9F%E8%AE%A1-%E6%98%A0%E5%B0%84-%E8%84%9A%E6%9C%AC%E6%8E%A7%E4%BB%B6/">[Kettle]09 九、kettle统计-映射-脚本控件</a>
+          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D08%20%E5%85%AB%E3%80%81kettle%E8%BF%9E%E6%8E%A5%E6%8E%A7%E4%BB%B6/">[Kettle]08 八、kettle连接控件</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D07%20%E4%B8%83%E3%80%81kettle%E6%9F%A5%E8%AF%A2%E6%8E%A7%E4%BB%B6/">[Kettle]07 七、kettle查询控件</a>
+          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D06%20%E5%85%AD%E3%80%81kettle%E6%B5%81%E7%A8%8B%E6%8E%A7%E4%BB%B6/">[Kettle]06 六、kettle流程控件</a>
+          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
         </li>
       
         <li>
-          <a href="/article/%5BKettle%5D05%20%E4%BA%94%E3%80%81kettle%E5%BA%94%E7%94%A8%E6%8E%A7%E4%BB%B6/">[Kettle]05 五、kettle应用控件</a>
+          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
         </li>
       
     </ul>
@@ -734,7 +734,7 @@ Kettle简介Kettle是一款国外开源的ETL工具，纯java编写，可以在W
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
