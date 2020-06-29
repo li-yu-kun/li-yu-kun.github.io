@@ -211,6 +211,224 @@
 
 <div class="post-preview">
 
+    <a href="/article/[HBase]05 HBase容灾与监控 五/">
+        <h2 class="post-title">
+                                 
+            [HBase]05 HBase容灾与监控 五
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase备份与恢复、CopyTable、Export/Import、Snapshot、Replication、DistCp 迁移、如何监控HBase集群、Ambari监控、Hadoop JMX监控
+        </h3>
+        <div class="post-content-preview">
+            Hbase备份与恢复四种方案：◆Export / Import   ◆CopyTable  ●Replication  ●Snapshot
+CopyTable
+支持时间区间 、row区间,改变表名称, 改变列族名称,指定是否 Copy已经被删除的数据等功能,
+CopyTable工具采用scan查询, 写入新表时采用put和delete API, 全是基于hbase的client Api进行读......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]04 深入了解HBase架构 四/">
+        <h2 class="post-title">
+                                 
+            [HBase]04 深入了解HBase架构 四
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase架构大全，包含组件、读写、底层原理
+        </h3>
+        <div class="post-content-preview">
+            HBase体系结构组件在物理上，HBase由三种服务器组成，属于主从架构。regionserver为读写提供数据。在访问数据时，客户端直接与HBase regionserver通信。region分配、DDL(创建、删除表)操作由HBase主进程处理。Zookeeper是HDFS的一部分，它的作用是维护集群的状态。
+Hadoop DataNode存储Region Server的数据。所有HBa......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]03 HBase进阶 三/">
+        <h2 class="post-title">
+                                 
+            [HBase]03 HBASE进阶 三
+        </h2>
+        <h3 class="post-subtitle">
+            Hbase数据存储过程优化、Hbase服务端 常用 读写 优化策略、HBase协处理器
+        </h3>
+        <div class="post-content-preview">
+            什么导致hbase性能下降？
+
+jvm内存分配与gc回收策略
+与hbase运行机制相关的部分配置不合理
+表结构设计及用户使用方式不合理Hbase概念Hbase数据存储过程·
+Hbase写入时当memstore达到一定的大小会flush到磁盘保存成 HFile, 当hfile小文件太多会执行compact操作进行合并。（当一个hstore里只包含一个hfile时；查询效率才是最大化。因为hfi......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]02 HBase原理与实战 二/">
+        <h2 class="post-title">
+                                 
+            [HBase]02 HBase原理与实战 二
+        </h2>
+        <h3 class="post-subtitle">
+            HBase读写流程、HBase模块之间的协作、Shell命令实战、HBase Java API、过滤器
+        </h3>
+        <div class="post-content-preview">
+            HBase写流程存储结构介绍
+
+RegionServer管理着多个region；每个RegionServer都有对应的HLog实例
+region是Hbase存储的单元，数据都存在region中，需要注意的是每一个region只存储一个column family的数据而且只是这个列族的一部分；当region达到一定的大小之后会根据rowkey的排序划分为多个region；每个region里面包......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
+        <h2 class="post-title">
+                                 
+            [HBase]01 HBASE简介与环境搭建 一
+        </h2>
+        <h3 class="post-subtitle">
+            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
+        </h3>
+        <div class="post-content-preview">
+            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
+使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-14
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 如何确定block损坏的位置和修复/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 如何确定block损坏的位置和修复
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            hdfs fsck命令查看HDFS文件对应的文件块信息(Block)和位置信息在HDFS中，提供了fsck命令，用于检查HDFS上文件和目录的健康状态、获取文件的block信息和位置信息等。fsck命令必须由HDFS超级用户来执行，普通用户无权限。
+1234567891011121314151617181920212223242526272829303132[hadoop@hadoop ~]......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hadoop] 分布式处理框架MapReduce的join操作/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] 分布式处理框架MapReduce的join操作实战
+        </h2>
+        <h3 class="post-subtitle">
+            Map Join的操作、Reduce Join的操作
+        </h3>
+        <div class="post-content-preview">
+            Map Join的操作map类
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475package com.kun.map_join;import org.apac......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-09-02
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Hadoop] number of splits 划分的条件/">
         <h2 class="post-title">
                                  
@@ -302,234 +520,6 @@
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] Hadoop离线项目之数据清洗/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] Hadoop离线项目之数据清洗
-        </h2>
-        <h3 class="post-subtitle">
-            企业级大数据应用分类、基于Maven构建大数据开发项目、手动造数据、IDEA创建maven项目、Hive完成最基本的统计分析
-        </h3>
-        <div class="post-content-preview">
-            企业级大数据项目开发流程
-项目调研：技术？业务？【对业务很了解】  
-        产品经理、非常熟悉业务、项目经理
-
-需求分析：明确做什么 做成什么样子的（做东西不要局限于某个技术）  
-        用户提出来的：显示【实现较为简单】  
-        隐式的需要自己来实现
-
-方案设计  
-       概念设计（模块，模块中有哪些功能点）【国内一般都是后补详细设计也就是设计文档】......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-08-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] Hadoop离线项目整体技术/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] Hadoop离线项目整体技术
-        </h2>
-        <h3 class="post-subtitle">
-            离线项目下的Hadoop生态栈、离线处理架构
-        </h3>
-        <div class="post-content-preview">
-            离线项目下的Hadoop生态栈Hadoop生态离线项目    Hadoop：（无论什么大数据项目Hadoop是少不了的）        HDFS MapReduce(主要是做清洗) YARN （大数据项目基本都是跑在yarn资源框架上）        Hadoop集群    Hive：（主要是做计算）        外部表  （会使用）        SQL  （会使用）        数据......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-08-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] Hadoop高级之HDFS&YARN HA架构剖析/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] Hadoop高级之HDFS&YARN HA架构剖析
-        </h2>
-        <h3 class="post-subtitle">
-            HDFS HA、YARN HA
-        </h3>
-        <div class="post-content-preview">
-            HDFS HA1、为什么要用集群学习过程中我们只需要单点就够了
-我们在企业中大数据几乎所有组建都是主从架构  master-slave比如hdfs读写请求都是先NN节点；但是:hbase 读写请求不是经过老大master
-企业里面，伪分布式 每一个角色都是1个进程HDFS:NN  老大 master 【假如master挂了，所有与nn交互的任务都会中断】SNN 1h checkpoint  ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-08-06
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] Hadoop高级之HDFS&YARN HA部署/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] Hadoop高级之HDFS&YARN HA部署
-        </h2>
-        <h3 class="post-subtitle">
-            Hadoop HA搭建、问题总结
-        </h3>
-        <div class="post-content-preview">
-            Hadoop HA模拟搭建集群条件准备：
-3台虚拟机centos7 64位hadoop-2.6.0-cdh5.7.0.tar.gzjdk-8u45-linux-x64.gzzookeeper-3.4.6.tar.gz
-本地搭建虚拟机；我们采用.net内网模式hadoop01     192.168.232.5hadoop02     192.168.232.6hadoop03     192......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-31
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] Hadoop编译支持5种压缩格式/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] Hadoop编译支持5种压缩格式
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            apache版本编译前置环境为：JDK1.8、Maven3.1、Hadoop2.7.3
-1、安装bzip2以及各种依赖[root@hadoop ~]#yum -y install wget gcc gcc-c++ bzip2 bzip2-devel zlib zlib-devel openssl-devel curl curl-devel
-2.安装cmake操作步骤如下：
-①下载cmake安......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-25
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式资源调度YARN 四/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式资源调度YARN 四
-        </h2>
-        <h3 class="post-subtitle">
-            生产如何调优Container参数(container内存、container虚拟核、官方建议、综合memory+vcore、默认规则、假如该节点还有组件)、Yarn调度器和调度算法(FIFO调度器、Capacity Scheduler资源调度器、Fair Scheduler资源调度器)
-        </h3>
-        <div class="post-content-preview">
-            假设我们有一台物理机器 128G内存 16个core
-生产如何调优Container参数？Container：虚拟化的容器   维度 memory+vcore作用是运行task任务
-
-装完CentOS，消耗内存1G
-系统预览15%-20%内存(包含系统1G内存)，以防全部使用导致系统夯住 和 oom机制事件，或者给未来部署组件预览点空间
-此时需要预留内存为：128*20%=25.6G == ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-17
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式资源调度YARN 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式资源调度YARN 三
-        </h2>
-        <h3 class="post-subtitle">
-            YARN单机环境搭建、Yarn常用命令介绍、常见基于Yarn的计算框架(MapReduce On Yarn、Spark)
-        </h3>
-        <div class="post-content-preview">
-            YARN单机环境搭建
-mapred-site.xml
-1234&lt;property&gt;    &lt;name&gt;mapreduce.framework.name&lt;/name&gt;    &lt;value&gt;yarn&lt;/value&gt;&lt;/property&gt;
-yarn-site.xml
-1234567891011&lt;property&gt; ......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-07-11
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#YARN" title="YARN">YARN</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -575,7 +565,7 @@ yarn-site.xml
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -583,7 +573,19 @@ yarn-site.xml
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="3">面试题</a>
+            
+        
+            
+            <a href="/tags/#SpringBoot" title="SpringBoot" rel="1">SpringBoot</a>
+            
+        
+            
+            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
             
         
             
@@ -611,15 +613,11 @@ yarn-site.xml
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="10">Hive</a>
             
         
             
-            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
-            
-        
-            
-            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="9">数据仓库</a>
             
         
             
@@ -635,11 +633,11 @@ yarn-site.xml
             
         
             
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
-            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
     </div>
@@ -695,23 +693,23 @@ yarn-site.xml
     <ul>
       
         <li>
-          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
+          <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
         </li>
       
         <li>
-          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
+          <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
         <li>
-          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%5D06%20%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据仓库]06 数据仓库之数据采集与治理 六</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8E%20Binlog%20%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">基于 Binlog 实时同步数据仓库问题总结</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
+          <a href="/article/ZooKeeper%E9%9D%A2%E8%AF%95%E9%A2%98/">[ZooKeeper] ZooKeeper面试题</a>
         </li>
       
     </ul>
@@ -726,7 +724,7 @@ yarn-site.xml
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

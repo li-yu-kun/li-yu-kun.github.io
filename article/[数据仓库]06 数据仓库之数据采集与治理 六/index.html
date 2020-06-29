@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [数据仓库]06 数据仓库之数据采集与治理 六 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]06 数据仓库之数据采集与治理 六/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                            
+                        </div>
+                        <h1>[数据仓库]06 数据仓库之数据采集与治理 六</h1>
+                        <h2 class="subheading">数据采集介绍、数据采集场景、数据采集系统需求、常用的数据采集工具[Sqoop、Flume、DataX]、数据治理、Apache Atlas数据治理</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-06-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p><img src="2.png" alt=""></p>
+<h1 id="数据采集介绍"><a href="#数据采集介绍" class="headerlink" title="数据采集介绍"></a>数据采集介绍</h1><p>ETL基本上就是数据采集的代表,包括数据的提取(Extract),转换(Transform)和加载(Load)。</p>
+<p>数据源是整个大数据平台的上游,数据采集是数据源与数仓之间的管道。</p>
+<p>在采集过程中针对业务场景对数据进行治理,完成数据清洗工作</p>
+<p>数据源复杂、多样,包括业务数据库、日志数据、图片、视频等多媒体数据等。</p>
+<p>数据采集形式也需要更加复杂,多样,包括定时、实时、增量、全量等。</p>
+<p>常见的数据采集工具也多种多样,可以满足多种业务需求</p>
+<h2 id="数据采集场景"><a href="#数据采集场景" class="headerlink" title="数据采集场景"></a>数据采集场景</h2><ul>
+<li>场景1:从支持FTP,SFTP,HTTP等协议的数据源获取数据</li>
+<li>场景2:从业务数据库获取数据,数据采集录入后需支撑业务系统</li>
+<li>场景3:数据源通过Kafka等消息队列,需要实时采集数据</li>
+</ul>
+<h2 id="数据采集系统需求"><a href="#数据采集系统需求" class="headerlink" title="数据采集系统需求"></a>数据采集系统需求</h2><ul>
+<li>数据源管理与状态监控</li>
+<li>定时、实时、全量、增量等多模式的数据采集及任务监控</li>
+<li>元数据管理、数据补采及数据归档</li>
+</ul>
+<h1 id="常用的数据采集工具"><a href="#常用的数据采集工具" class="headerlink" title="常用的数据采集工具"></a>常用的数据采集工具</h1><p>Sqoop:常用的关系数据库与HDFS之间的数据导入导出工具,将导入或导出命令翻译成MapReduce程序来实现Apache</p>
+<p>Flume:分布式、可靠的、高可用的日志收集系统,支持多种数据来源,配置灵活</p>
+<p>Datax:阿里开源的异构数据源同步工具,致力于实现关系数据库、HDFS, Hive, HBase, FTP等异构数据源的稳定数据同步</p>
+<h2 id="Sqoop"><a href="#Sqoop" class="headerlink" title="Sqoop"></a>Sqoop</h2><p>用于在Hadoop和传统的数据库(Mysql, Postgresql等)进行数据的传递。</p>
+<p>可以通过Hadoop的MapReduce把数据从关系型数据库中导入到Hadoop集群。</p>
+<p>传输大量结构化或半结构化数据的过程是完全自动化的。<br><img src="3.png" alt=""><br>Sqoop Import流程：<br><img src="4.png" alt=""></p>
+<ul>
+<li>获取源数据表的MetaData信息</li>
+<li>根据参数提交MapReduce任务</li>
+<li>表内每行作为一条记录,按计划进行数据导入</li>
+</ul>
+<p>Sqoop Export流程：<br><img src="5.png" alt=""></p>
+<ul>
+<li>获取目标数据表的MetaData信息</li>
+<li>根据参数提交MapReduce任务</li>
+<li>对HDFS文件内每行数据按指定字符分割,导出到数据库</li>
+</ul>
+<h2 id="Flume"><a href="#Flume" class="headerlink" title="Flume"></a>Flume</h2><p>Flume是一个分布式的对海量日志进行采集,聚合和传输的系统。</p>
+<p>Flume系统分为三个组件,分别是source,sink,channel。</p>
+<p>Flume允许用户构建一个复杂的数据流,比如数据流经多个agent最终落地。</p>
+<p>示意图1：<br><img src="6.png" alt=""><br>示意图2：<br><img src="7.png" alt=""><br>示意图3：<br><img src="8.png" alt=""></p>
+<h2 id="DataX"><a href="#DataX" class="headerlink" title="DataX"></a>DataX</h2><p><img src="9.png" alt=""><br>Datax是一个异构数据源离线同步工具。</p>
+<p>实现包括关系型数据库(MySQL、Oracle等)、HDFS、Hive、ODPS、HBase、FTP等各种异构数据源之间稳定高效的数据同步功能。</p>
+<p>将复杂的网状的同步链路变成了星型数据链路,有良好的扩展性。</p>
+<p>架构：<br><img src="10.png" alt=""></p>
+<h1 id="数据治理"><a href="#数据治理" class="headerlink" title="数据治理"></a>数据治理</h1><p><strong>数据所面临的问题</strong></p>
+<ul>
+<li>相比传统数仓大数据时代数据更加多样、更加复杂、数据量更大</li>
+<li>随处可见的数据不统一、难以提升的数据质量、难以完成的数据模型梳理</li>
+<li>多种采集工具、多种存储方式使数据仓库or数据湖变成数据沼泽</li>
+</ul>
+<p><strong>数据治理解决的问题</strong></p>
+<ul>
+<li>数据不可知:用户不知道有哪些数据、不知道数据和业务的关系</li>
+<li>数据不可控:没有统一的数据标准,数据无法集成和统一</li>
+<li>数据不可取:用户不能便捷的取到数据,或者取到的数据不可用</li>
+<li>数据不可联:数据之间的关系没有体现出来,数据深层价值无法体现</li>
+</ul>
+<p><strong>数据治理目标</strong></p>
+<ul>
+<li>建立统一数据标准与数据规范,保障数据质量</li>
+<li>制定数据管理流程,把控数据整个生命周期</li>
+<li>形成平台化工具,提供给用户使用</li>
+</ul>
+<p><strong>数据治理</strong></p>
+<ul>
+<li>数据治理包括元数据管理、数据质量管理、数据血缘管理等<ul>
+<li>元数据管理：数据的库表结构等schema信息；数据存储空间、读写记录、权限归属及其他各类统计信息</li>
+<li>数据血缘管理：数据之间的血缘关系及生命周期；数据的业务属性信息和业务数据模型</li>
+</ul>
+</li>
+<li>数据治理在数据采集、数据清洗、数据计算等各个环节</li>
+<li>数据治理难得不是技术,而是流程、协同和管理</li>
+</ul>
+<p><strong>数据治理步骤</strong></p>
+<ul>
+<li>统一数据规范和数据定义，打通业务模型和技术模型</li>
+<li>提升数据质量，实现数据全生命周期管理</li>
+<li>挖掘数据价值,帮助业务人员便捷灵活的使用数据</li>
+</ul>
+<p><strong>数据治理与周边系统</strong></p>
+<ul>
+<li>ODS, DWD, DM等各层次元数据纳入数据治理平台集中管理</li>
+<li>数据采集及处理流程中产生的元数据纳入数据治理平台,并建立血缘关系</li>
+<li>提供数据管理的服务接口,数据模型变更及时通知上下游</li>
+</ul>
+<p><strong>数据治理工具</strong></p>
+<ul>
+<li>Apache Atlas: Hortonworks主推的数据治理开源项目</li>
+<li>Navigator: Cloudera提供的数据管理的解决方案</li>
+<li>WhereHows: LinkedIn内部使用并开源的数据管理解决方案</li>
+</ul>
+<h2 id="Apache-Atlas数据治理"><a href="#Apache-Atlas数据治理" class="headerlink" title="Apache Atlas数据治理"></a>Apache Atlas数据治理</h2><p><img src="11.png" alt=""></p>
+<ul>
+<li>数据分类:自动捕获、定义和注释元数据,对数据进行业务导向分类</li>
+<li>集中审计:捕获所有步骤、应用及数据交互的访问信息</li>
+<li>搜索与血缘:基于分类和审计关联数据与数据的关系,并通过可视化的方式展现</li>
+</ul>
+<p><strong>架构：</strong><br><img src="12.png" alt=""></p>
+<ul>
+<li>Type System:对需要管理的元数据对象抽象的实体,由类型构成</li>
+<li>Ingest\Export:元数据的自动采集和导出工具, Export可以作为事件进行触发,使用户可以及时响应</li>
+<li>Graph Engine:通过图数据库和图计算引擎展现数据之间的关系</li>
+</ul>
+<p><strong>元数据捕获</strong></p>
+<ul>
+<li>Hook:来自各个组件的Hook自动捕获数据进行存储</li>
+<li>Entity:集成的各个系统在操作时触发事件进行写入</li>
+<li>获取元数据的同时,获取数据之间的关联关系,构建血缘</li>
+</ul>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/SpringBoot中Tomcat VS Undertow/" data-toggle="tooltip" data-placement="top" title="SpringBoot 中 Tomcat VS Undertow">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/基于 Binlog 实时同步数据仓库问题总结/" data-toggle="tooltip" data-placement="top" title="基于 Binlog 实时同步数据仓库问题总结">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据采集介绍"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据采集介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据采集场景"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">数据采集场景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据采集系统需求"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">数据采集系统需求</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#常用的数据采集工具"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">常用的数据采集工具</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Sqoop"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Sqoop</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Flume"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Flume</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataX"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">DataX</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据治理"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">数据治理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Apache-Atlas数据治理"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Apache Atlas数据治理</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

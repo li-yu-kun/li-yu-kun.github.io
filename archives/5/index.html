@@ -211,6 +211,220 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Kerberos] Kerberos认证简介/">
+        <h2 class="post-title">
+                                 
+            [Kerberos] Kerberos认证简介
+        </h2>
+        <h3 class="post-subtitle">
+            Kerberos 简介、常见的认证方式、Kerberos 名词、Kerberos 流程、Kerberos 优点
+        </h3>
+        <div class="post-content-preview">
+            Kerberos 简介Hadoop可以利用kerberos认证机制来识别可靠的服务和节点。
+Kerberos与Hadoop权限管理并不冲突,而是相辅相成。
+Kerberos是一种网络认证协议,是可信赖的第三方认证服务。
+常见的认证方式对称加密:加密解密时使用相同的密钥,或是可以相互推算的密钥。需要把加密的密钥告诉对方，对方才可以解密。比如 1314加密后是一生一世，需要把密钥给对方，才知道一......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-01-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] 为Kafka集群选择合适的TopicsPartitions数量/">
+        <h2 class="post-title">
+                                 
+            [Kafka] 为Kafka集群选择合适的Topics/Partitions数量
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            越多的分区可以提供更高的吞吐量　　首先我们需要明白以下事实：在kafka中，单个patition是kafka并行操作的最小单元。在producer和broker端，向每一个分区写入数据是可以完全并行化的，此时，可以通过加大硬件资源的利用率来提升系统的吞吐量，例如对数据进行压缩。在consumer段，kafka只允许单个partition的数据被一个consumer线程消费。因此，在consu......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka新建的分区会在哪个目录下创建/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka新建的分区会在哪个目录下创建
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            我们知道，在启动 Kafka 集群之前，我们需要配置好 log.dirs 参数，其值是 Kafka 数据的存放目录，这个参数可以配置多个目录，目录之间使用逗号分隔，通常这些目录是分布在不同的磁盘上用于提高读写性能。当然我们也可以配置 log.dir 参数，含义一样。只需要设置其中一个即可。
+如果 log.dirs 参数只配置了一个目录，那么分配到各个 Broker 上的分区肯定只能在这个目录......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-12-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka消息格式的演变/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka消息格式的演变
+        </h2>
+        <h3 class="post-subtitle">
+            Kafka 0.7.x 消息格式、Kafka 0.8.x (0.9.x) 消息格式、Kafka 0.10.x 消息格式
+        </h3>
+        <div class="post-content-preview">
+            用 Kafka 这么久，从来都没去了解 Kafka 消息的格式。今天特意去网上搜索了以下，发现这方面的资料真少，很多资料都是官方文档的翻译；而且 Kafka 消息支持压缩，对于压缩消息的格式的介绍更少。基于此，本文将以图文模式介绍 Kafka 0.7.x、0.8.x 以及 0.10.x 等版本 Message 格式，因为 Kafka 0.9.x 版本的消息格式和 0.8.x 一样，我就不单独......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-12-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka如何将分区放置到不同的Broker中/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka如何将分区放置到不同的Broker中
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            熟悉 Kafka 的小伙伴肯定知道，每个主题有多个分区，每个分区会存在多个副本，本文今天要讨论的是这些副本是怎么样放置在 Kafka 集群的 Broker 中的。
+大家可能在网上看过这方面的知识，网上对这方面的知识是千变一律，都是如下说明的：
+为了更好的做负载均衡，Kafka尽量将所有的Partition均匀分配到整个集群上。Kafka分配Replica的算法如下：
+
+将所有存活的N个Bro......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-12-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka的副本机制/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka的副本机制
+        </h2>
+        <h3 class="post-subtitle">
+            Kafka 复制机制
+        </h3>
+        <div class="post-content-preview">
+            Kafka 复制机制Kafka 主题中的每个分区都有一个预写日志（write-ahead log），我们写入 Kafka 的消息就存储在这里面。这里面的每条消息都有一个唯一的偏移量，用于标识它在当前分区日志中的位置。如下图所示：Kafka 中的每个主题分区都被复制了 n 次，其中的 n 是主题的复制因子（replication factor）。这允许 Kafka 在集群服务器发生故障时自动切......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-12-05
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Kafka] Kafka Producer是如何动态感知Topic分区数变化/">
+        <h2 class="post-title">
+                                 
+            [Kafka] Kafka Producer是如何动态感知Topic分区数变化
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            　我们都知道，使用Kafka Producer往Kafka的Broker发送消息的时候，Kafka会根据消息的key计算出这条消息应该发送到哪个分区。默认的分区计算类是HashPartitioner，其实现如下：
+12345class HashPartitioner(props: VerifiableProperties = null) extends Partitioner &#123; ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-11-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Kafka]04 Kafka入门 四/">
         <h2 class="post-title">
                                  
@@ -303,226 +517,6 @@ Partition：分区......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Kafka]01 Kafka入门 一/">
-        <h2 class="post-title">
-                                 
-            [Kafka]01 Kafka入门 一
-        </h2>
-        <h3 class="post-subtitle">
-            Kafka 官网、设计目标、架构体系图、应用场景、高吞吐率原因、Kafka的优点、Kafka 于其他 MQ 对比、特性、Kafka的几种重要角色
-        </h3>
-        <div class="post-content-preview">
-            较之传统的消息中间件（例如 ActiveMQ、RabbitMQ），Kafka 具有高吞吐量、内置分区、支持消息副本和高容错的特性，非常适合大规模消息处理应用程序。
-Kafka 官网：http://kafka.apache.org/
-Kafka 主要设计目标
-以时间复杂度为 O(1) 的方式提供消息持久化能力，即使对 TB 级以上数据也能保证常数时间的访问性能。
-高吞吐率。即使在非常廉价的商用......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-11-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] hive中的file_format/">
-        <h2 class="post-title">
-                                 
-            [Hive] hive中的file_format
-        </h2>
-        <h3 class="post-subtitle">
-            行存储和列存储在hdfs中的区别、hive中的file_format、orc格式、parquet格式
-        </h3>
-        <div class="post-content-preview">
-            行存储和列存储在hdfs中的区别
-hive中的file_format可以使用set hive.default.fileformat来查看和设置格式set hive.default.fileformat默认是TextFile
-file_format:【查看hive官方文档】  : SEQUENCEFILE 【文件比原始文本文件还要大；不适用】  | TEXTFILE    – (Default......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-11-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] Hive面试题总结/">
-        <h2 class="post-title">
-                                 
-            [Hive] Hive面试题总结
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            一句话描述HiveHive是一个构建在Hadoop之上的数据仓库软件,它可以使已经存储的数据结构化，它提供类似sql的查询语句HiveQL对数据进行分析处理。
-Hive将HQL转换为MapReduce的流程1、Antlr定义SQL的语法规则，完成SQL词法，语法解析，将SQL转化为抽象语法树AST Tree2、遍历AST Tree，抽象出查询的基本组成单元QueryBlock3、遍历Quer......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-30
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-              <a href="/tags/#面试题" title="面试题">面试题</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] Hive之复杂类型/">
-        <h2 class="post-title">
-                                 
-            [Hive] Hive之复杂类型
-        </h2>
-        <h3 class="post-subtitle">
-            Hive复杂数据类型(array<T>、MAP、struct)、练习
-        </h3>
-        <div class="post-content-preview">
-            Hive复杂数据类型arrayarray_contains(column, ‘value’)
-hive_array.txt
-12pk	beijing,shanghai,tianjin,hangzhoujepson	changchu,chengdu,wuhan,beijing
-12345678910111213141516create table hive_array(name string,......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] Hive之UDF函数/">
-        <h2 class="post-title">
-                                 
-            [Hive] Hive之UDF函数
-        </h2>
-        <h3 class="post-subtitle">
-            自定义UDF、自定义临时函数和永久函数
-        </h3>
-        <div class="post-content-preview">
-            UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/minUDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hive] Hive的元数据/">
-        <h2 class="post-title">
-                                 
-            [Hive] Hive的元数据
-        </h2>
-        <h3 class="post-subtitle">
-            VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS
-        </h3>
-        <div class="post-content-preview">
-            1234&lt;property&gt; 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;   	&lt;value&gt;jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[HBase]09 Phoenix二级索引 九/">
-        <h2 class="post-title">
-                                 
-            [HBase]09 Phoenix二级索引 九
-        </h2>
-        <h3 class="post-subtitle">
-            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
-        </h3>
-        <div class="post-content-preview">
-            覆盖索引语法：
-12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
-本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
-好处 ：空间换时......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-10-17
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBase" title="HBase">HBase</a>
-            
-              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -568,7 +562,7 @@ hive_array.txt
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -576,7 +570,19 @@ hive_array.txt
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="3">面试题</a>
+            
+        
+            
+            <a href="/tags/#SpringBoot" title="SpringBoot" rel="1">SpringBoot</a>
+            
+        
+            
+            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
             
         
             
@@ -604,15 +610,11 @@ hive_array.txt
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="10">Hive</a>
             
         
             
-            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
-            
-        
-            
-            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="9">数据仓库</a>
             
         
             
@@ -628,11 +630,11 @@ hive_array.txt
             
         
             
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
-            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
     </div>
@@ -688,23 +690,23 @@ hive_array.txt
     <ul>
       
         <li>
-          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
+          <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
         </li>
       
         <li>
-          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
+          <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
         <li>
-          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%5D06%20%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据仓库]06 数据仓库之数据采集与治理 六</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8E%20Binlog%20%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">基于 Binlog 实时同步数据仓库问题总结</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
+          <a href="/article/ZooKeeper%E9%9D%A2%E8%AF%95%E9%A2%98/">[ZooKeeper] ZooKeeper面试题</a>
         </li>
       
     </ul>
@@ -719,7 +721,7 @@ hive_array.txt
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

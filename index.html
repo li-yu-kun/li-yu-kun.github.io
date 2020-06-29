@@ -211,6 +211,233 @@
 
 <div class="post-preview">
 
+    <a href="/article/SQL优化指南/">
+        <h2 class="post-title">
+                                 
+            SQL优化指南
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            技巧1  比较运算符能用 “=”就不用“&lt;&gt;”
+“=”增加了索引的使用几率。
+技巧2  明知只有一条查询结果，那请使用 “LIMIT 1”
+“LIMIT 1”可以避免全表扫描，找到对应结果就不会再继续扫描了。
+技巧3  为列选择合适的数据类型
+能用TINYINT就不用SMALLINT，能用SMALLINT就不用INT，道理你懂的，磁盘和内存消耗越小越好嘛。
+技巧4  将大的DEL......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/SpringBoot中Tomcat VS Undertow/">
+        <h2 class="post-title">
+                                 
+            SpringBoot 中 Tomcat VS Undertow
+        </h2>
+        <h3 class="post-subtitle">
+            SpringBoot中的Tomcat容器、SpringBoot设置Undertow、Tomcat与Undertow的优劣对比
+        </h3>
+        <div class="post-content-preview">
+            前言在SpringBoot框架中，我们使用最多的是Tomcat，这是SpringBoot默认的容器技术，而且是内嵌式的Tomcat。
+同时，SpringBoot也支持Undertow容器，我们可以很方便的用Undertow替换Tomcat，而Undertow的性能和内存使用方面都优于Tomcat，那我们如何使用Undertow技术呢？本文将为大家细细讲解。
+SpringBoot中的Tomca......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-25
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#SpringBoot" title="SpringBoot">SpringBoot</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[数据仓库]06 数据仓库之数据采集与治理 六/">
+        <h2 class="post-title">
+                                 
+            [数据仓库]06 数据仓库之数据采集与治理 六
+        </h2>
+        <h3 class="post-subtitle">
+            数据采集介绍、数据采集场景、数据采集系统需求、常用的数据采集工具[Sqoop、Flume、DataX]、数据治理、Apache Atlas数据治理
+        </h3>
+        <div class="post-content-preview">
+            
+数据采集介绍ETL基本上就是数据采集的代表,包括数据的提取(Extract),转换(Transform)和加载(Load)。
+数据源是整个大数据平台的上游,数据采集是数据源与数仓之间的管道。
+在采集过程中针对业务场景对数据进行治理,完成数据清洗工作
+数据源复杂、多样,包括业务数据库、日志数据、图片、视频等多媒体数据等。
+数据采集形式也需要更加复杂,多样,包括定时、实时、增量、全量等。
+常见......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-21
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/基于 Binlog 实时同步数据仓库问题总结/">
+        <h2 class="post-title">
+                                 
+            基于 Binlog 实时同步数据仓库问题总结
+        </h2>
+        <h3 class="post-subtitle">
+            Binlog实时采集总结原则、实现方案与具体操作、不同的业务场景[数据库分库分表的情况、数据增量采集与全量采集、离线数据去重条件]
+        </h3>
+        <div class="post-content-preview">
+            前言可能很多人对于Binlog的认识还不是很充足，可能有些人会粗浅的认为：”它不就是mysql产生的，有固定结构的log嘛，把数据采集过来，然后把它做一下数据落地，它有什么难的呢？”
+的确，它本质上确实就是个log，可是实际上，关于Binlog采集从场景分析，再到技术选型，整体内部有很多不为人知的坑，不要小瞧了它。
+Binlog实时采集总结原则首先抛开技术框架的讨论，个人总结 Binlog ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-15
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/ZooKeeper面试题/">
+        <h2 class="post-title">
+                                 
+            [ZooKeeper] ZooKeeper面试题
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+ZooKeeper 是什么？
+
+ZooKeeper 是一个开源的分布式协调服务。它是一个为分布式应用提供一致性服务的软件，分布式应用程序可以基于 Zookeeper 实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。
+ZooKeeper 的目标就是封装好复杂易出错的关键服务，将简单易用的接口和性能高效、功能稳定的系统提供......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+              <a href="/tags/#ZooKeeper" title="ZooKeeper">ZooKeeper</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[ZooKeeper] ZooKeeper实现原理/">
+        <h2 class="post-title">
+                                 
+            [ZooKeeper] ZooKeeper实现原理
+        </h2>
+        <h3 class="post-subtitle">
+            一致性问题、一致性协议和算法[2PC（两阶段提交）、3PC（三阶段提交）、Paxos 算法【prepare 阶段、accept 阶段、paxos 算法的死循环问题】]、引出 ZAB[ZAB 中的三个角色、消息广播模式、崩溃恢复模式]、Zookeeper的几个理论知识[数据模型、会话、ACL、Watcher机制]、Zookeeper的几个典型应用场景[分布式锁、命名服务、集群管理和注册中心]
+        </h3>
+        <div class="post-content-preview">
+            ZooKeeper 由 Yahoo 开发，后来捐赠给了 Apache ，现已成为 Apache 顶级项目。ZooKeeper 是一个开源的分布式应用程序协调服务器，其为分布式系统提供一致性服务。其一致性是通过基于 Paxos 算法的 ZAB 协议完成的。其主要功能包括：配置维护、分布式同步、集群管理、分布式事务等。
+简单来说， ZooKeeper 是一个 分布式协调服务框架 。
+其实解释到分......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#ZooKeeper" title="ZooKeeper">ZooKeeper</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hive]  Hive性能调优指南/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive性能调优指南
+        </h2>
+        <h3 class="post-subtitle">
+            性能调优的工具[善用explain语句、巧用analyze语句、常用日志分析]、设计优化[分桶表、索引、使用skewed/temporary表]、数据存储优化[压缩、存储优化]、作业优化[JVM重用、并行执行、Fetch模式、JOIN优化【map端join、Bucket map join、Sort merge bucket (SMB) join、Sort merge bucket map (SMBM) join、Skew join】、执行引擎、优化器【向量化优化器、成本优化器】]
+        </h3>
+        <div class="post-content-preview">
+            在企业中使用Hive构建离线数仓是一种十分普遍的方案。尽管Hive的使用场景是通过批处理的方式处理大数据，通常对处理时间不敏感。但是在资源有限的情况下，我们需要关注Hive的性能调优，从而方便数据的快速产出。同时，关于Hive的性能调优，也是面试中比较常见的问题，因此掌握Hive性能调优的一些方法，不仅能够在工作中提升效率而且还可以在面试中脱颖而出。本文会通过四个方面介绍Hive性能调优，主......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/浅谈大数据平台建设/">
         <h2 class="post-title">
                                  
@@ -325,223 +552,6 @@ n......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/Kafka分区分配策略/">
-        <h2 class="post-title">
-                                 
-            [Kafka] Kafka分区分配策略
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            用过 Kafka 的同学用过都知道，每个 Topic 一般会有很多个 partitions。为了使得我们能够及时消费消息，我们也可能会启动多个 Consumer 去消费，而每个 Consumer 又会启动一个或多个streams去分别消费 Topic 里面的数据。我们又知道，Kafka 存在 Consumer Group 的概念，也就是 group.id 一样的 Consumer，这些 Co......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-05-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Kafka 是如何保证数据可靠性和一致性/">
-        <h2 class="post-title">
-                                 
-            Kafka 是如何保证数据可靠性和一致性
-        </h2>
-        <h3 class="post-subtitle">
-            数据可靠性、数据一致性
-        </h3>
-        <div class="post-content-preview">
-            数据可靠性Kafka 作为一个商业级消息中间件，消息可靠性的重要性可想而知。本文从 Producter 往 Broker 发送消息、Topic 分区副本以及 Leader 选举几个角度介绍数据的可靠性。
-Topic 分区副本在 Kafka 0.8.0 之前，Kafka 是没有副本的概念的，那时候人们只会用 Kafka 存储一些不重要的数据，因为没有副本，数据很可能会丢失。但是随着业务的发展，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-05-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kafka" title="Kafka">Kafka</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/hue-3.9-cdh-5.7.0安装/">
-        <h2 class="post-title">
-                                 
-            hue-3.9-cdh-5.7.0安装
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            前置依赖1[root@hadoop etc]# yum -y install ant asciidoc cyrus-sasl-devel cyrus-sasl-gssapi gcc gcc-c++ krb5-devel libtidy libxml2-devel libxslt-devel openldap-devel python-devel sqlite-devel openssl-de......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-05-03
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hue" title="Hue">Hue</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Computer language comparison/">
-        <h2 class="post-title">
-                                 
-            Computer language comparison
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Scala vs Java HelloWorld123456789101112public class HelloWorld&#123;	public static void main(String[] args)&#123;		System.out.println(&quot;Hello World...&quot;);	&#125;&#125;Scala每行代码并不强求使用;结束，jav......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-05-01
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#computer language" title="computer language">computer language</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/">
-        <h2 class="post-title">
-                                 
-            Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的
-        </h2>
-        <h3 class="post-subtitle">
-            Airbnb 日志事件获取、Spark 的并行度由 Kafka 分区数量决定、事件的倾斜和大小不一、近实时摄取数据、解决方案
-        </h3>
-        <div class="post-content-preview">
-            Airbnb 日志事件获取日志事件从客户端（例如移动应用程序和 Web 浏览器）和在线服务发出，其中包含行为或操作的关键信息。每个事件都有一个特定的信息。例如，当客人在 Airbnb.com 上搜索马里布的海滨别墅时，将生成包含位置，登记和结账日期等的搜索事件。
-在 Airbnb，事件记录对于我们理解客人和房东，然后为他们提供更好的体验至关重要。它为业务决策提供信息，并推动工程功能（如搜索，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#大数据" title="大数据">大数据</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[数据仓库]05 数据仓库之权限-Ranger 四/">
-        <h2 class="post-title">
-                                 
-            [数据仓库]05 数据仓库之权限-Ranger 一
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Apache Ranger简介Apache Ranger提供一个集中式安全管理框架, 并解决授权和审计。它可以对Hadoop生态的组件如HDFS、Yarn、Hive、Hbase等进行细粒度的数据访问控制。通过操作Ranger控制台,管理员可以轻松的通过配置策略来控制用户访问权限。
-
-丰富的组件支持(HDFS,HBASE, HIVE, YARN, KAFKA,STORM)
-提供了细粒度级权限控......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-22
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
-            
-              <a href="/tags/#Ranger" title="Ranger">Ranger</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[数据仓库]04 数据仓库之权限 三/">
-        <h2 class="post-title">
-                                 
-            [数据仓库]04 数据仓库之权限 三
-        </h2>
-        <h3 class="post-subtitle">
-            Hadoop/Hive自带权限控制[现有方案、Hadoop权限、Hive权限]、实操Hive的权限操作
-        </h3>
-        <div class="post-content-preview">
-            Hadoop/Hive自带权限控制集群安全下的要求支持多组件,最好能支持当前大数据技术栈的主要组件, HDFS、HBASE、HIVE、YARN、КАFКА等。
-支持细粒度的权限控制,可以达到HIVE列, HDFS目录, HBASE列,YARN队列。
-开源,社区活跃,按照现有的集群情况改动尽可能的小,而且要符合业界t趋势。
-现有方案
-Hadoop、Hive本身的权限控制
-Kerberos安全认......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -583,7 +593,7 @@ Kerberos安全认......
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
             
@@ -591,7 +601,19 @@ Kerberos安全认......
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            
+        
+            
+            <a href="/tags/#面试题" title="面试题" rel="3">面试题</a>
+            
+        
+            
+            <a href="/tags/#SpringBoot" title="SpringBoot" rel="1">SpringBoot</a>
+            
+        
+            
+            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
             
         
             
@@ -619,15 +641,11 @@ Kerberos安全认......
             
         
             
-            <a href="/tags/#Hive" title="Hive" rel="9">Hive</a>
+            <a href="/tags/#Hive" title="Hive" rel="10">Hive</a>
             
         
             
-            <a href="/tags/#面试题" title="面试题" rel="1">面试题</a>
-            
-        
-            
-            <a href="/tags/#数据仓库" title="数据仓库" rel="7">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="9">数据仓库</a>
             
         
             
@@ -643,11 +661,11 @@ Kerberos安全认......
             
         
             
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
             
         
             
-            <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
     </div>
@@ -703,23 +721,23 @@ Kerberos安全认......
     <ul>
       
         <li>
-          <a href="/article/%E6%B5%85%E8%B0%88%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/">浅谈大数据平台建设</a>
+          <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
         </li>
       
         <li>
-          <a href="/article/%E5%9F%BA%E4%BA%8Edocker%E5%AE%89%E8%A3%85superset/">基于docker安装superset</a>
+          <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
         <li>
-          <a href="/article/%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%8E%8B%E7%BC%A9/">大数据压缩</a>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%5D06%20%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据仓库]06 数据仓库之数据采集与治理 六</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/">[Kafka] Kafka分区分配策略</a>
+          <a href="/article/%E5%9F%BA%E4%BA%8E%20Binlog%20%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">基于 Binlog 实时同步数据仓库问题总结</a>
         </li>
       
         <li>
-          <a href="/article/Kafka%20%E6%98%AF%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%92%8C%E4%B8%80%E8%87%B4%E6%80%A7/">Kafka 是如何保证数据可靠性和一致性</a>
+          <a href="/article/ZooKeeper%E9%9D%A2%E8%AF%95%E9%A2%98/">[ZooKeeper] ZooKeeper面试题</a>
         </li>
       
     </ul>
@@ -734,7 +752,7 @@ Kerberos安全认......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

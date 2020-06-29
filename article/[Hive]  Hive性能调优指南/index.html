@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Hive] Hive性能调优指南 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Hive]  Hive性能调优指南/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                            
+                        </div>
+                        <h1>[Hive] Hive性能调优指南</h1>
+                        <h2 class="subheading">性能调优的工具[善用explain语句、巧用analyze语句、常用日志分析]、设计优化[分桶表、索引、使用skewed/temporary表]、数据存储优化[压缩、存储优化]、作业优化[JVM重用、并行执行、Fetch模式、JOIN优化【map端join、Bucket map join、Sort merge bucket (SMB) join、Sort merge bucket map (SMBM) join、Skew join】、执行引擎、优化器【向量化优化器、成本优化器】]</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-06-03
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>在企业中使用Hive构建离线数仓是一种十分普遍的方案。尽管Hive的使用场景是通过批处理的方式处理大数据，通常对处理时间不敏感。但是在资源有限的情况下，我们需要关注Hive的性能调优，从而方便数据的快速产出。同时，关于Hive的性能调优，也是面试中比较常见的问题，因此掌握Hive性能调优的一些方法，不仅能够在工作中提升效率而且还可以在面试中脱颖而出。本文会通过四个方面介绍Hive性能调优，主要包括：</p>
+<ul>
+<li>性能调优的工具</li>
+<li>设计优化</li>
+<li>数据存储优化</li>
+<li>作业优化</li>
+</ul>
+<h1 id="性能调优的工具"><a href="#性能调优的工具" class="headerlink" title="性能调优的工具"></a>性能调优的工具</h1><p>HQL提供了两个查看查询性能的工具：explain与analyze，除此之外Hive的日志也提供了非常详细的信息，方便查看执行性能和报错排查。</p>
+<h2 id="善用explain语句"><a href="#善用explain语句" class="headerlink" title="善用explain语句"></a>善用explain语句</h2><p>explain语句是查看执行计划经常使用的一个工具，可以使用该语句分析查询执行计划，具体使用语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN [FORMATTED|EXTENDED|DEPENDENCY|AUTHORIZATION] hql_query</span><br></pre></td></tr></table></figure>
+<p>上面的执行语句中，有4个可选的关键字，其具体含义如下：</p>
+<ul>
+<li>FORMATTED：对执行计划进行格式化，返回JSON格式的执行计划</li>
+<li>EXTENDED：提供一些额外的信息，比如文件的路径信息</li>
+<li>DEPENDENCY：以JSON格式返回查询所依赖的表和分区的列表，从Hive0.10开始使用，如下图<br><img src="1.png" alt=""></li>
+<li>AUTHORIZATION：列出需要被授权的条目，包括输入与输出，从Hive0.14开始使用,如下图<br><img src="2.png" alt=""></li>
+</ul>
+<p>一个典型的查询执行计划主要包括三部分，具体如下：</p>
+<ul>
+<li>Abstract Syntax Tree (AST)：抽象语法树，Hive使用一个称之为antlr的解析生成器，可以自动地将HQL生成为抽象语法树</li>
+<li>Stage Dependencies：会列出运行查询所有的依赖以及stage的数量</li>
+<li>Stage Plans：包含了非常重要的信息，比如运行作业时的operator 和sort orders</li>
+</ul>
+<p>举个栗子<br>假设有一张表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE employee_partitioned</span><br><span class="line">(</span><br><span class="line">  name string,</span><br><span class="line">  work_place ARRAY&lt;string&gt;,</span><br><span class="line">  gender_age STRUCT&lt;gender:string,age:int&gt;,</span><br><span class="line">  skills_score MAP&lt;string,int&gt;,</span><br><span class="line">  depart_title MAP&lt;STRING,ARRAY&lt;STRING&gt;&gt;</span><br><span class="line">)</span><br><span class="line">PARTITIONED BY (Year INT, Month INT)</span><br><span class="line">ROW FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED BY &apos;|&apos;</span><br><span class="line">COLLECTION ITEMS TERMINATED BY &apos;,&apos;</span><br><span class="line">MAP KEYS TERMINATED BY &apos;:&apos;;</span><br></pre></td></tr></table></figure>
+<p>查看执行计划：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">EXPLAIN</span><br><span class="line">SELECT gender_age.gender,</span><br><span class="line">       count(*)</span><br><span class="line">FROM employee_partitioned</span><br><span class="line">WHERE YEAR=2020</span><br><span class="line">GROUP BY gender_age.gender</span><br><span class="line">LIMIT 2;</span><br></pre></td></tr></table></figure>
+<p>执行计划概览：<br><img src="3.png" alt=""><br>如上图：Map/Reduce operator tree是抽象语法树AST部分；STAGE DEPENDENCIES包括三个阶段：Stage-0 、Stage-1及Stage-2，其中Stage-0 是root stage，即Stage-1与Stage-2依赖于Stage-0；STAGE PLANS部分，Stage-1与Stage2都包含一个Map Operator Tree和一个Reduce Operator Tree，Stage-0不包含map和reduce，仅仅是一个fetch数据的操作。</p>
+<p>执行计划详细信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">STAGE DEPENDENCIES:</span><br><span class="line">  Stage-1 is a root stage</span><br><span class="line">  Stage-2 depends on stages: Stage-1</span><br><span class="line">  Stage-0 depends on stages: Stage-2</span><br><span class="line"></span><br><span class="line">STAGE PLANS:</span><br><span class="line">  Stage: Stage-1</span><br><span class="line">    Map Reduce</span><br><span class="line">      Map Operator Tree:</span><br><span class="line">          TableScan</span><br><span class="line">            alias: employee_partitioned</span><br><span class="line">            filterExpr: (year = 2020) (type: boolean)</span><br><span class="line">            Statistics: Num rows: 1 Data size: 227 Basic stats: PARTIAL Column stats: NONE</span><br><span class="line">            Select Operator</span><br><span class="line">              expressions: gender_age (type: struct&lt;gender:string,age:int&gt;)</span><br><span class="line">              outputColumnNames: gender_age</span><br><span class="line">              Statistics: Num rows: 1 Data size: 227 Basic stats: PARTIAL Column stats: NONE</span><br><span class="line">              Reduce Output Operator</span><br><span class="line">                key expressions: gender_age.gender (type: string)</span><br><span class="line">                sort order: +</span><br><span class="line">                Map-reduce partition columns: rand() (type: double)</span><br><span class="line">                Statistics: Num rows: 1 Data size: 227 Basic stats: PARTIAL Column stats: NONE</span><br><span class="line">      Reduce Operator Tree:</span><br><span class="line">        Group By Operator</span><br><span class="line">          aggregations: count()</span><br><span class="line">          keys: KEY._col0 (type: string)</span><br><span class="line">          mode: partial1</span><br><span class="line">          outputColumnNames: _col0, _col1</span><br><span class="line">          Statistics: Num rows: 1 Data size: 227 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line">          File Output Operator</span><br><span class="line">            compressed: false</span><br><span class="line">            table:</span><br><span class="line">                input format: org.apache.hadoop.mapred.SequenceFileInputFormat</span><br><span class="line">                output format: org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat</span><br><span class="line">                serde: org.apache.hadoop.hive.serde2.lazybinary.LazyBinarySerDe</span><br><span class="line"></span><br><span class="line">  Stage: Stage-2</span><br><span class="line">    Map Reduce</span><br><span class="line">      Map Operator Tree:</span><br><span class="line">          TableScan</span><br><span class="line">            Reduce Output Operator</span><br><span class="line">              key expressions: _col0 (type: string)</span><br><span class="line">              sort order: +</span><br><span class="line">              Map-reduce partition columns: _col0 (type: string)</span><br><span class="line">              Statistics: Num rows: 1 Data size: 227 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line">              value expressions: _col1 (type: bigint)</span><br><span class="line">      Reduce Operator Tree:</span><br><span class="line">        Group By Operator</span><br><span class="line">          aggregations: count(VALUE._col0)</span><br><span class="line">          keys: KEY._col0 (type: string)</span><br><span class="line">          mode: final</span><br><span class="line">          outputColumnNames: _col0, _col1</span><br><span class="line">          Statistics: Num rows: 1 Data size: 227 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line">          Limit</span><br><span class="line">            Number of rows: 2</span><br><span class="line">            Statistics: Num rows: 1 Data size: 227 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line">            File Output Operator</span><br><span class="line">              compressed: false</span><br><span class="line">              Statistics: Num rows: 1 Data size: 227 Basic stats: COMPLETE Column stats: NONE</span><br><span class="line">              table:</span><br><span class="line">                  input format: org.apache.hadoop.mapred.TextInputFormat</span><br><span class="line">                  output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</span><br><span class="line">                  serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</span><br><span class="line"></span><br><span class="line">  Stage: Stage-0</span><br><span class="line">    Fetch Operator</span><br><span class="line">      limit: 2</span><br><span class="line">      Processor Tree:</span><br><span class="line">        ListSink</span><br></pre></td></tr></table></figure>
+<h2 id="巧用analyze语句"><a href="#巧用analyze语句" class="headerlink" title="巧用analyze语句"></a>巧用analyze语句</h2><p>analyze语句可以收集一些详细的统计信息，比如表的行数、文件数、数据的大小等信息。这些统计信息作为元数据存储在hive的元数据库中。Hive支持表、分区和列级别的统计(与Impala类似)，这些信息作为Hive基于成本优化策略(Cost-Based Optimizer (CBO))的输入,该优化器的主要作用是选择耗费最小系统资源的查询计划。其实，在Hive3.2.0版本中，可以自动收集这些统计信息，当然也可以通过analyze语句进行手动统计表、分区或者字段的信息。具体的使用方式如下：</p>
+<ol>
+<li>收集表的统计信息(非分区表)，当指定NOSCAN关键字时，会忽略扫描文件内容，仅仅统计文件的数量与大小，速度会比较快<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-- 不使用NOSCAN关键字</span><br><span class="line">hive&gt; ANALYZE TABLE user_behavior  COMPUTE STATISTICS;</span><br><span class="line">...</span><br><span class="line">Table default.user_behavior stats: [numFiles=1, numRows=10, totalSize=229, rawDataSize=219]</span><br><span class="line">Time taken: 23.504 seconds</span><br><span class="line">-- 使用NOSCAN关键字</span><br><span class="line">hive&gt; ANALYZE TABLE user_behavior  COMPUTE STATISTICS NOSCAN;</span><br><span class="line">Table default.user_behavior stats: [numFiles=1, numRows=10, totalSize=229, rawDataSize=219]</span><br><span class="line">Time taken: 0.309 seconds</span><br></pre></td></tr></table></figure></li>
+<li>收集分区表的统计信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-- 收集具体分区的统计信息</span><br><span class="line">hive&gt; ANALYZE TABLE employee_partitioned PARTITION(year=2020, month=06) COMPUTE STATISTICS;</span><br><span class="line">...</span><br><span class="line">Partition default.employee_partitioned&#123;year=2020, month=06&#125; stats: [numFiles=1, numRows=0, totalSize=227, rawDataSize=0]</span><br><span class="line">Time taken: 19.283 seconds</span><br><span class="line"></span><br><span class="line">-- 收集所有分区的统计信息</span><br><span class="line">hive&gt; ANALYZE TABLE employee_partitioned PARTITION(year, month) COMPUTE STATISTICS;</span><br><span class="line">...</span><br><span class="line">Partition default.employee_partitioned&#123;year=2020, month=06&#125; stats: [numFiles=1, numRows=0, totalSize=227, rawDataSize=0]</span><br><span class="line">Time taken: 17.528 seconds</span><br></pre></td></tr></table></figure></li>
+<li>收集表的某个字段的统计信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; ANALYZE TABLE user_behavior COMPUTE STATISTICS FOR COLUMNS user_id ;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><strong>尖叫提示：</strong><br>可以通过设置：SET hive.stats.autogather=true，进行自动收集统计信息，对于INSERT OVERWRITE/INTO操作的表或者分区，可以自动收集统计信息。值得注意的是，LOAD操作不能够自动收集统计信息</p>
+<p>一旦这些统计信息收集完毕，可以通过DESCRIBE EXTENDED/FORMATTED语句查询统计信息，具体使用如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">-- 查看一个分区的统计信息</span><br><span class="line">hive&gt; DESCRIBE FORMATTED employee_partitioned PARTITION(year=2020, month=06);</span><br><span class="line">...</span><br><span class="line">Partition Parameters:            </span><br><span class="line">        COLUMN_STATS_ACCURATE   true                </span><br><span class="line">        numFiles                1                   </span><br><span class="line">        numRows                 0                   </span><br><span class="line">        rawDataSize             0                   </span><br><span class="line">        totalSize               227                 </span><br><span class="line">        transient_lastDdlTime   1591437967 </span><br><span class="line">...</span><br><span class="line">-- 查看一张表的统计信息</span><br><span class="line">hive&gt; DESCRIBE FORMATTED employee_partitioned;</span><br><span class="line">...</span><br><span class="line">Table Parameters:                </span><br><span class="line">        numPartitions           1                   </span><br><span class="line">        transient_lastDdlTime   1591431482 </span><br><span class="line">...</span><br><span class="line">-- 查看某列的统计信息</span><br><span class="line">hive&gt; DESCRIBE FORMATTED  user_behavior.user_id;</span><br></pre></td></tr></table></figure>
+<h2 id="常用日志分析"><a href="#常用日志分析" class="headerlink" title="常用日志分析"></a>常用日志分析</h2><p>日志提供了job运行的详细信息，通过查看日志信息，可以分析出导致作业执行瓶颈的问题，主要包括两种类型的日志：系统日志和作业日志。</p>
+<p>系统日志包含了Hive运行时的状态等信息，可以通过{HIVE_HOME}/conf/hive-log4j.properties文件进行配置，主要的配置选项有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hive.root.logger=WARN,DRFA ## 日志级别</span><br><span class="line">hive.log.dir=/tmp/$&#123;user.name&#125; ## 日志路径</span><br><span class="line">hive.log.file=hive.log ## 日志名称</span><br></pre></td></tr></table></figure>
+<p>也可以通过Hive cli命令行设置日志级别：$hive –hiveconf hive.root.logger=DEBUG,console这种方式只能在当前会话生效。</p>
+<p>作业日志所包含的作业信息通常是由YARN管理的，可以通过yarn logs -applicationId <application_id>命令查看作业日志。</p>
+<h1 id="设计优化"><a href="#设计优化" class="headerlink" title="设计优化"></a>设计优化</h1><h2 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h2><p>对于一张比较大的表，将其设计成分区表可以提升查询的性能，对于一个特定分区的查询，只会加载对应分区路径的文件数据，所以执行速度会比较快。值得注意的是，分区字段的选择是影响查询性能的重要因素，尽量避免层级较深的分区，这样会造成太多的子文件夹。一些常见的分区字段可以是：</p>
+<ul>
+<li>日期或者时间<br>比如year、month、day或者hour，当表中存在时间或者日期字段时，可以使用些字段。</li>
+<li>地理位置<br>比如国家、省份、城市等</li>
+<li>业务逻辑<br>比如部门、销售区域、客户等等</li>
+</ul>
+<h2 id="分桶表"><a href="#分桶表" class="headerlink" title="分桶表"></a>分桶表</h2><p>与分区表类似，分桶表的组织方式是将HDFS上的文件分割成多个文件。分桶可以加快数据采样，也可以提升join的性能(join的字段是分桶字段)，因为分桶可以确保某个key对应的数据在一个特定的桶内(文件)，所以巧妙地选择分桶字段可以大幅度提升join的性能。通常情况下，分桶字段可以选择经常用在过滤操作或者join操作的字段。</p>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><p>创建索引是关系型数据库性能调优的常见手段，在Hive中也不例外。Hive从0.7版本开始支持索引，使用索引相比全表扫描而言，是一种比较廉价的操作，Hive中创建索引的方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX idx_user_id_user_behavior</span><br><span class="line">ON TABLE user_behavior (user_id)</span><br><span class="line">AS &apos;COMPACT&apos;</span><br><span class="line">WITH DEFERRED REBUILD;</span><br></pre></td></tr></table></figure>
+<p>上面创建的是COMPACT索引，存储的是索引列与其对应的block id的pair对。除了此种索引外，Hive还支持位图索引(BITMAP),使用方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX idx_behavior_user_behavior</span><br><span class="line">ON TABLE user_behavior (behavior)</span><br><span class="line">AS &apos;BITMAP&apos;</span><br><span class="line">WITH DEFERRED REBUILD;</span><br></pre></td></tr></table></figure>
+<p>上面创建的索引时，使用了WITH DEFERRED REBUILD选项，该选项可以避免索引立即被创建，当建立索引时，可以使用LTER…REBUILD命令(见下面的示例)，值得注意的是：当基表(被创建索引的表)发生变化时，该命令需要被再次执行以便更新索引到最新的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER INDEX idx_user_id_user_behavior ON user_behavior REBUILD;</span><br></pre></td></tr></table></figure>
+<p>一旦索引创建成功，会生成一张索引表，表的名称格式为：数据库名<strong>表名_索引名</strong>，可以使用下面的命令查看索引：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; SHOW TABLES &apos;*idx*&apos;;</span><br><span class="line">OK</span><br><span class="line">default__user_behavior_idx_user_id_user_behavior__</span><br><span class="line">Time taken: 0.044 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
+<p>索引表包含索引列、HDFS的文件URI以及每行的偏移量，可以通过下面命令查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">-- 查看索引表结构</span><br><span class="line">hive&gt; DESC default__user_behavior_idx_user_id_user_behavior__;</span><br><span class="line">OK</span><br><span class="line">user_id                 int                                         </span><br><span class="line">_bucketname             string                                      </span><br><span class="line">_offsets                array&lt;bigint&gt;                               </span><br><span class="line">Time taken: 0.109 seconds, Fetched: 3 row(s)</span><br><span class="line">-- 查看索引表内容</span><br><span class="line">hive&gt; SELECT * FROM default__user_behavior_idx_user_id_user_behavior__;</span><br><span class="line">OK</span><br><span class="line">9       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [181]</span><br><span class="line">7       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [136]</span><br><span class="line">1       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [0]</span><br><span class="line">6       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [113]</span><br><span class="line">5       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [90]</span><br><span class="line">10      hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [205]</span><br><span class="line">4       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [66]</span><br><span class="line">8       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [158]</span><br><span class="line">3       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [44]</span><br><span class="line">2       hdfs://cdh03:8020/user/hive/warehouse/user_behavior/userbehavior.csv    [22]</span><br><span class="line">Time taken: 0.28 seconds, Fetched: 10 row(s)</span><br></pre></td></tr></table></figure>
+<p>如果要删除索引，可以使用DROP INDEX命令，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DROP INDEX idx_user_id_user_behavior ON user_behavior;</span><br></pre></td></tr></table></figure>
+<h2 id="使用skewed-temporary表"><a href="#使用skewed-temporary表" class="headerlink" title="使用skewed/temporary表"></a>使用skewed/temporary表</h2><p>Hive除了可以使用内部表、外部表、分区表、分桶表之外，也可以使用skewed/temporary表，也可以在一定程度上提升性能。</p>
+<p>Hive从0.10版本之后开始支持skewed表，该表可以缓解数据倾斜。这种表之所以能够提升性能，是因为可以自动将造成数据倾斜的数据分割成不同的文件或者路径。使用示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE sample_skewed_table (</span><br><span class="line">dept_no int, </span><br><span class="line">dept_name string</span><br><span class="line">) </span><br><span class="line">SKEWED BY (dept_no) ON (1000, 2000);-- 指定数据倾斜字段</span><br></pre></td></tr></table></figure>
+<p>另外，还可以使用temporary临时表，将公共使用部分的数据集建成临时表，同时临时表支持SSD或memory的数据存储，从而可以提升性能。</p>
+<h1 id="数据存储优化"><a href="#数据存储优化" class="headerlink" title="数据存储优化"></a>数据存储优化</h1><h2 id="文件格式"><a href="#文件格式" class="headerlink" title="文件格式"></a>文件格式</h2><p>Hive支持TEXTFILE, SEQUENCEFILE, AVRO, RCFILE, ORC,以及PARQUET文件格式，可以通过两种方式指定表的文件格式：</p>
+<ul>
+<li>CREATE TABLE … STORE AS <file_format>:即在建表时指定文件格式，默认是TEXTFILE</li>
+<li>ALTER TABLE … [PARTITION partition_spec] SET FILEFORMAT <file_format>:修改具体表的文件格式</li>
+</ul>
+<p>一旦存储文件格式为TEXT的表被创建，可以直接通过load命令装载一个text类型的文件。我们可以先使用此命令将数据装载到一张TEXT格式的表中，然后在通过INSERT OVERWRITE/INTO TABLE … SELECT命令将数据装载到其他文件格式的表中。</p>
+<p><strong>尖叫提示：</strong><br>如果要改变创建表的默认文件格式，可以使用hive.default.fileformat=<file_format>进行配置，改配置可以针对所有表。同时也可以使用hive.default.fileformat.managed = <file_format>进行配置，改配置仅适用于内部表或外部表</p>
+<p>TEXT, SEQUENCE和 AVRO文件是面向行的文件存储格式，不是最佳的文件格式，因为即便是只查询一列数据，使用这些存储格式的表也需要读取完整的一行数据。另一方面，面向列的存储格式(RCFILE, ORC, PARQUET)可以很好地解决上面的问题。关于每种文件格式的说明，如下：</p>
+<ul>
+<li>TEXTFILE</li>
+</ul>
+<p>创建表时的默认文件格式，数据被存储成文本格式。文本文件可以被分割和并行处理，也可以使用压缩，比如GZip、LZO或者Snappy。然而大部分的压缩文件不支持分割和并行处理，会造成一个作业只有一个mapper去处理数据，使用压缩的文本文件要确保文件的不要过大，一般接近两个HDFS块的大小。</p>
+<ul>
+<li>SEQUENCEFILE</li>
+</ul>
+<p>key/value对的二进制存储格式，sequence文件的优势是比文本格式更好压缩，sequence文件可以被压缩成块级别的记录，块级别的压缩是一个很好的压缩比例。如果使用块压缩，需要使用下面的配置：set hive.exec.compress.output=true; set io.seqfile.compression.type=BLOCK</p>
+<ul>
+<li>AVRO</li>
+</ul>
+<p>二进制格式文件，除此之外，avro也是一个序列化和反序列化的框架。avro提供了具体的数据schema。</p>
+<ul>
+<li>RCFILE</li>
+</ul>
+<p>全称是Record Columnar File，首先将表分为几个行组，对每个行组内的数据进行按列存储，每一列的数据都是分开存储，即先水平划分，再垂直划分。</p>
+<ul>
+<li>ORC</li>
+</ul>
+<p>全称是Optimized Row Columnar，从hive0.11版本开始支持，ORC格式是RCFILE格式的一种优化的格式，提供了更大的默认块(256M)</p>
+<ul>
+<li>PARQUET</li>
+</ul>
+<p>另外一种列式存储的文件格式，与ORC非常类似，与ORC相比，Parquet格式支持的生态更广，比如低版本的impala不支持orc格式</p>
+<h2 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h2><p>压缩技术可以减少map与reduce之间的数据传输，从而可以提升查询性能，关于压缩的配置可以在hive的命令行中或者hive-site.xml文件中进行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET hive.exec.compress.intermediate=true</span><br></pre></td></tr></table></figure>
+<p>开启压缩之后，可以选择下面的压缩格式：<br><img src="4.png" alt=""><br>关于压缩的编码器可以通过mapred-site.xml, hive-site.xml进行配置，也可以通过命令行进行配置,比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-- 中间结果压缩</span><br><span class="line">SET hive.intermediate.compression.codec=org.apache.hadoop.io.compress.SnappyCodec</span><br><span class="line">-- 输出结果压缩</span><br><span class="line">SET hive.exec.compress.output=true;</span><br><span class="line">SET mapreduce.output.fileoutputformat.compress.codec=org.apache.hadoop.io.compress.SnappyCodc</span><br></pre></td></tr></table></figure>
+<h2 id="存储优化"><a href="#存储优化" class="headerlink" title="存储优化"></a>存储优化</h2><p>经常被访问的数据称之为热数据，可以针对热数据提升查询的性能。比如通过增加热数据的副本数，可以增加数据本地性命中的可能性，从而提升查询性能，当然这要与存储容量之间做出权衡。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hdfs dfs -setrep -R -w 4 /user/hive/warehouse/employee</span><br></pre></td></tr></table></figure>
+<p>注意，大量的小文件或者冗余副本会造成namenode节点内存耗费，尤其是大量小于HDFS块大小的文件。HDSF本身提供了应对小文件的解决方案：</p>
+<ul>
+<li>Hadoop Archive/HAR:将小文件打包成大文件</li>
+<li>SEQUENCEFILE格式：将小文件压缩成大文件</li>
+<li>CombineFileInputFormat:在map和reduce处理之前组合小文件</li>
+<li>HDFS Federation:HDFS联盟，使用多个namenode节点管理文件</li>
+</ul>
+<p>对于Hive而言，可以使用下面的配置将查询结果的文件进行合并，从而避免产生小文件：</p>
+<ul>
+<li>hive.merge.mapfiles: 在一个仅有map的作业中，合并最后的结果文件，默认为true</li>
+<li>hive.merge.mapredfiles:合并mapreduce作业的结果小文件 默认false，可以设置true</li>
+<li>hive.merge.size.per.task:定义合并文件的大小，默认 256,000,000，即256MB</li>
+<li>hive.merge.smallfiles.avgsize: T触发文件合并的文件大小阈值，默认值是16,000,000</li>
+</ul>
+<p>当一个作业的输出结果文件的大小小于hive.merge.smallfiles.avgsize设定的阈值，并且hive.merge.mapfiles与hive.merge.mapredfiles设置为true，Hive会额外启动一个mr作业将输出小文件合并成大文件。</p>
+<h1 id="作业优化"><a href="#作业优化" class="headerlink" title="作业优化"></a>作业优化</h1><h2 id="本地模式"><a href="#本地模式" class="headerlink" title="本地模式"></a>本地模式</h2><p>当Hive处理的数据量较小时，启动分布式去处理数据会有点浪费，因为可能启动的时间比数据处理的时间还要长，从Hive0.7版本之后，Hive支持将作业动态地转为本地模式，需要使用下面的配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SET hive.exec.mode.local.auto=true; -- 默认 false</span><br><span class="line">SET hive.exec.mode.local.auto.inputbytes.max=50000000;</span><br><span class="line">SET hive.exec.mode.local.auto.input.files.max=5; -- 默认 4</span><br></pre></td></tr></table></figure>
+<p>一个作业只要满足下面的条件，会启用本地模式</p>
+<ul>
+<li>输入文件的大小小于hive.exec.mode.local.auto.inputbytes.max配置的大小</li>
+<li>map任务的数量小于hive.exec.mode.local.auto.input.files.max配置的大小</li>
+<li>reduce任务的数量是1或者0</li>
+</ul>
+<h2 id="JVM重用"><a href="#JVM重用" class="headerlink" title="JVM重用"></a>JVM重用</h2><p>默认情况下，Hadoop会为为一个map或者reduce启动一个JVM，这样可以并行执行map和reduce。当map或者reduce是那种仅运行几秒钟的轻量级作业时，JVM启动进程所耗费的时间会比作业执行的时间还要长。Hadoop可以重用JVM，通过共享JVM以串行而非并行的方式运行map或者reduce。JVM的重用适用于同一个作业的map和reduce，对于不同作业的task不能够共享JVM。如果要开启JVM重用，需要配置一个作业最大task数量，默认值为1，如果设置为-1，则表示不限制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET mapreduce.job.jvm.numtasks=5;</span><br></pre></td></tr></table></figure>
+<p>这个功能的缺点是，开启JVM重用将一直占用使用到的task插槽，以便进行重用，直到任务完成后才能释放。如果某个“不平衡的”job中有某几个reduce task执行的时间要比其他Reduce task消耗的时间多的多的话，那么保留的插槽就会一直空闲着却无法被其他的job使用，直到所有的task都结束了才会释放。</p>
+<h2 id="并行执行"><a href="#并行执行" class="headerlink" title="并行执行"></a>并行执行</h2><p>Hive的查询通常会被转换成一系列的stage，这些stage之间并不是一直相互依赖的，所以可以并行执行这些stage，可以通过下面的方式进行配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET hive.exec.parallel=true; -- 默认false</span><br><span class="line">SET hive.exec.parallel.thread.number=16; -- 默认8</span><br></pre></td></tr></table></figure>
+<p>并行执行可以增加集群资源的利用率，如果集群的资源使用率已经很高了，那么并行执行的效果不会很明显。</p>
+<h2 id="Fetch模式"><a href="#Fetch模式" class="headerlink" title="Fetch模式"></a>Fetch模式</h2><p>Fetch模式是指Hive中对某些情况的查询可以不必使用MapReduce计算。可以简单地读取表对应的存储目录下的文件，然后输出查询结果到控制台。在开启fetch模式之后，在全局查找、字段查找、limit查找等都启动mapreduce，通过下面方式进行配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive.fetch.task.conversion=more</span><br></pre></td></tr></table></figure>
+<h2 id="JOIN优化"><a href="#JOIN优化" class="headerlink" title="JOIN优化"></a>JOIN优化</h2><h3 id="普通join"><a href="#普通join" class="headerlink" title="普通join"></a>普通join</h3><p>普通join又称之为reduce端join，是一种最基本的join，并且耗时较长。对于大表join小表，需要将大表放在右侧，即小表join大表。新版的hive已经对小表JOIN大表和大表JOIN小表进行了优化。小表放在左边和右边已经没有明显区别。</p>
+<h3 id="map端join"><a href="#map端join" class="headerlink" title="map端join"></a>map端join</h3><p>map端join适用于当一张表很小(可以存在内存中)的情况，即可以将小表加载至内存。Hive从0.7开始支持自动转为map端join，具体配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET hive.auto.convert.join=true; --  hivev0.11.0之后默认true</span><br><span class="line">SET hive.mapjoin.smalltable.filesize=600000000; -- 默认 25m</span><br><span class="line">SET hive.auto.convert.join.noconditionaltask=true; -- 默认true，所以不需要指定map join hint</span><br><span class="line">SET hive.auto.convert.join.noconditionaltask.size=10000000; -- 控制加载到内存的表的大小</span><br></pre></td></tr></table></figure>
+<p>一旦开启map端join配置，Hive会自动检查小表是否大于hive.mapjoin.smalltable.filesize配置的大小，如果大于则转为普通的join，如果小于则转为map端join。</p>
+<p>关于map端join的原理，如下图所示：<br><img src="5.png" alt=""><br>首先，Task A(客户端本地执行的task)负责读取小表a，并将其转成一个HashTable的数据结构，写入到本地文件，之后将其加载至分布式缓存。</p>
+<p>然后，Task B任务会启动map任务读取大表b，在Map阶段，根据每条记录与分布式缓存中的a表对应的hashtable关联，并输出结果。</p>
+<p>注意：map端join没有reduce任务，所以map直接输出结果，即有多少个map任务就会产生多少个结果文件。</p>
+<h3 id="Bucket-map-join"><a href="#Bucket-map-join" class="headerlink" title="Bucket map join"></a>Bucket map join</h3><p>bucket map join是一种特殊的map端join，主要区别是其应用在分桶表上。如果要开启分桶的map端join，需要开启一下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET hive.auto.convert.join=true;</span><br><span class="line">SET hive.optimize.bucketmapjoin=true; -- 默认false</span><br></pre></td></tr></table></figure>
+<p>在一个分桶的map端join中，所有参与join的表必须是分桶表，并且join的字段是分桶字段(通过CLUSTERED BY指定)，另外，对于大表的分桶数量必须是小表分桶数量的倍数。<br>与普通的join相比，分桶join仅仅只读取所需要的桶数据，不需要全表扫描。</p>
+<h3 id="Sort-merge-bucket-SMB-join"><a href="#Sort-merge-bucket-SMB-join" class="headerlink" title="Sort merge bucket (SMB) join"></a>Sort merge bucket (SMB) join</h3><p>SMBjoin应用与分桶表，如果两张参与join的表是排序的，并且分桶字段相同，这样可以使用sort-merge join，其优势在于不用把小表完全加载至内存中，会读取两张分桶表对应的桶，执行普通join(包括map与reduce)配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SET hive.input.format=</span><br><span class="line">org.apache.hadoop.hive.ql.io.BucketizedHiveInputFormat;</span><br><span class="line">SET hive.auto.convert.sortmerge.join=true;</span><br><span class="line">SET hive.optimize.bucketmapjoin=true;</span><br><span class="line">SET hive.optimize.bucketmapjoin.sortedmerge=true;</span><br><span class="line">SET hive.auto.convert.sortmerge.join.noconditionaltask=true;</span><br></pre></td></tr></table></figure>
+<h3 id="Sort-merge-bucket-map-SMBM-join"><a href="#Sort-merge-bucket-map-SMBM-join" class="headerlink" title="Sort merge bucket map (SMBM) join"></a>Sort merge bucket map (SMBM) join</h3><p>SMBM join是一种特殊的bucket map join，与map端join不同的是，不用将小表的所有数据行都加载至内存中。使用SMBM join，参与join的表必须是排序的，有着相同的分桶字段，并且join字段与分桶字段相同。配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SET hive.auto.convert.join=true;</span><br><span class="line">SET hive.auto.convert.sortmerge.join=true</span><br><span class="line">SET hive.optimize.bucketmapjoin=true;</span><br><span class="line">SET hive.optimize.bucketmapjoin.sortedmerge=true;</span><br><span class="line">SET hive.auto.convert.sortmerge.join.noconditionaltask=true;</span><br><span class="line">SET hive.auto.convert.sortmerge.join.bigtable.selection.policy=</span><br><span class="line">org.apache.hadoop.hive.ql.optimizer.TableSizeBasedBigTableSelectorForAutoSMJ;</span><br></pre></td></tr></table></figure>
+<h3 id="Skew-join"><a href="#Skew-join" class="headerlink" title="Skew join"></a>Skew join</h3><p>当被处理的数据分布极其不均匀时，会造成数据倾斜的现象。Hive可以通过如下的配置优化数据倾斜的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 默认false，如果数据倾斜，可以将其设置为true</span><br><span class="line">SET hive.optimize.skewjoin=true;</span><br><span class="line">-- 默认为100000，如果key的数量大于配置的值，则超过的数量的key对应的数据会被发送到其他的reduce任务</span><br><span class="line">SET hive.skewjoin.key=100000;</span><br></pre></td></tr></table></figure>
+<p><strong>尖叫提示：</strong><br>数据倾斜在group by的情况下也会发生，所以可以开启一个配置：set hive.groupby.skewindata=true，优化group by出现的数据倾斜，一旦开启之后，执行作业时会首先额外触发一个mr作业，该作业的map任务的输出会被随机地分配到reduce任务上，从而避免数据倾斜</p>
+<h2 id="执行引擎"><a href="#执行引擎" class="headerlink" title="执行引擎"></a>执行引擎</h2><p>Hive支持多种执行引擎，比如spark、tez。对于执行引擎的选择，会影响整体的查询性能。使用的配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET hive.execution.engine=&lt;engine&gt;; -- &lt;engine&gt; = mr|tez|spark</span><br></pre></td></tr></table></figure>
+<ul>
+<li>mr:默认的执行引擎，在Hive2.0版本版本中被标记过时</li>
+<li>tez:可以将多个有依赖的作业转换为一个作业，这样只需写一次HDFS，且中间节点较少，从而大大提升作业的计算性能。</li>
+<li>spark:一个通用的大数据计算框架，基于内存计算，速度较快</li>
+</ul>
+<h2 id="优化器"><a href="#优化器" class="headerlink" title="优化器"></a>优化器</h2><p>与关系型数据库类似，Hive会在真正执行计算之前，生成和优化逻辑执行计划与物理执行计划。Hive有两种优化器：<strong>Vectorize(向量化优化器)与Cost-Based Optimization (CBO,成本优化器)</strong>。</p>
+<h3 id="向量化优化器"><a href="#向量化优化器" class="headerlink" title="向量化优化器"></a>向量化优化器</h3><p>向量化优化器会同时处理大批量的数据，而不是一行一行地处理。要使用这种向量化的操作，要求表的文件格式为ORC，配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET hive.vectorized.execution.enabled=true; -- 默认 false</span><br></pre></td></tr></table></figure>
+<h3 id="成本优化器"><a href="#成本优化器" class="headerlink" title="成本优化器"></a>成本优化器</h3><p>Hive的CBO是基于apache Calcite的，Hive的CBO通过查询成本(有analyze收集的统计信息)会生成有效率的执行计划，最终会减少执行的时间和资源的利用，使用CBO的配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SET hive.cbo.enable=true; --从 v0.14.0默认true</span><br><span class="line">SET hive.compute.query.using.stats=true; -- 默认false</span><br><span class="line">SET hive.stats.fetch.column.stats=true; -- 默认false</span><br><span class="line">SET hive.stats.fetch.partition.stats=true; -- 默认true</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文主要介绍了Hive调优的基本思路。总共分为四部分，首先介绍了调优的基本工具使用(explain、analyze);接着从表设计层面介绍了一些优化策略(分区、分桶、索引)；然后介绍了数据存储方面的优化(文件格式、压缩、存储优化)；最后从作业层面介绍了优化的技巧(开启本地模式、JVM重用、并行执行、fetch模式、Join优化、执行引擎与优化器)。本文主要为Hive性能调优提供一些思路，在实际的操作过程中需要具体问题具体分析。总之一句话，重剑无锋，为作业分配合理的资源基本上可以满足大部分的情况，适合的就是最好的，没有必要追求狂拽酷炫的技巧，应该把更多的精力放在业务问题上，因为工具的存在的价值是为了解决业务问题的，切不可本末倒置。</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[ZooKeeper] ZooKeeper实现原理/" data-toggle="tooltip" data-placement="top" title="[ZooKeeper] ZooKeeper实现原理">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/浅谈大数据平台建设/" data-toggle="tooltip" data-placement="top" title="浅谈大数据平台建设">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#性能调优的工具"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">性能调优的工具</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#善用explain语句"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">善用explain语句</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#巧用analyze语句"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">巧用analyze语句</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#常用日志分析"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">常用日志分析</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#设计优化"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">设计优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分区表"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">分区表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#分桶表"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">分桶表</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">索引</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#使用skewed-temporary表"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">使用skewed/temporary表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据存储优化"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">数据存储优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件格式"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">文件格式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#压缩"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">压缩</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#存储优化"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">存储优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#作业优化"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">作业优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#本地模式"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">本地模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JVM重用"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">JVM重用</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#并行执行"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">并行执行</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Fetch模式"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">Fetch模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JOIN优化"><span class="toc-nav-number">4.5.</span> <span class="toc-nav-text">JOIN优化</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#普通join"><span class="toc-nav-number">4.5.1.</span> <span class="toc-nav-text">普通join</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#map端join"><span class="toc-nav-number">4.5.2.</span> <span class="toc-nav-text">map端join</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Bucket-map-join"><span class="toc-nav-number">4.5.3.</span> <span class="toc-nav-text">Bucket map join</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Sort-merge-bucket-SMB-join"><span class="toc-nav-number">4.5.4.</span> <span class="toc-nav-text">Sort merge bucket (SMB) join</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Sort-merge-bucket-map-SMBM-join"><span class="toc-nav-number">4.5.5.</span> <span class="toc-nav-text">Sort merge bucket map (SMBM) join</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Skew-join"><span class="toc-nav-number">4.5.6.</span> <span class="toc-nav-text">Skew join</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#执行引擎"><span class="toc-nav-number">4.6.</span> <span class="toc-nav-text">执行引擎</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#优化器"><span class="toc-nav-number">4.7.</span> <span class="toc-nav-text">优化器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#向量化优化器"><span class="toc-nav-number">4.7.1.</span> <span class="toc-nav-text">向量化优化器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#成本优化器"><span class="toc-nav-number">4.7.2.</span> <span class="toc-nav-text">成本优化器</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#总结"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">总结</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
