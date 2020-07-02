@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [数据仓库] 离线数仓VS实时数仓 - 李玉坤 | Blog
+          [数据平台]01 数据仓库之离线 一 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库] 离线数仓VS实时数仓/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据平台]01 数据仓库之离线 一/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -90,12 +90,14 @@
                             
                               <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                             
+                              <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                            
                         </div>
-                        <h1>[数据仓库] 离线数仓VS实时数仓</h1>
-                        <h2 class="subheading">离线数仓、离线数仓架构、实时数仓、实时数仓架构、数仓架构发展、Lambda架构、Kappa架构、Kappa架构的不足、Lambda架构的不足、大公司实时数仓架构</h2>
+                        <h1>[数据平台]01 数据仓库之离线 一</h1>
+                        <h2 class="subheading">数据仓库VS数据库[OLTP vs OLAP、数据仓库数据流程图、为什么建设数据仓库、数据仓库建设目标、如何实现]、数据分层建设[数仓建设背景、为什么进行数仓分层、STG层、ODS层、DWD层、DWS层、DIM层、DM层]</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-03-31
+                            2018-04-03
                         </span>
                     </div>
                 
@@ -212,39 +214,28 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="离线数仓"><a href="#离线数仓" class="headerlink" title="离线数仓"></a>离线数仓</h1><p>离线数据仓库主要基于Hive等技术来构建T+1的离线数据。</p>
-<p>通过定时任务每天拉取增量数据导入到Hive表中。</p>
-<p>创建各个业务相关的主题维度数据，对外提供T+1的数据查询接口。</p>
-<h1 id="离线数仓架构"><a href="#离线数仓架构" class="headerlink" title="离线数仓架构"></a>离线数仓架构</h1><p>数据源通过离线的方式导入到离线数仓中。</p>
-<p>数据分层架构：ODS、DWD、DM等。</p>
-<p>下游应用根据业务需求选择直接读取DM。</p>
-<h1 id="实时数仓"><a href="#实时数仓" class="headerlink" title="实时数仓"></a>实时数仓</h1><p>实时数仓基于数据采集工具，将原始数据写入到Kafka等数据通道。</p>
-<p>数据最终写入到类似于Hbase这样支持快速读写的存储系统。</p>
-<p>对外提供分钟界别、甚至秒级别的查询方案。</p>
-<h1 id="实时数仓架构"><a href="#实时数仓架构" class="headerlink" title="实时数仓架构"></a>实时数仓架构</h1><p>业务实时性要求的不断提高，实时处理从次要部分变为了主要部分。</p>
-<p>Lambda架构：在离线大数据架构基础上加了一个加速层，使用流处理技术完成实时性较高的指标计算。</p>
-<p>Kappa架构：以实时事件处理为核心，统一数据处理。<br><img src="1.png" alt=""></p>
-<h1 id="数仓架构发展"><a href="#数仓架构发展" class="headerlink" title="数仓架构发展"></a>数仓架构发展</h1><p><img src="2.png" alt=""></p>
-<h1 id="Lambda架构"><a href="#Lambda架构" class="headerlink" title="Lambda架构"></a>Lambda架构</h1><p><img src="3.png" alt=""><br>批处理层（Batch Layer）:存储管理主数据集（不可变的数据集）和预先批处理计算好的视图。</p>
-<p>速度处理层（Speed Layer）：实时处理新来的数据，降低批处理层的处理延时。</p>
-<p>响应查询的服务层（Serving Layer）：返回预先计算数据视图和速度层处理构建好的数据视图的合并结果来响应查询。</p>
-<h1 id="Lambda架构的不足"><a href="#Lambda架构的不足" class="headerlink" title="Lambda架构的不足"></a>Lambda架构的不足</h1><p>同样的需求需要开发两套一样的代码。</p>
-<p>同样的逻辑计算两次，整体资源占用会增多。</p>
-<h1 id="Kappa架构"><a href="#Kappa架构" class="headerlink" title="Kappa架构"></a>Kappa架构</h1><p>与Lambda架构不同的是，Kappa架构去掉了批处理层这一体系结构。</p>
-<p>统一了数据的处理方式，不再维护离线和实时两套代码逻辑。<br><img src="4.png" alt=""><br>选择一个具有重放功能的、能够保存历史数据并支持多消费的消息队列。</p>
-<p>当某个或某些指标有重新处理的需求时，从上游消息队列的最开始重新消费。</p>
-<p>当新作业赶上进度后，切换业务数据源，删除老作业。</p>
-<h1 id="Kappa架构的不足"><a href="#Kappa架构的不足" class="headerlink" title="Kappa架构的不足"></a>Kappa架构的不足</h1><p>需求修改或历史数据重新处理都要通过上游重放完成。</p>
-<p>重新处理历史的吞吐能力会低于批处理。</p>
-<p>并不适用于批处理和流处理代码逻辑不一致的场景。</p>
-<h1 id="Lambda-VS-Kappa"><a href="#Lambda-VS-Kappa" class="headerlink" title="Lambda VS Kappa"></a>Lambda VS Kappa</h1><p><img src="5.png" alt=""></p>
-<h1 id="大公司实时数仓架构"><a href="#大公司实时数仓架构" class="headerlink" title="大公司实时数仓架构"></a>大公司实时数仓架构</h1><p><img src="6.png" alt=""><br><img src="7.png" alt=""><br><img src="8.png" alt=""></p>
-<h1 id="实时数仓建设"><a href="#实时数仓建设" class="headerlink" title="实时数仓建设"></a>实时数仓建设</h1><p>整体架构设计通过分层设计为OLAP查询分担压力。</p>
-<p>复杂的计算统一在实时计算层做，避免给OLAP查询带来过大的压力。</p>
-<p>汇总计算通过OLAP数据查询引擎进行。</p>
-<p>整个架构中实时计算一般是Spark+Flink配合。</p>
-<p>消息队列Kafka一家独大，配合HBase、ES、MySQL进行数据落盘。</p>
-<p>OLAP领域Presto、Druid、Clickhouse、Greenplum等</p>
+                <h1 id="数据仓库VS数据库"><a href="#数据仓库VS数据库" class="headerlink" title="数据仓库VS数据库"></a>数据仓库VS数据库</h1><p>数据仓库概念：数据仓库是将<strong>多个数据源</strong>的数据经过ETL处理之后，按照一定的<strong>主题集成</strong>起来提供<strong>决策支持</strong>和<strong>联机分析</strong>应用的结构化数据环节。</p>
+<p>ETL：Extract（抽取）、Transfrom（转换）、Load（加载）</p>
+<p>1、数据库是面向事务的设计，数据仓库是面向主题的设计的。<br>2、数据库一般存储在线交易数据，数据仓库存储的一般是历史数据。<br>3、数据库设计是避免冗余，采用三范式的规则来设计，数据仓库在设计是有意引入冗余，采用反范式的方式来设计。</p>
+<h2 id="OLTP-vs-OLAP"><a href="#OLTP-vs-OLAP" class="headerlink" title="OLTP vs OLAP"></a>OLTP vs OLAP</h2><p>联机事务处理OLTP是传统的关系型数据库的主要，主要是基本的、日常的事务处理，例如银行交易。</p>
+<p>联机分析处理OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
+<h2 id="数据仓库数据流程图"><a href="#数据仓库数据流程图" class="headerlink" title="数据仓库数据流程图"></a>数据仓库数据流程图</h2><p><img src="1.png" alt=""></p>
+<p>名词解释：<br>Operational dbs：内部数据库<br>External sources：外部数据源<br>Extract Transform Load Refresh：ETL 转换<br>Data Warehouse：数据仓库<br>Monitoring &amp; Administration ：监控 权限<br>Metadata Repository：元数据存储库<br>Data Marts：数据集市（主题分类）<br>OLAP Servers：联机分析服务<br>Analysis：分析<br>Query/Reporting：查询/报表<br>Data Mining：数据挖掘</p>
+<h2 id="为什么建设数据仓库"><a href="#为什么建设数据仓库" class="headerlink" title="为什么建设数据仓库"></a>为什么建设数据仓库</h2><p>1、各个业务数据存在不一致，数据关系混乱。<br>2、业务系统一般针对于OLTP，而数据仓库可以实现OLAP分析。<br>3、数据仓库是多源的复杂环境，可以对多个业务的数据进行统一分析。</p>
+<h2 id="数据仓库建设目标"><a href="#数据仓库建设目标" class="headerlink" title="数据仓库建设目标"></a>数据仓库建设目标</h2><p>1、集成多源数据，数据来源和去向可追溯，梳理血缘关系。<br>2、减少重复开发，保存通用型中间数据，避免重复。<br>3、屏蔽底层业务逻辑，对外提供一致的、结构清晰的数据。</p>
+<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><p>1、实现通用型数据ETL工具<br>2、根据业务建立合理的数据分层模型</p>
+<h1 id="数据库分层建设"><a href="#数据库分层建设" class="headerlink" title="数据库分层建设"></a>数据库分层建设</h1><h2 id="数仓建设背景"><a href="#数仓建设背景" class="headerlink" title="数仓建设背景"></a>数仓建设背景</h2><p>数据建设刚起步，大部分数据经过粗暴的数据接入后直接对接业务。</p>
+<p>数据建设发展到一定阶段，发现数据的使用杂乱无章，各种业务都是从原始数据直接计算而得。</p>
+<p>各种重复计算，严重浪费了计算资源，需要优化性能。</p>
+<h2 id="为什么进行数仓分层"><a href="#为什么进行数仓分层" class="headerlink" title="为什么进行数仓分层"></a>为什么进行数仓分层</h2><p>1、清晰数据结构：每个数据分层都有对应的作用域。<br>2、数据血缘追踪：对各层之间的数据表转换进行跟踪，建立血缘关系<br>3、减少重复开发：规范数据分层，开发通用的中间层数据。<br>4、屏蔽原始数据的异常：通过数据分层管控数据质量。<br>5、屏蔽业务的影响：不必改一次业务就需要重新接入数据。<br>6、复杂问题简单化：将复杂的数仓架构分解成多个数据层来完成。</p>
+<p><img src="2.png" alt=""></p>
+<h2 id="STG层"><a href="#STG层" class="headerlink" title="STG层"></a>STG层</h2><p>原始数据层：存储原始数据，数据结构与采集数据一致。<br>存储周期：保存全部数据。<br>表命名规范：stg_主题_表内容_分表规则。</p>
+<h2 id="ODS层"><a href="#ODS层" class="headerlink" title="ODS层"></a>ODS层</h2><p>数据操作层：对STG层数据进行初步处理，如去除脏数据，去除无用字段。<br>存储周期：默认保留近30天数据。<br>表命名规范：ods_主题_表内容_分表规则。</p>
+<h2 id="DWD层"><a href="#DWD层" class="headerlink" title="DWD层"></a>DWD层</h2><p>数据明细层：数据处理后的宽表，目标为满足80%的业务需求。<br>存储周期：保留历史至今所有的数据。<br>表命名规范：dwd_业务描述_时间粒度。</p>
+<h2 id="DWS层"><a href="#DWS层" class="headerlink" title="DWS层"></a>DWS层</h2><p>数据汇总层：汇总数据，解决数据汇总计算和数据完整度问题。<br>存储周期：保留历史至今所有的数据。<br>表明名规范：dws_业务描述_时间粒度_sum</p>
+<h2 id="DIM层"><a href="#DIM层" class="headerlink" title="DIM层"></a>DIM层</h2><p>公共维度层：存储公共的信息数据，用于DWD、DWS的数据关联。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表命名规范：dim_维度描述。</p>
+<h2 id="DM层"><a href="#DM层" class="headerlink" title="DM层"></a>DM层</h2><p>数据集市层：用于BI、多维分析、标签、数据挖掘等。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表明名规范：dm_主题_表内容_分表规则。</p>
+<p>TMP是计算中的中间表存储位置。<br><img src="3.png" alt=""></p>
 
                 
 
@@ -253,12 +244,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[数据仓库]01 数据仓库之离线 一/" data-toggle="tooltip" data-placement="top" title="[数据仓库]01 数据仓库之离线 一">&larr; Previous Post</a>
+                            <a href="/article/[数据平台]02 数据仓库之离线-Hive 二/" data-toggle="tooltip" data-placement="top" title="[数据平台]02 数据仓库之离线-Hive 二">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[Scala] Scala项目实战/" data-toggle="tooltip" data-placement="top" title="[Scala] Scala项目实战">Next Post &rarr;</a>
+                            <a href="/article/[数据平台] 离线数仓VS实时数仓/" data-toggle="tooltip" data-placement="top" title="[数据平台] 离线数仓VS实时数仓">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -308,7 +299,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#离线数仓"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">离线数仓</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#离线数仓架构"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">离线数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">实时数仓</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓架构"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">实时数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数仓架构发展"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">数仓架构发展</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda架构"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Lambda架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda架构的不足"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Lambda架构的不足</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kappa架构"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Kappa架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kappa架构的不足"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">Kappa架构的不足</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Lambda-VS-Kappa"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Lambda VS Kappa</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#大公司实时数仓架构"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">大公司实时数仓架构</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实时数仓建设"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">实时数仓建设</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据仓库VS数据库"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据仓库VS数据库</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#OLTP-vs-OLAP"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">OLTP vs OLAP</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库数据流程图"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">数据仓库数据流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么建设数据仓库"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">为什么建设数据仓库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库建设目标"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">数据仓库建设目标</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何实现"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">如何实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据库分层建设"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">数据库分层建设</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数仓建设背景"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">数仓建设背景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么进行数仓分层"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">为什么进行数仓分层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#STG层"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">STG层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ODS层"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">ODS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWD层"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">DWD层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWS层"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">DWS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DIM层"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">DIM层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DM层"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">DM层</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -329,6 +320,8 @@
                     <div class="tags">
                        
                           <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                        
+                          <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
                         
                     </div>
                 </section>

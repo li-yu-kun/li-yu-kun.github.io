@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [数据平台]07 数据平台之调度系统 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据平台]07 数据平台之调度系统/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                            
+                        </div>
+                        <h1>[数据平台]07 数据平台之调度系统</h1>
+                        <h2 class="subheading">调度系统[任务处理场景、任务处理需求、调度系统功能]、常用开源调度框架对比、[Azkaban介绍、Azkaban优点、Azkaban适用场景]、Azkaban架构与调度流程[Azkaban部署模式、Azkaban执行流程图、Azkaban核心交互流程]、Azkazban安装部署[前置环境、Azkaban编译、配置azkaban数据库、部署Azkaban-Web-Server、部署Azkaban Exec Server、Azkaban示例]、Azkaban用户代理[Azkaban任务类型、Azkaban代理用户]</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-07-04
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="调度系统"><a href="#调度系统" class="headerlink" title="调度系统"></a>调度系统</h1><h2 id="任务处理现状"><a href="#任务处理现状" class="headerlink" title="任务处理现状"></a>任务处理现状</h2><ul>
+<li>搭建Hadoop集群,实现了离线数仓的基础架构</li>
+<li>编写HQL定时对数据进行计算,生成T+1的离线数据</li>
+<li>不同的任务编写成不同的HQL文件,通过Crontab进行调度</li>
+<li>安排几十个计算的先后顺序,避免顺序颠倒导致计算错误</li>
+<li>一个任务失败,后续任务全部等待,效率很低</li>
+<li>任务太多,串行执行时间太长</li>
+</ul>
+<h2 id="任务处理场景"><a href="#任务处理场景" class="headerlink" title="任务处理场景"></a>任务处理场景</h2><ul>
+<li>原始数据为业务数据库or FTP存储的文件类数据</li>
+<li>通过Shell脚本或者Hadoop工具,将数据存储到HDFS</li>
+<li>通过MapReduce任务对HDFS上的原始数据进行转换,以分区表的形式存储到多张Hive表</li>
+<li>对Hive中多个表的数据进行JOIN处理,得到一个明细数据Hive大表</li>
+<li>将明细数据进行复杂的统计分析,得到结果报表信息</li>
+<li>将统计分析得到的结果数据同步到业务系统中,供业务调用使用</li>
+</ul>
+<h2 id="任务处理需求"><a href="#任务处理需求" class="headerlink" title="任务处理需求"></a>任务处理需求</h2><ul>
+<li>分解计算任务,支持shell脚本程序, java程序, mapreduce程序、hive脚本等</li>
+<li>各任务单元之间存在时间先后及前后依赖关系,前置任务失败,后续依赖任务不执行</li>
+<li>很好地对任务进行编排组织复杂执行计划,定时触发计算任务,任务失败进行报警</li>
+</ul>
+<h2 id="调度系统功能"><a href="#调度系统功能" class="headerlink" title="调度系统功能"></a>调度系统功能</h2><ul>
+<li>用户可以方便的定义一个作业流程都包含哪些作业及依赖关系</li>
+<li>管理工作流的生命周期,定时执行任务,支持Cron表达式</li>
+<li>支持各种依赖条件的判断及后续任务执行的触发操作</li>
+<li>对异常作业有完善的应对措施,比如重试、报警</li>
+<li>支持资源和权限的控制,最好支持任务优先级</li>
+<li>对调度系统本身及工作流有完善的监控,便于排查问题及协助数据治理</li>
+</ul>
+<h1 id="常用开源调度框架对比"><a href="#常用开源调度框架对比" class="headerlink" title="常用开源调度框架对比"></a>常用开源调度框架对比</h1><ul>
+<li>Linux Crontab:针对个人用户及小任务量</li>
+<li>Apache Oozie:功能强大,配置复杂的Hadoop任务调度框架</li>
+<li>Azkaban:开源的工作流管理器,轻量级调度框架</li>
+<li>AirFlow:基于Python开发的通用批处理调度框架</li>
+<li>Zenus:阿里开源的基于Hadoop的工作流调度系统</li>
+<li>EasyScheduler:国内开源的分布式工作流任务调度系统</li>
+</ul>
+<p><img src="1.png" alt=""></p>
+<h1 id="Azkaban介绍"><a href="#Azkaban介绍" class="headerlink" title="Azkaban介绍"></a>Azkaban介绍</h1><ul>
+<li>Linkedin公司开源的分布式批量工作流任务调度器</li>
+<li>通过简单的KV的方式,生成Job,并构建依赖关系</li>
+<li>通过插件化的任务提交模块,支持可扩展的多任务提交</li>
+</ul>
+<h2 id="Azkaban优点"><a href="#Azkaban优点" class="headerlink" title="Azkaban优点"></a>Azkaban优点</h2><ul>
+<li>可通过job配置文件,快速建立任务和任务之间的依赖关系</li>
+<li>提供模块化和可插拔的插件机制,原生支持shell、 java,hive等</li>
+<li>基于Java开发,提供Ajax Api,易于二次开发</li>
+</ul>
+<h2 id="Azkaban适用场景"><a href="#Azkaban适用场景" class="headerlink" title="Azkaban适用场景"></a>Azkaban适用场景</h2><ul>
+<li>通过Azkaban结合Datax实现定时的数据采集服务</li>
+<li>通过Azkaban调度执行Shell, Java, Hive,Hadoop等任务</li>
+<li>开发可复用的程序,通过Azkaban编排成工作流,执行批处理任务</li>
+<li>对Azkaban进行二次开发通过接口创建任务、调度任务、管理任务,</li>
+<li>将Azkaban作为数据平台的一部分,提供任务调度的能力</li>
+<li>基于Azkaban的异常处理、监控报警、审计日志完善数据平台功能</li>
+</ul>
+<h1 id="Azkaban架构与调度流程"><a href="#Azkaban架构与调度流程" class="headerlink" title="Azkaban架构与调度流程"></a>Azkaban架构与调度流程</h1><p><img src="2.png" alt=""></p>
+<ul>
+<li>Azkaban Server: Azkaban的管理服务,提供WebUI,负责Project管理、权限管理、定时执行、跟踪进度、审计日志等等功能</li>
+<li>Azkaban Executor:负责工作流的提交和执行,搜集执行日志</li>
+<li>MysQL:存储工作流详情及节点和任务的状态信息等</li>
+</ul>
+<h2 id="Azkaban部署模式"><a href="#Azkaban部署模式" class="headerlink" title="Azkaban部署模式"></a>Azkaban部署模式</h2><ul>
+<li>Solo mode:内置数据库, Server和Executor在同一个进程中</li>
+<li>Two mode:基于Mysql数据库,启动一个Server和一个Executor</li>
+<li>Multi mode:分布式模式,一个Server和多个Executor</li>
+</ul>
+<h2 id="Azkaban执行流程图"><a href="#Azkaban执行流程图" class="headerlink" title="Azkaban执行流程图"></a>Azkaban执行流程图</h2><p><img src="3.png" alt=""></p>
+<ol>
+<li>用户通过界面或者API提交任务到AzkabanServer</li>
+<li>AzkabanServer根据一定的选择策略(资源状态、执行任务数量等)选择合适的</li>
+<li>Executor,下发工作流Executor获取到任务信息,执行任务收集日志</li>
+</ol>
+<h2 id="Azkaban核心交互流程"><a href="#Azkaban核心交互流程" class="headerlink" title="Azkaban核心交互流程"></a>Azkaban核心交互流程</h2><p><img src="4.png" alt=""></p>
+<ul>
+<li>AzkabanServer主动调用Executor的API获取状态信息</li>
+<li>根据计算规则选择执行的Executor Server (任务数量、内存和CPU等资源、最近分配的时间)</li>
+<li>调度WorkFlow到Executor执行, Executor执行并监控任务</li>
+</ul>
+<h1 id="Azkazban安装部署"><a href="#Azkazban安装部署" class="headerlink" title="Azkazban安装部署"></a>Azkazban安装部署</h1><ul>
+<li>Azkaban官网: <a href="https://azkaban.github.io" target="_blank" rel="noopener">https://azkaban.github.io</a></li>
+<li>软件下载地址: <a href="https://github.com/azkaban/azkaban" target="_blank" rel="noopener">https://github.com/azkaban/azkaban</a></li>
+<li>官方插件地址: <a href="https://github.com/azkaban/azkaban-plugins" target="_blank" rel="noopener">https://github.com/azkaban/azkaban-plugins</a></li>
+<li>官方文档地址: <a href="http://azkaban.github.io/azkaban/docs/latest" target="_blank" rel="noopener">http://azkaban.github.io/azkaban/docs/latest</a></li>
+</ul>
+<h2 id="前置环境"><a href="#前置环境" class="headerlink" title="前置环境"></a>前置环境</h2><ul>
+<li>Java环境</li>
+<li>Mysql数据库</li>
+</ul>
+<h2 id="Azkaban编译"><a href="#Azkaban编译" class="headerlink" title="Azkaban编译"></a>Azkaban编译</h2><ol>
+<li>获取Azkaban源码进行编译<br>大家可以访问Azkaban Github下载对应版本的源码包,获取完成之后进行编译：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew installDist</span><br></pre></td></tr></table></figure>
+编译完成之后我们在各个模块下的target下可以得到一系列的安装包，包括azkaban-db-0.1.0-SNAPSHOT.tar.gz、azkaban-exec-server-0.1.0-SNAPSHOT.tar.gz和azkaban-web-server-0.1.0-SNAPSHOT.tar.gz等等，这三个是我们后面需要的。<h2 id="配置azkaban数据库"><a href="#配置azkaban数据库" class="headerlink" title="配置azkaban数据库"></a>配置azkaban数据库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf azkaban-db-0.1.0-SNAPSHOT.tar.gz</span><br><span class="line">mv azkaban-db-0.1.0-SNAPSHOT /soft</span><br><span class="line"></span><br><span class="line">#进入mysql交互模式，运行mysql的命令</span><br><span class="line">mysql -uroot -proot</span><br><span class="line">#创建azkaban数据库</span><br><span class="line">create database azkaban;</span><br><span class="line">#创建相关表</span><br><span class="line">use azkaban;</span><br><span class="line">source /soft/azkaban-db-0.1.0-SNAPSHOT/create-all-sql-0.1.0-SNAPSHOT.sql;</span><br><span class="line"></span><br><span class="line">#执行show table命令查看相关表</span><br><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+<h2 id="部署Azkaban-Web-Server"><a href="#部署Azkaban-Web-Server" class="headerlink" title="部署Azkaban-Web-Server"></a>部署Azkaban-Web-Server</h2></li>
+<li>部署azkaban web server<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf azkaban-web-server-0.1.0-SNAPSHOT.tar.gz</span><br><span class="line">mv azkaban-web-server-0.1.0-SNAPSHOT /soft/home/azkaban-web-server</span><br></pre></td></tr></table></figure></li>
+<li>配置Azkaban-Web-Server<br>我们需要对conf目录下的azkaban.properties文件进行配置</li>
+</ol>
+<p><strong>azkaban.properties</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># azkaban集群名称</span><br><span class="line">azkaban.name=Test</span><br><span class="line">azkaban.label=My Local Azkaban</span><br><span class="line"># azkaban用户管理</span><br><span class="line">user.manager.class=azkaban.user.XmlUserManager</span><br><span class="line">user.manager.xml.file=conf/azkaban-users.xml</span><br><span class="line"># 端口信息，默认8081</span><br><span class="line">jetty.use.ssl=false</span><br><span class="line">jetty.maxThreads=25</span><br><span class="line">jetty.port=8081</span><br><span class="line"># 数据库链接配置</span><br><span class="line">database.type=mysql</span><br><span class="line">mysql.port=3306</span><br><span class="line">mysql.host=localhost</span><br><span class="line">mysql.database=azkaban</span><br><span class="line">mysql.user=root</span><br><span class="line">mysql.password=root</span><br><span class="line">mysql.numconnections=100</span><br><span class="line"># 多executor模式</span><br><span class="line">azkaban.use.multiple.executors=true</span><br><span class="line">azkaban.executorselector.filters=StaticRemainingFlowSize,CpuStatus</span><br><span class="line">azkaban.executorselector.comparator.NumberOfAssignedFlowComparator=1</span><br><span class="line">azkaban.executorselector.comparator.Memory=1</span><br><span class="line">azkaban.executorselector.comparator.LastDispatched=1</span><br><span class="line">azkaban.executorselector.comparator.CpuUsage=1</span><br></pre></td></tr></table></figure>
+<p><strong>azkaban-users.xml</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;azkaban-users&gt;</span><br><span class="line">  &lt;user groups=&quot;azkaban&quot; password=&quot;azkaban&quot; roles=&quot;admin&quot; username=&quot;azkaban&quot;/&gt;</span><br><span class="line">  &lt;user password=&quot;metrics&quot; roles=&quot;metrics&quot; username=&quot;metrics&quot;/&gt;</span><br><span class="line"></span><br><span class="line">  &lt;role name=&quot;admin&quot; permissions=&quot;ADMIN&quot;/&gt;</span><br><span class="line">  &lt;role name=&quot;metrics&quot; permissions=&quot;METRICS&quot;/&gt;</span><br><span class="line">&lt;/azkaban-users&gt;</span><br></pre></td></tr></table></figure>
+<p>azkaban 默认配置中有两个用户分别为azkaban和metrics，大家可以根据需要自行添加相关用户。</p>
+<h2 id="部署Azkaban-Exec-Server"><a href="#部署Azkaban-Exec-Server" class="headerlink" title="部署Azkaban Exec Server"></a>部署Azkaban Exec Server</h2><ol>
+<li>部署azkaban exec server<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf azkaban-exec-server-0.1.0-SNAPSHOT.tar.gz</span><br><span class="line">mv azkaban-exec-server-0.1.0-SNAPSHOT /soft/home/azkaban-exec-server</span><br></pre></td></tr></table></figure></li>
+<li>配置Azkaban-Exec-Server<br>我们需要对conf目录下的azkaban.properties文件进行配置</li>
+</ol>
+<p><strong>azkaban.properties</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># azkaban集群名称</span><br><span class="line">azkaban.name=Test</span><br><span class="line">azkaban.label=My Local Azkaban</span><br><span class="line"># azkaban web server地址</span><br><span class="line">azkaban.webserver.url=http://localhost:8081</span><br><span class="line"># 数据库链接配置</span><br><span class="line">database.type=mysql</span><br><span class="line">mysql.port=3306</span><br><span class="line">mysql.host=localhost</span><br><span class="line">mysql.database=azkaban</span><br><span class="line">mysql.user=root</span><br><span class="line">mysql.password=root</span><br><span class="line">mysql.numconnections=100</span><br><span class="line"># Executor配置</span><br><span class="line">executor.maxThreads=50</span><br><span class="line">executor.flow.threads=30</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>启动executor服务<br>注意：azkaban的启动必须要在azkaban的home目录下，执行bin/xxxx<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/start-exec.sh</span><br><span class="line"># 查看相关进程</span><br><span class="line">jps -m</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><strong>注意：azkaban exec server启动之后，还需要一步操作，需要我们激活当前的exec server，我们需要查看exec server日志，获取当前execserver的端口，然后通过访问url进行激活</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查看exec server启动日志，获取当前监听端口</span><br><span class="line">tail -f logs/azkaban-execserver.log</span><br><span class="line"># 通过访问url对当前execserver进行激活，将端口替换为你的端口即可</span><br><span class="line">curl http://localhost:33750/executor?action=activate</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>启动web服务<br>注意：azkaban的启动必须要在azkaban的home目录下，执行bin/xxxx<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/start-web.sh</span><br><span class="line"># 查看相关进程</span><br><span class="line">jps -m</span><br></pre></td></tr></table></figure>
+<h2 id="Azkaban示例"><a href="#Azkaban示例" class="headerlink" title="Azkaban示例"></a>Azkaban示例</h2>首先我们创建一个简单的command类型的任务。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mkdir cmd_test</span><br><span class="line"></span><br><span class="line">vi cmd_test.job</span><br><span class="line"># 新建x.job文件，并输入以下内容</span><br><span class="line">#command</span><br><span class="line">type=command</span><br><span class="line">command=sh test.sh</span><br><span class="line"></span><br><span class="line">vi test.sh</span><br><span class="line"># 新建命令中需要的脚本文件</span><br><span class="line">#!/bin/sh</span><br><span class="line">echo &quot;hello azkaban&quot;</span><br></pre></td></tr></table></figure>
+创建完成之后，对我们的cmd_test目录进行压缩，压缩成zip格式。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">zip -r cmd_test.zip cmd_test</span><br><span class="line">登录我们的azkaban web界面http://xxxxxxx:8081。新建project，上传zip包，并执行任务。</span><br></pre></td></tr></table></figure>
+新建project<br><img src="5.png" alt=""><br>上传任务包<br><img src="6.png" alt=""><br>执行任务<br><img src="7.png" alt=""><h1 id="Azkaban用户代理"><a href="#Azkaban用户代理" class="headerlink" title="Azkaban用户代理"></a>Azkaban用户代理</h1><h2 id="Azkaban工作流"><a href="#Azkaban工作流" class="headerlink" title="Azkaban工作流"></a>Azkaban工作流</h2></li>
+</ol>
+<ul>
+<li>Project: Azkaban的抽象概念,项目。一个Project包括多个Flow</li>
+<li>Flow:流程,一个Flow包含多个Job及Job的依赖关系</li>
+<li>Job:具体的任务,有command, java, hive,hadoopjava等类型</li>
+</ul>
+<h2 id="Azkaban任务类型"><a href="#Azkaban任务类型" class="headerlink" title="Azkaban任务类型"></a>Azkaban任务类型</h2><ul>
+<li>Azkaban拥有独立的plugins仓库,需对其进行编译【可在GitHub上搜索azkaban plugins】</li>
+<li>不同的Job plugin是建立在command的基础之上</li>
+<li>Command类型是万能的Azkaban任务类型</li>
+</ul>
+<h2 id="Azkaban代理用户"><a href="#Azkaban代理用户" class="headerlink" title="Azkaban代理用户"></a>Azkaban代理用户</h2><ul>
+<li>Azkaban可以代理其他linux用户执行命令</li>
+<li>通过代理用户模式可以实现Hadoop的权限控制</li>
+</ul>
+<ol>
+<li>在源码中编译 execute-as-user.c 文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 azkaban]# cd azkaban-3.81.0/</span><br><span class="line">[root@hadoop001 azkaban-3.81.0]# cd az-exec-util/</span><br><span class="line">[root@hadoop001 az-exec-util]# cd src/main/c</span><br><span class="line">[root@hadoop001 c]# ll</span><br><span class="line">总用量 4</span><br><span class="line">-rw-rw-r--. 1 root root 3976 12月  6 2019 execute-as-user.c</span><br><span class="line">[root@hadoop001 c]# gcc execute-as-user.c -o execute-as-user</span><br><span class="line">[root@hadoop001 c]# ll</span><br><span class="line">总用量 20</span><br><span class="line">-rwxr-xr-x. 1 root root 13536 7月   1 16:11 execute-as-user</span><br><span class="line">-rw-rw-r--. 1 root root  3976 12月  6 2019 execute-as-user.c</span><br><span class="line">[root@hadoop001 c]#</span><br></pre></td></tr></table></figure></li>
+<li>移动进入exec-server目录<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 azkaban-exec-server-0.1.0]# mkdir extlib</span><br><span class="line">[root@hadoop001 azkaban-exec-server-0.1.0]# cd extlib</span><br><span class="line">[root@hadoop001 extlib]# pwd</span><br><span class="line">/root/app/azkaban/azkaban-exec-server-0.1.0/extlib</span><br><span class="line">[root@hadoop001 extlib]# cp /root/app/azkaban/azkaban-3.81.0/az-exec-util/src/main/c/execute-as-user execute-as-user</span><br><span class="line">[root@hadoop001 extlib]# ll</span><br><span class="line">总用量 16</span><br><span class="line">-rwxr-xr-x. 1 root root 13536 7月   1 16:17 execute-as-user</span><br><span class="line">[root@hadoop001 extlib]#</span><br></pre></td></tr></table></figure></li>
+<li>修改权限<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 extlib]# chmod 6050 execute-as-user </span><br><span class="line">[root@hadoop001 extlib]# ll</span><br><span class="line">总用量 16</span><br><span class="line">---Sr-s---. 1 root root 13536 7月   1 16:17 execute-as-user</span><br><span class="line">[root@hadoop001 extlib]#</span><br></pre></td></tr></table></figure></li>
+<li>修改相关配置文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 extlib]# cd ../plugins/jobtypes/</span><br><span class="line">[root@hadoop001 jobtypes]# ls</span><br><span class="line">commonprivate.properties</span><br><span class="line">[root@hadoop001 jobtypes]# vim commonprivate.properties </span><br><span class="line"></span><br><span class="line">execute.as.user=true</span><br><span class="line">azkaban.native.lib=/root/app/azkaban/azkaban-exec-server-0.1.0/extlib</span><br><span class="line">azkaban.group.name=hadoop</span><br><span class="line">【注意：这里不能设置root和azkaban,源码中不允许】</span><br></pre></td></tr></table></figure></li>
+<li>重启<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">重启exec-server</span><br><span class="line">[root@hadoop001 azkaban-exec-server-0.1.0]# ./bin/shutdown-exec.sh </span><br><span class="line">Killing executor. [pid: 35728], attempt: 1</span><br><span class="line">shutdown succeeded</span><br><span class="line">[root@hadoop001 azkaban-exec-server-0.1.0]# ./bin/start-exec.sh </span><br><span class="line">[root@hadoop001 azkaban-exec-server-0.1.0]# curl http://localhost:33643/executor?action=activate</span><br><span class="line"></span><br><span class="line">重启web-server</span><br><span class="line">[root@hadoop001 azkaban]# cd azkaban-web-server-0.1.0/</span><br><span class="line">[root@hadoop001 azkaban-web-server-0.1.0]# ./bin/shutdown-web.sh </span><br><span class="line">Killing web-server. [pid: 35799], attempt: 1</span><br><span class="line">shutdown succeeded</span><br><span class="line">[root@hadoop001 azkaban-web-server-0.1.0]# ./bin/start-web.sh</span><br></pre></td></tr></table></figure></li>
+<li>任务测试<br>job<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type=command</span><br><span class="line">command= sh test.sh</span><br><span class="line">user.to.proxy=hadoop [切记加上这行，否者会执行失败]</span><br></pre></td></tr></table></figure>
+sh文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">echo &quot;---------------&quot;</span><br><span class="line">whoami</span><br></pre></td></tr></table></figure>
+<img src="8.png" alt=""><br>执行成功页面<br><img src="9.png" alt=""></li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/SQL优化指南/" data-toggle="tooltip" data-placement="top" title="SQL优化指南">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#调度系统"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">调度系统</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务处理现状"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">任务处理现状</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务处理场景"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">任务处理场景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#任务处理需求"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">任务处理需求</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#调度系统功能"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">调度系统功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#常用开源调度框架对比"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">常用开源调度框架对比</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Azkaban介绍"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Azkaban介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban优点"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">Azkaban优点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban适用场景"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Azkaban适用场景</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Azkaban架构与调度流程"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Azkaban架构与调度流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban部署模式"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Azkaban部署模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban执行流程图"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">Azkaban执行流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban核心交互流程"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">Azkaban核心交互流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Azkazban安装部署"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Azkazban安装部署</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前置环境"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">前置环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban编译"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">Azkaban编译</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#配置azkaban数据库"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">配置azkaban数据库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署Azkaban-Web-Server"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">部署Azkaban-Web-Server</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署Azkaban-Exec-Server"><span class="toc-nav-number">5.5.</span> <span class="toc-nav-text">部署Azkaban Exec Server</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban示例"><span class="toc-nav-number">5.6.</span> <span class="toc-nav-text">Azkaban示例</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Azkaban用户代理"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Azkaban用户代理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban工作流"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">Azkaban工作流</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban任务类型"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">Azkaban任务类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Azkaban代理用户"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">Azkaban代理用户</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

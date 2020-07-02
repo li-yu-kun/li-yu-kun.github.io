@@ -211,6 +211,37 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Hadoop] Hadoop配置支持LZO压缩格式/">
+        <h2 class="post-title">
+                                 
+            [Hadoop] Hadoop配置支持LZO压缩格式
+        </h2>
+        <h3 class="post-subtitle">
+            安装lzop、配置、测试
+        </h3>
+        <div class="post-content-preview">
+            简介安装lzolzo并不是linux系统原生支持，所以需要下载安装软件包。这里至少需要安装3个软件包：lzo, lzop, hadoop-gpl-packaging。
+增加索引gpl-packaging的作用主要是对压缩的lzo文件创建索引，否则的话，无论压缩文件是否大于hdfs的block大小，都只会按照默认启动2个map操作。
+安装lzop native library123456789......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-08-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Hadoop] Hadoop离线项目之数据清洗/">
         <h2 class="post-title">
                                  
@@ -506,41 +537,6 @@ MapReduce1.x存在的问题:单点故障&amp;节点压力大不易扩展，如�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce 三/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式处理框架MapReduce 三
-        </h2>
-        <h3 class="post-subtitle">
-            参数调优(Map Task和Reduce Task数目调整)、MapReduce优点和缺点、MapReduce编程(WordCount案例开发Java版本、Combiner、Partitoner)、jobhistory开启
-        </h3>
-        <div class="post-content-preview">
-            参数调优Map Task和Reduce Task数目调整
-Map Task数目
-Map读取文件时，通过InputFormat计算分割文件
-split大小由以下三个参数决定
-dfs.blocksize HDFS Block大小
-mapreduce.input.fileinputformat.split.minsize 划分最小字节数
-mapreduce.input.fileinputforma......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-06-23
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -590,6 +586,10 @@ mapreduce.input.fileinputforma......
             
         
             
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            
+        
+            
             <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
@@ -598,15 +598,7 @@ mapreduce.input.fileinputforma......
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
-            
-        
-            
             <a href="/tags/#SpringBoot" title="SpringBoot" rel="1">SpringBoot</a>
-            
-        
-            
-            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
             
         
             
@@ -614,15 +606,19 @@ mapreduce.input.fileinputforma......
             
         
             
+            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
+            
+        
+            
             <a href="/tags/#Phoenix" title="Phoenix" rel="4">Phoenix</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Hadoop" title="Hadoop" rel="9">Hadoop</a>
             
         
             
-            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
@@ -642,7 +638,7 @@ mapreduce.input.fileinputforma......
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="9">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="6">数据仓库</a>
             
         
             
@@ -655,6 +651,10 @@ mapreduce.input.fileinputforma......
         
             
             <a href="/tags/#Scala" title="Scala" rel="4">Scala</a>
+            
+        
+            
+            <a href="/tags/#数据平台" title="数据平台" rel="8">数据平台</a>
             
         
             
@@ -718,6 +718,10 @@ mapreduce.input.fileinputforma......
     <ul>
       
         <li>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D07%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/">[数据平台]07 数据平台之调度系统</a>
+        </li>
+      
+        <li>
           <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
         </li>
       
@@ -726,15 +730,11 @@ mapreduce.input.fileinputforma......
         </li>
       
         <li>
-          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%5D06%20%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据仓库]06 数据仓库之数据采集与治理 六</a>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D06%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据平台]06 数据平台之数据采集与治理 六</a>
         </li>
       
         <li>
           <a href="/article/%E5%9F%BA%E4%BA%8E%20Binlog%20%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">基于 Binlog 实时同步数据仓库问题总结</a>
-        </li>
-      
-        <li>
-          <a href="/article/ZooKeeper%E9%9D%A2%E8%AF%95%E9%A2%98/">[ZooKeeper] ZooKeeper面试题</a>
         </li>
       
     </ul>
@@ -749,7 +749,7 @@ mapreduce.input.fileinputforma......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

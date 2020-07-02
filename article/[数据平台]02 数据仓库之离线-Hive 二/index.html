@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [数据仓库]01 数据仓库之离线 一 - 李玉坤 | Blog
+          [数据平台]02 数据仓库之离线-Hive 二 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据仓库]01 数据仓库之离线 一/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据平台]02 数据仓库之离线-Hive 二/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,18 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                            
                               <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
                             
+                              <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                            
                         </div>
-                        <h1>[数据仓库]01 数据仓库之离线 一</h1>
-                        <h2 class="subheading">数据仓库VS数据库[OLTP vs OLAP、数据仓库数据流程图、为什么建设数据仓库、数据仓库建设目标、如何实现]、数据分层建设[数仓建设背景、为什么进行数仓分层、STG层、ODS层、DWD层、DWS层、DIM层、DM层]</h2>
+                        <h1>[数据平台]02 数据仓库之离线-Hive 二</h1>
+                        <h2 class="subheading">Hive产生背景及Hive是什么、为什么要使用Hive及Hive发展历程、Hive和Hadoop对比、Hive体系架构以及部署架构、Hive和RDBMS的对比、Hive单机环境搭建、Hive执行方式</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-04-03
+                            2018-04-09
                         </span>
                     </div>
                 
@@ -212,28 +216,61 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="数据仓库VS数据库"><a href="#数据仓库VS数据库" class="headerlink" title="数据仓库VS数据库"></a>数据仓库VS数据库</h1><p>数据仓库概念：数据仓库是将<strong>多个数据源</strong>的数据经过ETL处理之后，按照一定的<strong>主题集成</strong>起来提供<strong>决策支持</strong>和<strong>联机分析</strong>应用的结构化数据环节。</p>
-<p>ETL：Extract（抽取）、Transfrom（转换）、Load（加载）</p>
-<p>1、数据库是面向事务的设计，数据仓库是面向主题的设计的。<br>2、数据库一般存储在线交易数据，数据仓库存储的一般是历史数据。<br>3、数据库设计是避免冗余，采用三范式的规则来设计，数据仓库在设计是有意引入冗余，采用反范式的方式来设计。</p>
-<h2 id="OLTP-vs-OLAP"><a href="#OLTP-vs-OLAP" class="headerlink" title="OLTP vs OLAP"></a>OLTP vs OLAP</h2><p>联机事务处理OLTP是传统的关系型数据库的主要，主要是基本的、日常的事务处理，例如银行交易。</p>
-<p>联机分析处理OLAP是数据仓库系统的主要应用，支持复杂的分析操作，侧重决策支持，并且提供直观易懂的查询结果。</p>
-<h2 id="数据仓库数据流程图"><a href="#数据仓库数据流程图" class="headerlink" title="数据仓库数据流程图"></a>数据仓库数据流程图</h2><p><img src="1.png" alt=""></p>
-<p>名词解释：<br>Operational dbs：内部数据库<br>External sources：外部数据源<br>Extract Transform Load Refresh：ETL 转换<br>Data Warehouse：数据仓库<br>Monitoring &amp; Administration ：监控 权限<br>Metadata Repository：元数据存储库<br>Data Marts：数据集市（主题分类）<br>OLAP Servers：联机分析服务<br>Analysis：分析<br>Query/Reporting：查询/报表<br>Data Mining：数据挖掘</p>
-<h2 id="为什么建设数据仓库"><a href="#为什么建设数据仓库" class="headerlink" title="为什么建设数据仓库"></a>为什么建设数据仓库</h2><p>1、各个业务数据存在不一致，数据关系混乱。<br>2、业务系统一般针对于OLTP，而数据仓库可以实现OLAP分析。<br>3、数据仓库是多源的复杂环境，可以对多个业务的数据进行统一分析。</p>
-<h2 id="数据仓库建设目标"><a href="#数据仓库建设目标" class="headerlink" title="数据仓库建设目标"></a>数据仓库建设目标</h2><p>1、集成多源数据，数据来源和去向可追溯，梳理血缘关系。<br>2、减少重复开发，保存通用型中间数据，避免重复。<br>3、屏蔽底层业务逻辑，对外提供一致的、结构清晰的数据。</p>
-<h2 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h2><p>1、实现通用型数据ETL工具<br>2、根据业务建立合理的数据分层模型</p>
-<h1 id="数据库分层建设"><a href="#数据库分层建设" class="headerlink" title="数据库分层建设"></a>数据库分层建设</h1><h2 id="数仓建设背景"><a href="#数仓建设背景" class="headerlink" title="数仓建设背景"></a>数仓建设背景</h2><p>数据建设刚起步，大部分数据经过粗暴的数据接入后直接对接业务。</p>
-<p>数据建设发展到一定阶段，发现数据的使用杂乱无章，各种业务都是从原始数据直接计算而得。</p>
-<p>各种重复计算，严重浪费了计算资源，需要优化性能。</p>
-<h2 id="为什么进行数仓分层"><a href="#为什么进行数仓分层" class="headerlink" title="为什么进行数仓分层"></a>为什么进行数仓分层</h2><p>1、清晰数据结构：每个数据分层都有对应的作用域。<br>2、数据血缘追踪：对各层之间的数据表转换进行跟踪，建立血缘关系<br>3、减少重复开发：规范数据分层，开发通用的中间层数据。<br>4、屏蔽原始数据的异常：通过数据分层管控数据质量。<br>5、屏蔽业务的影响：不必改一次业务就需要重新接入数据。<br>6、复杂问题简单化：将复杂的数仓架构分解成多个数据层来完成。</p>
-<p><img src="2.png" alt=""></p>
-<h2 id="STG层"><a href="#STG层" class="headerlink" title="STG层"></a>STG层</h2><p>原始数据层：存储原始数据，数据结构与采集数据一致。<br>存储周期：保存全部数据。<br>表命名规范：stg_主题_表内容_分表规则。</p>
-<h2 id="ODS层"><a href="#ODS层" class="headerlink" title="ODS层"></a>ODS层</h2><p>数据操作层：对STG层数据进行初步处理，如去除脏数据，去除无用字段。<br>存储周期：默认保留近30天数据。<br>表命名规范：ods_主题_表内容_分表规则。</p>
-<h2 id="DWD层"><a href="#DWD层" class="headerlink" title="DWD层"></a>DWD层</h2><p>数据明细层：数据处理后的宽表，目标为满足80%的业务需求。<br>存储周期：保留历史至今所有的数据。<br>表命名规范：dwd_业务描述_时间粒度。</p>
-<h2 id="DWS层"><a href="#DWS层" class="headerlink" title="DWS层"></a>DWS层</h2><p>数据汇总层：汇总数据，解决数据汇总计算和数据完整度问题。<br>存储周期：保留历史至今所有的数据。<br>表明名规范：dws_业务描述_时间粒度_sum</p>
-<h2 id="DIM层"><a href="#DIM层" class="headerlink" title="DIM层"></a>DIM层</h2><p>公共维度层：存储公共的信息数据，用于DWD、DWS的数据关联。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表命名规范：dim_维度描述。</p>
-<h2 id="DM层"><a href="#DM层" class="headerlink" title="DM层"></a>DM层</h2><p>数据集市层：用于BI、多维分析、标签、数据挖掘等。<br>存储周期：按需存储，一般保留历史至今所有的数据。<br>表明名规范：dm_主题_表内容_分表规则。</p>
-<p>TMP是计算中的中间表存储位置。<br><img src="3.png" alt=""></p>
+                <h1 id="Hive产生背景及Hive是什么"><a href="#Hive产生背景及Hive是什么" class="headerlink" title="Hive产生背景及Hive是什么"></a>Hive产生背景及Hive是什么</h1><p><strong>Hive产生的背景</strong></p>
+<ul>
+<li>MapReduce编程的不便性</li>
+<li>HDFS上的文件缺少Schema</li>
+</ul>
+<p><strong>Hive是什么</strong></p>
+<ul>
+<li>由Facebook开源,最初用于解决海量结构化的日志数据统计问题</li>
+<li>构建在Hadoop之上的数据仓库</li>
+<li>Hive定义了一种类SQL查询语言: HQL(类似SQL但不完全相同)</li>
+<li>通常用于进行离线数据处理(刚开始采用MapReduce )</li>
+<li>底层支持多种不同的执行引擎；<br>【Hive底层的执行引擎有：MapReduce、Tez、Spark】<br>【Hive on MapReduce，Hive on Tez，Hive on Spark】</li>
+<li>支持多种不同的压缩格式、存储格式以及自定义函数<br>【压缩：GZIP、LZO、Snappy、BZIP2..】<br>【存储：TextFile、SequenceFile、RCFile、ORC、Parquet】<br>【UDF：自定义函数】</li>
+<li>Hive是将数据映射成数据库和一张张的表，库和表的元数据信息一般存在关系型数据库。</li>
+</ul>
+<h1 id="为什么要使用Hive及Hive发展历程"><a href="#为什么要使用Hive及Hive发展历程" class="headerlink" title="为什么要使用Hive及Hive发展历程"></a>为什么要使用Hive及Hive发展历程</h1><p><strong>为什么要使用Hive</strong></p>
+<ul>
+<li>简单、容易上手(提供了类似SQL查i言HQL)</li>
+<li>为超大数据集设计的计算/存储扩展能力(MR计算, HDFS存储)</li>
+<li>统一的元数据管理(可与Presto/Impala/SparkSQL等共享数据)</li>
+</ul>
+<p><strong>Hive发展历程</strong><br>官方版本更新详细目录<br><a href="http://hive.apache.org/downloads.html" target="_blank" rel="noopener">http://hive.apache.org/downloads.html</a></p>
+<p><strong>Hive在Hadoop生态系统的位置</strong><br>在HDFS和Yarn之上的<br><img src="%E5%9B%BE%E7%89%8701.png" alt=""></p>
+<h1 id="Hive-VS-Hadoop"><a href="#Hive-VS-Hadoop" class="headerlink" title="Hive VS Hadoop"></a>Hive VS Hadoop</h1><p>Hive数据存储：Hive的数据是存储在HDFS上的，Hive的表是对HDFS上数据的映射。</p>
+<p>Hive元数据存储：元数据存储一般在外部关系库（Mysql），与Presto Impala等共享。</p>
+<p>Hive语句的执行过程：将HQL转换为MapReduce任务运行。</p>
+<h1 id="Hive-VS-数据库"><a href="#Hive-VS-数据库" class="headerlink" title="Hive VS 数据库"></a>Hive VS 数据库</h1><p><img src="2.png" alt=""></p>
+<h1 id="hive执行流程"><a href="#hive执行流程" class="headerlink" title="hive执行流程"></a>hive执行流程</h1><p><img src="1.png" alt=""></p>
+<h1 id="Hive体系架构及部署架构"><a href="#Hive体系架构及部署架构" class="headerlink" title="Hive体系架构及部署架构"></a>Hive体系架构及部署架构</h1><h2 id="Hive体系架构"><a href="#Hive体系架构" class="headerlink" title="Hive体系架构"></a>Hive体系架构</h2><p><img src="%E5%9B%BE%E7%89%8702.png" alt=""><br>第一行：hive访问方式shell以及Thrift/JDBC<br>第二行：元数据管理（Metastore）；<br>Drive中首先解析SQL（SQL Parser）生成逻辑执行计划，然后对逻辑执行计划进行优化（Query Optimizer），最后生成物理执行计划（Physical Plan其中包括序列化反序列化和UDF函数（SerDes和UDFs）），生成最终的执行引擎（Execution）提交到MapReduce<br>第三行：元数据存放的位置（MySQL）；<br>提交到计算引擎（MapReduce）的输入输出-HDFS、HBase等</p>
+<h2 id="部署架构–测试环境"><a href="#部署架构–测试环境" class="headerlink" title="部署架构–测试环境"></a>部署架构–测试环境</h2><p><img src="%E5%9B%BE%E7%89%8703.png" alt=""></p>
+<h2 id="部署架构–生产环境"><a href="#部署架构–生产环境" class="headerlink" title="部署架构–生产环境"></a>部署架构–生产环境</h2><p><img src="%E5%9B%BE%E7%89%8704.png" alt=""><br>其中MySQL、ResourceManage、NameNode都要主从设备；<br>Hive只需要在集群中装一个或者两个作为客户端使用即可</p>
+<h1 id="Hive单机环境搭建"><a href="#Hive单机环境搭建" class="headerlink" title="Hive单机环境搭建"></a>Hive单机环境搭建</h1><ol>
+<li><p>Hive下载：<a href="http://archive.cloudera.com/cdh5/cdh/5/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/</a><br> wget <a href="http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hive-1.1.0-cdh5.7.0.tar.gz</a></p>
+</li>
+<li><p>解压<br> tar -zxvf hive-1.1.0-cdh5.7.0.tar.gz -C ~/app/</p>
+</li>
+<li><p>配置<br> 系统环境变量(~/.bahs_profile)</p>
+<pre><code>export HIVE_HOME=/home/hadoop/app/hive-1.1.0-cdh5.7.0
+export PATH=$HIVE_HOME/bin:$PATH</code></pre><p> <strong>实现安装一个mysql， yum install xxx，或者tar包安装</strong></p>
+<p> 在conf下对hive-env.sh配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Set HADOOP_HOME to point to a specific hadoop install directory</span><br><span class="line"> HADOOP_HOME=/home/hadoop/app/hadoop</span><br><span class="line"></span><br><span class="line"># Hive Configuration Directory can be controlled by:</span><br><span class="line"> export HIVE_CONF_DIR=/home/hadoop/app/hive</span><br></pre></td></tr></table></figure>
+
+<p> 在conf下新建hive-site.xml配置 <strong>hive-site.xml</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;jdbc:mysql:<span class="comment">//localhost:3306/sparksql?createDatabaseIfNotExist=true&amp;amp;useSSL=false&lt;/value&gt;</span></span><br><span class="line">&lt;/property&gt;</span><br><span class="line">   </span><br><span class="line">&lt;property&gt;</span><br><span class="line">   	&lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">  	&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line"> 	&lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">   	&lt;value&gt;root&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt; </span><br><span class="line">	&lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;  </span><br><span class="line">	&lt;value&gt;/hive/warehouse&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line">&lt;property&gt; </span><br><span class="line">	&lt;name&gt;hive.exec.scratchdir&lt;/name&gt;  </span><br><span class="line">	&lt;value&gt;/hive/tmp&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line">&lt;property&gt; </span><br><span class="line">	&lt;name&gt;hive.querylog.location&lt;/name&gt;  </span><br><span class="line">	&lt;value&gt;/hive/log&lt;/value&gt; </span><br><span class="line">&lt;/property&gt;  </span><br><span class="line">&lt;property&gt; </span><br><span class="line">	&lt;name&gt;hive.metastore.schema.verification&lt;/name&gt;  </span><br><span class="line">	&lt;value&gt;false&lt;/value&gt; </span><br><span class="line">&lt;/property&gt; </span><br><span class="line">&lt;property&gt;</span><br><span class="line">	&lt;name&gt;datanucleus.schema.autoCreateAll&lt;/name&gt;</span><br><span class="line">	&lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝mysql驱动到$HIVE_HOME/lib/<br>初始化数据库 schematool -initSchema -dbType mysql</p>
+</li>
+<li><p>启动hive: $HIVE_HOME/bin/hive<br>如果要连接hiveserver2 需要分别启动<br>hive –service metastore<br>hive –service hiveserver2</p>
+</li>
+</ol>
+<p>【注意】Hive启动时报错“which: no hbase in ”</p>
+<p>在Hive的所在的机器上添加Hbase的环境变量即可<br>1、编辑<br>export HBASE_HOME=/opt/module/hbase-2.2.1<br>export PATH=$PATH:$HBASE_HOME/bin<br>2、环境变量生效<br>source ~/.bahs_profile</p>
+<h1 id="Hive执行方式"><a href="#Hive执行方式" class="headerlink" title="Hive执行方式"></a>Hive执行方式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">直接执行：</span><br><span class="line">hive -f test.sql</span><br><span class="line">hive -e &quot;sql语句&quot;</span><br><span class="line"></span><br><span class="line">进入客户端：</span><br><span class="line">hive</span><br><span class="line"></span><br><span class="line">通过jdbc客户端访问：</span><br><span class="line">beeline</span><br><span class="line">!connect jdbc:hive2://localhost:10000</span><br></pre></td></tr></table></figure>
+
+
 
                 
 
@@ -242,12 +279,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/[数据仓库]02 数据仓库之离线-Hive 二/" data-toggle="tooltip" data-placement="top" title="[数据仓库]02 数据仓库之离线-Hive 二">&larr; Previous Post</a>
+                            <a href="/article/[数据平台]03 数据仓库之离线-Hive 三/" data-toggle="tooltip" data-placement="top" title="[数据平台]03 数据仓库之离线-Hive 三">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/[数据仓库] 离线数仓VS实时数仓/" data-toggle="tooltip" data-placement="top" title="[数据仓库] 离线数仓VS实时数仓">Next Post &rarr;</a>
+                            <a href="/article/[数据平台]01 数据仓库之离线 一/" data-toggle="tooltip" data-placement="top" title="[数据平台]01 数据仓库之离线 一">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -297,7 +334,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据仓库VS数据库"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">数据仓库VS数据库</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#OLTP-vs-OLAP"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">OLTP vs OLAP</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库数据流程图"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">数据仓库数据流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么建设数据仓库"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">为什么建设数据仓库</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据仓库建设目标"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">数据仓库建设目标</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何实现"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">如何实现</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据库分层建设"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">数据库分层建设</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数仓建设背景"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">数仓建设背景</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么进行数仓分层"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">为什么进行数仓分层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#STG层"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">STG层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ODS层"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">ODS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWD层"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">DWD层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DWS层"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">DWS层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DIM层"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">DIM层</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DM层"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">DM层</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive产生背景及Hive是什么"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Hive产生背景及Hive是什么</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#为什么要使用Hive及Hive发展历程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">为什么要使用Hive及Hive发展历程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive-VS-Hadoop"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive VS Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive-VS-数据库"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Hive VS 数据库</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hive执行流程"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">hive执行流程</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive体系架构及部署架构"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Hive体系架构及部署架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Hive体系架构"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">Hive体系架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–测试环境"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">部署架构–测试环境</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#部署架构–生产环境"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">部署架构–生产环境</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive单机环境搭建"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Hive单机环境搭建</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Hive执行方式"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Hive执行方式</span></a></li></ol>
         
         </div>
       </aside>
@@ -317,7 +354,11 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#Hive" title="Hive">Hive</a>
+                        
                           <a class="tag" href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+                        
+                          <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
                         
                     </div>
                 </section>

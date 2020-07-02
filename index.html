@@ -211,6 +211,45 @@
 
 <div class="post-preview">
 
+    <a href="/article/[数据平台]07 数据平台之调度系统/">
+        <h2 class="post-title">
+                                 
+            [数据平台]07 数据平台之调度系统
+        </h2>
+        <h3 class="post-subtitle">
+            调度系统[任务处理场景、任务处理需求、调度系统功能]、常用开源调度框架对比、[Azkaban介绍、Azkaban优点、Azkaban适用场景]、Azkaban架构与调度流程[Azkaban部署模式、Azkaban执行流程图、Azkaban核心交互流程]、Azkazban安装部署[前置环境、Azkaban编译、配置azkaban数据库、部署Azkaban-Web-Server、部署Azkaban Exec Server、Azkaban示例]、Azkaban用户代理[Azkaban任务类型、Azkaban代理用户]
+        </h3>
+        <div class="post-content-preview">
+            调度系统任务处理现状
+搭建Hadoop集群,实现了离线数仓的基础架构
+编写HQL定时对数据进行计算,生成T+1的离线数据
+不同的任务编写成不同的HQL文件,通过Crontab进行调度
+安排几十个计算的先后顺序,避免顺序颠倒导致计算错误
+一个任务失败,后续任务全部等待,效率很低
+任务太多,串行执行时间太长
+
+任务处理场景
+原始数据为业务数据库or FTP存储的文件类数据
+通过Shell脚本或者......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-07-04
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#数据平台" title="数据平台">数据平台</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/SQL优化指南/">
         <h2 class="post-title">
                                  
@@ -277,10 +316,10 @@ SpringBoot中的Tomca......
 
 <div class="post-preview">
 
-    <a href="/article/[数据仓库]06 数据仓库之数据采集与治理 六/">
+    <a href="/article/[数据平台]06 数据平台之数据采集与治理 六/">
         <h2 class="post-title">
                                  
-            [数据仓库]06 数据仓库之数据采集与治理 六
+            [数据平台]06 数据平台之数据采集与治理 六
         </h2>
         <h3 class="post-subtitle">
             数据采集介绍、数据采集场景、数据采集系统需求、常用的数据采集工具[Sqoop、Flume、DataX]、数据治理、Apache Atlas数据治理
@@ -302,7 +341,7 @@ SpringBoot中的Tomca......
         </p>
         <div class="tags">
             
-              <a href="/tags/#数据仓库" title="数据仓库">数据仓库</a>
+              <a href="/tags/#数据平台" title="数据平台">数据平台</a>
             
         </div>
     
@@ -503,55 +542,6 @@ CentOS 5wget -O /etc/yum.rep......
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/大数据压缩/">
-        <h2 class="post-title">
-                                 
-            大数据压缩
-        </h2>
-        <h3 class="post-subtitle">
-            大数据压缩常用格式
-        </h3>
-        <div class="post-content-preview">
-            1. 压缩的好处和坏处压缩技术分为有损和无损：大数据场景下我们用到的都是无损；不允许丢失数据
-好处
-减少存储磁盘空间
-降低IO(网络的IO和磁盘的IO)
-加快数据在磁盘和网络中的传输速度，从而提高系统的处理速度
-
-坏处
-由于使用数据时，需要先将数据解压，加重CPU负荷
-
-压缩在Hadoop中的应用
-2. 压缩格式
-
-
-压缩格式
-工具
-算法
-扩展名
-codec类
-多文件
-splitable
-n......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-05-20
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#大数据" title="大数据">大数据</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -597,6 +587,10 @@ n......
             
         
             
+            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
+            
+        
+            
             <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
             
         
@@ -605,15 +599,7 @@ n......
             
         
             
-            <a href="/tags/#Kafka" title="Kafka" rel="12">Kafka</a>
-            
-        
-            
             <a href="/tags/#SpringBoot" title="SpringBoot" rel="1">SpringBoot</a>
-            
-        
-            
-            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
             
         
             
@@ -621,15 +607,19 @@ n......
             
         
             
+            <a href="/tags/#ZooKeeper" title="ZooKeeper" rel="2">ZooKeeper</a>
+            
+        
+            
             <a href="/tags/#Phoenix" title="Phoenix" rel="4">Phoenix</a>
             
         
             
-            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
+            <a href="/tags/#Hadoop" title="Hadoop" rel="9">Hadoop</a>
             
         
             
-            <a href="/tags/#Hadoop" title="Hadoop" rel="8">Hadoop</a>
+            <a href="/tags/#HDFS" title="HDFS" rel="4">HDFS</a>
             
         
             
@@ -649,7 +639,7 @@ n......
             
         
             
-            <a href="/tags/#数据仓库" title="数据仓库" rel="9">数据仓库</a>
+            <a href="/tags/#数据仓库" title="数据仓库" rel="6">数据仓库</a>
             
         
             
@@ -662,6 +652,10 @@ n......
         
             
             <a href="/tags/#Scala" title="Scala" rel="4">Scala</a>
+            
+        
+            
+            <a href="/tags/#数据平台" title="数据平台" rel="8">数据平台</a>
             
         
             
@@ -725,6 +719,10 @@ n......
     <ul>
       
         <li>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D07%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/">[数据平台]07 数据平台之调度系统</a>
+        </li>
+      
+        <li>
           <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
         </li>
       
@@ -733,15 +731,11 @@ n......
         </li>
       
         <li>
-          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%5D06%20%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据仓库]06 数据仓库之数据采集与治理 六</a>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D06%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据平台]06 数据平台之数据采集与治理 六</a>
         </li>
       
         <li>
           <a href="/article/%E5%9F%BA%E4%BA%8E%20Binlog%20%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">基于 Binlog 实时同步数据仓库问题总结</a>
-        </li>
-      
-        <li>
-          <a href="/article/ZooKeeper%E9%9D%A2%E8%AF%95%E9%A2%98/">[ZooKeeper] ZooKeeper面试题</a>
         </li>
       
     </ul>
@@ -756,7 +750,7 @@ n......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
