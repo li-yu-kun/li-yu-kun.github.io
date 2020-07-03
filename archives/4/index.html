@@ -211,6 +211,41 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Linux]04 大数据常用命令 四/">
+        <h2 class="post-title">
+                                 
+            [Linux]04 大数据常用命令 四
+        </h2>
+        <h3 class="post-subtitle">
+            调度|执行|软连接
+        </h3>
+        <div class="post-content-preview">
+            调度工具crontab比如一个可执行文件test.sh文件内容
+123#!/bin/bash （解释器）date
+执行这个shell脚本需要x执行权限执行命令
+12./test.shsh ./test.sh
+
+后缀   .sh 和 第一行#!/bin/bash  没有，sh命令去执行也可以执行成功
+12[root@hadoop ~]# crontab -l* * * * * /root/te......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-02-28
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Linux" title="Linux">Linux</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[Linux]03 大数据常用命令 三/">
         <h2 class="post-title">
                                  
@@ -510,42 +545,6 @@ Concat fieldsConcat fields就是多个字段连接起来形成一个新的字段
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[Kettle]03 三、输出控件/">
-        <h2 class="post-title">
-                                 
-            [Kettle]03 三、输出控件
-        </h2>
-        <h3 class="post-subtitle">
-            Kettle输出控件
-        </h3>
-        <div class="post-content-preview">
-            输出属于ETL的L，L就是Load加载。
-Excel输出输出是转换里面的第二个分类。
-文本文件输出数据操作常见的格式是：TXT和CSV。
-SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
-表输出表输出就是把数据写入到指定的表！
-更新更新就是把数据库已经存在的记录与数据流里面的记录进行比对，如果不同就进行更新。
-注意：如果记录不存在，则会出现错误！
-插入更新插入更新就是把数据库已经存......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-01-15
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Kettle" title="Kettle">Kettle</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -643,15 +642,15 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
             
         
             
-            <a href="/tags/#Kettle" title="Kettle" rel="9">Kettle</a>
-            
-        
-            
             <a href="/tags/#数据仓库" title="数据仓库" rel="6">数据仓库</a>
             
         
             
             <a href="/tags/#Kerberos" title="Kerberos" rel="1">Kerberos</a>
+            
+        
+            
+            <a href="/tags/#Kettle" title="Kettle" rel="9">Kettle</a>
             
         
             
@@ -663,15 +662,11 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
             
         
             
+            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            
+        
+            
             <a href="/tags/#数据平台" title="数据平台" rel="8">数据平台</a>
-            
-        
-            
-            <a href="/tags/#Java" title="Java" rel="1">Java</a>
-            
-        
-            
-            <a href="/tags/#Azkaban" title="Azkaban" rel="1">Azkaban</a>
             
         
             
@@ -680,6 +675,18 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
         
             
             <a href="/tags/#Ranger" title="Ranger" rel="1">Ranger</a>
+            
+        
+            
+            <a href="/tags/#Azkaban" title="Azkaban" rel="1">Azkaban</a>
+            
+        
+            
+            <a href="/tags/#Java" title="Java" rel="1">Java</a>
+            
+        
+            
+            <a href="/tags/#Json" title="Json" rel="1">Json</a>
             
         
     </div>
@@ -735,6 +742,10 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
     <ul>
       
         <li>
+          <a href="/article/%5BSpark%5D%20Spark%E5%85%A5%E9%97%A8/">[Spark] Spark入门</a>
+        </li>
+      
+        <li>
           <a href="/article/%E5%90%84%E4%B8%AAJSON%E6%8A%80%E6%9C%AF%E7%9A%84%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BC%98%E5%8A%A3/">各个JSON技术的简介和优劣</a>
         </li>
       
@@ -750,10 +761,6 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
           <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
-        <li>
-          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D06%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86%E4%B8%8E%E6%B2%BB%E7%90%86%20%E5%85%AD/">[数据平台]06 数据平台之数据采集与治理 六</a>
-        </li>
-      
     </ul>
   </div>
 
@@ -766,7 +773,7 @@ SQL文件输出SQL文件输出可以导出数据库表的结构和数据。
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

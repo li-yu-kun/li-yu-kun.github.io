@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [Spark] Spark入门 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Spark] Spark入门/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                            
+                        </div>
+                        <h1>[Spark] Spark入门</h1>
+                        <h2 class="subheading">Spark简介[Spark优势、Spark组件]、Spark架构以及执行流程[Spark名词、Spark on yarn、Spark 架构简介、Spark Application、Spark执行流程、Spark执行特点]、RDD简介以及特性[RDD特性、RDD操作、RDD算子、RDD转换示例、RDD特性总结]、RDD特性总结、Stage划分、Spark三种运行模式、Spark三种模式执行流程、SparkSQL简介[DataFram简介、RDD VS DataFrame]</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-07-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Spark简介"><a href="#Spark简介" class="headerlink" title="Spark简介"></a>Spark简介</h1><p>Spark是一个高性能的、多用途的开源集群计算框架</p>
+<p>Spark是Apache基金会最重要的项目之一,是现在大数据领域最热门的大数据计算平台之一</p>
+<p>Spark不仅具备Hadoop MapReduce的优 ,且解决了MapReduce的缺陷</p>
+<p><img src="1.png" alt=""></p>
+<h2 id="Spark优势"><a href="#Spark优势" class="headerlink" title="Spark优势"></a>Spark优势</h2><p>支持多种数据源，如HDFS、 S3、JDBC等</p>
+<p>支持多种运行模式，如Local, Standalone,Cluster</p>
+<p>包含多个完整强大的组件,如SparkCore, SparkSql SparkML</p>
+<p>多语言且支持交互式,支持Scala, Java,Python, R</p>
+<p>很好的兼容Hadoop生态,能够访问HDFS,支持on Yarn</p>
+<p>运行运行速度快，计算效率高，中间结果不落地,在内存中进行,通过构建DAG图,即使某一步失败也能很快重新计算</p>
+<h2 id="Spark组件"><a href="#Spark组件" class="headerlink" title="Spark组件"></a>Spark组件</h2><p><img src="2.png" alt=""></p>
+<h1 id="Spark架构以及执行流程"><a href="#Spark架构以及执行流程" class="headerlink" title="Spark架构以及执行流程"></a>Spark架构以及执行流程</h1><h2 id="Spark名词"><a href="#Spark名词" class="headerlink" title="Spark名词"></a>Spark名词</h2><p><strong>Driver</strong>: Spark应用的任务控制节点</p>
+<p><strong>Executor</strong>: Spark应用的任务的执行进程</p>
+<p><strong>Cluster Manager</strong>: Spark任务的资源管理器,如最常用的Yarn</p>
+<p><strong>Application</strong>:应用,即我们提交到Spark的执行程序</p>
+<p><strong>Job</strong>: Spark中对RDD进行Action操作所产生的RDD处理流程</p>
+<p><strong>Stage</strong>:阶段,一个Job会切分i多 Stage,各个Stage之ii照顺序执行</p>
+<p><strong>SparkContext</strong>:整个应用的上下文,控制应用的生命周期</p>
+<p><strong>RDD</strong>:弹性分布式数据集( Resilient Distributed Dataset)</p>
+<p><strong>DAG</strong>:是Directed Acyclic Graph (有向无环图)的简称,反映RDD之间的依赖关系</p>
+<h2 id="Spark-on-yarn"><a href="#Spark-on-yarn" class="headerlink" title="Spark on yarn"></a>Spark on yarn</h2><p><img src="3.png" alt=""></p>
+<h2 id="Spark-架构简介"><a href="#Spark-架构简介" class="headerlink" title="Spark 架构简介"></a>Spark 架构简介</h2><p>Spark运行架构包括Cluster Manager, Driver和Executor</p>
+<p>Executor内有线程池,通过多线程执行相关任务</p>
+<p>Task的中间结果直接写入到内存，有效减少1O开销</p>
+<h2 id="Spark-Application"><a href="#Spark-Application" class="headerlink" title="Spark Application"></a>Spark Application</h2><p>一个Spark Application包含一个Driver和多个Job</p>
+<p>一个ob包含多个Stage,一个Stage又包含多个Task<br><img src="4.png" alt=""></p>
+<h2 id="Spark执行流程"><a href="#Spark执行流程" class="headerlink" title="Spark执行流程"></a>Spark执行流程</h2><p><img src="5.png" alt=""><br>提交应用后, Driver会创建SparkContext实例,申请资源</p>
+<p>ClusterManager分配资源,启动Executor进程, Executor向Driver注册并申请任务</p>
+<p>SparkContext生成DAG图通过DAGScheduler解析,生成多个Stage并通过TaskScheduler分配到各个Executor执行</p>
+<h2 id="Spark执行特点"><a href="#Spark执行特点" class="headerlink" title="Spark执行特点"></a>Spark执行特点</h2><p>Job的执行过程与资源管理器无关,资源管理器只分配资源</p>
+<p>Executor含有线程池,以多线程的方式提高任务的执行效率</p>
+<p>每个Task产生的结果会放入内存,避免了大量的10开销</p>
+<h1 id="RDD简介以及特性"><a href="#RDD简介以及特性" class="headerlink" title="RDD简介以及特性"></a>RDD简介以及特性</h1><h2 id="RDD简介"><a href="#RDD简介" class="headerlink" title="RDD简介"></a>RDD简介</h2><p>RDD全称叫做弹性分布式数据集(Resilient Distributed Datasets)</p>
+<p>RDD是一种分布式的内存抽象,表示一个只读的记录分区的集合</p>
+<p>RDD是Spark的核心,我们编写Spark程序本质上是对RDD进行各种转换操作</p>
+<h2 id="RDD特性"><a href="#RDD特性" class="headerlink" title="RDD特性"></a>RDD特性</h2><p>只读: RDD只能通过其他RDD转换而创建,所以RDD之间存在依赖,可以认为是RDD的血缘关系</p>
+<p>分区: RDD逻辑上是分区的,各个分区可以保存到不同节点,从而可以进行并行计算</p>
+<p>转换: RDD之间可以通过丰富的算子进行转换,这些RDD之间维护 这依赖关系</p>
+<h2 id="RDD操作"><a href="#RDD操作" class="headerlink" title="RDD操作"></a>RDD操作</h2><p>RDD支持两种类型的操作: Transformation(变换)和Action(行动)</p>
+<p>变换:变换的返回值是一个新的RDD集合,而不是单个值。map, filter, flatMap, groupByKey</p>
+<p>行动:行动操作计算并返回一个新的值。reduce, collect, count, first, take</p>
+<h2 id="RDD算子"><a href="#RDD算子" class="headerlink" title="RDD算子"></a>RDD算子</h2><p><img src="6.png" alt=""></p>
+<h2 id="RDD转换示例"><a href="#RDD转换示例" class="headerlink" title="RDD转换示例"></a>RDD转换示例</h2><p><img src="7.png" alt=""></p>
+<h2 id="RDD特性总结"><a href="#RDD特性总结" class="headerlink" title="RDD特性总结"></a>RDD特性总结</h2><p>只读,可分区</p>
+<p>高度容错,支持java对象</p>
+<p>可缓存,可持久化到磁盘</p>
+<h1 id="RDD依赖关系"><a href="#RDD依赖关系" class="headerlink" title="RDD依赖关系"></a>RDD依赖关系</h1><p>窄依赖:父子RDD之间的分区是一一对应的</p>
+<p>宽依赖:子RDD的每个分区与父RDD的所有分区都有关系,是多对多的关系<br><img src="8.png" alt=""></p>
+<h2 id="Stage划分"><a href="#Stage划分" class="headerlink" title="Stage划分"></a>Stage划分</h2><p>窄依赖中的转换操作与RDD中其他分区无关,可以通过类似管道的方式一气呵成的执行完成</p>
+<p>宽依赖的转换操作涉及到RDD不同的分区,需要数据的重新整理(Shuffle ) ,产生数据交互</p>
+<p>Stage的划分就是由依赖关系决定的,原则是遇窄依赖不变,遇宽依赖则进行划分。使窄依赖尽量多的在一起<br><img src="9.png" alt=""></p>
+<h1 id="Spark三种运行模式"><a href="#Spark三种运行模式" class="headerlink" title="Spark三种运行模式"></a>Spark三种运行模式</h1><p><a href="http://spark.apache.org/downloads.html" target="_blank" rel="noopener">Spark下载地址</a><br><a href="http://spark.apache.org/docs/latest/" target="_blank" rel="noopener">Spark官方文档</a></p>
+<h2 id="Spark安装"><a href="#Spark安装" class="headerlink" title="Spark安装"></a>Spark安装</h2><p>从Spark下载地址下载Spark安装包，我们课程中选择的是spark-2.4.4-bin-hadoop2.7版本。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf spark-2.4.4-bin-hadoop2.7.tgz</span><br><span class="line">mv spark-2.4.4-bin-hadoop2.7 /soft/home/</span><br><span class="line"></span><br><span class="line"># copy配置文件</span><br><span class="line">mv /soft/home/spark-2.4.4-bin-hadoop2.7/conf/spark-env.sh.template /soft/home/spark-2.4.4-bin-hadoop2.7/conf/spark-env.sh</span><br></pre></td></tr></table></figure>
+<p>三种不同的运行模式的相关配置都在conf文件夹下的spark-env.sh中。我们依次来看一下这三种不同的运行模式。</p>
+<p>我们对spark-env.sh进行一下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># 设置JAVA_HOME</span><br><span class="line">export JAVA_HOME=/soft/home/jdk1.8.0_191</span><br><span class="line"></span><br><span class="line"># Standalone模式，配置spark conf目录，其他可以保持默认值</span><br><span class="line">export SPARK_CONF_DIR=/soft/home/spark-2.4.4-bin-hadoop2.7/conf</span><br><span class="line">SPARK_MASTER_HOST=master_hostname</span><br><span class="line">SPARK_MASTER_PORT=7077</span><br><span class="line">SPARK_WORKER_CORES=1</span><br><span class="line">SPARK_WORKER_MEMORY=1g</span><br><span class="line"></span><br><span class="line"># On Yarn模式，配置Hadoop conf和yarn conf</span><br><span class="line">export HADOOP_CONF_DIR=/soft/home/hadoop-2.8.5/etc/hadoop</span><br><span class="line">export YARN_CONF_DIR=/soft/home/hadoop-2.8.5/etc/hadoop</span><br></pre></td></tr></table></figure>
+<p>然后配置环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/soft/home/spark-2.4.4-bin-hadoop2.7</span><br><span class="line">export PATH=$SPARK_HOME/bin:$SPARK_HOME/sbin:$PATH</span><br></pre></td></tr></table></figure>
+<h2 id="Local模式"><a href="#Local模式" class="headerlink" title="Local模式"></a>Local模式</h2><p>Local[n] 本地模式 启动n个线程，来模拟分布式计算<br>Local模式通常用于测试用，直接bin/spark-shell启动即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 默认即为local模式</span><br><span class="line"></span><br><span class="line">#在本地运行，只有一个工作线程，无并行计算能力</span><br><span class="line">spark-shell --master local</span><br><span class="line">#在本地运行，有 K 个工作线程，通常设置 K 为机器的CPU 核心数量</span><br><span class="line">spark-shell --master local[2]</span><br><span class="line">#在本地运行，工作线程数量等于机器的 CPU 核心数量</span><br><span class="line">spark-shell --master local[*]</span><br></pre></td></tr></table></figure>
+<h2 id="Standalone模式"><a href="#Standalone模式" class="headerlink" title="Standalone模式"></a>Standalone模式</h2><p>Standalone是Spark自带的资源管理器，无需依赖任何其他资源管理系统，通过配置slaves配置文件，在多台机器上进行分布式计算。</p>
+<p>我们可以通过 start-master.sh 和 start-slaves.sh 启动spark集群的master和slaves。启动完成之后，使用命令jps查看进程。master机器上会有Master和Worker。slave机器上会有Worker进程。<br>通过访问 <a href="http://master_hostname:8080" target="_blank" rel="noopener">http://master_hostname:8080</a> 可以看到spark的web界面。</p>
+<p>那么我们如何链接standalone模式的spark集群呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 同样的我们通过指定master参数来提交任务</span><br><span class="line">spark-shell --master spark://master_hostname:7077</span><br></pre></td></tr></table></figure>
+<h2 id="Cluster模式之On-Yarn"><a href="#Cluster模式之On-Yarn" class="headerlink" title="Cluster模式之On Yarn"></a>Cluster模式之On Yarn</h2><p>On Yarn模式和Standalone模式不同之处在于，OnYarn模式使用Hadoop中的Yarn作为资源管理器，可以使spark程序跑在Hadoop集群当中，Spark on Yarn又分为yarn-cluster和yarn-client。<br>Yarn Cluster:主程序逻辑和任务都运行在Yarn集群中<br>Yarn Client:主程序逻辑运行在本地，任务运行在Yarn集群中</p>
+<p>提交程序到yarn集群也非常的简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#默认为client模式</span><br><span class="line"></span><br><span class="line"># yarn cluster模式 在 Yarn 集群上运行，Driver 进程在 Yarn 集群上，Work 进程也在 Yarn 集群上</span><br><span class="line">spark-shell --master yarn --deploy-mode cluster</span><br><span class="line"># yarn client模式 在 Yarn 集群上运行，Driver 进程在本地， Work 进程在 Yarn 集群上</span><br><span class="line">spark-shell --master yarn --deploy-mode client</span><br></pre></td></tr></table></figure>
+<p>现在我们对于Spark的三种运行模式都有了一定的了解了，我们来看一下Spark的执行流程</p>
+<h1 id="Spark三种模式执行流程"><a href="#Spark三种模式执行流程" class="headerlink" title="Spark三种模式执行流程"></a>Spark三种模式执行流程</h1><h2 id="Spark基本执行流程"><a href="#Spark基本执行流程" class="headerlink" title="Spark基本执行流程"></a>Spark基本执行流程</h2><p><img src="10.png" alt=""></p>
+<ol>
+<li>构建Spark Application的运行环境（启动SparkContext），SparkContext向资源管理器（可以是Standalone、Mesos或YARN）注册并申请运行Executor资源；</li>
+<li>资源管理器分配Executor资源并启动StandaloneExecutorBackend，Executor运行情况将随着心跳发送资源管理器上；</li>
+<li>SparkContext构建成DAG图，将DAG图分解成Stage，并把Taskset发送给Task Scheduler。Executor向SparkContext申请Task</li>
+<li>Task Scheduler将Task发放给Executor运行同时SparkContext将应用程序代码发放给Executor。</li>
+<li>Task在Executor上运行，运行完毕释放所有资源。</li>
+</ol>
+<h2 id="Spark-On-Yarn-Cluster的执行流程"><a href="#Spark-On-Yarn-Cluster的执行流程" class="headerlink" title="Spark On Yarn Cluster的执行流程"></a>Spark On Yarn Cluster的执行流程</h2><p>在YARN-Cluster模式中，当用户向YARN中提交一个应用程序后，YARN将分两个阶段运行该应用程序：第一个阶段是把Spark的Driver作为一个ApplicationMaster在YARN集群中先启动；第二个阶段是由ApplicationMaster创建应用程序，然后为它向ResourceManager申请资源，并启动Executor来运行Task，同时监控它的整个运行过程，直到运行完成。</p>
+<p>YARN-Cluster的工作流程分为以下几个步骤：<br><img src="11.png" alt=""></p>
+<ol>
+<li>Spark Yarn Client向YARN中提交应用程序，包括ApplicationMaster程序、启动ApplicationMaster的命令、需要在Executor中运行的程序等；</li>
+<li>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，其中ApplicationMaster进行SparkContext等的初始化；</li>
+<li>ApplicationMaster向ResourceManager注册，这样用户可以直接通过ResourceManage查看应用程序的运行状态，然后它将采用轮询的方式通过RPC协议为各个任务申请资源，并监控它们的运行状态直到运行结束；</li>
+<li>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向ApplicationMaster中的SparkContext注册并申请Task。这一点和Standalone模式一样，只不过SparkContext在Spark Application中初始化时，使用CoarseGrainedSchedulerBackend配合YarnClusterScheduler进行任务的调度，其中YarnClusterScheduler只是对TaskSchedulerImpl的一个简单包装，增加了对Executor的等待逻辑等；</li>
+<li>ApplicationMaster中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向ApplicationMaster汇报运行的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务；</li>
+<li>应用程序运行完成后，ApplicationMaster向ResourceManager申请注销并关闭自己。</li>
+</ol>
+<h2 id="Spark-On-Yarn-Client的执行流程"><a href="#Spark-On-Yarn-Client的执行流程" class="headerlink" title="Spark On Yarn Client的执行流程"></a>Spark On Yarn Client的执行流程</h2><p><img src="12.png" alt=""></p>
+<h1 id="SparkSQL简介"><a href="#SparkSQL简介" class="headerlink" title="SparkSQL简介"></a>SparkSQL简介</h1><h2 id="SQL-on-Hadoop"><a href="#SQL-on-Hadoop" class="headerlink" title="SQL on Hadoop"></a>SQL on Hadoop</h2><p>Hive的出现让技术人员可以通过类SQL的方式对批量数据进行查询，而不用开发MapReduce程序</p>
+<p>MapReduce计算过程中大量的中间结果磁盘落地使运行效率较低</p>
+<p>为了提高SQL on Hadoop的效率,各大工具应运而生,比如Shark, Impala等</p>
+<h2 id="SparkSQL简介-1"><a href="#SparkSQL简介-1" class="headerlink" title="SparkSQL简介"></a>SparkSQL简介</h2><p>SparkSQL是Spark为处理结构化数据而引入的模块,前身是Shark</p>
+<p>SparkSQL提供了一个DataFrame的编程抽象,底层依然为RDD</p>
+<p>parkSQL是一个分布式的SQL查询引擎,支持标准SQL和HSQL</p>
+<h2 id="DataFram简介"><a href="#DataFram简介" class="headerlink" title="DataFram简介"></a>DataFram简介</h2><p>类似于关系型数据库的table,是分布式数据集,可以认为是有Schema的RDD</p>
+<p>一个DataFrame可以注册成一张表,支持sql操作和丰富的函数</p>
+<p>有丰富的创建方式,支持Hive, JDBC、结构化文件、RDD等,可以与pandas的dataframe相互转换</p>
+<h2 id="RDD-VS-DataFrame"><a href="#RDD-VS-DataFrame" class="headerlink" title="RDD VS DataFrame"></a>RDD VS DataFrame</h2><p><img src="13.png" alt=""></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/各个JSON技术的简介和优劣/" data-toggle="tooltip" data-placement="top" title="各个JSON技术的简介和优劣">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Spark简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark优势"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Spark优势</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark组件"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Spark组件</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark架构以及执行流程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Spark架构以及执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark名词"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Spark名词</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-on-yarn"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Spark on yarn</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-架构简介"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Spark 架构简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-Application"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Spark Application</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark执行流程"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">Spark执行流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark执行特点"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">Spark执行特点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RDD简介以及特性"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">RDD简介以及特性</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD简介"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">RDD简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD特性"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">RDD特性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD操作"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">RDD操作</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD算子"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">RDD算子</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD转换示例"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">RDD转换示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD特性总结"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">RDD特性总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#RDD依赖关系"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">RDD依赖关系</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Stage划分"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Stage划分</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark三种运行模式"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Spark三种运行模式</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark安装"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">Spark安装</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Local模式"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">Local模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Standalone模式"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">Standalone模式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Cluster模式之On-Yarn"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">Cluster模式之On Yarn</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spark三种模式执行流程"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Spark三种模式执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark基本执行流程"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">Spark基本执行流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-On-Yarn-Cluster的执行流程"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">Spark On Yarn Cluster的执行流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spark-On-Yarn-Client的执行流程"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">Spark On Yarn Client的执行流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#SparkSQL简介"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">SparkSQL简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SQL-on-Hadoop"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">SQL on Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#SparkSQL简介-1"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">SparkSQL简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DataFram简介"><span class="toc-nav-number">7.3.</span> <span class="toc-nav-text">DataFram简介</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#RDD-VS-DataFrame"><span class="toc-nav-number">7.4.</span> <span class="toc-nav-text">RDD VS DataFrame</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
