@@ -211,6 +211,98 @@
 
 <div class="post-preview">
 
+    <a href="/article/[Hive] Hive之UDF函数/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive之UDF函数
+        </h2>
+        <h3 class="post-subtitle">
+            自定义UDF、自定义临时函数和永久函数
+        </h3>
+        <div class="post-content-preview">
+            UDF：普通的用户自定义函数。接受单行输入，并产生单行输出。如转换字符串大小写，获取字符串长度等。UDAF：用户定义聚集函数（User-defined aggregate function）。接受多行输入，并产生单行输出。比如MAX，COUNT函数。比如sum/minUDTF：用户定义表生成函数（User-defined table-generating function）。接受单行输入，并......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-23
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hive] Hive的元数据/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive的元数据
+        </h2>
+        <h3 class="post-subtitle">
+            VERSION、DBS、TBLS、SDS、COLUMNS_V2、PARTITIONS
+        </h3>
+        <div class="post-content-preview">
+            1234&lt;property&gt; 	&lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;   	&lt;value&gt;jdbc:mysql://192.168.232.8:3306/hadoop?createDatabaseIfNotExist=true&amp;amp;autoReconnect=true&amp;amp......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[HBase]09 Phoenix二级索引 九/">
+        <h2 class="post-title">
+                                 
+            [HBase]09 Phoenix二级索引 九
+        </h2>
+        <h3 class="post-subtitle">
+            覆盖索引、函数索引、可变索引与不可变索引、同步索引与异步索引
+        </h3>
+        <div class="post-content-preview">
+            覆盖索引语法：
+12345创建索引CREATE INDEX my_index ON my_schema.my_table(sex,date) INCLUDE(col4);删除索引DROP INDEX my_index ON my_schema.my_table;
+本质:原始列的数据也存在index table。这样查询索引数据时 不需要去原始表查询，直接获取结果，节省开销。
+好处 ：空间换时......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2017-10-17
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#HBase" title="HBase">HBase</a>
+            
+              <a href="/tags/#Phoenix" title="Phoenix">Phoenix</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/[HBase]08 Phoenix二级索引 八/">
         <h2 class="post-title">
                                  
@@ -440,96 +532,6 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/[HBase]01 HBase简介与环境搭建 一/">
-        <h2 class="post-title">
-                                 
-            [HBase]01 HBASE简介与环境搭建 一
-        </h2>
-        <h3 class="post-subtitle">
-            HBase简介、HBase在大数据生态中的位置、HBase与HDFS、HBase使用场景、Hbase数据存储模型及与关系型数据库的区别、Hbase伪分布式集群安装、Hbase基础架构、HBase特点、RowKey的设计
-        </h3>
-        <div class="post-content-preview">
-            HBase简介及其在大数据生态圈的位置HBase简介Apache HBase™是Hadoop数据库、分布式、可扩展、大数据存储。
-使用Apache HBase™当你需要随机的,实时的大数据的读/写访问。这个项目的目标是在商品硬件集群上托管非常大的表——数十亿行X数百万列。Apache HBase是一个开源的、分布式的、版本化的、非关系型的数据库，模仿了谷歌的Bigtable: Chang等人......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-09-14
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#HBase" title="HBase">HBase</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 如何确定block损坏的位置和修复/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 如何确定block损坏的位置和修复
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            hdfs fsck命令查看HDFS文件对应的文件块信息(Block)和位置信息在HDFS中，提供了fsck命令，用于检查HDFS上文件和目录的健康状态、获取文件的block信息和位置信息等。fsck命令必须由HDFS超级用户来执行，普通用户无权限。
-1234567891011121314151617181920212223242526272829303132[hadoop@hadoop ~]......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-09-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[Hadoop] 分布式处理框架MapReduce的join操作/">
-        <h2 class="post-title">
-                                 
-            [Hadoop] 分布式处理框架MapReduce的join操作实战
-        </h2>
-        <h3 class="post-subtitle">
-            Map Join的操作、Reduce Join的操作
-        </h3>
-        <div class="post-content-preview">
-            Map Join的操作map类
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475package com.kun.map_join;import org.apac......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2017-09-02
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#MapReduce" title="MapReduce">MapReduce</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -575,11 +577,11 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="4">大数据</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -647,15 +649,11 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
             
         
             
-            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            <a href="/tags/#Spark" title="Spark" rel="2">Spark</a>
             
         
             
-            <a href="/tags/#数据平台" title="数据平台" rel="8">数据平台</a>
-            
-        
-            
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            <a href="/tags/#数据平台" title="数据平台" rel="9">数据平台</a>
             
         
             
@@ -664,6 +662,14 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
         
             
             <a href="/tags/#Azkaban" title="Azkaban" rel="1">Azkaban</a>
+            
+        
+            
+            <a href="/tags/#Presto" title="Presto" rel="1">Presto</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
             
@@ -727,23 +733,23 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
     <ul>
       
         <li>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D08%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8BSQL%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E/">[数据平台] 数据平台之SQL查询引擎</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BSpark%5D%20%E9%81%87%E5%88%B0%E7%9A%84Spark%E9%97%AE%E9%A2%98/">[Spark] 遇到的Spark问题</a>
+        </li>
+      
+        <li>
+          <a href="/article/%E5%85%A8%E6%96%B9%E4%BD%8D%E6%B5%8B%E8%AF%84Hive%E3%80%81SparkSQL%E3%80%81Presto%20%E7%AD%89%E4%B8%83%E4%B8%AA%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E/">全方位测评Hive、SparkSQL、Presto等七个大数据查询引擎</a>
+        </li>
+      
+        <li>
           <a href="/article/%5BSpark%5D%20Spark%E5%85%A5%E9%97%A8/">[Spark] Spark入门</a>
         </li>
       
         <li>
           <a href="/article/%E5%90%84%E4%B8%AAJSON%E6%8A%80%E6%9C%AF%E7%9A%84%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BC%98%E5%8A%A3/">各个JSON技术的简介和优劣</a>
-        </li>
-      
-        <li>
-          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D07%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/">[数据平台]07 数据平台之调度系统</a>
-        </li>
-      
-        <li>
-          <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
-        </li>
-      
-        <li>
-          <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
     </ul>
@@ -758,7 +764,7 @@ region是Hbase存储的单元，数据都存在region中，需要注意的是每
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>

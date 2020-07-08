@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          [数据平台] 数据平台之SQL查询引擎 - 李玉坤 | Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[数据平台]08 数据平台之SQL查询引擎/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                            
+                              <a class="tag" href="/tags/#Presto" title="Presto">Presto</a>
+                            
+                        </div>
+                        <h1>[数据平台] 数据平台之SQL查询引擎</h1>
+                        <h2 class="subheading">Presto简介、Presto是什么、Presto显而易见的优点、查询示例、Presto数据模型、Presto架构与执行流程、数据库架构设计、MPP架构的优缺点、presto安装部署</h2>
+                        <span class="meta">
+                            Posted by 李玉坤 on
+                            2018-07-25
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">李玉坤</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Presto简介"><a href="#Presto简介" class="headerlink" title="Presto简介"></a>Presto简介</h1><p>SQL on Hadoop<br><img src="1.png" alt=""></p>
+<p>Hive的出现让技术人员可以通过类SQL的方式对批量数据进行查询,而不用开发MapReduce程序</p>
+<p>MapReduce计算过程中大量的中间结果磁盘落地使运行效率较低</p>
+<p>为了提高SQL on Hadoop的效率,各大工具应运而生,比如Shark, Impala等</p>
+<h2 id="Presto是什么"><a href="#Presto是什么" class="headerlink" title="Presto是什么"></a>Presto是什么</h2><p>Presto是由Facebook开发的分布式SQL查询引擎,用来进行高速实时的数据分析</p>
+<p>Presto的产生是为了解决Hive的MapReduce模型太慢且不能通过BI等工具展现HDFS数据的问题</p>
+<p>Presto是一个计算引擎,它不存储数据,通过丰富的Connector获取第三方服务的数据,并支持扩展</p>
+<h2 id="Presto显而易见的优点"><a href="#Presto显而易见的优点" class="headerlink" title="Presto显而易见的优点"></a>Presto显而易见的优点</h2><p>Presto支持标准的SQL,降低了分析人员和开发人员的使用门槛</p>
+<p>Presto支持可插拔的Connector,可以连接多种数据源。包括Hive、RDBMS、Kafka、MongoDB等等</p>
+<p>Presto是一个低延时、高并发的内存计算引擎,比Hive执行效率高的多</p>
+<h2 id="查询示例"><a href="#查询示例" class="headerlink" title="查询示例"></a>查询示例</h2><p><img src="2.png" alt=""></p>
+<h2 id="Presto数据模型"><a href="#Presto数据模型" class="headerlink" title="Presto数据模型"></a>Presto数据模型</h2><p>Catalog:即数据源。Hive、Mysq都是数据源。Presto可以连接多个Hive和多个Mysql</p>
+<p>Schema:类比于DataBase,一个Catalog下有多个Schema</p>
+<p>Table:数据表,与我们常用的数据库表意义相同,一个Schema下有多个数据表</p>
+<h1 id="Presto架构与执行流程"><a href="#Presto架构与执行流程" class="headerlink" title="Presto架构与执行流程"></a>Presto架构与执行流程</h1><h2 id="Presto架构"><a href="#Presto架构" class="headerlink" title="Presto架构"></a>Presto架构</h2><p><img src="3.png" alt=""><br>Presto为Master-Slave架构,由三部分组成:</p>
+<ul>
+<li>一个Coordinator节点</li>
+<li>一个Discovery Server节点</li>
+<li>多个Worker节点</li>
+</ul>
+<h2 id="Presto组件"><a href="#Presto组件" class="headerlink" title="Presto组件"></a>Presto组件</h2><p>Coordinator负责解析SQL语句,生成查询计划,分发执行任务</p>
+<p>Discovery Server负责维护Coordinator和Worker的关系,通常内嵌于Coordinator节点</p>
+<p>Worker节点负责执行查询任务以及与HDFS进行交互读取数据</p>
+<h2 id="Presto查询流程"><a href="#Presto查询流程" class="headerlink" title="Presto查询流程"></a>Presto查询流程</h2><p><img src="4.png" alt=""></p>
+<h2 id="数据库架构设计"><a href="#数据库架构设计" class="headerlink" title="数据库架构设计"></a>数据库架构设计</h2><p><img src="5.png" alt=""></p>
+<ul>
+<li>Shared Everthting:完全透明共享CPU/MEMORY/IO,并行处理能力是最差的 代表是SQL server</li>
+<li>Shared Storage:各个处理单元使用自己的私有CPU和Memory,共享磁盘系统 代表是Oracle</li>
+<li>Shared Nothing:各个处理单元都有自己私有的CPU/内存/硬盘等 mmp模式，大规模处理模式 代表是hadoop</li>
+</ul>
+<p>presto是mpp模式，本身不存储数据，但是数据在各个分开数据源中。</p>
+<h2 id="MPP架构的优缺点"><a href="#MPP架构的优缺点" class="headerlink" title="MPP架构的优缺点"></a>MPP架构的优缺点</h2><ul>
+<li>易扩容:可轻松通过扩展机器节点(处理单元)扩展整个系统的分布式存储和计算能力</li>
+<li>效率高:任务并行执行能力强,充分发挥本地计算的能力,数据无共享、无1/0冲突,无锁资源竞争,计算速度快</li>
+<li>短板效应:单个节点查询效率慢会影响整个查询</li>
+</ul>
+<h1 id="presto安装部署"><a href="#presto安装部署" class="headerlink" title="presto安装部署"></a>presto安装部署</h1><ol>
+<li>解压后进入presto<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdate@hadoop app]$ cd presto</span><br><span class="line">[bigdate@hadoop presto]$ ll</span><br><span class="line">总用量 208</span><br><span class="line">drwxr-xr-x.  3 bigdate bigdate     84 1月  12 22:58 bin</span><br><span class="line">drwxr-xr-x.  2 bigdate bigdate   8192 1月  12 22:58 lib</span><br><span class="line">-rw-rw-r--.  1 bigdate bigdate 191539 1月  12 22:58 NOTICE</span><br><span class="line">drwxr-xr-x. 29 bigdate bigdate   4096 1月  12 22:58 plugin</span><br><span class="line">-rw-rw-r--.  1 bigdate bigdate    119 1月  12 22:58 README.txt</span><br></pre></td></tr></table></figure></li>
+<li>编辑配置文件<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">[bigdate@hadoop presto]$ mkdir etc</span><br><span class="line">[bigdate@hadoop presto]$ ll</span><br><span class="line">总用量 208</span><br><span class="line">drwxr-xr-x.  3 bigdate bigdate     84 1月  12 22:58 bin</span><br><span class="line">drwxrwxr-x.  2 bigdate bigdate      6 7月   6 22:03 etc</span><br><span class="line">drwxr-xr-x.  2 bigdate bigdate   8192 1月  12 22:58 lib</span><br><span class="line">-rw-rw-r--.  1 bigdate bigdate 191539 1月  12 22:58 NOTICE</span><br><span class="line">drwxr-xr-x. 29 bigdate bigdate   4096 1月  12 22:58 plugin</span><br><span class="line">-rw-rw-r--.  1 bigdate bigdate    119 1月  12 22:58 README.txt</span><br><span class="line">[bigdate@hadoop presto]$ cd etc</span><br><span class="line">[bigdate@hadoop etc]$ vim config.properties</span><br><span class="line"></span><br><span class="line">coordinator=true</span><br><span class="line">node-scheduler.include-coordinator=true</span><br><span class="line">discovery-server.enabled=true</span><br><span class="line">http-server.http.port=9999</span><br><span class="line">discovery.uri=http://hadoop:9999</span><br><span class="line">query.max-memory=2GB</span><br><span class="line">query.max-memory-per-node=1GB</span><br><span class="line">query.max-total-memory-per-node=2GB</span><br><span class="line">query.initial-hash-partitions=100</span><br><span class="line">query.max-run-time=600s</span><br><span class="line">query.max-execution-time=600s</span><br><span class="line"></span><br><span class="line">[bigdate@hadoop etc]$ vim node.properties</span><br><span class="line"></span><br><span class="line">node.environment=my_presto</span><br><span class="line">node.id=node01 </span><br><span class="line">node.data-dir=/home/bigdate/date/presto/date</span><br><span class="line"></span><br><span class="line">[bigdate@hadoop etc]$ vim jvm.config</span><br><span class="line">-server</span><br><span class="line">-Xmx4G</span><br><span class="line">-XX:+UseConcMarkSweepGC</span><br><span class="line">-XX:+ExplicitGCInvokesConcurrent</span><br><span class="line">-XX:+CMSClassUnloadingEnabled</span><br><span class="line">-XX:+AggressiveOpts</span><br><span class="line">-XX:+HeapDumpOnOutOfMemoryError</span><br><span class="line">-XX:OnOutOfMemoryError=kill -9 %p</span><br><span class="line">-XX:ReservedCodeCacheSize=150M</span><br><span class="line"></span><br><span class="line">[bigdate@hadoop etc]$ vim log.properties</span><br><span class="line"></span><br><span class="line">com.facebook.presto=INFO</span><br><span class="line"></span><br><span class="line">[bigdate@hadoop etc]$ mkdir catalog</span><br><span class="line">[bigdate@hadoop etc]$ cd catalog</span><br><span class="line">[bigdate@hadoop catalog]$ vim jmx.properties</span><br><span class="line"></span><br><span class="line">connector.name=jmx</span><br><span class="line"></span><br><span class="line">[bigdate@hadoop catalog]$ vim hive.properties</span><br><span class="line"></span><br><span class="line">connector.name=hive-hadoop2</span><br><span class="line">hive.metastore.uri=thrift://localhost:9083 </span><br><span class="line">hive.config.resources=/usr/local/hadoop/etc/hadoop/hdfs-s ite.xml, /usr/local/hadoop/etc/hadoop/hdfs-core.xml </span><br><span class="line">hive.allow-drop-table=false</span><br></pre></td></tr></table></figure></li>
+<li>启动验证连接<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[bigdate@hadoop bin]$ ./launcher run</span><br><span class="line">......</span><br><span class="line">2020-07-07T21:07:09.421+0800	INFO	main	com.facebook.presto.server.PrestoServer	======== SERVER STARTED ========</span><br><span class="line">[bigdate@hadoop bin]$ ./launcher start  后台启动</span><br><span class="line">Started as 11353</span><br><span class="line">[bigdate@hadoop bin]$ ./presto-cli.jar --server hadoop:9999 --catalog hive --user bigdate</span><br><span class="line">presto&gt; show catalogs</span><br><span class="line">     -&gt; ;</span><br><span class="line"> Catalog </span><br><span class="line">---------</span><br><span class="line"> hive    </span><br><span class="line"> jmx     </span><br><span class="line"> system  </span><br><span class="line">(3 rows)</span><br><span class="line"></span><br><span class="line">Query 20200707_131618_00000_8ayhz, FINISHED, 1 node</span><br><span class="line">Splits: 19 total, 19 done (100.00%)</span><br><span class="line">0:02 [0 rows, 0B] [0 rows/s, 0B/s]</span><br><span class="line"></span><br><span class="line">presto&gt; show schemas;</span><br><span class="line">Query 20200707_131633_00002_8ayhz failed: Failed connecting to Hive metastore: [localhost:9083]</span><br><span class="line">//以上错误是因为hive metastore 以及 hiveserver2 没启动</span><br><span class="line"></span><br><span class="line">presto&gt; show schemas;</span><br><span class="line">       Schema       </span><br><span class="line">--------------------</span><br><span class="line"> default            </span><br><span class="line"> information_schema </span><br><span class="line">(2 rows)</span><br><span class="line"></span><br><span class="line">Query 20200707_131830_00004_8ayhz, FINISHED, 1 node</span><br><span class="line">Splits: 19 total, 19 done (100.00%)</span><br><span class="line">0:02 [2 rows, 35B] [0 rows/s, 17B/s]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/[Spark] 遇到的Spark问题/" data-toggle="tooltip" data-placement="top" title="[Spark] 遇到的Spark问题">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Presto简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto是什么"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Presto是什么</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto显而易见的优点"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Presto显而易见的优点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询示例"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">查询示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto数据模型"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Presto数据模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto架构与执行流程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Presto架构与执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto架构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Presto架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto组件"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Presto组件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto查询流程"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Presto查询流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库架构设计"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">数据库架构设计</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MPP架构的优缺点"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">MPP架构的优缺点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#presto安装部署"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">presto安装部署</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#数据平台" title="数据平台">数据平台</a>
+                        
+                          <a class="tag" href="/tags/#Presto" title="Presto">Presto</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/li-yu-kun">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; 李玉坤 2020 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    By <a href="https://li-yu-kun.github.io/">李玉坤</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=li-yu-kun&repo=li-yu-kun.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://li-yu-kun.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://li-yu-kun.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -211,6 +211,101 @@
 
 <div class="post-preview">
 
+    <a href="/article/ZooKeeper面试题/">
+        <h2 class="post-title">
+                                 
+            [ZooKeeper] ZooKeeper面试题
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+ZooKeeper 是什么？
+
+ZooKeeper 是一个开源的分布式协调服务。它是一个为分布式应用提供一致性服务的软件，分布式应用程序可以基于 Zookeeper 实现诸如数据发布/订阅、负载均衡、命名服务、分布式协调/通知、集群管理、Master 选举、分布式锁和分布式队列等功能。
+ZooKeeper 的目标就是封装好复杂易出错的关键服务，将简单易用的接口和性能高效、功能稳定的系统提供......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-10
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#面试题" title="面试题">面试题</a>
+            
+              <a href="/tags/#ZooKeeper" title="ZooKeeper">ZooKeeper</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[ZooKeeper] ZooKeeper实现原理/">
+        <h2 class="post-title">
+                                 
+            [ZooKeeper] ZooKeeper实现原理
+        </h2>
+        <h3 class="post-subtitle">
+            一致性问题、一致性协议和算法[2PC（两阶段提交）、3PC（三阶段提交）、Paxos 算法【prepare 阶段、accept 阶段、paxos 算法的死循环问题】]、引出 ZAB[ZAB 中的三个角色、消息广播模式、崩溃恢复模式]、Zookeeper的几个理论知识[数据模型、会话、ACL、Watcher机制]、Zookeeper的几个典型应用场景[分布式锁、命名服务、集群管理和注册中心]
+        </h3>
+        <div class="post-content-preview">
+            ZooKeeper 由 Yahoo 开发，后来捐赠给了 Apache ，现已成为 Apache 顶级项目。ZooKeeper 是一个开源的分布式应用程序协调服务器，其为分布式系统提供一致性服务。其一致性是通过基于 Paxos 算法的 ZAB 协议完成的。其主要功能包括：配置维护、分布式同步、集群管理、分布式事务等。
+简单来说， ZooKeeper 是一个 分布式协调服务框架 。
+其实解释到分......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#ZooKeeper" title="ZooKeeper">ZooKeeper</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/[Hive]  Hive性能调优指南/">
+        <h2 class="post-title">
+                                 
+            [Hive] Hive性能调优指南
+        </h2>
+        <h3 class="post-subtitle">
+            性能调优的工具[善用explain语句、巧用analyze语句、常用日志分析]、设计优化[分桶表、索引、使用skewed/temporary表]、数据存储优化[压缩、存储优化]、作业优化[JVM重用、并行执行、Fetch模式、JOIN优化【map端join、Bucket map join、Sort merge bucket (SMB) join、Sort merge bucket map (SMBM) join、Skew join】、执行引擎、优化器【向量化优化器、成本优化器】]
+        </h3>
+        <div class="post-content-preview">
+            在企业中使用Hive构建离线数仓是一种十分普遍的方案。尽管Hive的使用场景是通过批处理的方式处理大数据，通常对处理时间不敏感。但是在资源有限的情况下，我们需要关注Hive的性能调优，从而方便数据的快速产出。同时，关于Hive的性能调优，也是面试中比较常见的问题，因此掌握Hive性能调优的一些方法，不仅能够在工作中提升效率而且还可以在面试中脱颖而出。本文会通过四个方面介绍Hive性能调优，主......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by 李玉坤 on
+            2018-06-03
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#Hive" title="Hive">Hive</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/浅谈大数据平台建设/">
         <h2 class="post-title">
                                  
@@ -442,108 +537,6 @@ Topic 分区副本在 Kafka 0.8.0 之前，Kafka 是没有副本的概念的，�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的/">
-        <h2 class="post-title">
-                                 
-            Airbnb 是如何通过 balanced Kafka reader 来扩展 Spark streaming 实时流处理能力的
-        </h2>
-        <h3 class="post-subtitle">
-            Airbnb 日志事件获取、Spark 的并行度由 Kafka 分区数量决定、事件的倾斜和大小不一、近实时摄取数据、解决方案
-        </h3>
-        <div class="post-content-preview">
-            Airbnb 日志事件获取日志事件从客户端（例如移动应用程序和 Web 浏览器）和在线服务发出，其中包含行为或操作的关键信息。每个事件都有一个特定的信息。例如，当客人在 Airbnb.com 上搜索马里布的海滨别墅时，将生成包含位置，登记和结账日期等的搜索事件。
-在 Airbnb，事件记录对于我们理解客人和房东，然后为他们提供更好的体验至关重要。它为业务决策提供信息，并推动工程功能（如搜索，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-26
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#大数据" title="大数据">大数据</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[数据平台]05 数据平台之权限-Ranger 五/">
-        <h2 class="post-title">
-                                 
-            [数据平台]05 数据平台之权限-Ranger 五
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Apache Ranger简介Apache Ranger提供一个集中式安全管理框架, 并解决授权和审计。它可以对Hadoop生态的组件如HDFS、Yarn、Hive、Hbase等进行细粒度的数据访问控制。通过操作Ranger控制台,管理员可以轻松的通过配置策略来控制用户访问权限。
-
-丰富的组件支持(HDFS,HBASE, HIVE, YARN, KAFKA,STORM)
-提供了细粒度级权限控......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-22
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#数据平台" title="数据平台">数据平台</a>
-            
-              <a href="/tags/#Ranger" title="Ranger">Ranger</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/[数据平台]04 数据平台之权限 四/">
-        <h2 class="post-title">
-                                 
-            [数据平台]04 数据平台之权限 四
-        </h2>
-        <h3 class="post-subtitle">
-            Hadoop/Hive自带权限控制[现有方案、Hadoop权限、Hive权限]、实操Hive的权限操作
-        </h3>
-        <div class="post-content-preview">
-            Hadoop/Hive自带权限控制集群安全下的要求支持多组件,最好能支持当前大数据技术栈的主要组件, HDFS、HBASE、HIVE、YARN、КАFКА等。
-支持细粒度的权限控制,可以达到HIVE列, HDFS目录, HBASE列,YARN队列。
-开源,社区活跃,按照现有的集群情况改动尽可能的小,而且要符合业界t趋势。
-现有方案
-Hadoop、Hive本身的权限控制
-Kerberos安全认......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by 李玉坤 on
-            2018-04-18
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#Hadoop" title="Hadoop">Hadoop</a>
-            
-              <a href="/tags/#Hive" title="Hive">Hive</a>
-            
-              <a href="/tags/#数据平台" title="数据平台">数据平台</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -589,11 +582,11 @@ Kerberos安全认......
     <div class="tags">
         
             
-            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
+            <a href="/tags/#大数据" title="大数据" rel="4">大数据</a>
             
         
             
-            <a href="/tags/#大数据" title="大数据" rel="3">大数据</a>
+            <a href="/tags/#computer language" title="computer language" rel="1">computer language</a>
             
         
             
@@ -661,15 +654,11 @@ Kerberos安全认......
             
         
             
-            <a href="/tags/#Spark" title="Spark" rel="1">Spark</a>
+            <a href="/tags/#Spark" title="Spark" rel="2">Spark</a>
             
         
             
-            <a href="/tags/#数据平台" title="数据平台" rel="8">数据平台</a>
-            
-        
-            
-            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
+            <a href="/tags/#数据平台" title="数据平台" rel="9">数据平台</a>
             
         
             
@@ -678,6 +667,14 @@ Kerberos安全认......
         
             
             <a href="/tags/#Azkaban" title="Azkaban" rel="1">Azkaban</a>
+            
+        
+            
+            <a href="/tags/#Presto" title="Presto" rel="1">Presto</a>
+            
+        
+            
+            <a href="/tags/#Hue" title="Hue" rel="1">Hue</a>
             
         
             
@@ -741,23 +738,23 @@ Kerberos安全认......
     <ul>
       
         <li>
+          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D08%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8BSQL%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E/">[数据平台] 数据平台之SQL查询引擎</a>
+        </li>
+      
+        <li>
+          <a href="/article/%5BSpark%5D%20%E9%81%87%E5%88%B0%E7%9A%84Spark%E9%97%AE%E9%A2%98/">[Spark] 遇到的Spark问题</a>
+        </li>
+      
+        <li>
+          <a href="/article/%E5%85%A8%E6%96%B9%E4%BD%8D%E6%B5%8B%E8%AF%84Hive%E3%80%81SparkSQL%E3%80%81Presto%20%E7%AD%89%E4%B8%83%E4%B8%AA%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%9F%A5%E8%AF%A2%E5%BC%95%E6%93%8E/">全方位测评Hive、SparkSQL、Presto等七个大数据查询引擎</a>
+        </li>
+      
+        <li>
           <a href="/article/%5BSpark%5D%20Spark%E5%85%A5%E9%97%A8/">[Spark] Spark入门</a>
         </li>
       
         <li>
           <a href="/article/%E5%90%84%E4%B8%AAJSON%E6%8A%80%E6%9C%AF%E7%9A%84%E7%AE%80%E4%BB%8B%E5%92%8C%E4%BC%98%E5%8A%A3/">各个JSON技术的简介和优劣</a>
-        </li>
-      
-        <li>
-          <a href="/article/%5B%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%5D07%20%E6%95%B0%E6%8D%AE%E5%B9%B3%E5%8F%B0%E4%B9%8B%E8%B0%83%E5%BA%A6%E7%B3%BB%E7%BB%9F/">[数据平台]07 数据平台之调度系统</a>
-        </li>
-      
-        <li>
-          <a href="/article/SQL%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97/">SQL优化指南</a>
-        </li>
-      
-        <li>
-          <a href="/article/SpringBoot%E4%B8%ADTomcat%20VS%20Undertow/">SpringBoot 中 Tomcat VS Undertow</a>
         </li>
       
     </ul>
@@ -772,7 +769,7 @@ Kerberos安全认......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">2</span></li></ul>
     </div>
 
         <hr>
