@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -241,6 +241,8 @@
 <p>注：如果需要设置开机挂载，在/etc/fstab添加一行配置即可：</p>
 <p>mnode02:/work/test /work/test nfs rw,tcp,intr 0 1<br>然后服务端和客户端都要用enable设置nfs和rpcbind服务开机启动，然后才可以正常挂载</p>
 <p>结果</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[rectangle setX: <span class="number">10</span> y: <span class="number">10</span> width: <span class="number">20</span> height: <span class="number">20</span>];</span><br></pre></td></tr></table></figure>
+
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@mnode02 test]# pwd</span><br><span class="line">/work/test</span><br><span class="line">[root@mnode02 test]# mkdir test1</span><br><span class="line">[root@mnode02 test]# echo "hello" &gt; test.txt</span><br><span class="line">[root@mnode02 test]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 2 root root 6 Jul 13 14:13 test1</span><br><span class="line">-rw-r--r-- 1 root root 6 Jul 13 14:14 test.txt</span><br></pre></td></tr></table></figure>
 
 <p>4444p</p>
