@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [Spark] 遇到的Spark问题 - 李玉坤 | Blog
+          [Linux]07 linux下NFS远程目录挂载 - 李玉坤 | Blog
         
     </title>
 
-    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Spark] 遇到的Spark问题/">
+    <link rel="canonical" href="https://li-yu-kun.github.io/article/[Linux]07 linux下NFS远程目录挂载/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -71,7 +71,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/article_header/article_header.png')
+            background-image: url('/img/article_header/article_bg.jpg')
             /*post*/
         
     }
@@ -88,14 +88,12 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
-                            
                         </div>
-                        <h1>[Spark] 遇到的Spark问题</h1>
+                        <h1>[Linux]07 linux下NFS远程目录挂载</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by 李玉坤 on
-                            2018-07-20
+                            2020-07-13
                         </span>
                     </div>
                 
@@ -212,13 +210,49 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>1、ERROR cluster.YarnClientSchedulerBackend: The YARN application has already ended! It might have been killed or the Application Master may have failed to start. Check the YARN application logs for more details.</p>
-<p>原因可能是内存资源不足<br>yarn.nodemanager.pmem-check-enabled<br>是否检查每个任务正使用的物理内存量，如果超过默认值则将其杀死，默认是true。<br>yarn.nodemanager.vmem-check-enabled<br>是否检查每个任务正使用的虚拟内存量，如果超过默认值则将其杀死，默认是true。</p>
-<p>yarn-site.xml文件添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.pmem-check-enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-<p>2、yarn 模式测试不可以使用cluster模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[bigdate@hadoop conf]$ spark-shell --master yarn --deploy-mode cluster</span><br><span class="line">Exception in thread &quot;main&quot; org.apache.spark.SparkException: Cluster deploy mode is not applicable to Spark shells.</span><br><span class="line"></span><br><span class="line">正确启动方式：</span><br><span class="line">[bigdate@hadoop conf]$ spark-shell --master yarn --deploy-mode client</span><br><span class="line">20/07/06 21:45:29 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">Setting default log level to &quot;WARN&quot;.</span><br><span class="line">To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</span><br><span class="line">20/07/06 21:45:37 WARN yarn.Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.</span><br><span class="line">Spark context Web UI available at http://hadoop:4040</span><br><span class="line">Spark context available as &apos;sc&apos; (master = yarn, app id = application_1594043119043_0001).</span><br><span class="line">Spark session available as &apos;spark&apos;.</span><br><span class="line">Welcome to</span><br><span class="line">      ____              __</span><br><span class="line">     / __/__  ___ _____/ /__</span><br><span class="line">    _\ \/ _ \/ _ `/ __/  &apos;_/</span><br><span class="line">   /___/ .__/\_,_/_/ /_/\_\   version 2.4.4</span><br><span class="line">      /_/</span><br><span class="line">         </span><br><span class="line">Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_191)</span><br><span class="line">Type in expressions to have them evaluated.</span><br><span class="line">Type :help for more information.</span><br><span class="line"></span><br><span class="line">scala&gt;</span><br></pre></td></tr></table></figure>
+                <p>NFS 是Network File System的缩写，中文意思是网络文件系统。它的主要功能是通过网络（一般是局域网）让不同的主机系统之间可以共享文件或目录。NFS客户端（一般为应用服务器，例如web）可以通过挂载（mount）的方式将NFS服务器端共享的数据目录挂载到NFS客户端本地系统中（就是某一个挂载点下）。从客户端本地看，NFS服务器端共享的目录就好像是客户端自己的磁盘分区或者目录一样，而实际上却是远端的NFS服务器的目录。 </p>
+<p>一、服务端</p>
+<p>1、检查nfs服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa|grep nfs</span><br><span class="line">rpm -qa|grep rpcbind</span><br></pre></td></tr></table></figure>
+<p>2、安装nfs</p>
+<p>yum -y install nfs-utils rpcbind<br>3、设置开机自动启动服务</p>
+<p>chkconfig nfs on<br>chkconfig rpcbind on<br>或者<br>systemctl enable nfs<br>systemctl enable rpcbind</p>
+<p>4、启动服务</p>
+<p>service rpcbind start<br>service nfs start<br>或者<br>systemctl start rpcbind<br>systemctl start nfs<br>5、创建共享目录</p>
+<p>mkdir /work/test<br>6、配置exports文件</p>
+<p>vi /etc/exports<br>加入：<br>/work/test *(rw,sync,no_root_squash,no_subtree_check)<br>7、刷新配置立即生效</p>
+<p>exportfs -a<br>8、查看mount目录　</p>
+<p>#此时可用showmount -e 服务端ip来查看可mount目录<br>showmount -e </p>
+<p>二、客户端</p>
+<p>1、创建共享目录</p>
+<p>mkdir  /work/test<br>2、挂载目录</p>
+<p>mount mnode02:/work/test /work/test</p>
+<p>#若挂载失败，错误提示如下：<br>mount: wrong fs type, bad option, bad superblock on xxxx:/xxx/xxx,<br>       missing codepage or helper program, or other error<br>       (for several filesystems (e.g. nfs, cifs) you might<br>       need a /sbin/mount.<type> helper program)<br>       In some cases useful info is found in syslog - try<br>　　　　dmesg | tail  or so<br>　#安装 nfs-utils 即可<br>　yum install nfs-utils</p>
+<p>3、卸载已挂载目录</p>
+<p>umount /work/test<br>4、NFS挂载时出现”access denied by server while mounting”的解决方法</p>
+<p>1、使用了非法端口，也就是使用了大于1024的端口。<br>这个错误，可以通过查看日志确认：<br>[root@local~ /]# cat /var/log/messages | grep mount</p>
+<p>解决办法：<br>修改配置文件/etc/exports，加入 insecure 选项,重启nfs服务，再尝试挂载。<br>/work/test *(insecure,rw,async,no_root_squash)</p>
+<p>2、NFS版本问题<br>编辑/etc/sysconfig/nfs文件，找到下面:<br>#Turn off v2 and v3 protocol support<br>#RPCNFSDARGS=”-N 2 -N 3”<br>#Turn off v4 protocol support<br>#RPCNFSDARGS=”-N 4”　　/<em>把这句前面的#号去掉</em>/</p>
+<p>最后保存，重启nfs服务，再尝试挂载；如果挂载不上，可尝试在后面加-o nolock参数。</p>
+<p>3、查看客户端挂载的目录是否具备读写权限，添加相应权限即可。</p>
+<p>4、nfs服务器上的/etc/hosts中设置了客户端机器IP对应域名，去掉即可。<br>复制代码</p>
+<p>注：如果需要设置开机挂载，在/etc/fstab添加一行配置即可：</p>
+<p>mnode02:/work/test /work/test nfs rw,tcp,intr 0 1<br>然后服务端和客户端都要用enable设置nfs和rpcbind服务开机启动，然后才可以正常挂载</p>
+<p>结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@mnode02 test]# pwd</span><br><span class="line">/work/test</span><br><span class="line">[root@mnode02 test]# mkdir test1</span><br><span class="line">[root@mnode02 test]# echo &quot;hello&quot; &gt; test.txt</span><br><span class="line">[root@mnode02 test]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 2 root root 6 Jul 13 14:13 test1</span><br><span class="line">-rw-r--r-- 1 root root 6 Jul 13 14:14 test.txt</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@mnode01 work]# df -h</span><br><span class="line">Filesystem               Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/vda1                 40G   15G   23G  40% /</span><br><span class="line">devtmpfs                 7.5G     0  7.5G   0% /dev</span><br><span class="line">tmpfs                    7.6G   12K  7.6G   1% /dev/shm</span><br><span class="line">tmpfs                    7.6G  449M  7.1G   6% /run</span><br><span class="line">tmpfs                    7.6G     0  7.6G   0% /sys/fs/cgroup</span><br><span class="line">tmpfs                    1.6G     0  1.6G   0% /run/user/0</span><br><span class="line">service01:/data/dtyunxi   79G   33G   43G  44% /data/dtyunxi</span><br><span class="line">/dev/vdb                 100G   33M  100G   1% /work</span><br><span class="line">mnode02:/work/test       100G   32M  100G   1% /work/test</span><br><span class="line">[root@mnode01 work]# cd test/</span><br><span class="line">[root@mnode01 test]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 2 root root 6 Jul 13 14:13 test1</span><br><span class="line">-rw-r--r-- 1 root root 6 Jul 13 14:14 test.txt</span><br><span class="line">[root@mnode01 test]# cat test.txt </span><br><span class="line">hello</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>补充：</strong><br>配置文件解释：<br>/etc/exports<br>/opt/nfs  192.168.5.*(rw,sync,no_root_squash)</p>
+<p>下面解释一下，总共需要写三部分的东西，第一部分就是/opt/nfs，也就是待共享的目录。第二部分192.168.5.*是指在这个IP地址段内可以共享，第三部分就是括号里的内容，就是参数，也是配置的重点地方，下面重点说一下：</p>
+<p>第一个参数： rw: 可擦写的权限 ；ro: 只读的权限。</p>
+<p>第二个参数： sync: 资料同步写入到内存与硬盘当中；async: 资料会先暂存于内存当中，而非直接写入硬盘。</p>
+<p>第三个参数： 1、no_root_squash: 登入 NFS 主机使用分享目录的使用者，如果是 root的话，那么对于这个分享的目录来说，他就具有root的权限！这个项目极不安全，不建议使用！</p>
+<p>2、root_squash:在登入 NFS 主机使用分享之目录的使用者如果是 root 时，那么这个使用者的权限将被压缩成为匿名使用                                  者，通常他的 UID 与 GID 都会变成 nobody 那个身份。</p>
+<p>3、all_squash: 不论登入 NFS 的使用者身份为何，他的身份都会被压缩成为匿名使用者，通常也就是nobody 啦！</p>
+<p>4、anonuid: 前面关于 *_squash 提到的匿名使用者的 UID 设定值，通常为 nobody，但是你可以自行设定这个 UID 的                                    值！当然，这个 UID 必需要存在于你的 /etc/passwd 当中！</p>
+<p>5、anongid: 同 anonuid ，但是变成 group ID 就是了。</p>
 
                 
 
@@ -226,13 +260,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/[数据平台]08 数据平台之SQL查询引擎/" data-toggle="tooltip" data-placement="top" title="[数据平台]08 数据平台之SQL查询引擎">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/全方位测评Hive、SparkSQL、Presto 等七个大数据查询引擎/" data-toggle="tooltip" data-placement="top" title="全方位测评Hive、SparkSQL、Presto等七个大数据查询引擎">Next Post &rarr;</a>
+                            <a href="/article/[数据平台]08 数据平台之SQL查询引擎/" data-toggle="tooltip" data-placement="top" title="[数据平台]08 数据平台之SQL查询引擎">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -276,18 +306,6 @@
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
-  
-    
-      <aside id="sidebar">
-        <div id="toc" class="toc-article">
-        <strong class="toc-title">Contents</strong>
-        
-          <ol class="nav">none</ol>
-        
-        </div>
-      </aside>
-    
-
                 
             <!-- Sidebar Container -->
             <div class="
@@ -302,8 +320,6 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Spark" title="Spark">Spark</a>
-                        
                     </div>
                 </section>
                 

@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          [数据平台] 数据平台之SQL查询引擎 - 李玉坤 | Blog
+          [数据平台]08 数据平台之SQL查询引擎 - 李玉坤 | Blog
         
     </title>
 
@@ -93,7 +93,7 @@
                               <a class="tag" href="/tags/#Presto" title="Presto">Presto</a>
                             
                         </div>
-                        <h1>[数据平台] 数据平台之SQL查询引擎</h1>
+                        <h1>[数据平台]08 数据平台之SQL查询引擎</h1>
                         <h2 class="subheading">Presto简介、Presto是什么、Presto显而易见的优点、查询示例、Presto数据模型、Presto架构与执行流程、数据库架构设计、MPP架构的优缺点、presto安装部署</h2>
                         <span class="meta">
                             Posted by 李玉坤 on
@@ -238,7 +238,14 @@
 <p>Discovery Server负责维护Coordinator和Worker的关系,通常内嵌于Coordinator节点</p>
 <p>Worker节点负责执行查询任务以及与HDFS进行交互读取数据</p>
 <h2 id="Presto查询流程"><a href="#Presto查询流程" class="headerlink" title="Presto查询流程"></a>Presto查询流程</h2><p><img src="4.png" alt=""></p>
-<h2 id="数据库架构设计"><a href="#数据库架构设计" class="headerlink" title="数据库架构设计"></a>数据库架构设计</h2><p><img src="5.png" alt=""></p>
+<h2 id="Presto名词"><a href="#Presto名词" class="headerlink" title="Presto名词"></a>Presto名词</h2><ul>
+<li>Plan: Presto将需要执行的SQL进行解析,生成执行计划</li>
+<li>Stage: Presto执行计划分为多个Stage,比如读取数据、聚合数据等</li>
+<li>Task: Stage由多个Task组成,每个Task分配到一个Worker执行</li>
+<li>Split:一个分片表示大的数据集合中的一个小子集,与MapReduce类似</li>
+<li>Page: Presto中处理的最小数据单元</li>
+</ul>
+<h1 id="数据库架构设计"><a href="#数据库架构设计" class="headerlink" title="数据库架构设计"></a>数据库架构设计</h1><p><img src="5.png" alt=""></p>
 <ul>
 <li>Shared Everthting:完全透明共享CPU/MEMORY/IO,并行处理能力是最差的 代表是SQL server</li>
 <li>Shared Storage:各个处理单元使用自己的私有CPU和Memory,共享磁盘系统 代表是Oracle</li>
@@ -276,6 +283,10 @@
                 <hr>
                 <!-- Pager -->
                 <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/[Linux]07 linux下NFS远程目录挂载/" data-toggle="tooltip" data-placement="top" title="[Linux]07 linux下NFS远程目录挂载">&larr; Previous Post</a>
+                        </li>
                     
                     
                         <li class="next">
@@ -329,7 +340,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Presto简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto是什么"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Presto是什么</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto显而易见的优点"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Presto显而易见的优点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询示例"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">查询示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto数据模型"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Presto数据模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto架构与执行流程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Presto架构与执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto架构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Presto架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto组件"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Presto组件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto查询流程"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Presto查询流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库架构设计"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">数据库架构设计</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MPP架构的优缺点"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">MPP架构的优缺点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#presto安装部署"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">presto安装部署</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto简介"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Presto简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto是什么"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">Presto是什么</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto显而易见的优点"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Presto显而易见的优点</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#查询示例"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">查询示例</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto数据模型"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">Presto数据模型</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Presto架构与执行流程"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Presto架构与执行流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto架构"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Presto架构</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto组件"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Presto组件</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto查询流程"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">Presto查询流程</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Presto名词"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Presto名词</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#数据库架构设计"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">数据库架构设计</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MPP架构的优缺点"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">MPP架构的优缺点</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#presto安装部署"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">presto安装部署</span></a></li></ol>
         
         </div>
       </aside>
